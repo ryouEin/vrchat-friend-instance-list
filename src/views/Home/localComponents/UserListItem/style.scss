@@ -1,0 +1,76 @@
+.c-userListItem {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+
+  &:not(.-active) {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $paleGrayColor;
+    }
+  }
+}
+
+.figure {
+  position: relative;
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+
+  .userImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 9999px;
+  }
+
+  .favorite {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.userInfo {
+  .nameRow {
+    display: flex;
+  }
+
+  .newCol {
+
+  }
+
+  .new {
+    padding: 0 3px;
+    margin-right: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 17px;
+    color: $whiteColor;
+    white-space: nowrap;
+    background-color: $orangeColor;
+  }
+
+  .displayName {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.2;
+
+    .c-userListItem.-active & {
+      color: $mainColor;
+    }
+  }
+
+  .status {
+    font-size: 12px;
+    color: $grayColor;
+
+    &.-canJoin {
+      color: $blueColor;
+    }
+  }
+}

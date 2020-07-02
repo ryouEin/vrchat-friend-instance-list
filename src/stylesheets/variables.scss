@@ -1,0 +1,29 @@
+// colors
+$blackColor: #2c3e50;
+$greenColor: #1abc9c;
+$blueColor: #3498db;
+$redColor: #c0392b;
+$yellowColor: #f1c40f;
+$orangeColor: #e67e22;
+$grayColor: #95a5a6;
+$paleGrayColor: #ecf0f1;
+$whiteColor: #fff;
+
+// semantic colors
+$mainColor: $greenColor;
+$mainTextColor: $blackColor;
+$mainBgColor: $paleGrayColor;
+$linkColor: $greenColor;
+
+// font
+$mainFontSize: 16px;
+$mainLineHeight: 1.6;
+$mainFontFamily: 'Roboto', 'Noto Sans JP', sans-serif;
+
+// animation
+$mainAnimationDuration: 0.25s;
+
+// z-index
+$zIndexSideMenu: 100;
+$zIndexDialog: 200;
+$zIndexFullLoader: 300;

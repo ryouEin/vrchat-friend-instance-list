@@ -1,0 +1,10 @@
+<template>
+  <transition name="fade">
+    <div v-if="visible" class="c-fullLoader">
+      <Spinner />
+    </div>
+  </transition>
+</template>
+
+<script lang="ts" src="./script.ts" />
+<style lang="scss" src="./style.scss" scoped />

@@ -1,0 +1,36 @@
+$tmpSideWidth: 250px;
+
+.c-home {
+  position: relative;
+}
+
+.side {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $zIndexSideMenu;
+  width: $tmpSideWidth;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #fff;
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 10px 5px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: $paleGrayColor;
+  }
+
+  .content {
+
+  }
+}
+
+.main {
+  padding: 30px 30px 100px;
+  margin-left: $tmpSideWidth;
+}

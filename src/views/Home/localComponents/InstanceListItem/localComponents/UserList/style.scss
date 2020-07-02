@@ -1,0 +1,16 @@
+.c-userList {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 5px;
+}
+
+.item {
+  box-sizing: border-box;
+  flex: 0 0 16.6666%;
+  padding: 5px;
+
+  @media only screen and (max-width: 1360px) {
+    flex-basis: 25%;
+  }
+}

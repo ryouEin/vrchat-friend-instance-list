@@ -1,0 +1,71 @@
+.c-instanceListItem {
+  display: flex;
+  min-height: 220px;
+  background-color: $whiteColor;
+  box-shadow: rgba($blackColor, 0.1) 0 0 5px 1px;
+}
+
+.worldInfo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  background-color: $blackColor;
+}
+
+.worldImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.worldName {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 90%;
+  padding: 10px 15px;
+  overflow: hidden;
+  font-size: 26px;
+  font-weight: bold;
+  color: $whiteColor;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: rgba($blackColor, 0.9);
+}
+
+.joinButton {
+  position: absolute;
+  bottom: 15px;
+  padding: 10px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  color: $blackColor;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  background-color: $whiteColor;
+  border-radius: 5px;
+  box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
+  transition: filter $mainAnimationDuration;
+
+  &:hover {
+    filter: brightness(140%);
+  }
+}
+
+.userInfo {
+  box-sizing: border-box;
+  width: 100%;
+}

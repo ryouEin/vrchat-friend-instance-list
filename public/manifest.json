@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "VRChat Friend Instance List",
+  "description": "Tool for VRChat. Show instances exist your friends.",
+  "version": "2.0",
+  "permissions": [
+    "tabs",
+    "https://vrchat.com/",
+    "https://www.vrchat.com/"
+  ],
+  "page_action": {
+    "default_icon": {
+      "19": "icon_small.png",
+      "38": "icon_big.png"
+    }
+  },
+  "background": {
+    "scripts": [ "icon_clicked.js" ],
+    "persistent": false
+  }
+}

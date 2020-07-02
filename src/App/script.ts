@@ -4,6 +4,12 @@ import { addErrorCallback } from '@/services/vrcApiService'
 import { worldsModule } from '@/store/ModuleFactory'
 import Dialog from '@/components/Dialog/index.vue'
 import Button from '@/components/Button/index.vue'
+import {
+  fetchCurrentVersionHistory,
+  fetchNewestVersionHistory,
+} from '@/infras/network/fetchVersionHistory'
+import { VersionHistoryService } from '@/domains/VersionHistory/VersionHistoryService'
+import { VersionHistoryStorage } from '@/infras/storage/VersionHistoryStorage'
 
 @Component({
   components: {
@@ -19,14 +25,38 @@ export default class App extends Vue {
     location.reload()
   }
 
-  // TODO: バージョン確認、及び新バージョンがある場合のダイアログ表示の実装
-  checkVersion() {
-    // 最新のバージョン情報をGitHubから取得
-    // localStorageに確認したバージョン情報があるならそれでチェック
-    // (localStorageには、versionHistoryJsonを埋め込む？)
-    // ないなら、埋め込まれているバージョン情報を元にチェック
-    // TSでjsonを読み込むのが難しそうなら通信で取るか？
-    // 必要ならダイアログを表示
+  // TODO: バージョンチェックの処理、E2Eで自動テストできるようにする（手動テストがめんどくさいのでそのうち絶対に不具合発生しているのに気づかずスルーする）
+  async checkVersion() {
+    const storageVersionHistoryJson = VersionHistoryStorage.get()
+    const localVersionHistoryJson = await fetchCurrentVersionHistory()
+
+    const currentVersionHistoryJson =
+      storageVersionHistoryJson === undefined ||
+      VersionHistoryService.versionHistoryJsonAIsNewerThanB(
+        localVersionHistoryJson,
+        storageVersionHistoryJson
+      )
+        ? localVersionHistoryJson
+        : storageVersionHistoryJson
+    const newestVersionHistoryJson = await fetchNewestVersionHistory()
+
+    const hasUpdate = VersionHistoryService.versionHistoryJsonAIsNewerThanB(
+      newestVersionHistoryJson,
+      currentVersionHistoryJson
+    )
+
+    if (hasUpdate) {
+      const newestVersionInfo = VersionHistoryService.getNewestVersionInfoJson(
+        newestVersionHistoryJson
+      )
+      this.$alert({
+        title: '新しいバージョンが配布されています',
+        content: ['「更新内容」', ...newestVersionInfo.contents],
+        onClose() {
+          VersionHistoryStorage.set(newestVersionHistoryJson)
+        },
+      })
+    }
   }
 
   async created() {
@@ -42,11 +72,11 @@ export default class App extends Vue {
       }
     })
 
-    this.checkVersion()
-
     this.$fullLoader.show()
     await worldsModule.init().finally(() => {
       this.$fullLoader.hide()
+
+      this.checkVersion()
     })
     this.initialized = true
   }

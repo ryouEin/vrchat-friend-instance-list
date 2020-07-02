@@ -5,7 +5,8 @@ import Button from '@/components/Button/index.vue'
 
 export interface AlertProps {
   title?: string
-  content: string
+  content: string | string[]
+  onClose?: () => void
 }
 
 @Component({
@@ -18,10 +19,21 @@ export default class Alert extends Vue implements AlertProps {
   @Prop({ type: String, default: '' })
   readonly title!: string
 
-  @Prop({ type: String, required: true })
-  readonly content!: string
+  @Prop({ required: true })
+  readonly content!: string | string[]
+
+  @Prop()
+  readonly onClose?: () => void
 
   visible = false
+
+  get contents(): string[] {
+    if (Array.isArray(this.content)) {
+      return this.content
+    }
+
+    return [this.content]
+  }
 
   show() {
     this.visible = true
@@ -29,5 +41,9 @@ export default class Alert extends Vue implements AlertProps {
 
   close() {
     this.visible = false
+
+    if (this.onClose !== undefined) {
+      this.onClose()
+    }
   }
 }

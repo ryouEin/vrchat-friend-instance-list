@@ -1,6 +1,9 @@
 <template>
   <Dialog v-if="visible" :title="title" @after-leave="$emit('afterLeave')">
-    <template v-slot:content>{{ content }}</template>
+    <template v-slot:content>
+      <!-- eslint-disable-next-line -->
+      <div v-for="line in contents">{{ line }}</div>
+    </template>
     <template v-slot:buttonArea>
       <Button @click="close">Close</Button>
     </template>

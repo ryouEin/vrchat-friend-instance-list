@@ -21,4 +21,13 @@ export class VersionHistoryService {
       historyB.newestVersionInfo.version
     )
   }
+
+  static getNewestVersionInfoJson(versionHistoryJson: VersionHistoryJson) {
+    const history = VersionHistoryFactory.create(versionHistoryJson)
+
+    return {
+      version: history.newestVersionInfo.version.value,
+      contents: history.newestVersionInfo.contents,
+    }
+  }
 }

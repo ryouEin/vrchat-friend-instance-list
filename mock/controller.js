@@ -1,3 +1,4 @@
+const Base64 = require('js-base64').Base64
 const { getRandomInteger } = require('./util')
 const worlds = require('./data/worlds')
 const friends = require('./data/friends')
@@ -51,5 +52,26 @@ module.exports = {
     const listedWorlds = [...worlds].slice(0, -1)
 
     res.json(listedWorlds)
+  },
+  versions (req, res) {
+    const versionsJsonString = JSON.stringify([
+      {
+        version: '0.0.0',
+        contents: [
+          '最初のバージョン'
+        ]
+      },
+      {
+        version: '999.0.0',
+        contents: [
+          '最新のモックバージョン',
+          '二行目',
+          '超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト超長いテキスト'
+        ]
+      }
+    ])
+    res.json({
+      content: Base64.encode(versionsJsonString)
+    })
   }
 }

@@ -1,6 +1,5 @@
 {
   "name": "vrchat-friend-instance-list",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,6 +8,7 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
+    "versionUpdateCheck": "node checkVersion.js",
     "mock": "node mock",
     "mock:401Error": "SEND_ERROR_STATUS=401 node mock",
     "mock:500Error": "SEND_ERROR_STATUS=500 node mock"
@@ -17,6 +17,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "destyle.css": "^1.0.11",
+    "js-base64": "^2.6.2",
     "lodash": "^4.17.15",
     "p-memoize": "^4.0.0",
     "semver": "^7.3.2",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
+    "@types/js-base64": "^2.3.2",
     "@types/lodash": "^4.14.149",
     "@types/semver": "^7.3.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",

@@ -25,12 +25,14 @@ describe('addWorlds', () => {
           name: 'world 0',
           imageUrl: 'http://example.com',
           thumbnailImageUrl: 'http://example.com',
+          capacity: 10,
         },
         {
           id: 'wrld_2',
           name: 'world 2',
           imageUrl: 'http://example.com',
           thumbnailImageUrl: 'http://example.com',
+          capacity: 10,
         },
       ]),
     }
@@ -40,12 +42,14 @@ describe('addWorlds', () => {
         name: 'world 0',
         imageUrl: 'http://example.com',
         thumbnailImageUrl: 'http://example.com',
+        capacity: 10,
       },
       {
         id: 'wrld_1',
         name: 'world 1',
         imageUrl: 'http://example.com',
         thumbnailImageUrl: 'http://example.com',
+        capacity: 10,
       },
     ]
     const worldStorage = new WorldStorage(new MockStorage(initialData))
@@ -58,18 +62,21 @@ describe('addWorlds', () => {
         name: 'world 0',
         imageUrl: 'http://example.com',
         thumbnailImageUrl: 'http://example.com',
+        capacity: 10,
       },
       {
         id: 'wrld_1',
         name: 'world 1',
         imageUrl: 'http://example.com',
         thumbnailImageUrl: 'http://example.com',
+        capacity: 10,
       },
       {
         id: 'wrld_2',
         name: 'world 2',
         imageUrl: 'http://example.com',
         thumbnailImageUrl: 'http://example.com',
+        capacity: 10,
       },
     ])
   })
@@ -83,6 +90,7 @@ describe('addWorlds', () => {
           name: `world ${index}`,
           imageUrl: 'http://example.com',
           thumbnailImageUrl: 'http://example.com',
+          capacity: 10,
         },
       ])
     }
@@ -95,6 +103,7 @@ describe('addWorlds', () => {
           name: `world 0`,
           imageUrl: 'http://example.com',
           thumbnailImageUrl: 'http://example.com',
+          capacity: 10,
         },
       ])
     )
@@ -105,6 +114,7 @@ describe('addWorlds', () => {
         name: `world 1000`,
         imageUrl: 'http://example.com',
         thumbnailImageUrl: 'http://example.com',
+        capacity: 10,
       },
     ])
     const result2 = worldStorage.getWorlds()

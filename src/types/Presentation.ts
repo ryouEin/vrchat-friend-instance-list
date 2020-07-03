@@ -14,4 +14,5 @@ export interface World {
   name: string
   imageUrl: string
   thumbnailImageUrl: string
+  capacity: number
 }

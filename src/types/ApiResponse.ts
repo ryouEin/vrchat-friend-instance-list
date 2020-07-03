@@ -12,6 +12,12 @@ export interface World {
   name: string
   imageUrl: string
   thumbnailImageUrl: string
+  capacity: number
+}
+
+export interface InstanceInfo {
+  n_users: number
+  capacity: number
 }
 
 export interface Favorite {

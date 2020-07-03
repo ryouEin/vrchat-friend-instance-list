@@ -1,5 +1,5 @@
 <template>
-  <div class="c-spinner" :class="rootCssClass">
+  <div class="c-spinner" :class="rootCssClass" :style="rootStyle">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="22.857142857142858 22.857142857142858 45.714285714285715 45.714285714285715"

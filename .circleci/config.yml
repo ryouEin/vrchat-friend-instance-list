@@ -30,4 +30,4 @@ workflows:
             branches:
               only:
                 - staging
-                - master
+                - /^hotfix.*/

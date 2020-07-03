@@ -1,6 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { World } from '@/types/ApiResponse'
-import * as vrcApiService from '@/services/vrcApiService'
+import * as vrcApiService from '@/infras/network/vrcApi'
 import { worldStorageSingleton } from '@/shame/WorldStorage'
 import pMemoize from 'p-memoize'
 

@@ -1,5 +1,5 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import * as vrcApiService from '@/services/vrcApiService'
+import * as vrcApiService from '@/infras/network/vrcApi'
 import * as ApiResponse from '@/types/ApiResponse'
 import * as Presentation from '@/types/Presentation'
 import uniqBy from 'lodash/uniqBy'

@@ -5,8 +5,20 @@
       <div class="tag">
         <Permission :permission="instancePermission" />
       </div>
+      <div class="userNum">
+        10/20
+      </div>
       <div class="worldName">{{ world.name }}</div>
-      <a :href="joinUrl" class="joinButton">JOIN</a>
+      <div class="instanceButtonArea">
+        <div class="instanceButtonGroup">
+          <a :href="joinUrl" class="instanceButton">
+            <span class="instanceButton_text">JOIN</span>
+          </a>
+          <button class="instanceButton -userNum">
+            <span class="instanceButton_text">ユーザー数<br />取得</span>
+          </button>
+        </div>
+      </div>
     </div>
     <div v-else-if="isPrivate" class="worldInfo">
       <div class="worldName">Private</div>

@@ -14,6 +14,11 @@
   justify-content: center;
   width: 25%;
   background-color: $blackColor;
+
+  // TODO: メディアクエリの幅情報、何らかの方法で共通化する
+  @media only screen and (max-width: 1300px) {
+    width: 35%;
+  }
 }
 
 .worldImage {
@@ -31,6 +36,16 @@
   left: 0;
 }
 
+.userNum {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px 15px;
+  font-size: 15px;
+  color: $whiteColor;
+  background-color: rgba($blackColor, 0.5);
+}
+
 .worldName {
   position: relative;
   box-sizing: border-box;
@@ -45,23 +60,54 @@
   background-color: rgba($blackColor, 0.9);
 }
 
-.joinButton {
+.instanceButtonArea {
   position: absolute;
+  right: 10px;
   bottom: 15px;
-  padding: 10px 40px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.instanceButtonGroup {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  overflow: hidden;
+  background-color: $grayColor;
+  border-radius: 5px;
+  box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
+}
+
+.instanceButton {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
   font-size: 18px;
   font-weight: bold;
+  line-height: 1.2;
   color: $blackColor;
+  text-align: center;
   text-decoration: none;
   letter-spacing: 0.05em;
   cursor: pointer;
   background-color: $whiteColor;
-  border-radius: 5px;
-  box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
   transition: filter $mainAnimationDuration;
 
   &:hover {
     filter: brightness(140%);
+  }
+
+  &:not(:last-child) {
+    margin-right: 1px;
+  }
+
+  &.-userNum {
+    font-size: 14px;
   }
 }
 

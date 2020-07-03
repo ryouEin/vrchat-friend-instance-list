@@ -53,6 +53,12 @@ module.exports = {
 
     res.json(listedWorlds)
   },
+  getInstanceInfo (req, res) {
+    res.json({
+      n_users: 10,
+      capacity: 20
+    })
+  },
   versions (req, res) {
     const versionsJsonString = JSON.stringify([
       {

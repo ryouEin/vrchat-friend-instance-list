@@ -3,7 +3,8 @@ const makeWorld = index => {
     id: `wrld_${index}`,
     name: `World ${index}`,
     imageUrl: 'https://placehold.jp/150x150.png',
-    thumbnailImageUrl: 'https://placehold.jp/150x150.png'
+    thumbnailImageUrl: 'https://placehold.jp/150x150.png',
+    capacity: Math.floor(Math.random() * 30) + 5
   }
 }
 

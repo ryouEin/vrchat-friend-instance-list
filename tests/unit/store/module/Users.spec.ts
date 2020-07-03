@@ -1,4 +1,4 @@
-import { FetchFriendsFunction } from '@/services/vrcApiService'
+import { FetchFriendsFunction } from '@/infras/network/vrcApi'
 import {
   fetchAllUsers,
   makePresentationUsers,

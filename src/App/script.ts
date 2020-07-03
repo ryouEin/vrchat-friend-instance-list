@@ -1,6 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { addErrorCallback } from '@/services/vrcApiService'
+import { addErrorCallback } from '@/infras/network/vrcApi'
 import { worldsModule } from '@/store/ModuleFactory'
 import Dialog from '@/components/Dialog/index.vue'
 import Button from '@/components/Button/index.vue'

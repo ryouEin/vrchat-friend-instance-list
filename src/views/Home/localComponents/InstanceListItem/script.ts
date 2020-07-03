@@ -7,8 +7,10 @@ import { getInstancePermissionFromLocation } from '@/shame/getInstancePermission
 import { InstancePermission } from '@/types/InstancePermission'
 import Permission from '@/views/Home/localComponents/InstanceListItem/localComponents/Permission/index.vue'
 import Spinner from '@/components/Spinner/index.vue'
+import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
+// TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
 @Component({
   components: {
     UserList,
@@ -22,6 +24,12 @@ export default class Instance extends Vue {
 
   @Prop()
   private users!: Presentation.User[]
+
+  userNum: number | null = null
+
+  isFetchingUserNum = false
+
+  fetchUserNumButtonDisabled = false
 
   get worldId(): string {
     return this.location.split(':')[0]
@@ -51,8 +59,27 @@ export default class Instance extends Vue {
     return undefined
   }
 
+  get currentUserNumText() {
+    return this.userNum ?? '?'
+  }
+
   get joinUrl(): string {
     return `vrchat://launch?id=${this.location}`
+  }
+
+  async updateUserNum() {
+    if (this.isFetchingUserNum) return
+
+    this.fetchUserNumButtonDisabled = true
+    this.isFetchingUserNum = true
+    const instanceInfo = await fetchInstanceInfo(this.location).finally(() => {
+      this.isFetchingUserNum = false
+      setTimeout(() => {
+        this.fetchUserNumButtonDisabled = false
+      }, 10 * 1000)
+    })
+
+    this.userNum = instanceInfo.n_users
   }
 
   async created() {

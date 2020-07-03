@@ -40,10 +40,19 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: 5px 15px;
+  padding: 0 10px;
   font-size: 15px;
   color: $whiteColor;
-  background-color: rgba($blackColor, 0.5);
+  background-color: rgba($blackColor, 0.8);
+
+  .current {
+    font-size: 20px;
+    line-height: 1.7;
+  }
+
+  .capacity {
+    font-size: 14px;
+  }
 }
 
 .worldName {
@@ -74,6 +83,7 @@
   display: flex;
   width: 100%;
   max-width: 300px;
+  height: 50px;
   overflow: hidden;
   background-color: $grayColor;
   border-radius: 5px;
@@ -108,6 +118,12 @@
 
   &.-userNum {
     font-size: 14px;
+  }
+
+  &.-disabled {
+    color: $paleGrayColor;
+    pointer-events: none;
+    cursor: auto;
   }
 }
 

@@ -51,7 +51,13 @@ export default class App extends Vue {
       )
       this.$alert({
         title: '新しいバージョンが配布されています',
-        content: ['「更新内容」', ...newestVersionInfo.contents],
+        content: [
+          '最新バージョンをBoothよりダウンロードの上、アップデートしてください。',
+          'アップデート方法はBoothの説明をご確認ください。',
+          '　',
+          '「更新内容」',
+          ...newestVersionInfo.contents.map(content => `・${content}`),
+        ],
         onClose() {
           VersionHistoryStorage.set(newestVersionHistoryJson)
         },

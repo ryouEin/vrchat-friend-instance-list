@@ -2,10 +2,12 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import Dialog from '@/components/Dialog/index.vue'
 import Button from '@/components/Button/index.vue'
+import MarkdownText from '@/components/MarkdownText/index.vue'
 
 export interface AlertProps {
   title?: string
-  content: string | string[]
+  content: string
+  isMarkdown?: boolean
   onClose?: () => void
 }
 
@@ -13,6 +15,7 @@ export interface AlertProps {
   components: {
     Dialog,
     Button,
+    MarkdownText,
   },
 })
 export default class Alert extends Vue implements AlertProps {
@@ -20,20 +23,15 @@ export default class Alert extends Vue implements AlertProps {
   readonly title!: string
 
   @Prop({ required: true })
-  readonly content!: string | string[]
+  readonly content!: string
+
+  @Prop({ default: false })
+  readonly isMarkdown!: boolean
 
   @Prop()
   readonly onClose?: () => void
 
   visible = false
-
-  get contents(): string[] {
-    if (Array.isArray(this.content)) {
-      return this.content
-    }
-
-    return [this.content]
-  }
 
   show() {
     this.visible = true

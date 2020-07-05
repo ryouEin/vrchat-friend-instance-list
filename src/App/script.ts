@@ -4,6 +4,10 @@ import { addErrorCallback } from '@/infras/network/vrcApi'
 import { worldsModule } from '@/store/ModuleFactory'
 import Dialog from '@/components/Dialog/index.vue'
 import Button from '@/components/Button/index.vue'
+import NewsApi from '@/infras/network/News/NewsApi'
+import { NewsStorage } from '@/infras/storage/News/NewsStorage'
+import { NewsService } from '@/domains/News/NewsService'
+import { News } from '@/types/News'
 
 @Component({
   components: {
@@ -17,6 +21,31 @@ export default class App extends Vue {
 
   reload() {
     location.reload()
+  }
+
+  showNewsDialogs(newsArray: News[]) {
+    const remainingNewsArray = [...newsArray]
+    const displayNews = remainingNewsArray.pop()
+
+    if (displayNews === undefined) return
+
+    this.$alert({
+      title: displayNews.title,
+      content: displayNews.content,
+      isMarkdown: true,
+      onClose: () => {
+        this.showNewsDialogs(remainingNewsArray)
+      },
+    })
+  }
+
+  async checkNews() {
+    const newsApi = new NewsApi()
+    const newsStorage = new NewsStorage()
+    const newsService = new NewsService(newsApi, newsStorage)
+    const newsArray = await newsService.getNews()
+
+    this.showNewsDialogs(newsArray)
   }
 
   async created() {
@@ -36,6 +65,9 @@ export default class App extends Vue {
     await worldsModule.init().finally(() => {
       this.$fullLoader.hide()
     })
+
     this.initialized = true
+
+    await this.checkNews()
   }
 }

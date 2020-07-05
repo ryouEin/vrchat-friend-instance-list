@@ -57,5 +57,46 @@ module.exports = {
       n_users: 10,
       capacity: 20
     })
+  },
+  listNews (req, res) {
+    res.json({
+      contents: [
+        {
+          id: 'yvlvweqsh',
+          createdAt: '2030-07-05T14:26:53.289Z',
+          updatedAt: '2030-07-05T14:26:53.289Z',
+          publishedAt: '2030-07-05T14:26:53.289Z',
+          title: 'お知らせ4',
+          content: 'お知らせ4'
+        },
+        {
+          id: 'ftunsbzb1',
+          createdAt: '2030-07-05T14:26:44.242Z',
+          updatedAt: '2030-07-05T14:26:44.242Z',
+          publishedAt: '2030-07-05T14:26:44.242Z',
+          title: 'お知らせ3',
+          content: 'お知らせ3'
+        },
+        {
+          id: 'x5nmty1rd',
+          createdAt: '2030-07-05T14:26:23.438Z',
+          updatedAt: '2030-07-05T14:26:23.438Z',
+          publishedAt: '2030-07-05T14:26:23.438Z',
+          title: 'お知らせ2',
+          content: '## 中見出し\n\nダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト\n\n## 中見出し\n\nダミーテキスト[リンクテキスト](https://google.com)'
+        },
+        {
+          id: '0ygmje1vv',
+          createdAt: '2020-07-05T05:59:07.624Z',
+          updatedAt: '2020-07-05T05:59:07.624Z',
+          publishedAt: '2020-07-05T05:59:07.624Z',
+          title: '最初のお知らせ',
+          content: 'お知らせ本文'
+        }
+      ],
+      totalCount: 4,
+      offset: 0,
+      limit: 10
+    })
   }
 }

@@ -5,6 +5,7 @@ import UserList from '@/views/Home/localComponents/UserList/index.vue'
 import InstanceList from '@/views/Home/localComponents/InstanceList/index.vue'
 import FAB from '@/components/FAB/index.vue'
 import * as Presentation from '@/types/Presentation'
+import Spinner from '@/components/Spinner/index.vue'
 
 // TODO: コンポーネント特有の型の持ち方を再考
 export interface User {
@@ -24,9 +25,11 @@ export interface User {
     UserList,
     InstanceList,
     FAB,
+    Spinner,
   },
 })
 export default class Home extends Vue {
+  isLoading = false
   focusedUser: Presentation.User | null = null
 
   get users(): User[] {
@@ -39,9 +42,9 @@ export default class Home extends Vue {
   }
 
   async fetchData() {
-    this.$fullLoader.show()
+    this.isLoading = true
     await usersModule.fetchUsers().finally(() => {
-      this.$fullLoader.hide()
+      this.isLoading = false
     })
   }
 

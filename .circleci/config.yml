@@ -10,24 +10,8 @@ jobs:
       - run: npm run lint
       - run: npm run test:unit
       - run: npm run build
-  versionUpdateCheck:
-    docker:
-      - image: circleci/node:12.16.1
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run: npm ci
-      - run: npm run versionUpdateCheck
 workflows:
   version: 2
   check:
     jobs:
       - check
-  versionUpdateCheck:
-    jobs:
-      - versionUpdateCheck:
-          filters:
-            branches:
-              only:
-                - staging
-                - /^hotfix.*/

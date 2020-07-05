@@ -1,5 +1,5 @@
 const express = require('express')
-const { getFriends, listFavorites, getWorld, listWorlds, getInstanceInfo, versions } = require('./controller')
+const { getFriends, listFavorites, getWorld, listWorlds, getInstanceInfo } = require('./controller')
 
 const app = express()
 
@@ -34,6 +34,5 @@ app.get('/api/1/favorites', listFavorites)
 app.get('/api/1/worlds/:id', getWorld)
 app.get('/api/1/worlds', listWorlds)
 app.get('/api/1/instances/:location', getInstanceInfo)
-app.get('/versions.json', versions)
 
 app.listen(3000, () => console.log('Api mock listening on port 3000!'))

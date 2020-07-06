@@ -6,6 +6,7 @@ import InstanceList from '@/views/Home/localComponents/InstanceList/index.vue'
 import FAB from '@/components/FAB/index.vue'
 import * as Presentation from '@/types/Presentation'
 import Spinner from '@/components/Spinner/index.vue'
+import Icon from '@/components/Icon/index.vue'
 
 // TODO: コンポーネント特有の型の持ち方を再考
 export interface User {
@@ -26,10 +27,12 @@ export interface User {
     InstanceList,
     FAB,
     Spinner,
+    Icon,
   },
 })
 export default class Home extends Vue {
-  isLoading = false
+  isInitialLoading = false
+  isLaterLoading = false
   focusedUser: Presentation.User | null = null
 
   get users(): User[] {
@@ -41,15 +44,29 @@ export default class Home extends Vue {
     })
   }
 
+  get showUserListLoading() {
+    return this.isInitialLoading
+  }
+
+  get showInstanceListLoading() {
+    return this.isInitialLoading
+  }
+
+  get showFABLoading() {
+    return this.isLaterLoading
+  }
+
   async fetchData() {
-    this.isLoading = true
-    await usersModule.fetchUsers().finally(() => {
-      this.isLoading = false
-    })
+    await usersModule.fetchUsers()
   }
 
   async reload() {
-    await this.fetchData()
+    if (this.isLaterLoading) return
+
+    this.isLaterLoading = true
+    await this.fetchData().finally(() => {
+      this.isLaterLoading = false
+    })
   }
 
   onFocusUser(user: User) {
@@ -57,6 +74,9 @@ export default class Home extends Vue {
   }
 
   async created() {
-    await this.fetchData()
+    this.isInitialLoading = true
+    await this.fetchData().finally(() => {
+      this.isInitialLoading = false
+    })
   }
 }

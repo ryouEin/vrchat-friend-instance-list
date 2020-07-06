@@ -2,21 +2,18 @@
   position: fixed;
   right: 10px;
   bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 75px;
   height: 75px;
   color: $whiteColor;
-  text-align: center;
-  vertical-align: middle;
   cursor: pointer;
   background-color: $mainColor;
   border-radius: 9999px;
   box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
   transition: background-color $mainAnimationDuration;
-
-  i {
-    font-size: 50px;
-    line-height: 75px;
-  }
 
   &:hover {
     background-color: lighten($mainColor, 5);

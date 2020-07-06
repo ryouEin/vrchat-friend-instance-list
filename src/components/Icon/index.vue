@@ -1,7 +1,5 @@
 <template>
-  <div class="c-fab" @click="onClick">
-    <slot />
-  </div>
+  <i class="material-icons" :style="rootStyle"><slot /></i>
 </template>
 
 <script lang="ts" src="./script.ts" />

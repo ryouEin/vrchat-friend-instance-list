@@ -6,11 +6,11 @@ $tmpSideWidth: 250px;
 
 .side {
   position: fixed;
-  top: 0;
+  top: $navHeight;
+  bottom: 0;
   left: 0;
   z-index: $zIndexSideMenu;
   width: $tmpSideWidth;
-  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: #fff;
@@ -19,7 +19,7 @@ $tmpSideWidth: 250px;
     position: sticky;
     top: 0;
     z-index: 1;
-    padding: 10px 5px;
+    padding: 10px;
     font-size: 16px;
     font-weight: bold;
     background-color: $paleGrayColor;

@@ -17,7 +17,7 @@
         <InstanceList :users="users" />
         <FAB @click="reload">
           <Spinner v-if="showFABLoading" color="white" />
-          <Icon v-else :size="50">refresh</Icon>
+          <Icon v-else :size="50" color="white">refresh</Icon>
         </FAB>
       </template>
     </div>

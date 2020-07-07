@@ -8,11 +8,15 @@ import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsService } from '@/domains/News/NewsService'
 import { News } from '@/types/News'
+import Icon from '@/components/Icon/index.vue'
+import NotificationButton from '@/App/localComponents/NotificationButton/index.vue'
 
 @Component({
   components: {
     Dialog,
     Button,
+    Icon,
+    NotificationButton,
   },
 })
 export default class App extends Vue {

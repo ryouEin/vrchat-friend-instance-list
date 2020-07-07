@@ -12,21 +12,26 @@
       <div class="worldName">{{ world.name }}</div>
       <div class="instanceButtonArea">
         <div class="instanceButtonGroup">
-          <a :href="joinUrl" class="instanceButton">
-            <span class="instanceButton_text">JOIN</span>
-          </a>
-          <button
-            class="instanceButton -userNum"
-            :class="{ '-disabled': fetchUserNumButtonDisabled }"
-            @click="updateUserNum"
-          >
-            <span v-if="!isFetchingUserNum" class="instanceButton_text"
-              >ユーザー数<br />更新</span
+          <div class="instanceButtonGroup_item">
+            <InstanceButton @click="join">JOIN</InstanceButton>
+          </div>
+          <div class="instanceButtonGroup_item">
+            <InstanceButton
+              :fontSize="14"
+              :disabled="fetchUserNumButtonDisabled"
+              @click="updateUserNum"
             >
-            <span v-else class="instanceButton_text"
-              ><Spinner size="24" color="black"
-            /></span>
-          </button>
+              <span v-if="!isFetchingUserNum" class="instanceButton_text"
+                >ユーザー数<br />更新</span
+              >
+              <span v-else class="instanceButton_text"
+                ><Spinner :size="24" color="black"
+              /></span>
+            </InstanceButton>
+          </div>
+          <div class="instanceButtonGroup_item -watch">
+            <WatchInstanceButton />
+          </div>
         </div>
       </div>
     </div>

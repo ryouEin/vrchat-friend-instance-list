@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <template v-if="initialized">
-      <router-view />
+      <div class="navBar">
+        <div class="appTitle">VRChat Friend Instance List</div>
+        <div class="spacer"></div>
+        <NotificationButton />
+      </div>
+      <div class="main">
+        <router-view />
+      </div>
     </template>
     <Dialog v-if="showAuthErrorDialog" title="認証エラー">
       <template v-slot:content>
@@ -19,4 +26,5 @@
 </template>
 
 <script lang="ts" src="./script.ts" />
-<style lang="scss" src="./style.scss" />
+<style lang="scss" src="./base.scss" />
+<style lang="scss" src="./style.scss" scoped />

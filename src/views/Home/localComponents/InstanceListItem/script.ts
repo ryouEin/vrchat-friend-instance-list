@@ -8,6 +8,9 @@ import { InstancePermission } from '@/types/InstancePermission'
 import Permission from '@/views/Home/localComponents/InstanceListItem/localComponents/Permission/index.vue'
 import Spinner from '@/components/Spinner/index.vue'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
+import Icon from '@/components/Icon/index.vue'
+import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
+import WatchInstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
 // TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
@@ -16,6 +19,9 @@ import { fetchInstanceInfo } from '@/infras/network/vrcApi'
     UserList,
     Permission,
     Spinner,
+    Icon,
+    InstanceButton,
+    WatchInstanceButton,
   },
 })
 export default class Instance extends Vue {
@@ -63,8 +69,8 @@ export default class Instance extends Vue {
     return this.userNum ?? '?'
   }
 
-  get joinUrl(): string {
-    return `vrchat://launch?id=${this.location}`
+  join() {
+    window.location.href = `vrchat://launch?id=${this.location}`
   }
 
   async updateUserNum() {

@@ -1,5 +1,5 @@
 <template>
-  <i class="material-icons" :style="rootStyle"><slot /></i>
+  <i class="material-icons" :class="rootClass" :style="rootStyle"><slot /></i>
 </template>
 
 <script lang="ts" src="./script.ts" />

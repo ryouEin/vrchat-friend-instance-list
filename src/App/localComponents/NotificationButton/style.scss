@@ -58,23 +58,8 @@
   }
 
   .item {
-    padding: 10px;
-    font-size: 14px;
-    line-height: $mainLineHeight;
-
     &:not(:last-child) {
       border-bottom: 1px solid $paleGrayColor;
-    }
-
-    .content {
-      margin-bottom: 10px;
-    }
-
-    .time {
-      font-size: 12px;
-      line-height: 1;
-      color: $grayColor;
-      text-align: right;
     }
   }
 }

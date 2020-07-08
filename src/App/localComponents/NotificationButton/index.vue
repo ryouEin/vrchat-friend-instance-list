@@ -7,26 +7,13 @@
     </div>
     <div v-if="menuIsVisible" class="menu" v-click-outside="hideMenu">
       <div class="items">
-        <div class="item">
-          <div class="content">
-            「ワールド名」に空きができました。<br />
-            （クリックでインスタンスを表示）
-          </div>
-          <div class="time">2020/7/20 18:20</div>
-        </div>
-        <div class="item">
-          <div class="content">
-            「ワールド名」に空きができました。<br />
-            （クリックでインスタンスを表示）
-          </div>
-          <div class="time">2020/7/20 18:20</div>
-        </div>
-        <div class="item">
-          <div class="content">
-            「ワールド名」に空きができました。<br />
-            （クリックでインスタンスを表示）
-          </div>
-          <div class="time">2020/7/20 18:20</div>
+        <!-- eslint-disable-next-line -->
+        <div v-for="notification in notifications" class="item">
+          <NotificationItem
+            :text="notification.text"
+            :date="notification.date"
+            :onClick="notification.onClick"
+          />
         </div>
       </div>
     </div>

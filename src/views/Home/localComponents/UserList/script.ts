@@ -19,5 +19,6 @@ export default class UserList extends Vue {
 
   onClick(user: User) {
     this.$emit('focusUser', user)
+    this.$scrollToUser(user.id)
   }
 }

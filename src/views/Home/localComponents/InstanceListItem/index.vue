@@ -1,5 +1,5 @@
 <template>
-  <div class="c-instanceListItem">
+  <div class="c-instanceListItem" :id="location">
     <div v-if="world !== undefined" class="worldInfo">
       <img :src="world.thumbnailImageUrl" class="worldImage" loading="lazy" />
       <div class="tag">

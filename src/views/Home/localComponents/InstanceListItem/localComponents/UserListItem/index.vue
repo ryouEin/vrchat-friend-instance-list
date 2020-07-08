@@ -1,5 +1,9 @@
 <template>
-  <div class="c-userListItem" :class="{ '-active': user.isFocused }">
+  <div
+    class="c-userListItem"
+    :id="user.id"
+    :class="{ '-active': user.isFocused }"
+  >
     <img
       class="userImage"
       :src="user.currentAvatarThumbnailImageUrl"

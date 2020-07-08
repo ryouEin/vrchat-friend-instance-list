@@ -1,4 +1,4 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import Icon from '@/components/Icon/index.vue'
@@ -17,19 +17,26 @@ import Select from '@/components/Select/index.vue'
 })
 export default class WatchInstanceButton extends Vue {
   dialogIsVisible = false
-  isWatching = false
-  notifyUserNumString = '1'
 
-  get notifyUserNum(): number {
-    return Number(this.notifyUserNumString)
+  @Prop({ required: true })
+  notifyUserNum!: number
+
+  @Prop({ default: false })
+  isWatching!: boolean
+
+  onChangeNotifyUserNum(userNum: string) {
+    this.$emit('changeNotifyUserNum', Number(userNum))
   }
 
   startWatch() {
-    this.isWatching = true
+    this.$emit('clickStartWatch')
+
+    // TODO: 適当に置いただけなので、ユーザーにちゃんと許可押してもらえるような箇所に記述すること
+    Notification.requestPermission()
   }
 
   endWatch() {
-    this.isWatching = false
+    this.$emit('clickEndWatch')
   }
 
   showDialog() {

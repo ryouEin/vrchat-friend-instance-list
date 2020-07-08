@@ -1,7 +1,7 @@
 <template>
   <div class="c-notificationItem" :class="rootClass" @click="triggerOnClick">
     <div class="content">{{ text }}</div>
-    <div class="time">{{ date }}</div>
+    <div class="time">{{ dateString }}</div>
   </div>
 </template>
 

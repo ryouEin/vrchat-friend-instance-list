@@ -3,7 +3,7 @@
     <div class="button" @click="showMenu">
       <Icon :size="24" color="white">notifications</Icon>
       <span class="text">通知一覧</span>
-      <div class="badge"></div>
+      <div v-if="hasUnreadNotification" class="badge"></div>
     </div>
     <div v-if="menuIsVisible" class="menu" v-click-outside="hideMenu">
       <div class="items">

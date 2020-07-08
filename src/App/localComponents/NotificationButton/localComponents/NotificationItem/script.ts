@@ -1,5 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
+import { UnixTime } from '@/types/UnixTime'
 
 @Component
 export default class NotificationItem extends Vue {
@@ -7,10 +8,14 @@ export default class NotificationItem extends Vue {
   readonly text!: string
 
   @Prop({ required: true })
-  readonly date!: string
+  readonly date!: UnixTime
 
   @Prop()
   readonly onClick?: Function
+
+  get dateString() {
+    return new Date(this.date).toLocaleString()
+  }
 
   get isInteractive() {
     return this.onClick !== undefined

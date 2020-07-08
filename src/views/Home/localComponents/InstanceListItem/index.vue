@@ -7,7 +7,7 @@
       </div>
       <div class="userNum">
         <span class="current">{{ currentUserNumText }}/</span
-        ><span class="capacity">{{ this.world.capacity }}</span>
+        ><span class="capacity">{{ capacity }}</span>
       </div>
       <div class="worldName">{{ world.name }}</div>
       <div class="instanceButtonArea">
@@ -30,7 +30,13 @@
             </InstanceButton>
           </div>
           <div class="instanceButtonGroup_item -watch">
-            <WatchInstanceButton />
+            <WatchInstanceButton
+              :notifyUserNum="notifyUserNum"
+              :isWatching="isWatching"
+              @clickStartWatch="onClickStartWatch"
+              @clickEndWatch="onClickEndWatch"
+              @changeNotifyUserNum="onChangeNotifyUserNum"
+            />
           </div>
         </div>
       </div>

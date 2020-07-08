@@ -54,7 +54,7 @@ module.exports = {
   },
   getInstanceInfo (req, res) {
     res.json({
-      n_users: 10,
+      n_users: Math.floor(Math.random() * 10) + 3,
       capacity: 20
     })
   },

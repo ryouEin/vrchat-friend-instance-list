@@ -1,7 +1,7 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import * as Presentation from '@/types/Presentation'
-import { worldsModule } from '@/store/ModuleFactory'
+import { notificationsModule, worldsModule } from '@/store/ModuleFactory'
 import UserList from './localComponents/UserList/index.vue'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { InstancePermission } from '@/types/InstancePermission'
@@ -11,6 +11,7 @@ import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import Icon from '@/components/Icon/index.vue'
 import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
+import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
 // TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
@@ -33,12 +34,25 @@ export default class Instance extends Vue {
 
   userNum: number | null = null
 
+  notifyUserNum = 1
+
   isFetchingUserNum = false
+
+  isWatching = false
 
   fetchUserNumButtonDisabled = false
 
   get worldId(): string {
     return this.location.split(':')[0]
+  }
+
+  get capacity(): number {
+    const world = this.world
+    if (world === undefined) {
+      throw new Error('world is undefined')
+    }
+
+    return world.capacity === 1 ? 1 : world.capacity * 2
   }
 
   get instancePermission(): InstancePermission {
@@ -69,8 +83,53 @@ export default class Instance extends Vue {
     return this.userNum ?? '?'
   }
 
+  onChangeNotifyUserNum(userNum: number) {
+    this.notifyUserNum = userNum
+  }
+
   join() {
     window.location.href = `vrchat://launch?id=${this.location}`
+  }
+
+  async fetchUserNum() {
+    const instanceInfo = await fetchInstanceInfo(this.location)
+
+    this.userNum = instanceInfo.n_users
+  }
+
+  async checkUserNum() {
+    if (!this.isWatching) return
+
+    await this.fetchUserNum()
+    if (this.userNum === null) {
+      // TODO: 例外時の正しい対処を考える
+      throw new Error('userNum is null.')
+    }
+    const space = this.capacity - this.userNum
+    if (space >= this.notifyUserNum) {
+      this.isWatching = false
+      notificationsModule.pushNotification({
+        text: `${this.world!.name}に空きができました`,
+        date: Date.now(),
+        onClick: () => {
+          this.$scrollToInstance(this.location)
+        },
+      })
+      return
+    }
+
+    setTimeout(() => {
+      this.checkUserNum()
+    }, INSTANCE_WATCH_INTERVAL)
+  }
+
+  onClickStartWatch() {
+    this.isWatching = true
+    this.checkUserNum()
+  }
+
+  onClickEndWatch() {
+    this.isWatching = false
   }
 
   async updateUserNum() {
@@ -78,14 +137,12 @@ export default class Instance extends Vue {
 
     this.fetchUserNumButtonDisabled = true
     this.isFetchingUserNum = true
-    const instanceInfo = await fetchInstanceInfo(this.location).finally(() => {
+    await this.fetchUserNum().finally(() => {
       this.isFetchingUserNum = false
       setTimeout(() => {
         this.fetchUserNumButtonDisabled = false
       }, 10 * 1000)
     })
-
-    this.userNum = instanceInfo.n_users
   }
 
   async created() {

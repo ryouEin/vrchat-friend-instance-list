@@ -24,7 +24,8 @@
               { label: '4', value: '4' },
               { label: '5', value: '5' },
             ]"
-            v-model="notifyUserNumString"
+            :value="String(notifyUserNum)"
+            @input="onChangeNotifyUserNum"
           />
           人以上の空きで通知
         </div>

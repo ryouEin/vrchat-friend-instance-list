@@ -1,11 +1,11 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import * as vrcApiService from '@/infras/network/vrcApi'
 import * as ApiResponse from '@/types/ApiResponse'
-import * as Presentation from '@/types/Presentation'
+import { Favorite } from '@/types/ApiResponse'
 import uniqBy from 'lodash/uniqBy'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
-import { Favorite } from '@/types/ApiResponse'
+import { User } from '@/types'
 
 // TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: この関数は汎用的だから別のファイルに配置したほうがいいのでは？再考
@@ -45,7 +45,7 @@ export const fetchAllUsers = async (
 export const makePresentationUsers: (
   users: ApiResponse.User[],
   favorites: Favorite[]
-) => Presentation.User[] = (users, favorites) => {
+) => User[] = (users, favorites) => {
   return users.map(user => {
     const isFavorited =
       favorites.find(favorite => favorite.favoriteId === user.id) !== undefined
@@ -59,10 +59,10 @@ export const makePresentationUsers: (
 
 // TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: 引数名、変数名が混同しそう。命名を再考
-export const markNewUser: (
-  oldUsers: Presentation.User[],
-  newUsers: Presentation.User[]
-) => Presentation.User[] = (oldUsers, newUsers) => {
+export const markNewUser: (oldUsers: User[], newUsers: User[]) => User[] = (
+  oldUsers,
+  newUsers
+) => {
   const userMarkedNotNew = intersectionBy(newUsers, oldUsers, 'id').map(
     user => {
       return {
@@ -84,14 +84,14 @@ export const markNewUser: (
 // TODO: namespaced無しで大丈夫？
 @Module({ name: 'users' })
 export default class Users extends VuexModule {
-  private _users: Presentation.User[] = []
+  private _users: User[] = []
 
   get users() {
     return this._users
   }
 
   @Mutation
-  private setUsers(users: Presentation.User[]) {
+  private setUsers(users: User[]) {
     if (this._users.length <= 0) {
       this._users = users
       return

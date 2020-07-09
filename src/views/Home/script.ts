@@ -4,9 +4,9 @@ import { usersModule } from '@/store/ModuleFactory'
 import UserList from '@/views/Home/localComponents/UserList/index.vue'
 import InstanceList from '@/views/Home/localComponents/InstanceList/index.vue'
 import FAB from '@/components/FAB/index.vue'
-import * as Presentation from '@/types/Presentation'
 import Spinner from '@/components/Spinner/index.vue'
 import Icon from '@/components/Icon/index.vue'
+import { User as User1 } from '@/types'
 
 // TODO: コンポーネント特有の型の持ち方を再考
 export interface User {
@@ -33,7 +33,7 @@ export interface User {
 export default class Home extends Vue {
   isInitialLoading = false
   isLaterLoading = false
-  focusedUser: Presentation.User | null = null
+  focusedUser: User1 | null = null
 
   get users(): User[] {
     return usersModule.users.map(user => {

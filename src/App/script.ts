@@ -7,10 +7,10 @@ import Button from '@/components/Button/index.vue'
 import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsService } from '@/domains/News/NewsService'
-import { News } from '@/types/News'
 import Icon from '@/components/Icon/index.vue'
 import NotificationButton from '@/App/localComponents/NotificationButton/index.vue'
 import AboutCapacity from '@/App/localComponents/AboutCapacity/index.vue'
+import { News } from '@/types'
 
 @Component({
   components: {

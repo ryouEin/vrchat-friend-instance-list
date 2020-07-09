@@ -1,5 +1,5 @@
 import { sortUsers } from '@/shame/sortUsers'
-import { User } from '@/types/Presentation'
+import { User } from '@/types'
 
 describe('sortUsers', () => {
   const dummyData: User = {

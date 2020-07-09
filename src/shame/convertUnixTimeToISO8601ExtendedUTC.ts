@@ -1,4 +1,4 @@
-import { UnixTime } from '@/types/UnixTime'
+import { UnixTime } from '@/types'
 
 const zeroPadding: (target: number, count?: number) => string = (
   target,

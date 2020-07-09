@@ -1,6 +1,5 @@
-import { NewsJson } from '@/types/News'
-import { UnixTime } from '@/types/UnixTime'
+import { News, UnixTime } from '@/types'
 
 export interface INewsApi {
-  fetchNewsSince(unixTime: UnixTime): Promise<NewsJson[]>
+  fetchNewsSince(unixTime: UnixTime): Promise<News[]>
 }

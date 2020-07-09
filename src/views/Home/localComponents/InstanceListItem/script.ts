@@ -1,10 +1,8 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import * as Presentation from '@/types/Presentation'
 import { notificationsModule, worldsModule } from '@/store/ModuleFactory'
 import UserList from './localComponents/UserList/index.vue'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
-import { InstancePermission } from '@/types/InstancePermission'
 import Permission from '@/views/Home/localComponents/InstanceListItem/localComponents/Permission/index.vue'
 import Spinner from '@/components/Spinner/index.vue'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
@@ -12,6 +10,7 @@ import Icon from '@/components/Icon/index.vue'
 import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
+import { InstancePermission, User, World } from '@/types'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
 // TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
@@ -30,7 +29,7 @@ export default class Instance extends Vue {
   private location!: string
 
   @Prop()
-  private users!: Presentation.User[]
+  private users!: User[]
 
   userNum: number | null = null
 
@@ -71,7 +70,7 @@ export default class Instance extends Vue {
     return this.instancePermission === InstancePermission.Private
   }
 
-  get world(): Presentation.World | undefined {
+  get world(): World | undefined {
     if (this.showWorldInfo) {
       return worldsModule.world(this.worldId)
     }

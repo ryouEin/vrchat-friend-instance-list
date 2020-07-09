@@ -1,4 +1,4 @@
-import { UnixTime } from '@/types/UnixTime'
+import { UnixTime } from '@/types'
 
 export interface INewsStorage {
   setLastCheckNewsAt(unixtime: UnixTime): void

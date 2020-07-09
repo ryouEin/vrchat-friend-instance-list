@@ -1,12 +1,11 @@
-import { NewsJson } from '@/types/News'
 import { INewsStorage } from '@/infras/storage/News/INewsStorage'
 import { INewsApi } from '@/infras/network/News/INewsApi'
 import { NewsService } from '@/domains/News/NewsService'
 import { advanceTo } from 'jest-date-mock'
-import { UnixTime } from '@/types/UnixTime'
+import { News, UnixTime } from '@/types'
 
 describe('getNews', () => {
-  const dummyNewsArray: NewsJson[] = [
+  const dummyNewsArray: News[] = [
     {
       title: 'お知らせ3',
       content: 'お知らせ3',
@@ -34,7 +33,7 @@ describe('getNews', () => {
     },
   ]
   class MockNewsApi implements INewsApi {
-    async fetchNewsSince(unixTime: UnixTime): Promise<NewsJson[]> {
+    async fetchNewsSince(unixTime: UnixTime): Promise<News[]> {
       return dummyNewsArray
     }
   }

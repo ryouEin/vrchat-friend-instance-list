@@ -2,8 +2,8 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { User } from '@/views/Home/script'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
-import { InstancePermission } from '@/types/InstancePermission'
 import FavoriteMark from '@/components/FavoriteMark/index.vue'
+import { InstancePermission } from '@/types'
 
 const Status = {
   Private: 'private',

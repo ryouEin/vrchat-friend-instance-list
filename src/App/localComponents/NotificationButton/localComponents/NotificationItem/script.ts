@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { UnixTime } from '@/types/UnixTime'
+import { UnixTime } from '@/types'
 
 @Component
 export default class NotificationItem extends Vue {

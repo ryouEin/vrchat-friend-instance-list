@@ -1,6 +1,6 @@
 import { INewsApi } from '@/infras/network/News/INewsApi'
 import { INewsStorage } from '@/infras/storage/News/INewsStorage'
-import { News } from '@/types/News'
+import { News } from '@/types'
 
 export class NewsService {
   constructor(

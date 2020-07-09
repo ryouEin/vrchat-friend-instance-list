@@ -1,5 +1,5 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { Notification } from '@/types/Notification'
+import { Notification } from '@/types'
 
 // TODO: namespaced無しで大丈夫？
 @Module({ name: 'notifications' })

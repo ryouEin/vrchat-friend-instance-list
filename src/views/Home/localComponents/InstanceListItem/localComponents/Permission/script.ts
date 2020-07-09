@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { InstancePermission } from '@/types/InstancePermission'
+import { InstancePermission } from '@/types'
 
 @Component
 export default class Permission extends Vue {

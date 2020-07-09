@@ -7,13 +7,18 @@
     </div>
     <div v-if="menuIsVisible" class="menu" v-click-outside="hideMenu">
       <div class="items">
-        <!-- eslint-disable-next-line -->
-        <div v-for="notification in notifications" class="item">
-          <NotificationItem
-            :text="notification.text"
-            :date="notification.date"
-            :onClick="notification.onClick"
-          />
+        <template v-if="notifications.length > 0">
+          <!-- eslint-disable-next-line -->
+          <div v-for="notification in notifications" class="item">
+            <NotificationItem
+              :text="notification.text"
+              :date="notification.date"
+              :onClick="notification.onClick"
+            />
+          </div>
+        </template>
+        <div v-else class="item u-alignCenter u-pt15 u-pb15">
+          通知はありません
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@
 
   &::after {
     position: absolute;
-    right: 10px;
+    right: 25px;
     bottom: 100%;
     display: block;
     width: 0;
@@ -58,6 +58,9 @@
   }
 
   .item {
+    font-size: 14px;
+    line-height: $mainLineHeight;
+
     &:not(:last-child) {
       border-bottom: 1px solid $paleGrayColor;
     }

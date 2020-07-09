@@ -31,8 +31,27 @@ export default class WatchInstanceButton extends Vue {
   startWatch() {
     this.$emit('clickStartWatch')
 
-    // TODO: 適当に置いただけなので、ユーザーにちゃんと許可押してもらえるような箇所に記述すること
-    Notification.requestPermission()
+    const permission = Notification.permission
+    if (permission === 'default') {
+      this.$alert({
+        title: '通知の許可が必要です',
+        content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
+
+このダイアログを閉じた後、通知の許可を求めるポップアップが表示されますので、「許可」のボタンをクリックしてください。`,
+        isMarkdown: true,
+        onClose: () => {
+          Notification.requestPermission()
+        },
+      })
+    } else if (permission === 'denied') {
+      this.$alert({
+        title: '通知の許可が必要です',
+        content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
+
+通知の設定を「許可」に変更してください。`,
+        isMarkdown: true,
+      })
+    }
   }
 
   endWatch() {

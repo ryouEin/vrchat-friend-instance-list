@@ -7,7 +7,7 @@
       <template v-else>{{ content }}</template>
     </template>
     <template v-slot:buttonArea>
-      <Button @click="close">Close</Button>
+      <Button @click="close">閉じる</Button>
     </template>
   </Dialog>
 </template>

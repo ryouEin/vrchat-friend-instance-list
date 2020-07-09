@@ -10,6 +10,7 @@ import { NewsService } from '@/domains/News/NewsService'
 import { News } from '@/types/News'
 import Icon from '@/components/Icon/index.vue'
 import NotificationButton from '@/App/localComponents/NotificationButton/index.vue'
+import AboutCapacity from '@/App/localComponents/AboutCapacity/index.vue'
 
 @Component({
   components: {
@@ -17,6 +18,7 @@ import NotificationButton from '@/App/localComponents/NotificationButton/index.v
     Button,
     Icon,
     NotificationButton,
+    AboutCapacity,
   },
 })
 export default class App extends Vue {

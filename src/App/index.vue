@@ -4,6 +4,7 @@
       <div class="navBar">
         <div class="appTitle">VRChat Friend Instance List</div>
         <div class="spacer"></div>
+        <AboutCapacity />
         <NotificationButton />
       </div>
       <div class="main">

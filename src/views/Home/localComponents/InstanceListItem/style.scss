@@ -53,6 +53,10 @@
   .capacity {
     font-size: 14px;
   }
+
+  &.-full {
+    background-color: rgba($redColor, 0.8);
+  }
 }
 
 .worldName {

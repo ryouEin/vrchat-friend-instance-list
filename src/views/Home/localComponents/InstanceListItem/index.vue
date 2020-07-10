@@ -5,7 +5,7 @@
       <div class="tag">
         <Permission :permission="instancePermission" />
       </div>
-      <div class="userNum">
+      <div class="userNum" :class="userNumClass">
         <span class="current">{{ currentUserNumText }}/</span
         ><span class="capacity">{{ capacity }}</span>
       </div>

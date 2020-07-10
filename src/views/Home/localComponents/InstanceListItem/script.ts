@@ -66,6 +66,14 @@ export default class Instance extends Vue {
     )
   }
 
+  get isFull() {
+    if (this.userNum === null) {
+      return false
+    }
+
+    return this.userNum >= this.capacity
+  }
+
   get isPrivate(): boolean {
     return this.instancePermission === InstancePermission.Private
   }
@@ -80,6 +88,12 @@ export default class Instance extends Vue {
 
   get currentUserNumText() {
     return this.userNum ?? '?'
+  }
+
+  get userNumClass() {
+    return {
+      '-full': this.isFull,
+    }
   }
 
   onChangeNotifyUserNum(userNum: number) {

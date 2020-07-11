@@ -1,5 +1,5 @@
 import { sortUsers } from '@/shame/sortUsers'
-import { User } from '@/types/Presentation'
+import { User } from '@/types'
 
 describe('sortUsers', () => {
   const dummyData: User = {
@@ -13,7 +13,7 @@ describe('sortUsers', () => {
     isFavorited: false,
   }
 
-  it('isNew, isFavorited, その他の順番でソートされている', () => {
+  it('isFavorited, isNew, その他の順番でソートされている', () => {
     const result = sortUsers([
       {
         ...dummyData,
@@ -49,15 +49,15 @@ describe('sortUsers', () => {
       },
       {
         ...dummyData,
-        displayName: 'user04',
-        isNew: true,
-        isFavorited: false,
-      },
-      {
-        ...dummyData,
         displayName: 'user02',
         isNew: false,
         isFavorited: true,
+      },
+      {
+        ...dummyData,
+        displayName: 'user04',
+        isNew: true,
+        isFavorited: false,
       },
       {
         ...dummyData,

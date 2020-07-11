@@ -1,5 +1,5 @@
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
-import { InstancePermission } from '@/types/InstancePermission'
+import { InstancePermission } from '@/types'
 
 describe('getInstancePermissionFromLocation', () => {
   it('「private」がPrivateと判定される', () => {

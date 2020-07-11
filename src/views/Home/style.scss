@@ -6,11 +6,11 @@ $tmpSideWidth: 250px;
 
 .side {
   position: fixed;
-  top: 0;
+  top: $navHeight;
+  bottom: 0;
   left: 0;
   z-index: $zIndexSideMenu;
   width: $tmpSideWidth;
-  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
   background-color: #fff;
@@ -19,7 +19,7 @@ $tmpSideWidth: 250px;
     position: sticky;
     top: 0;
     z-index: 1;
-    padding: 10px 5px;
+    padding: 10px;
     font-size: 16px;
     font-weight: bold;
     background-color: $paleGrayColor;
@@ -31,6 +31,85 @@ $tmpSideWidth: 250px;
 }
 
 .main {
-  padding: 30px 30px 100px;
+  padding: 30px;
   margin-left: $tmpSideWidth;
+}
+
+.credit {
+  position: relative;
+  padding-top: 150px;
+
+  &::before {
+    position: absolute;
+    top: 75px;
+    left: 50%;
+    display: block;
+    width: 100px;
+    height: 10px;
+    content: '';
+    background-color: $grayColor;
+    transform: translateX(-50%);
+  }
+
+  .creditTitle {
+    margin-bottom: 30px;
+    text-align: center;
+
+    .en {
+      font-size: 30px;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .jp {
+      font-size: 14px;
+    }
+  }
+
+  .creditMain {
+    text-align: center;
+  }
+
+  .creditCard {
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    background-color: $whiteColor;
+    box-shadow: rgba($blackColor, 0.1) 0 0 5px 1px;
+  }
+
+  .creditThumb {
+    img {
+      width: 150px;
+    }
+  }
+
+  .creditText {
+    padding: 20px;
+    font-size: 20px;
+
+    .name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .role {
+      margin-bottom: 5px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: $grayColor;
+    }
+
+    .link {
+      display: flex;
+      font-size: 12px;
+
+      > li {
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
 }

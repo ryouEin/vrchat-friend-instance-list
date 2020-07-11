@@ -1,6 +1,6 @@
 <template>
   <div class="c-fab" @click="onClick">
-    <i class="material-icons">{{ icon }}</i>
+    <slot />
   </div>
 </template>
 

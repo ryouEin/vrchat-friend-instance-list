@@ -1,5 +1,5 @@
 const express = require('express')
-const { getFriends, listFavorites, getWorld, listWorlds, getInstanceInfo, versions } = require('./controller')
+const { getFriends, listFavorites, getWorld, listWorlds, getInstanceInfo, listNews } = require('./controller')
 
 const app = express()
 
@@ -13,6 +13,7 @@ const sleep = (ms) => {
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'X-API-KEY')
   next()
 })
 
@@ -34,6 +35,6 @@ app.get('/api/1/favorites', listFavorites)
 app.get('/api/1/worlds/:id', getWorld)
 app.get('/api/1/worlds', listWorlds)
 app.get('/api/1/instances/:location', getInstanceInfo)
-app.get('/versions.json', versions)
+app.get('/news', listNews)
 
 app.listen(3000, () => console.log('Api mock listening on port 3000!'))

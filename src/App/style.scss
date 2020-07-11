@@ -1,23 +1,31 @@
-@import "~destyle.css";
+#app {
+  .navBar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $zIndexGlobalNav;
+    display: flex;
+    align-items: center;
+    height: $navHeight;
+    padding: 0 10px;
+    color: $whiteColor;
+    background-color: $mainColor;
+    box-shadow: rgba($blackColor, 0.2) 0 0 5px 0;
 
-body {
-  min-width: 1000px;
-  font-family: $mainFontFamily;
-  font-size: $mainFontSize;
-  line-height: $mainLineHeight;
-  color: $mainTextColor;
-  word-break: break-word;
-  background-color: $mainBgColor;
-}
+    .appTitle {
+      flex: 0 0;
+      font-size: 20px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
 
-a {
-  color: $linkColor;
-  text-decoration: underline;
-  transition: filter $mainAnimationDuration;
+    .spacer {
+      flex: 1 1 100%;
+    }
+  }
 
-  &:hover {
-    filter: brightness(120%);
+  .main {
+    padding-top: $navHeight;
   }
 }
-
-@import "../stylesheets/util";

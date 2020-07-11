@@ -39,9 +39,11 @@
 }
 
 .content {
-  padding: 20px 20px;
+  padding: 20px 20px 0;
+  margin-bottom: 20px;
   overflow-x: hidden;
   overflow-y: auto;
+  color: $mainTextColor;
 }
 
 .buttonArea {

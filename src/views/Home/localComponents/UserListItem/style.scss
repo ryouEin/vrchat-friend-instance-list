@@ -4,13 +4,10 @@
   align-items: center;
   width: 100%;
   padding: 10px;
+  cursor: pointer;
 
-  &:not(.-active) {
-    cursor: pointer;
-
-    &:hover {
-      background-color: $paleGrayColor;
-    }
+  &:hover {
+    background-color: $paleGrayColor;
   }
 }
 

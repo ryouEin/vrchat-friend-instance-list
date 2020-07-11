@@ -81,8 +81,7 @@ export const markNewUser: (oldUsers: User[], newUsers: User[]) => User[] = (
   return userMarkedNotNew.concat(userMarkedNew)
 }
 
-// TODO: namespaced無しで大丈夫？
-@Module({ name: 'users' })
+@Module({ namespaced: true, name: 'users' })
 export default class Users extends VuexModule {
   private _users: User[] = []
 

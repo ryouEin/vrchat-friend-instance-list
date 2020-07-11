@@ -1,8 +1,7 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { Notification } from '@/types'
 
-// TODO: namespaced無しで大丈夫？
-@Module({ name: 'notifications' })
+@Module({ namespaced: true, name: 'notifications' })
 export default class Worlds extends VuexModule {
   private _notifications: Notification[] = []
 

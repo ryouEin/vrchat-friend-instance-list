@@ -1,7 +1,6 @@
 import unionBy from 'lodash/unionBy'
 import { World } from '@/types/ApiResponse'
 import IStorage from '@/libs/Storage/IStorage'
-import Storage from '@/libs/Storage/Storage'
 
 const WORLD_STORAGE_KEY = 'worldData'
 
@@ -35,6 +34,3 @@ export class WorldStorage {
     )
   }
 }
-
-// TODO: singletonなやつの命名規則統一
-export const worldStorageSingleton = new WorldStorage(new Storage())

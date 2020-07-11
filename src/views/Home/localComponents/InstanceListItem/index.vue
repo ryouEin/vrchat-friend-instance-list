@@ -25,7 +25,7 @@
                 >ユーザー数<br />更新</span
               >
               <span v-else class="instanceButton_text"
-                ><Spinner :size="24" color="black"
+                ><g-Spinner :size="24" color="black"
               /></span>
             </InstanceButton>
           </div>
@@ -46,7 +46,7 @@
     </div>
     <div v-else class="worldInfo">
       <div class="loading">
-        <Spinner color="white" />
+        <g-Spinner color="white" />
       </div>
     </div>
     <div class="userInfo">

@@ -1,10 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
-import Icon from '@/components/Icon/index.vue'
-import Button from '@/components/Button/index.vue'
-import Dialog from '@/components/Dialog/index.vue'
-import Select from '@/components/Select/index.vue'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -21,10 +17,6 @@ const generateSelectItems = (count: number) => {
 @Component({
   components: {
     InstanceButton,
-    Icon,
-    Button,
-    Dialog,
-    Select,
   },
 })
 export default class WatchInstanceButton extends Vue {

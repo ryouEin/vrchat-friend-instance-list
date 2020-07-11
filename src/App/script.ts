@@ -2,21 +2,15 @@ import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { addErrorCallback } from '@/infras/network/vrcApi'
 import { worldsModule } from '@/store/ModuleFactory'
-import Dialog from '@/components/Dialog/index.vue'
-import Button from '@/components/Button/index.vue'
 import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsService } from '@/domains/News/NewsService'
-import Icon from '@/components/Icon/index.vue'
 import NotificationButton from '@/App/localComponents/NotificationButton/index.vue'
 import AboutCapacity from '@/App/localComponents/AboutCapacity/index.vue'
 import { News } from '@/types'
 
 @Component({
   components: {
-    Dialog,
-    Button,
-    Icon,
     NotificationButton,
     AboutCapacity,
   },

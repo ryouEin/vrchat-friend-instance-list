@@ -1,11 +1,8 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import Spinner from '@/components/Spinner/index.vue'
 
 @Component({
-  components: {
-    Spinner,
-  },
+  components: {},
 })
 export default class FullLoader extends Vue {
   visible = false

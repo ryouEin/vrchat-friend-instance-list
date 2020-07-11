@@ -4,9 +4,7 @@ import { notificationsModule, worldsModule } from '@/store/ModuleFactory'
 import UserList from './localComponents/UserList/index.vue'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import Permission from '@/views/Home/localComponents/InstanceListItem/localComponents/Permission/index.vue'
-import Spinner from '@/components/Spinner/index.vue'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
-import Icon from '@/components/Icon/index.vue'
 import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
@@ -18,8 +16,6 @@ import { InstancePermission, User, World } from '@/types'
   components: {
     UserList,
     Permission,
-    Spinner,
-    Icon,
     InstanceButton,
     WatchInstanceButton,
   },

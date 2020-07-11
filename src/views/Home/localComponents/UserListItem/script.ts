@@ -2,7 +2,6 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { User } from '@/views/Home/script'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
-import FavoriteMark from '@/components/FavoriteMark/index.vue'
 import { InstancePermission } from '@/types'
 
 const Status = {
@@ -12,9 +11,7 @@ const Status = {
 type Status = typeof Status[keyof typeof Status]
 
 @Component({
-  components: {
-    FavoriteMark,
-  },
+  components: {},
 })
 export default class UserListItem extends Vue {
   @Prop()

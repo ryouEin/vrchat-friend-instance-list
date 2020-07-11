@@ -5,7 +5,7 @@
       <option v-for="item in items" :value="item.value" :selected="item.value === value">{{ item.label }}</option>
     </select>
     <div class="arrow">
-      <Icon :size="24">arrow_drop_down</Icon>
+      <g-Icon :size="24">arrow_drop_down</g-Icon>
     </div>
   </div>
 </template>

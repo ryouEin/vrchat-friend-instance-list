@@ -10,7 +10,7 @@
       loading="lazy"
     />
     <div v-if="user.isFavorited" class="favorite">
-      <FavoriteMark />
+      <g-FavoriteMark />
     </div>
     <div class="userDetail">
       <div class="displayName">{{ user.displayName }}</div>

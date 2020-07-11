@@ -1,7 +1,7 @@
 <template>
   <div class="c-notificationButton">
     <div class="button" @click="showMenu">
-      <Icon :size="24" color="white">notifications</Icon>
+      <g-Icon :size="24" color="white">notifications</g-Icon>
       <span class="text">通知一覧</span>
       <div v-if="hasUnreadNotification" class="badge"></div>
     </div>

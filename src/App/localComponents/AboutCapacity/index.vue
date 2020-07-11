@@ -1,12 +1,12 @@
 <template>
   <div class="c-aboutCapacity">
     <button class="trigger" @click="showDialog">
-      <Icon class="u-mr5" :size="20" color="white">help</Icon>
+      <g-Icon class="u-mr5" :size="20" color="white">help</g-Icon>
       <span>インスタンスの最大人数に関して</span>
     </button>
-    <Dialog v-if="dialogIsVisible" title="インスタンスの最大人数に関して">
+    <g-Dialog v-if="dialogIsVisible" title="インスタンスの最大人数に関して">
       <template v-slot:content>
-        <MarkdownText
+        <g-MarkdownText
           :markdownText="
             `インスタンスの現在人数及び最大人数は、「現在人数 / 最大人数」という形でインスタンスのサムネイル右肩に表記しています。
 
@@ -18,9 +18,9 @@
         />
       </template>
       <template v-slot:buttonArea>
-        <Button @click="hideDialog">閉じる</Button>
+        <g-Button @click="hideDialog">閉じる</g-Button>
       </template>
-    </Dialog>
+    </g-Dialog>
   </div>
 </template>
 

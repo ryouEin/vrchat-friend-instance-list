@@ -1,20 +1,20 @@
 <template>
   <div class="c-watchInstanceButton">
     <InstanceButton v-if="isWatching" @click="endWatch">
-      <Icon :size="20" color="green">visibility</Icon>
+      <g-Icon :size="20" color="green">visibility</g-Icon>
     </InstanceButton>
     <InstanceButton v-else @click="showDialog">
-      <Icon :size="20" color="black">visibility</Icon>
+      <g-Icon :size="20" color="black">visibility</g-Icon>
     </InstanceButton>
 
-    <Dialog v-if="dialogIsVisible" title="インスタンス空き状況監視">
+    <g-Dialog v-if="dialogIsVisible" title="インスタンス空き状況監視">
       <template v-slot:content>
         <div class="u-mb20">
           監視開始ボタンを押すことで、一定数以上の空きを確認次第通知します。<br />
           （1分毎に空き状況を自動で確認します。）
         </div>
         <div class="u-alignCenter">
-          <Select
+          <g-Select
             class="u-mr5"
             :items="selectItems"
             :value="String(notifyUserNum)"
@@ -24,10 +24,10 @@
         </div>
       </template>
       <template v-slot:buttonArea>
-        <Button class="u-mr20" @click="hideDialog">閉じる</Button>
-        <Button primary @click="onClickWatchStart">監視開始</Button>
+        <g-Button class="u-mr20" @click="hideDialog">閉じる</g-Button>
+        <g-Button primary @click="onClickWatchStart">監視開始</g-Button>
       </template>
-    </Dialog>
+    </g-Dialog>
   </div>
 </template>
 

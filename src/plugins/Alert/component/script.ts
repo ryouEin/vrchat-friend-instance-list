@@ -1,8 +1,5 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import Dialog from '@/components/Dialog/index.vue'
-import Button from '@/components/Button/index.vue'
-import MarkdownText from '@/components/MarkdownText/index.vue'
 
 export interface AlertProps {
   title?: string
@@ -12,11 +9,7 @@ export interface AlertProps {
 }
 
 @Component({
-  components: {
-    Dialog,
-    Button,
-    MarkdownText,
-  },
+  components: {},
 })
 export default class Alert extends Vue implements AlertProps {
   @Prop({ type: String, default: '' })

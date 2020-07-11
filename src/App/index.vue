@@ -11,7 +11,7 @@
         <router-view />
       </div>
     </template>
-    <Dialog v-if="showAuthErrorDialog" title="認証エラー">
+    <g-Dialog v-if="showAuthErrorDialog" title="認証エラー">
       <template v-slot:content>
         VRChat公式サイトのセッションが切れました。<br />
         公式サイトでログインし直したあと、再読込して下さい。<br />
@@ -20,9 +20,9 @@
         >
       </template>
       <template v-slot:buttonArea>
-        <Button primary @click="reload">再読込</Button>
+        <g-Button primary @click="reload">再読込</g-Button>
       </template>
-    </Dialog>
+    </g-Dialog>
   </div>
 </template>
 

@@ -1,7 +1,5 @@
 import { Component, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
-import Icon from '@/components/Icon/index.vue'
-import Button from '@/components/Button/index.vue'
 import NotificationItem from '@/App/localComponents/NotificationButton/localComponents/NotificationItem/index.vue'
 import { notificationsModule } from '@/store/ModuleFactory'
 // TODO: requireで読み込むしか無いか検討
@@ -10,8 +8,6 @@ const ClickOutside = require('vue-click-outside')
 
 @Component({
   components: {
-    Icon,
-    Button,
     NotificationItem,
   },
   directives: {

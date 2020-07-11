@@ -2,7 +2,6 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import Icon from '@/components/Icon/index.vue'
 
-// TODO: valueはstringにするしかない？
 type SelectItem = {
   label: string
   value: string

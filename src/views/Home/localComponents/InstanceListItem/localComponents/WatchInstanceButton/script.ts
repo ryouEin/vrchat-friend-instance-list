@@ -6,6 +6,18 @@ import Button from '@/components/Button/index.vue'
 import Dialog from '@/components/Dialog/index.vue'
 import Select from '@/components/Select/index.vue'
 
+const generateSelectItems = (count: number) => {
+  const tmp = []
+  for (let index = 1; index <= count; index++) {
+    tmp.push({
+      label: String(index),
+      value: String(index),
+    })
+  }
+
+  return tmp
+}
+
 @Component({
   components: {
     InstanceButton,
@@ -23,6 +35,12 @@ export default class WatchInstanceButton extends Vue {
 
   @Prop({ default: false })
   isWatching!: boolean
+
+  get selectItems() {
+    const MAX_NUM = 15
+
+    return generateSelectItems(MAX_NUM)
+  }
 
   onChangeNotifyUserNum(userNum: string) {
     this.$emit('changeNotifyUserNum', Number(userNum))

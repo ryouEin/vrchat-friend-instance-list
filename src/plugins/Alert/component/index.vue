@@ -1,13 +1,15 @@
 <template>
-  <Dialog v-if="visible" :title="title" @after-leave="$emit('afterLeave')">
+  <g-Dialog v-if="visible" :title="title" @after-leave="$emit('afterLeave')">
     <template v-slot:content>
-      <!-- eslint-disable-next-line -->
-      <div v-for="line in contents">{{ line }}</div>
+      <template v-if="isMarkdown">
+        <g-MarkdownText :markdownText="content" />
+      </template>
+      <template v-else>{{ content }}</template>
     </template>
     <template v-slot:buttonArea>
-      <Button @click="close">Close</Button>
+      <g-Button @click="close">閉じる</g-Button>
     </template>
-  </Dialog>
+  </g-Dialog>
 </template>
 
 <script lang="ts" src="./script.ts" />

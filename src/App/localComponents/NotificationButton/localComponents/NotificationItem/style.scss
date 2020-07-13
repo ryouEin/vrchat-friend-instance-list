@@ -1,0 +1,24 @@
+.c-notificationItem {
+  padding: 10px;
+  font-size: 14px;
+  line-height: $mainLineHeight;
+
+  .content {
+    margin-bottom: 10px;
+  }
+
+  .time {
+    font-size: 12px;
+    line-height: 1;
+    color: $grayColor;
+    text-align: right;
+  }
+
+  &.-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $paleGrayColor;
+    }
+  }
+}

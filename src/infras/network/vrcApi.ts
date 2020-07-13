@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 import { Favorite, InstanceInfo, User, World } from '@/types/ApiResponse'
 import { VRC_API_URL } from '@/config/env'
 

@@ -23,3 +23,11 @@ export interface InstanceInfo {
 export interface Favorite {
   favoriteId: string
 }
+
+export interface News {
+  contents: {
+    title: string
+    content: string
+    publishedAt: string
+  }[]
+}

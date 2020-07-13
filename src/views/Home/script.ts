@@ -3,8 +3,7 @@ import Vue from 'vue'
 import { usersModule } from '@/store/ModuleFactory'
 import UserList from '@/views/Home/localComponents/UserList/index.vue'
 import InstanceList from '@/views/Home/localComponents/InstanceList/index.vue'
-import FAB from '@/components/FAB/index.vue'
-import * as Presentation from '@/types/Presentation'
+import { User as User1 } from '@/types'
 
 // TODO: コンポーネント特有の型の持ち方を再考
 export interface User {
@@ -23,11 +22,12 @@ export interface User {
   components: {
     UserList,
     InstanceList,
-    FAB,
   },
 })
 export default class Home extends Vue {
-  focusedUser: Presentation.User | null = null
+  isInitialLoading = false
+  isLaterLoading = false
+  focusedUser: User1 | null = null
 
   get users(): User[] {
     return usersModule.users.map(user => {
@@ -38,15 +38,29 @@ export default class Home extends Vue {
     })
   }
 
+  get showUserListLoading() {
+    return this.isInitialLoading
+  }
+
+  get showInstanceListLoading() {
+    return this.isInitialLoading
+  }
+
+  get showFABLoading() {
+    return this.isLaterLoading
+  }
+
   async fetchData() {
-    this.$fullLoader.show()
-    await usersModule.fetchUsers().finally(() => {
-      this.$fullLoader.hide()
-    })
+    await usersModule.fetchUsers()
   }
 
   async reload() {
-    await this.fetchData()
+    if (this.isLaterLoading) return
+
+    this.isLaterLoading = true
+    await this.fetchData().finally(() => {
+      this.isLaterLoading = false
+    })
   }
 
   onFocusUser(user: User) {
@@ -54,6 +68,9 @@ export default class Home extends Vue {
   }
 
   async created() {
-    await this.fetchData()
+    this.isInitialLoading = true
+    await this.fetchData().finally(() => {
+      this.isInitialLoading = false
+    })
   }
 }

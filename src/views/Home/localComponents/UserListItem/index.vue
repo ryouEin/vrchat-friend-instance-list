@@ -11,7 +11,7 @@
         loading="lazy"
       />
       <div v-if="user.isFavorited" class="favorite">
-        <FavoriteMark />
+        <g-FavoriteMark />
       </div>
     </div>
     <div class="userInfo">

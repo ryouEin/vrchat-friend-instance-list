@@ -1,32 +1,43 @@
 <template>
-  <div class="c-instanceListItem">
+  <div class="c-instanceListItem" :id="location">
     <div v-if="world !== undefined" class="worldInfo">
       <img :src="world.thumbnailImageUrl" class="worldImage" loading="lazy" />
       <div class="tag">
         <Permission :permission="instancePermission" />
       </div>
-      <div class="userNum">
+      <div class="userNum" :class="userNumClass">
         <span class="current">{{ currentUserNumText }}/</span
-        ><span class="capacity">{{ this.world.capacity }}</span>
+        ><span class="capacity">{{ capacity }}</span>
       </div>
       <div class="worldName">{{ world.name }}</div>
       <div class="instanceButtonArea">
         <div class="instanceButtonGroup">
-          <a :href="joinUrl" class="instanceButton">
-            <span class="instanceButton_text">JOIN</span>
-          </a>
-          <button
-            class="instanceButton -userNum"
-            :class="{ '-disabled': fetchUserNumButtonDisabled }"
-            @click="updateUserNum"
-          >
-            <span v-if="!isFetchingUserNum" class="instanceButton_text"
-              >ユーザー数<br />更新</span
+          <div class="instanceButtonGroup_item">
+            <InstanceButton @click="join">JOIN</InstanceButton>
+          </div>
+          <div class="instanceButtonGroup_item">
+            <InstanceButton
+              :fontSize="14"
+              :disabled="fetchUserNumButtonDisabled"
+              @click="updateUserNum"
             >
-            <span v-else class="instanceButton_text"
-              ><Spinner size="24" color="black"
-            /></span>
-          </button>
+              <span v-if="!isFetchingUserNum" class="instanceButton_text"
+                >ユーザー数<br />更新</span
+              >
+              <span v-else class="instanceButton_text"
+                ><g-Spinner :size="24" color="black"
+              /></span>
+            </InstanceButton>
+          </div>
+          <div class="instanceButtonGroup_item -watch">
+            <WatchInstanceButton
+              :notifyUserNum="notifyUserNum"
+              :isWatching="isWatching"
+              @clickStartWatch="onClickStartWatch"
+              @clickEndWatch="onClickEndWatch"
+              @changeNotifyUserNum="onChangeNotifyUserNum"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -35,7 +46,7 @@
     </div>
     <div v-else class="worldInfo">
       <div class="loading">
-        <Spinner color="white" />
+        <g-Spinner color="white" />
       </div>
     </div>
     <div class="userInfo">

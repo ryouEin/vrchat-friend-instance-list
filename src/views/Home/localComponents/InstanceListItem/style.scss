@@ -53,6 +53,10 @@
   .capacity {
     font-size: 14px;
   }
+
+  &.-full {
+    background-color: rgba($redColor, 0.8);
+  }
 }
 
 .worldName {
@@ -88,42 +92,17 @@
   background-color: $grayColor;
   border-radius: 5px;
   box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
-}
 
-.instanceButton {
-  display: flex;
-  flex: 1 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1.2;
-  color: $blackColor;
-  text-align: center;
-  text-decoration: none;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  background-color: $whiteColor;
-  transition: filter $mainAnimationDuration;
+  .instanceButtonGroup_item {
+    flex: 1 1 100%;
 
-  &:hover {
-    filter: brightness(140%);
-  }
+    &.-watch {
+      flex-basis: 40%;
+    }
 
-  &:not(:last-child) {
-    margin-right: 1px;
-  }
-
-  &.-userNum {
-    font-size: 14px;
-  }
-
-  &.-disabled {
-    color: $paleGrayColor;
-    pointer-events: none;
-    cursor: auto;
+    &:not(:last-child) {
+      margin-right: 1px;
+    }
   }
 }
 

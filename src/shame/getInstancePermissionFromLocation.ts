@@ -1,7 +1,7 @@
 /*
 どこか適切な場所に置きたい
  */
-import { InstancePermission } from '@/types/InstancePermission'
+import { InstancePermission } from '@/types'
 
 export const getInstancePermissionFromLocation: (
   location: string

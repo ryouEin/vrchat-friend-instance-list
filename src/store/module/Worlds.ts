@@ -1,18 +1,20 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { World } from '@/types/ApiResponse'
+import { World } from '@/types'
 import * as vrcApiService from '@/infras/network/vrcApi'
-import { worldStorageSingleton } from '@/shame/WorldStorage'
+import { WorldStorage } from '@/infras/storage/World/WorldStorage'
 import pMemoize from 'p-memoize'
+import Storage from '@/libs/Storage/Storage'
+
+const storage = new Storage()
+const worldStorage = new WorldStorage(storage)
 
 // TODO: memoizeした関数、ここにこういうふうに定義するので良いの？
 const memFetchWorld = pMemoize(vrcApiService.fetchWorld, {
   maxAge: 10000,
 })
 
-// TODO: namespaced無しで大丈夫？
-@Module({ name: 'worlds' })
+@Module({ namespaced: true, name: 'worlds' })
 export default class Worlds extends VuexModule {
-  // TODO: UserではPresentation、こっちではApiResponse。統一性がないがいい？
   private _worlds: World[] = []
 
   get worlds() {
@@ -33,7 +35,7 @@ export default class Worlds extends VuexModule {
   @Mutation
   private addWorld(world: World) {
     // TODO: localStorageが満杯になった際の処理
-    worldStorageSingleton.addWorld(world)
+    worldStorage.addWorld(world)
     this._worlds.push(world)
   }
 
@@ -45,8 +47,8 @@ export default class Worlds extends VuexModule {
   @Action({ commit: 'setWorlds' })
   async init() {
     const popularWorlds = await vrcApiService.fetchPopularWorlds()
-    worldStorageSingleton.addWorlds(popularWorlds)
+    worldStorage.addWorlds(popularWorlds)
 
-    return worldStorageSingleton.getWorlds()
+    return worldStorage.getWorlds()
   }
 }

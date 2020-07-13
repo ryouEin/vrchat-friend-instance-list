@@ -1,12 +1,16 @@
 <template>
-  <div class="c-userListItem" :class="{ '-active': user.isFocused }">
+  <div
+    class="c-userListItem"
+    :id="user.id"
+    :class="{ '-active': user.isFocused }"
+  >
     <img
       class="userImage"
       :src="user.currentAvatarThumbnailImageUrl"
       loading="lazy"
     />
     <div v-if="user.isFavorited" class="favorite">
-      <FavoriteMark />
+      <g-FavoriteMark />
     </div>
     <div class="userDetail">
       <div class="displayName">{{ user.displayName }}</div>

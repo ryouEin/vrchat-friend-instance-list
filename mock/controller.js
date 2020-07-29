@@ -1,3 +1,4 @@
+const path = require('path')
 const { getRandomInteger } = require('./util')
 const worlds = require('./data/worlds')
 const friends = require('./data/friends')
@@ -98,5 +99,8 @@ module.exports = {
       offset: 0,
       limit: 10
     })
+  },
+  getDummyImage (req, res) {
+    res.sendFile(path.resolve(__dirname, './data/dummy.png'))
   }
 }

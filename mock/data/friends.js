@@ -1,11 +1,11 @@
 const { BASE_URL } = require('../config')
-const { getRandomString } = require('../util')
+const { getRandomString, getRandomName } = require('../util')
 
 const makeUser = index => {
   return {
     id: `usr_${index}`,
     username: `username${index}`,
-    displayName: `displayName${index}`,
+    displayName: getRandomName(),
     currentAvatarImageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
     currentAvatarThumbnailImageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`
   }

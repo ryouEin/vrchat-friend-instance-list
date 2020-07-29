@@ -1,3 +1,5 @@
+const dummyNames = require('./data/dummyNames')
+
 const getRandomInteger = (min, max) => {
   return min + Math.round(Math.random() * (max - min))
 }
@@ -12,8 +14,13 @@ const getRandomString = (length) => {
   return Array.from(Array(length)).map(() => getRandomChar()).join('')
 }
 
+const getRandomName = () => {
+  return dummyNames[Math.floor(Math.random() * dummyNames.length)]
+}
+
 module.exports = {
   getRandomInteger,
   getRandomChar,
-  getRandomString
+  getRandomString,
+  getRandomName
 }

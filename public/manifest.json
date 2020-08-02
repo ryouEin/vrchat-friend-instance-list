@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "VRChat Friend Instance List",
   "description": "Tool for VRChat. Show instances exist your friends.",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "permissions": [
     "tabs",
     "https://vrchat.com/",
@@ -17,5 +17,12 @@
   "background": {
     "scripts": [ "icon_clicked.js" ],
     "persistent": false
+  },
+  "applications": {
+    "gecko": {
+      "id": "{aa88fe5f-72c8-46ee-8089-678af6c93b1f}",
+      "update_url": "https://ryouein.github.io/vrchat-friend-instance-list/updates.json",
+      "strict_min_version": "61.0"
+    }
   }
 }

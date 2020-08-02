@@ -1,0 +1,16 @@
+{
+  "addons": {
+    "{aa88fe5f-72c8-46ee-8089-678af6c93b1f}": {
+      "updates": [
+        {
+          "version": "3.2.0",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.2.0/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.2.1",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.2.1/vrchat_friend_instance_list.xpi"
+        }
+      ]
+    }
+  }
+}

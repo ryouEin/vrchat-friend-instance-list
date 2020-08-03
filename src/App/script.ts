@@ -8,10 +8,12 @@ import { NewsService } from '@/domains/News/NewsService'
 import NotificationButton from '@/App/localComponents/NotificationButton/index.vue'
 import AboutCapacity from '@/App/localComponents/AboutCapacity/index.vue'
 import { News } from '@/types'
+import SettingButton from '@/App/localComponents/SettingButton/index.vue'
 
 @Component({
   components: {
     NotificationButton,
+    SettingButton,
     AboutCapacity,
   },
 })

@@ -4,8 +4,9 @@
       <div class="navBar">
         <div class="appTitle">VRChat Friend Instance List</div>
         <div class="spacer"></div>
-        <AboutCapacity />
-        <NotificationButton />
+        <AboutCapacity class="u-mr25" />
+        <NotificationButton class="u-mr25" />
+        <SettingButton />
       </div>
       <div class="main">
         <router-view />

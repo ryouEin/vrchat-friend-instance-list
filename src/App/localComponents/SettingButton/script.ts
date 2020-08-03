@@ -1,20 +1,19 @@
 import { Component, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Setting } from '@/types'
+import { settingModule } from '@/store/ModuleFactory'
 
 @Component({})
 export default class SettingButton extends Vue {
   dialogIsVisible = false
 
-  // TODO: ストアからgetters経由で取得
-  setting: Setting = {
-    enableNotificationSound: true,
+  get setting() {
+    return settingModule.setting
   }
 
   @Watch('setting', { deep: true })
-  onChangeSetting(value: Setting) {
-    // TODO: ストアへのデータ反映
-    console.log(value)
+  onChangeSetting(newSetting: Setting) {
+    settingModule.changeSetting(newSetting)
   }
 
   showDialog() {

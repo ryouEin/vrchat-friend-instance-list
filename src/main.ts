@@ -13,6 +13,7 @@ import Icon from '@/components/Icon/index.vue'
 import MarkdownText from '@/components/MarkdownText/index.vue'
 import Select from '@/components/Select/index.vue'
 import Spinner from '@/components/Spinner/index.vue'
+import Toggle from '@/components/Toggle/index.vue'
 
 Vue.config.productionTip = false
 
@@ -30,6 +31,7 @@ Vue.component('g-Icon', Icon)
 Vue.component('g-MarkdownText', MarkdownText)
 Vue.component('g-Select', Select)
 Vue.component('g-Spinner', Spinner)
+Vue.component('g-Toggle', Toggle)
 
 new Vue({
   router,

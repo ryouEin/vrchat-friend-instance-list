@@ -14,7 +14,7 @@ const memFetchWorld = pMemoize(vrcApiService.fetchWorld, {
 })
 
 @Module({ namespaced: true, name: 'worlds' })
-export default class Worlds extends VuexModule {
+export default class WorldsStore extends VuexModule {
   private _worlds: World[] = []
 
   get worlds() {

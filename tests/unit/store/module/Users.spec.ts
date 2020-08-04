@@ -3,7 +3,7 @@ import {
   fetchAllUsers,
   makePresentationUsers,
   markNewUser,
-} from '@/store/module/Users'
+} from '@/store/module/UsersStore'
 
 describe('fetchAllUsers', () => {
   const dummyFriend = {

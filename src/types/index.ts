@@ -39,3 +39,7 @@ export type Notification = {
   date: UnixTime
   onClick: () => void
 }
+
+export type Setting = {
+  enableNotificationSound: boolean
+}

@@ -2,6 +2,9 @@
   "name": "vrchat-friend-instance-list",
   "private": true,
   "scripts": {
+    "ff_addon_lint:checkVersion": "firefox-addon-version-linter checkVersion --manifestFilePath ./public/manifest.json --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\"",
+    "ff_addon_lint:checkUpdateLinkFormat": "firefox-addon-version-linter checkUpdateLinkFormat --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\" --format \"https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/[version]/vrchat_friend_instance_list.xpi\"",
+    "ff_addon_lint:checkUpdateLinkValidity": "firefox-addon-version-linter checkUpdateLinkValidity --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\"",
     "serve": "vue-cli-service serve",
     "dev": "npm run serve & npm run mock",
     "build": "vue-cli-service build",
@@ -56,6 +59,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
     "express": "^4.17.1",
+    "firefox-addon-version-linter": "github:ryouEin/firefox-addon-version-linter",
     "jest-date-mock": "^1.0.8",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",

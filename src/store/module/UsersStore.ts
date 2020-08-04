@@ -82,7 +82,7 @@ export const markNewUser: (oldUsers: User[], newUsers: User[]) => User[] = (
 }
 
 @Module({ namespaced: true, name: 'users' })
-export default class Users extends VuexModule {
+export default class UsersStore extends VuexModule {
   private _users: User[] = []
 
   get users() {

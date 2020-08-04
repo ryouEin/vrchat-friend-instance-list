@@ -1,17 +1,19 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { addErrorCallback } from '@/infras/network/vrcApi'
-import { worldsModule } from '@/store/ModuleFactory'
+import { settingModule, worldsModule } from '@/store/ModuleFactory'
 import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsService } from '@/domains/News/NewsService'
 import NotificationButton from '@/App/localComponents/NotificationButton/index.vue'
 import AboutCapacity from '@/App/localComponents/AboutCapacity/index.vue'
 import { News } from '@/types'
+import SettingButton from '@/App/localComponents/SettingButton/index.vue'
 
 @Component({
   components: {
     NotificationButton,
+    SettingButton,
     AboutCapacity,
   },
 })
@@ -62,6 +64,7 @@ export default class App extends Vue {
     })
 
     this.$fullLoader.show()
+    settingModule.init()
     await worldsModule.init().finally(() => {
       this.$fullLoader.hide()
     })

@@ -1,7 +1,7 @@
 <template>
   <div class="c-instanceListItem" :id="location">
     <div v-if="world !== undefined" class="worldInfo">
-      <img :src="world.thumbnailImageUrl" class="worldImage" loading="lazy" />
+      <img :src="world.thumbnailImageUrl" class="worldImage" />
       <div class="tag">
         <Permission :permission="instancePermission" />
       </div>

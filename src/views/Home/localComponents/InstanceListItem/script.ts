@@ -1,4 +1,4 @@
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
 import { notificationsModule, worldsModule } from '@/store/ModuleFactory'
 import UserList from './localComponents/UserList/index.vue'
@@ -92,6 +92,13 @@ export default class Instance extends Vue {
     }
   }
 
+  // virtual-scrollerはコンポーネントを使い回すためlocationの変更を見て
+  // 初期化する必要がある
+  @Watch('location')
+  onChangeLocation() {
+    this.init()
+  }
+
   onChangeNotifyUserNum(userNum: number) {
     this.notifyUserNum = userNum
   }
@@ -154,9 +161,13 @@ export default class Instance extends Vue {
     })
   }
 
-  async created() {
+  init() {
     if (this.showWorldInfo && this.world === undefined) {
       worldsModule.fetchWorld(this.worldId)
     }
+  }
+
+  async created() {
+    this.init()
   }
 }

@@ -4,11 +4,7 @@
     :id="user.id"
     :class="{ '-active': user.isFocused }"
   >
-    <img
-      class="userImage"
-      :src="user.currentAvatarThumbnailImageUrl"
-      loading="lazy"
-    />
+    <img class="userImage" :src="user.currentAvatarThumbnailImageUrl" />
     <div v-if="user.isFavorited" class="favorite">
       <g-FavoriteMark />
     </div>

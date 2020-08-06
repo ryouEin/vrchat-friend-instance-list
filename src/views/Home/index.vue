@@ -21,43 +21,6 @@
           <g-Spinner v-if="showFABLoading" color="white" />
           <g-Icon v-else :size="50" color="white">refresh</g-Icon>
         </g-FAB>
-        <div class="credit">
-          <div class="creditTitle">
-            <div class="en">Credit</div>
-            <div class="jp">- アプリ製作者 -</div>
-          </div>
-          <div class="creditMain">
-            <div class="creditCard">
-              <div class="creditThumb">
-                <img src="@/assets/creditThumbnail.jpg" alt="" />
-              </div>
-              <div class="creditText">
-                <div class="name">ryou_Ein</div>
-                <div class="role">
-                  ボイスミュートワールド<br />Silent Club オーナー
-                </div>
-                <ul class="link">
-                  <li>
-                    <a
-                      href="https://twitter.com/ryou_Ein"
-                      target="_blank"
-                      rel="noopener"
-                      >Twitter</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="https://sc.doll-profile.com/"
-                      target="_blank"
-                      rel="noopener"
-                      >Silent Club</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
       </template>
     </div>
   </div>

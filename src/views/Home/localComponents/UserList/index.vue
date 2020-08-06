@@ -6,6 +6,7 @@
       :item-size="itemHeight"
       key-field="id"
       v-slot="{ item }"
+      :buffer="1500"
     >
       <div class="item">
         <UserListItem

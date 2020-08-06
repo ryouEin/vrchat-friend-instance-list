@@ -15,12 +15,13 @@ export default class InstanceList extends Vue {
   private users!: User[]
 
   // TODO: テスト
-  get instances(): { location: string; users: User[] }[] {
+  get instances(): { id: string; location: string; users: User[] }[] {
     const tmp: { [key: string]: User[] } = groupBy(this.users, 'location')
     const instances = Object.entries(tmp).map(item => {
       const [location, users] = item
 
       return {
+        id: location,
         location,
         users,
       }

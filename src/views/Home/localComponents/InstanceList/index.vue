@@ -4,6 +4,7 @@
       :items="instances"
       :min-item-size="250"
       class="scroller"
+      key-field="location"
       :buffer="1500"
     >
       <template v-slot="{ item, index, active }">

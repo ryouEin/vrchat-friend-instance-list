@@ -16,7 +16,7 @@
         <g-Spinner color="black" />
       </div>
       <template v-else>
-        <InstanceList :users="users" />
+        <InstanceList :instances="instances" />
         <g-FAB @click="reload">
           <g-Spinner v-if="showFABLoading" color="white" />
           <g-Icon v-else :size="50" color="white">refresh</g-Icon>

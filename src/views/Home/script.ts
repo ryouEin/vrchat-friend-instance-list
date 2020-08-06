@@ -4,6 +4,8 @@ import { usersModule } from '@/store/ModuleFactory'
 import UserList from '@/views/Home/localComponents/UserList/index.vue'
 import InstanceList from '@/views/Home/localComponents/InstanceList/index.vue'
 import { User as User1 } from '@/types'
+import groupBy from 'lodash/groupBy'
+import sortBy from 'lodash/sortBy'
 
 // TODO: コンポーネント特有の型の持ち方を再考
 export interface User {
@@ -36,6 +38,28 @@ export default class Home extends Vue {
         isFocused: user.id === this.focusedUser?.id,
       }
     })
+  }
+
+  get instances(): { location: string; users: User[] }[] {
+    const tmp: { [key: string]: User[] } = groupBy(this.users, 'location')
+    const instances = Object.entries(tmp).map(item => {
+      const [location, users] = item
+
+      return {
+        location,
+        users,
+      }
+    })
+
+    const instancesWithoutPrivate = sortBy(
+      instances.filter(instance => instance.location !== 'private'),
+      'location'
+    )
+    const privateInstance = instances.filter(
+      instance => instance.location === 'private'
+    )
+
+    return instancesWithoutPrivate.concat(privateInstance)
   }
 
   get showUserListLoading() {

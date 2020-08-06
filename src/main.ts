@@ -14,6 +14,8 @@ import MarkdownText from '@/components/MarkdownText/index.vue'
 import Select from '@/components/Select/index.vue'
 import Spinner from '@/components/Spinner/index.vue'
 import Toggle from '@/components/Toggle/index.vue'
+import VueVirtualScroller from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 Vue.config.productionTip = false
 
@@ -21,6 +23,7 @@ Vue.config.productionTip = false
 Vue.use(AlertPlugin)
 Vue.use(FullLoaderPlugin)
 Vue.use(ScrollPlugin)
+Vue.use(VueVirtualScroller)
 
 // グローバルコンポーネント登録
 Vue.component('g-Button', Button)

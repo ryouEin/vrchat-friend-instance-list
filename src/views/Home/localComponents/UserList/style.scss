@@ -1,9 +1,13 @@
 .c-userList {
+  height: 100%;
+}
 
+.scroller {
+  height: 100%;
+  overscroll-behavior: none;
 }
 
 .item {
-  &:not(:last-child) {
-    border-bottom: 1px solid $paleGrayColor;
-  }
+  box-sizing: border-box;
+  border-bottom: 1px solid $paleGrayColor;
 }

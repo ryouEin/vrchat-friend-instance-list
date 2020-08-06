@@ -1,8 +1,20 @@
 <template>
   <div class="c-userList">
-    <div class="item" v-for="user in sortedUsers" :key="user.id">
-      <UserListItem :user="user" @click="onClick" />
-    </div>
+    <RecycleScroller
+      class="scroller"
+      :items="sortedUsers"
+      :item-size="itemHeight"
+      key-field="id"
+      v-slot="{ item }"
+    >
+      <div class="item">
+        <UserListItem
+          :user="item"
+          @click="onClick"
+          :style="{ height: `${itemHeight}px` }"
+        />
+      </div>
+    </RecycleScroller>
   </div>
 </template>
 

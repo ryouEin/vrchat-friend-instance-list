@@ -17,6 +17,10 @@ export default class UserList extends Vue {
     return sortUsers(this.users)
   }
 
+  get itemHeight() {
+    return 80
+  }
+
   onClick(user: User) {
     this.$emit('focusUser', user)
     this.$scrollToUser(user.id)

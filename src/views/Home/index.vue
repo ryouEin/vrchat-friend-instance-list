@@ -1,7 +1,9 @@
 <template>
   <div class="c-home">
     <div class="side">
-      <div class="header">Online Friends</div>
+      <div class="header">
+        Online Friends
+      </div>
       <div class="content">
         <div v-if="showUserListLoading" class="u-alignCenter u-pt20">
           <g-Spinner color="black" :size="24" />

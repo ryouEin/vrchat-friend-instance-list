@@ -5,15 +5,15 @@ import { Favorite } from '@/types/ApiResponse'
 import uniqBy from 'lodash/uniqBy'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
-import { User } from '@/types'
+import { Friend } from '@/types'
 
 // TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: この関数は汎用的だから別のファイルに配置したほうがいいのでは？再考
 // TODO: コードがゴリ押しなので整理
-export const fetchAllUsers = async (
+export const fetchAllFriends = async (
   fetchFriends: vrcApiService.FetchFriendsFunction
 ) => {
-  let users: ApiResponse.User[] = []
+  let friends: ApiResponse.User[] = []
   let currentPage = 0
 
   // eslint-disable-next-line
@@ -24,9 +24,9 @@ export const fetchAllUsers = async (
       fetchFriends(currentPage + 2),
     ])
 
-    users = users.concat(tmp01)
-    users = users.concat(tmp02)
-    users = users.concat(tmp03)
+    friends = friends.concat(tmp01)
+    friends = friends.concat(tmp02)
+    friends = friends.concat(tmp03)
     if (tmp01.length <= 0 || tmp02.length <= 0 || tmp03.length <= 0) {
       break
     }
@@ -34,23 +34,24 @@ export const fetchAllUsers = async (
     currentPage += 3
   }
 
-  users = uniqBy(users, 'id')
+  friends = uniqBy(friends, 'id')
 
-  return users
+  return friends
 }
 
 // TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: ここでisNewを設定していることの是非を再考
 // TODO: 関数名を再考
-export const makePresentationUsers: (
-  users: ApiResponse.User[],
+export const makePresentationFriends: (
+  friends: ApiResponse.User[],
   favorites: Favorite[]
-) => User[] = (users, favorites) => {
-  return users.map(user => {
+) => Friend[] = (friends, favorites) => {
+  return friends.map(friend => {
     const isFavorited =
-      favorites.find(favorite => favorite.favoriteId === user.id) !== undefined
+      favorites.find(favorite => favorite.favoriteId === friend.id) !==
+      undefined
     return {
-      ...user,
+      ...friend,
       isFavorited,
       isNew: false,
     }
@@ -59,53 +60,55 @@ export const makePresentationUsers: (
 
 // TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: 引数名、変数名が混同しそう。命名を再考
-export const markNewUser: (oldUsers: User[], newUsers: User[]) => User[] = (
-  oldUsers,
-  newUsers
-) => {
-  const userMarkedNotNew = intersectionBy(newUsers, oldUsers, 'id').map(
-    user => {
+export const markNewFriends: (
+  oldUsers: Friend[],
+  newUsers: Friend[]
+) => Friend[] = (oldFriends, newFriends) => {
+  const friendMarkedNotNew = intersectionBy(newFriends, oldFriends, 'id').map(
+    friend => {
       return {
-        ...user,
+        ...friend,
         isNew: false,
       }
     }
   )
-  const userMarkedNew = differenceBy(newUsers, oldUsers, 'id').map(user => {
-    return {
-      ...user,
-      isNew: true,
+  const friendMarkedNew = differenceBy(newFriends, oldFriends, 'id').map(
+    friend => {
+      return {
+        ...friend,
+        isNew: true,
+      }
     }
-  })
+  )
 
-  return userMarkedNotNew.concat(userMarkedNew)
+  return friendMarkedNotNew.concat(friendMarkedNew)
 }
 
-@Module({ namespaced: true, name: 'users' })
-export default class UsersStore extends VuexModule {
-  private _users: User[] = []
+@Module({ namespaced: true, name: 'friends' })
+export default class FriendsStore extends VuexModule {
+  private _friends: Friend[] = []
 
-  get users() {
-    return this._users
+  get friends() {
+    return this._friends
   }
 
   @Mutation
-  private setUsers(users: User[]) {
-    if (this._users.length <= 0) {
-      this._users = users
+  private setFriends(friends: Friend[]) {
+    if (this._friends.length <= 0) {
+      this._friends = friends
       return
     }
 
-    this._users = markNewUser(this._users, users)
+    this._friends = markNewFriends(this._friends, friends)
   }
 
-  @Action({ commit: 'setUsers' })
-  async fetchUsers() {
-    const [users, favorites] = await Promise.all([
-      fetchAllUsers(vrcApiService.fetchFriends),
+  @Action({ commit: 'setFriends' })
+  async fetchFriends() {
+    const [friends, favorites] = await Promise.all([
+      fetchAllFriends(vrcApiService.fetchFriends),
       vrcApiService.fetchFavoriteFriends(),
     ])
 
-    return makePresentationUsers(users, favorites)
+    return makePresentationFriends(friends, favorites)
   }
 }

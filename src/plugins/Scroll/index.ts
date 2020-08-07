@@ -16,6 +16,7 @@ const scrollToElementById = (id: string) => {
   scrollToElement(element)
 }
 
+// TODO SOON: 通知クリック時のインスタンスへスクロールができなくなるので、代替手段が必要
 export type ScrollToInstance = (instanceId: string) => void
 const scrollToInstance: ScrollToInstance = instanceId => {
   scrollToElementById(instanceId)

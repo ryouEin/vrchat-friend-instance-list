@@ -2,15 +2,15 @@
   <div class="c-userList">
     <RecycleScroller
       class="scroller"
-      :items="sortedUsers"
+      :items="sortedFriends"
       :item-size="itemHeight"
       key-field="id"
       v-slot="{ item }"
       :buffer="1500"
     >
       <div class="item">
-        <UserListItem
-          :user="item"
+        <OnlineFriendsListItem
+          :friend="item"
           @click="onClick"
           :style="{ height: `${itemHeight}px` }"
         />

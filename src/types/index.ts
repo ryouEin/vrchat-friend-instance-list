@@ -1,7 +1,7 @@
 // TODO: typeとinterfaceの使い分け方針決める
 export type UnixTime = number
 
-export interface User {
+export interface Friend {
   id: string
   username: string
   displayName: string
@@ -47,5 +47,5 @@ export type Setting = {
 
 export type InstanceDetail = {
   location: string
-  users: User[]
+  friends: Friend[]
 }

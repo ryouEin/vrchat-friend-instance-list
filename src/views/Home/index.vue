@@ -5,10 +5,10 @@
         Online Friends
       </div>
       <div class="content">
-        <div v-if="showUserListLoading" class="u-alignCenter u-pt20">
+        <div v-if="showOnlineFriendsListLoading" class="u-alignCenter u-pt20">
           <g-Spinner color="black" :size="24" />
         </div>
-        <UserList v-else :users="users" @clickUser="onClickUser" />
+        <OnlineFriendsList v-else :friends="friends" @clickUser="onClickUser" />
       </div>
     </div>
     <div class="main">
@@ -24,9 +24,9 @@
       </template>
     </div>
     <div v-if="isVisibleInstanceModal" class="instanceModal">
-      <div class="overlay" @click="focusedUser = null"></div>
+      <div class="overlay" @click="focusedFriend = null"></div>
       <div class="instance">
-        <Instance :instance="instanceOfFocusedUser" />
+        <Instance :instance="instanceOfFocusedFriend" />
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { usersModule } from '@/store/ModuleFactory'
-import UserList from '@/views/Home/localComponents/UserList/index.vue'
+import { friendsModule } from '@/store/ModuleFactory'
+import OnlineFriendsList from '@/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/views/Home/localComponents/InstanceList/index.vue'
 import { InstanceDetail } from '@/types'
 import groupBy from 'lodash/groupBy'
@@ -9,7 +9,7 @@ import sortBy from 'lodash/sortBy'
 import Instance from '@/views/Home/localComponents/InstanceListItem/index.vue'
 
 // TODO: コンポーネント特有の型の持ち方を再考
-export interface User {
+export interface Friend {
   id: string
   username: string
   displayName: string
@@ -23,7 +23,7 @@ export interface User {
 
 @Component({
   components: {
-    UserList,
+    OnlineFriendsList,
     InstanceList,
     Instance,
   },
@@ -32,25 +32,25 @@ export default class Home extends Vue {
   isInitialLoading = false
   isLaterLoading = false
 
-  focusedUser: User | null = null
+  focusedFriend: Friend | null = null
 
-  get users(): User[] {
-    return usersModule.users.map(user => {
+  get friends(): Friend[] {
+    return friendsModule.friends.map(friend => {
       return {
-        ...user,
-        isFocused: user.id === this.focusedUser?.id,
+        ...friend,
+        isFocused: friend.id === this.focusedFriend?.id,
       }
     })
   }
 
   get instances(): InstanceDetail[] {
-    const tmp: { [key: string]: User[] } = groupBy(this.users, 'location')
+    const tmp: { [key: string]: Friend[] } = groupBy(this.friends, 'location')
     const instances = Object.entries(tmp).map(item => {
-      const [location, users] = item
+      const [location, friends] = item
 
       return {
         location,
-        users,
+        friends,
       }
     })
 
@@ -65,8 +65,8 @@ export default class Home extends Vue {
     return instancesWithoutPrivate.concat(privateInstance)
   }
 
-  get instanceOfFocusedUser(): InstanceDetail | null {
-    const focusedUser = this.focusedUser
+  get instanceOfFocusedFriend(): InstanceDetail | null {
+    const focusedUser = this.focusedFriend
     if (focusedUser === null) {
       return null
     }
@@ -82,7 +82,7 @@ export default class Home extends Vue {
     return instance
   }
 
-  get showUserListLoading() {
+  get showOnlineFriendsListLoading() {
     return this.isInitialLoading
   }
 
@@ -95,11 +95,11 @@ export default class Home extends Vue {
   }
 
   get isVisibleInstanceModal() {
-    return this.instanceOfFocusedUser !== null
+    return this.instanceOfFocusedFriend !== null
   }
 
   async fetchData() {
-    await usersModule.fetchUsers()
+    await friendsModule.fetchFriends()
   }
 
   async reload() {
@@ -111,8 +111,8 @@ export default class Home extends Vue {
     })
   }
 
-  onClickUser(user: User) {
-    this.focusedUser = user
+  onClickUser(user: Friend) {
+    this.focusedFriend = user
   }
 
   async created() {

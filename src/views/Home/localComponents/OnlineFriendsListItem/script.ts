@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { User } from '@/views/Home/script'
+import { Friend } from '@/views/Home/script'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { InstancePermission } from '@/types'
 
@@ -13,12 +13,12 @@ type Status = typeof Status[keyof typeof Status]
 @Component({
   components: {},
 })
-export default class UserListItem extends Vue {
+export default class OnlineFriendsListItem extends Vue {
   @Prop()
-  private user!: User
+  private friend!: Friend
 
   get status(): Status {
-    const permission = getInstancePermissionFromLocation(this.user.location)
+    const permission = getInstancePermissionFromLocation(this.friend.location)
     if (
       permission === InstancePermission.Public ||
       permission === InstancePermission.FriendPlus ||
@@ -37,6 +37,6 @@ export default class UserListItem extends Vue {
   }
 
   onClick() {
-    this.$emit('click', this.user)
+    this.$emit('click', this.friend)
   }
 }

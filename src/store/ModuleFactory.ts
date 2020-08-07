@@ -1,11 +1,11 @@
 import { getModule } from 'vuex-module-decorators'
-import UsersStore from '@/store/module/UsersStore'
+import FriendsStore from '@/store/module/FriendsStore'
 import store from '@/store/index'
 import WorldsStore from '@/store/module/WorldsStore'
 import NotificationsStore from '@/store/module/NotificationsStore'
 import SettingStore from '@/store/module/SettingStore'
 
-export const usersModule = getModule(UsersStore, store)
+export const friendsModule = getModule(FriendsStore, store)
 
 export const worldsModule = getModule(WorldsStore, store)
 

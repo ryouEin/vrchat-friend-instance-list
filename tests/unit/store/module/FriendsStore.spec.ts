@@ -1,11 +1,11 @@
 import { FetchFriendsFunction } from '@/infras/network/vrcApi'
 import {
-  fetchAllUsers,
-  makePresentationUsers,
-  markNewUser,
-} from '@/store/module/UsersStore'
+  fetchAllFriends,
+  makePresentationFriends,
+  markNewFriends,
+} from '@/store/module/FriendsStore'
 
-describe('fetchAllUsers', () => {
+describe('fetchAllFriends', () => {
   const dummyFriend = {
     id: 'dummy',
     username: 'dummy',
@@ -51,7 +51,7 @@ describe('fetchAllUsers', () => {
   }
 
   it('全ユーザーを取得し、重複は除去される', async () => {
-    const result = await fetchAllUsers(mockFetchFriends)
+    const result = await fetchAllFriends(mockFetchFriends)
     expect(result).toEqual([
       {
         ...dummyFriend,
@@ -69,7 +69,7 @@ describe('fetchAllUsers', () => {
   })
 })
 
-describe('makePresentationUsers', () => {
+describe('makePresentationFriends', () => {
   const dummyFriend = {
     id: 'dummy',
     username: 'dummy',
@@ -79,8 +79,8 @@ describe('makePresentationUsers', () => {
     location: 'dummy',
   }
 
-  it('ApiResponse.UserをPresentation.Userに変換。isNewはfalseが設定される', () => {
-    const result = makePresentationUsers(
+  it('ApiResponse.UserをPresentation.Friendに変換。isNewはfalseが設定される', () => {
+    const result = makePresentationFriends(
       [
         {
           ...dummyFriend,
@@ -115,7 +115,7 @@ describe('makePresentationUsers', () => {
   })
 })
 
-describe('markNewUser', () => {
+describe('markNewFriends', () => {
   const dummyFriend = {
     id: 'dummy',
     username: 'dummy',
@@ -128,7 +128,7 @@ describe('markNewUser', () => {
   }
 
   it('新規ログインユーザーはisNewがtrueとなる', () => {
-    const result = markNewUser(
+    const result = markNewFriends(
       [
         {
           ...dummyFriend,

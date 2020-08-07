@@ -1,21 +1,21 @@
 <template>
   <div
     class="c-userListItem"
-    :class="{ '-active': user.isFocused }"
+    :class="{ '-active': friend.isFocused }"
     @click="onClick"
   >
     <div class="figure">
-      <img class="userImage" :src="user.currentAvatarThumbnailImageUrl" />
-      <div v-if="user.isFavorited" class="favorite">
+      <img class="userImage" :src="friend.currentAvatarThumbnailImageUrl" />
+      <div v-if="friend.isFavorited" class="favorite">
         <g-FavoriteMark />
       </div>
     </div>
     <div class="userInfo">
       <div class="nameRow">
         <div class="newCol">
-          <div v-if="user.isNew" class="new">NEW</div>
+          <div v-if="friend.isNew" class="new">NEW</div>
         </div>
-        <div class="displayName">{{ user.displayName }}</div>
+        <div class="displayName">{{ friend.displayName }}</div>
       </div>
       <!-- TODO: ステータスを動的に表示させる -->
       <div class="status" :class="statusCssClass">{{ status }}</div>

@@ -8,7 +8,7 @@ import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
-import { InstanceDetail, InstancePermission, User, World } from '@/types'
+import { InstanceDetail, InstancePermission, Friend, World } from '@/types'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
 // TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
@@ -38,8 +38,8 @@ export default class Instance extends Vue {
     return this.instance.location
   }
 
-  get users(): User[] {
-    return this.instance.users
+  get users(): Friend[] {
+    return this.instance.friends
   }
 
   get worldId(): string {

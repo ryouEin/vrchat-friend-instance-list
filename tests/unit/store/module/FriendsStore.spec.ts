@@ -3,7 +3,7 @@ import {
   fetchAllFriends,
   makePresentationFriends,
   markNewFriends,
-} from '@/presentations/store/module/FriendsStore'
+} from '@/presentations/store/module/FriendsStore/functions'
 
 describe('fetchAllFriends', () => {
   const dummyFriend = {

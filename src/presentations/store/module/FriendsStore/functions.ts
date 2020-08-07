@@ -1,13 +1,13 @@
-import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import * as vrcApiService from '@/infras/network/vrcApi'
 import * as ApiResponse from '@/types/ApiResponse'
-import { Favorite } from '@/types/ApiResponse'
 import uniqBy from 'lodash/uniqBy'
+import { Favorite } from '@/types/ApiResponse'
+import { Friend, InstanceDetail } from '@/types'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
-import { Friend } from '@/types'
+import groupBy from 'lodash/groupBy'
+import sortBy from 'lodash/sortBy'
 
-// TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: この関数は汎用的だから別のファイルに配置したほうがいいのでは？再考
 // TODO: コードがゴリ押しなので整理
 export const fetchAllFriends = async (
@@ -39,7 +39,6 @@ export const fetchAllFriends = async (
   return friends
 }
 
-// TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: ここでisNewを設定していることの是非を再考
 // TODO: 関数名を再考
 export const makePresentationFriends: (
@@ -58,7 +57,6 @@ export const makePresentationFriends: (
   })
 }
 
-// TODO: 外部で使わない関数をテストのためにexportしていることの是非を再考
 // TODO: 引数名、変数名が混同しそう。命名を再考
 export const markNewFriends: (
   oldUsers: Friend[],
@@ -84,31 +82,27 @@ export const markNewFriends: (
   return friendMarkedNotNew.concat(friendMarkedNew)
 }
 
-@Module({ namespaced: true, name: 'friends' })
-export default class FriendsStore extends VuexModule {
-  private _friends: Friend[] = []
+// TODO SOON: テスト
+export const getInstancesFromFriends: (
+  friends: Friend[]
+) => InstanceDetail[] = friends => {
+  const tmp: { [key: string]: Friend[] } = groupBy(friends, 'location')
+  const instances = Object.entries(tmp).map(item => {
+    const [location, friends] = item
 
-  get friends() {
-    return this._friends
-  }
-
-  @Mutation
-  private setFriends(friends: Friend[]) {
-    if (this._friends.length <= 0) {
-      this._friends = friends
-      return
+    return {
+      location,
+      friends,
     }
+  })
 
-    this._friends = markNewFriends(this._friends, friends)
-  }
+  const instancesWithoutPrivate = sortBy(
+    instances.filter(instance => instance.location !== 'private'),
+    'location'
+  )
+  const privateInstance = instances.filter(
+    instance => instance.location === 'private'
+  )
 
-  @Action({ commit: 'setFriends' })
-  async fetchFriends() {
-    const [friends, favorites] = await Promise.all([
-      fetchAllFriends(vrcApiService.fetchFriends),
-      vrcApiService.fetchFavoriteFriends(),
-    ])
-
-    return makePresentationFriends(friends, favorites)
-  }
+  return instancesWithoutPrivate.concat(privateInstance)
 }

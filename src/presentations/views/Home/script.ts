@@ -4,8 +4,6 @@ import { friendsModule } from '@/presentations/store/ModuleFactory'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { InstanceDetail } from '@/types'
-import groupBy from 'lodash/groupBy'
-import sortBy from 'lodash/sortBy'
 import Instance from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 
 // TODO: コンポーネント特有の型の持ち方を再考
@@ -44,25 +42,7 @@ export default class Home extends Vue {
   }
 
   get instances(): InstanceDetail[] {
-    const tmp: { [key: string]: Friend[] } = groupBy(this.friends, 'location')
-    const instances = Object.entries(tmp).map(item => {
-      const [location, friends] = item
-
-      return {
-        location,
-        friends,
-      }
-    })
-
-    const instancesWithoutPrivate = sortBy(
-      instances.filter(instance => instance.location !== 'private'),
-      'location'
-    )
-    const privateInstance = instances.filter(
-      instance => instance.location === 'private'
-    )
-
-    return instancesWithoutPrivate.concat(privateInstance)
+    return friendsModule.instances
   }
 
   get instanceOfFocusedFriend(): InstanceDetail | null {

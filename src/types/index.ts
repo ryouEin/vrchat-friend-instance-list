@@ -49,3 +49,10 @@ export type InstanceDetail = {
   location: string
   friends: Friend[]
 }
+
+export type Instance = {
+  location: string
+  friends: Friend[]
+  isWatching: boolean
+  notifyUserNum: number
+}

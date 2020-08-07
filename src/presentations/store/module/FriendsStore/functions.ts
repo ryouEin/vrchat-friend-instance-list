@@ -1,12 +1,10 @@
 import * as vrcApiService from '@/infras/network/vrcApi'
 import * as ApiResponse from '@/types/ApiResponse'
-import uniqBy from 'lodash/uniqBy'
 import { Favorite } from '@/types/ApiResponse'
-import { Friend, InstanceDetail } from '@/types'
+import uniqBy from 'lodash/uniqBy'
+import { Friend } from '@/types'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
-import groupBy from 'lodash/groupBy'
-import sortBy from 'lodash/sortBy'
 
 // TODO: この関数は汎用的だから別のファイルに配置したほうがいいのでは？再考
 // TODO: コードがゴリ押しなので整理
@@ -80,29 +78,4 @@ export const markNewFriends: (
   )
 
   return friendMarkedNotNew.concat(friendMarkedNew)
-}
-
-// TODO SOON: テスト
-export const getInstancesFromFriends: (
-  friends: Friend[]
-) => InstanceDetail[] = friends => {
-  const tmp: { [key: string]: Friend[] } = groupBy(friends, 'location')
-  const instances = Object.entries(tmp).map(item => {
-    const [location, friends] = item
-
-    return {
-      location,
-      friends,
-    }
-  })
-
-  const instancesWithoutPrivate = sortBy(
-    instances.filter(instance => instance.location !== 'private'),
-    'location'
-  )
-  const privateInstance = instances.filter(
-    instance => instance.location === 'private'
-  )
-
-  return instancesWithoutPrivate.concat(privateInstance)
 }

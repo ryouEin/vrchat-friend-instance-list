@@ -23,7 +23,7 @@ import { InstanceDetail, InstancePermission, Friend, World } from '@/types'
     WatchInstanceButton,
   },
 })
-export default class Instance extends Vue {
+export default class InstanceListItem extends Vue {
   @Prop({ required: true })
   private instance!: InstanceDetail
 

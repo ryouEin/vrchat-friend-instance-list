@@ -3,7 +3,6 @@ import * as vrcApiService from '@/infras/network/vrcApi'
 import { Friend, InstanceDetail } from '@/types'
 import {
   fetchAllFriends,
-  getInstancesFromFriends,
   makePresentationFriends,
   markNewFriends,
 } from '@/presentations/store/module/FriendsStore/functions'
@@ -14,10 +13,6 @@ export default class FriendsStore extends VuexModule {
 
   get friends() {
     return this._friends
-  }
-
-  get instances(): InstanceDetail[] {
-    return getInstancesFromFriends(this.friends)
   }
 
   @Mutation

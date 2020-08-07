@@ -1,6 +1,9 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { friendsModule } from '@/presentations/store/ModuleFactory'
+import {
+  friendsModule,
+  instancesModule,
+} from '@/presentations/store/ModuleFactory'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { InstanceDetail } from '@/types'
@@ -42,7 +45,7 @@ export default class Home extends Vue {
   }
 
   get instances(): InstanceDetail[] {
-    return friendsModule.instances
+    return instancesModule.instances
   }
 
   get instanceOfFocusedFriend(): InstanceDetail | null {

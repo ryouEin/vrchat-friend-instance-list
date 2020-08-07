@@ -1,0 +1,14 @@
+import { Component, Prop } from 'vue-property-decorator'
+import Vue from 'vue'
+import Instance from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
+import { InstanceDetail } from '@/types'
+
+@Component({
+  components: {
+    Instance,
+  },
+})
+export default class InstanceList extends Vue {
+  @Prop()
+  private instances!: InstanceDetail[]
+}

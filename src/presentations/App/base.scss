@@ -1,0 +1,23 @@
+@import "destyle.css";
+
+body {
+  min-width: 1000px;
+  font-family: $mainFontFamily;
+  font-size: $mainFontSize;
+  line-height: $mainLineHeight;
+  color: $mainTextColor;
+  word-break: break-word;
+  background-color: $mainBgColor;
+}
+
+a {
+  color: $linkColor;
+  text-decoration: underline;
+  transition: filter $mainAnimationDuration;
+
+  &:hover {
+    filter: brightness(120%);
+  }
+}
+
+@import "../stylesheets/util";

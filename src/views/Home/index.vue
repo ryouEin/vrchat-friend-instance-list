@@ -8,7 +8,7 @@
         <div v-if="showUserListLoading" class="u-alignCenter u-pt20">
           <g-Spinner color="black" :size="24" />
         </div>
-        <UserList v-else :users="users" @focusUser="onFocusUser" />
+        <UserList v-else :users="users" @clickUser="onClickUser" />
       </div>
     </div>
     <div class="main">
@@ -22,6 +22,12 @@
           <g-Icon v-else :size="50" color="white">refresh</g-Icon>
         </g-FAB>
       </template>
+    </div>
+    <div v-if="isVisibleInstanceModal" class="instanceModal">
+      <div class="overlay" @click="focusedUser = null"></div>
+      <div class="instance">
+        <Instance :instance="instanceOfFocusedUser" />
+      </div>
     </div>
   </div>
 </template>

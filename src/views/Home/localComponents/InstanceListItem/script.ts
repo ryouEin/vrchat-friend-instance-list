@@ -8,7 +8,7 @@ import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import InstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
-import { InstancePermission, User, World } from '@/types'
+import { InstanceDetail, InstancePermission, User, World } from '@/types'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
 // TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
@@ -21,11 +21,8 @@ import { InstancePermission, User, World } from '@/types'
   },
 })
 export default class Instance extends Vue {
-  @Prop()
-  private location!: string
-
-  @Prop()
-  private users!: User[]
+  @Prop({ required: true })
+  private instance!: InstanceDetail
 
   userNum: number | null = null
 
@@ -36,6 +33,14 @@ export default class Instance extends Vue {
   isWatching = false
 
   fetchUserNumButtonDisabled = false
+
+  get location(): string {
+    return this.instance.location
+  }
+
+  get users(): User[] {
+    return this.instance.users
+  }
 
   get worldId(): string {
     return this.location.split(':')[0]
@@ -94,7 +99,7 @@ export default class Instance extends Vue {
 
   // virtual-scrollerはコンポーネントを使い回すためlocationの変更を見て
   // 初期化する必要がある
-  @Watch('location')
+  @Watch('instance.location')
   onChangeLocation() {
     this.init()
   }

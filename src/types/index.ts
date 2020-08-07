@@ -1,3 +1,4 @@
+// TODO: typeとinterfaceの使い分け方針決める
 export type UnixTime = number
 
 export interface User {
@@ -42,4 +43,9 @@ export type Notification = {
 
 export type Setting = {
   enableNotificationSound: boolean
+}
+
+export type InstanceDetail = {
+  location: string
+  users: User[]
 }

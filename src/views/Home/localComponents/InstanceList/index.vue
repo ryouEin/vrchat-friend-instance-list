@@ -15,7 +15,7 @@
           :data-index="index"
         >
           <div class="item">
-            <Instance :location="item.location" :users="item.users" />
+            <Instance :instance="item" />
           </div>
         </DynamicScrollerItem>
       </template>

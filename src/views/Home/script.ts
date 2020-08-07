@@ -3,9 +3,10 @@ import Vue from 'vue'
 import { usersModule } from '@/store/ModuleFactory'
 import UserList from '@/views/Home/localComponents/UserList/index.vue'
 import InstanceList from '@/views/Home/localComponents/InstanceList/index.vue'
-import { User as User1 } from '@/types'
+import { InstanceDetail } from '@/types'
 import groupBy from 'lodash/groupBy'
 import sortBy from 'lodash/sortBy'
+import Instance from '@/views/Home/localComponents/InstanceListItem/index.vue'
 
 // TODO: コンポーネント特有の型の持ち方を再考
 export interface User {
@@ -24,12 +25,14 @@ export interface User {
   components: {
     UserList,
     InstanceList,
+    Instance,
   },
 })
 export default class Home extends Vue {
   isInitialLoading = false
   isLaterLoading = false
-  focusedUser: User1 | null = null
+
+  focusedUser: User | null = null
 
   get users(): User[] {
     return usersModule.users.map(user => {
@@ -40,7 +43,7 @@ export default class Home extends Vue {
     })
   }
 
-  get instances(): { location: string; users: User[] }[] {
+  get instances(): InstanceDetail[] {
     const tmp: { [key: string]: User[] } = groupBy(this.users, 'location')
     const instances = Object.entries(tmp).map(item => {
       const [location, users] = item
@@ -62,6 +65,23 @@ export default class Home extends Vue {
     return instancesWithoutPrivate.concat(privateInstance)
   }
 
+  get instanceOfFocusedUser(): InstanceDetail | null {
+    const focusedUser = this.focusedUser
+    if (focusedUser === null) {
+      return null
+    }
+
+    const instance = this.instances.find(instance => {
+      return instance.location === focusedUser.location
+    })
+
+    if (instance === undefined) {
+      return null
+    }
+
+    return instance
+  }
+
   get showUserListLoading() {
     return this.isInitialLoading
   }
@@ -72,6 +92,10 @@ export default class Home extends Vue {
 
   get showFABLoading() {
     return this.isLaterLoading
+  }
+
+  get isVisibleInstanceModal() {
+    return this.instanceOfFocusedUser !== null
   }
 
   async fetchData() {
@@ -87,7 +111,7 @@ export default class Home extends Vue {
     })
   }
 
-  onFocusUser(user: User) {
+  onClickUser(user: User) {
     this.focusedUser = user
   }
 

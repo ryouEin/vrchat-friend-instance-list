@@ -1,8 +1,8 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Friend } from '@/presentations/views/Home/script'
 import { sortUsers } from '@/shame/sortUsers'
 import OnlineFriendsListItem from '@/presentations/views/Home/localComponents/OnlineFriendsListItem/index.vue'
+import { Friend } from '@/types'
 
 @Component({
   components: {
@@ -19,9 +19,5 @@ export default class OnlineFriendsList extends Vue {
 
   get itemHeight() {
     return 80
-  }
-
-  onClick(user: Friend) {
-    this.$emit('clickUser', user)
   }
 }

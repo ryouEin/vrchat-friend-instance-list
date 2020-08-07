@@ -1,7 +1,7 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Friend } from '@/presentations/views/Home/script'
 import UserListItem from '../UserListItem/index.vue'
+import { Friend } from '@/types'
 
 @Component({
   components: {

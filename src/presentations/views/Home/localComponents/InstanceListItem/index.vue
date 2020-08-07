@@ -30,13 +30,7 @@
             </InstanceButton>
           </div>
           <div class="instanceButtonGroup_item -watch">
-            <WatchInstanceButton
-              :notifyUserNum="notifyUserNum"
-              :isWatching="isWatching"
-              @clickStartWatch="onClickStartWatch"
-              @clickEndWatch="onClickEndWatch"
-              @changeNotifyUserNum="onChangeNotifyUserNum"
-            />
+            <WatchInstanceButton :instance="instance" />
           </div>
         </div>
       </div>
@@ -50,7 +44,7 @@
       </div>
     </div>
     <div class="userInfo">
-      <UserList :users="users" />
+      <UserList :users="friends" />
     </div>
   </div>
 </template>

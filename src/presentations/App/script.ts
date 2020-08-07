@@ -2,6 +2,7 @@ import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { addErrorCallback } from '@/infras/network/vrcApi'
 import {
+  instancesModule,
   settingModule,
   worldsModule,
 } from '@/presentations/store/ModuleFactory'
@@ -12,6 +13,7 @@ import NotificationButton from '@/presentations/App/localComponents/Notification
 import AboutCapacity from '@/presentations/App/localComponents/AboutCapacity/index.vue'
 import { News } from '@/types'
 import SettingButton from '@/presentations/App/localComponents/SettingButton/index.vue'
+import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 
 @Component({
   components: {
@@ -53,6 +55,13 @@ export default class App extends Vue {
     this.showNewsDialogs(newsArray)
   }
 
+  startCheckWatchingInstances() {
+    // TODO SOON: interval時間をconfigから取得
+    setInterval(async () => {
+      await instancesModule.checkWatchingInstances()
+    }, 10 * 1000)
+  }
+
   async created() {
     addErrorCallback(status => {
       if (status === 401) {
@@ -73,6 +82,8 @@ export default class App extends Vue {
     })
 
     this.initialized = true
+
+    this.startCheckWatchingInstances()
 
     await this.checkNews()
   }

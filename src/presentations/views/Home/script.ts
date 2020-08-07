@@ -2,67 +2,44 @@ import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import {
   friendsModule,
+  instanceModalModule,
   instancesModule,
 } from '@/presentations/store/ModuleFactory'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
-import { InstanceDetail } from '@/types'
-import Instance from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
-
-// TODO: コンポーネント特有の型の持ち方を再考
-export interface Friend {
-  id: string
-  username: string
-  displayName: string
-  currentAvatarImageUrl: string
-  currentAvatarThumbnailImageUrl: string
-  location: string
-  isFavorited: boolean
-  isNew: boolean
-  isFocused: boolean
-}
+import { Friend, Instance } from '@/types'
+import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 
 @Component({
   components: {
     OnlineFriendsList,
     InstanceList,
-    Instance,
+    InstanceListItem,
   },
 })
 export default class Home extends Vue {
   isInitialLoading = false
   isLaterLoading = false
 
-  focusedFriend: Friend | null = null
-
   get friends(): Friend[] {
-    return friendsModule.friends.map(friend => {
-      return {
-        ...friend,
-        isFocused: friend.id === this.focusedFriend?.id,
-      }
-    })
+    return friendsModule.friends
   }
 
-  get instances(): InstanceDetail[] {
+  get instances(): Instance[] {
     return instancesModule.instances
   }
 
-  get instanceOfFocusedFriend(): InstanceDetail | null {
-    const focusedUser = this.focusedFriend
-    if (focusedUser === null) {
-      return null
+  get isVisibleInstanceModal() {
+    return instanceModalModule.isVisible
+  }
+
+  get instanceModalInstance() {
+    const location = instanceModalModule.location
+    if (location === null) {
+      throw new Error('location is null')
     }
 
-    const instance = this.instances.find(instance => {
-      return instance.location === focusedUser.location
-    })
-
-    if (instance === undefined) {
-      return null
-    }
-
-    return instance
+    return instancesModule.instanceByLocation(location)
   }
 
   get showOnlineFriendsListLoading() {
@@ -77,12 +54,13 @@ export default class Home extends Vue {
     return this.isLaterLoading
   }
 
-  get isVisibleInstanceModal() {
-    return this.instanceOfFocusedFriend !== null
+  onClickInstanceModalOverlay() {
+    instanceModalModule.hide()
   }
 
   async fetchData() {
     await friendsModule.fetchFriends()
+    await instancesModule.updateInstances()
   }
 
   async reload() {
@@ -92,10 +70,6 @@ export default class Home extends Vue {
     await this.fetchData().finally(() => {
       this.isLaterLoading = false
     })
-  }
-
-  onClickUser(user: Friend) {
-    this.focusedFriend = user
   }
 
   async created() {

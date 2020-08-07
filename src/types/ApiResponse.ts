@@ -16,6 +16,7 @@ export interface World {
 }
 
 export interface InstanceInfo {
+  location: string
   n_users: number
   capacity: number
 }

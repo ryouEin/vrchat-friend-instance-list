@@ -1,6 +1,9 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
 import {
+  friendsModule,
+  instanceModalModule,
+  instancesModule,
   notificationsModule,
   worldsModule,
 } from '@/presentations/store/ModuleFactory'
@@ -11,7 +14,13 @@ import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
-import { InstanceDetail, InstancePermission, Friend, World } from '@/types'
+import {
+  InstanceDetail,
+  InstancePermission,
+  Friend,
+  World,
+  Instance,
+} from '@/types'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
 // TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
@@ -25,15 +34,9 @@ import { InstanceDetail, InstancePermission, Friend, World } from '@/types'
 })
 export default class InstanceListItem extends Vue {
   @Prop({ required: true })
-  private instance!: InstanceDetail
-
-  userNum: number | null = null
-
-  notifyUserNum = 1
+  private instance!: Instance
 
   isFetchingUserNum = false
-
-  isWatching = false
 
   fetchUserNumButtonDisabled = false
 
@@ -41,8 +44,12 @@ export default class InstanceListItem extends Vue {
     return this.instance.location
   }
 
-  get users(): Friend[] {
-    return this.instance.friends
+  get userNum() {
+    return this.instance.userNum
+  }
+
+  get friends(): Friend[] {
+    return friendsModule.friendsByLocation(this.location)
   }
 
   get worldId(): string {
@@ -71,7 +78,7 @@ export default class InstanceListItem extends Vue {
   }
 
   get isFull() {
-    if (this.userNum === null) {
+    if (this.userNum === undefined) {
       return false
     }
 
@@ -107,53 +114,8 @@ export default class InstanceListItem extends Vue {
     this.init()
   }
 
-  onChangeNotifyUserNum(userNum: number) {
-    this.notifyUserNum = userNum
-  }
-
   join() {
     window.location.href = `vrchat://launch?id=${this.location}`
-  }
-
-  async fetchUserNum() {
-    const instanceInfo = await fetchInstanceInfo(this.location)
-
-    this.userNum = instanceInfo.n_users
-  }
-
-  async checkUserNum() {
-    if (!this.isWatching) return
-
-    await this.fetchUserNum()
-    if (this.userNum === null) {
-      // TODO: 例外時の正しい対処を考える
-      throw new Error('userNum is null.')
-    }
-    const space = this.capacity - this.userNum
-    if (space >= this.notifyUserNum) {
-      this.isWatching = false
-      notificationsModule.pushNotification({
-        text: `${this.world!.name}に空きができました`,
-        date: Date.now(),
-        onClick: () => {
-          this.$scrollToInstance(this.location)
-        },
-      })
-      return
-    }
-
-    setTimeout(() => {
-      this.checkUserNum()
-    }, INSTANCE_WATCH_INTERVAL)
-  }
-
-  onClickStartWatch() {
-    this.isWatching = true
-    this.checkUserNum()
-  }
-
-  onClickEndWatch() {
-    this.isWatching = false
   }
 
   async updateUserNum() {
@@ -161,7 +123,7 @@ export default class InstanceListItem extends Vue {
 
     this.fetchUserNumButtonDisabled = true
     this.isFetchingUserNum = true
-    await this.fetchUserNum().finally(() => {
+    await instancesModule.updateUserNum(this.location).finally(() => {
       this.isFetchingUserNum = false
       setTimeout(() => {
         this.fetchUserNumButtonDisabled = false

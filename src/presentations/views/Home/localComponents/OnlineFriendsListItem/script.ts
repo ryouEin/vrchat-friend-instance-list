@@ -1,8 +1,8 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Friend } from '@/presentations/views/Home/script'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
-import { InstancePermission } from '@/types'
+import { Friend, InstancePermission } from '@/types'
+import { instanceModalModule } from '@/presentations/store/ModuleFactory'
 
 const Status = {
   Private: 'private',
@@ -37,6 +37,6 @@ export default class OnlineFriendsListItem extends Vue {
   }
 
   onClick() {
-    this.$emit('click', this.friend)
+    instanceModalModule.show(this.friend.location)
   }
 }

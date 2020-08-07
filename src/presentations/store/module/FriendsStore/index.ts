@@ -15,6 +15,12 @@ export default class FriendsStore extends VuexModule {
     return this._friends
   }
 
+  get friendsByLocation() {
+    return (location: string) => {
+      return this.friends.filter(friend => friend.location === location)
+    }
+  }
+
   @Mutation
   private setFriends(friends: Friend[]) {
     if (this._friends.length <= 0) {

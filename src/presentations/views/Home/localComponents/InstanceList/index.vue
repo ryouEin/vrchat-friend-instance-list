@@ -20,6 +20,7 @@
         </DynamicScrollerItem>
       </template>
     </DynamicScroller>
+    <WatchInstanceDialog />
   </div>
 </template>
 

@@ -52,7 +52,9 @@ export type InstanceDetail = {
 
 export type Instance = {
   location: string
-  friends: Friend[]
   isWatching: boolean
   notifyUserNum: number
+  userNum?: number
+  hardCapacity?: number
+  callback?: () => void
 }

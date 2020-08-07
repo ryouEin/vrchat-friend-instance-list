@@ -8,7 +8,7 @@
         <div v-if="showOnlineFriendsListLoading" class="u-alignCenter u-pt20">
           <g-Spinner color="black" :size="24" />
         </div>
-        <OnlineFriendsList v-else :friends="friends" @clickUser="onClickUser" />
+        <OnlineFriendsList v-else :friends="friends" />
       </div>
     </div>
     <div class="main">
@@ -23,10 +23,11 @@
         </g-FAB>
       </template>
     </div>
+    <!-- TODO SOON: ローカルコンポーネント化 -->
     <div v-if="isVisibleInstanceModal" class="instanceModal">
-      <div class="overlay" @click="focusedFriend = null"></div>
+      <div class="overlay" @click="onClickInstanceModalOverlay" />
       <div class="instance">
-        <Instance :instance="instanceOfFocusedFriend" />
+        <InstanceListItem :instance="instanceModalInstance" />
       </div>
     </div>
   </div>

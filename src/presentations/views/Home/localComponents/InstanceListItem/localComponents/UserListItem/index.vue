@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="c-userListItem"
-    :id="user.id"
-    :class="{ '-active': user.isFocused }"
-  >
+  <div class="c-userListItem" :id="user.id">
     <img class="userImage" :src="user.currentAvatarThumbnailImageUrl" />
     <div v-if="user.isFavorited" class="favorite">
       <g-FavoriteMark />

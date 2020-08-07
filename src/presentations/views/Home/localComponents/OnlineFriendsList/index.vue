@@ -11,7 +11,6 @@
       <div class="item">
         <OnlineFriendsListItem
           :friend="item"
-          @click="onClick"
           :style="{ height: `${itemHeight}px` }"
         />
       </div>

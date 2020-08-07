@@ -1,50 +1,16 @@
-import { Friend, Instance, InstanceDetail } from '@/types'
-import groupBy from 'lodash/groupBy'
-import sortBy from 'lodash/sortBy'
-import { WatchingState } from '@/presentations/store/module/InstancesStore/index'
+import { Friend } from '@/types'
+import uniqBy from 'lodash/uniqBy'
 
 // TODO SOON: テスト
-export const getInstancesFromFriends: (
+export const getLocationsFromFriends: (
   friends: Friend[]
-) => InstanceDetail[] = friends => {
-  const tmp: { [key: string]: Friend[] } = groupBy(friends, 'location')
-  const instances = Object.entries(tmp).map(item => {
-    const [location, friends] = item
+) => string[] = friends => {
+  const locations = uniqBy(friends, 'location').map(friend => friend.location)
 
-    return {
-      location,
-      friends,
-    }
-  })
-
-  const instancesWithoutPrivate = sortBy(
-    instances.filter(instance => instance.location !== 'private'),
-    'location'
-  )
-  const privateInstance = instances.filter(
-    instance => instance.location === 'private'
-  )
+  const instancesWithoutPrivate = locations
+    .filter(location => location !== 'private')
+    .sort()
+  const privateInstance = locations.filter(location => location === 'private')
 
   return instancesWithoutPrivate.concat(privateInstance)
-}
-
-// TODO SOON: テスト
-export const mergeInstanceDetailsAndWatchingStates: (
-  instanceDetails: InstanceDetail[],
-  watchingStates: WatchingState[]
-) => Instance[] = (instanceDetails, watchingStates) => {
-  return instanceDetails.map(instanceDetail => {
-    const watchingState = watchingStates.find(
-      item => item.location === instanceDetail.location
-    ) || {
-      location: instanceDetail.location,
-      isWatching: false,
-      notifyUserNum: 0,
-    }
-
-    return {
-      ...instanceDetail,
-      ...watchingState,
-    }
-  })
 }

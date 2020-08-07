@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="c-userListItem"
-    :class="{ '-active': friend.isFocused }"
-    @click="onClick"
-  >
+  <div class="c-userListItem" @click="onClick">
     <div class="figure">
       <img class="userImage" :src="friend.currentAvatarThumbnailImageUrl" />
       <div v-if="friend.isFavorited" class="favorite">

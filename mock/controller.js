@@ -54,9 +54,14 @@ module.exports = {
     res.json(listedWorlds)
   },
   getInstanceInfo (req, res) {
+    const location = req.params.location
+    const worldId = location.split(':')[0]
+    const world = worlds.find(world => world.id === worldId)
+
     res.json({
+      location,
       n_users: Math.floor(Math.random() * 10) + 3,
-      capacity: 20
+      capacity: world.capacity
     })
   },
   listNews (req, res) {

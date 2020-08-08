@@ -1,9 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { Instance } from '@/types'
-import {
-  friendsModule,
-  notificationsModule,
-} from '@/presentations/store/ModuleFactory'
+import { friendsModule } from '@/presentations/store/ModuleFactory'
 import { getLocationsFromFriends } from './functions'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'

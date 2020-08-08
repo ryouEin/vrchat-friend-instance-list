@@ -1,6 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import * as vrcApiService from '@/infras/network/vrcApi'
-import { Friend, InstanceDetail } from '@/types'
+import { Friend } from '@/types'
 import {
   fetchAllFriends,
   makePresentationFriends,

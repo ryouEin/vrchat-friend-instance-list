@@ -13,7 +13,6 @@ import NotificationButton from '@/presentations/App/localComponents/Notification
 import AboutCapacity from '@/presentations/App/localComponents/AboutCapacity/index.vue'
 import { News } from '@/types'
 import SettingButton from '@/presentations/App/localComponents/SettingButton/index.vue'
-import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 
 @Component({
   components: {

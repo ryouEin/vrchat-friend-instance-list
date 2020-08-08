@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { AlertHandler } from '@/presentations/plugins/Alert/index'
 
 declare module 'vue/types/vue' {

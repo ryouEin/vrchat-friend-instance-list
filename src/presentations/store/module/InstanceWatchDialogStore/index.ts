@@ -1,6 +1,7 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { Instance } from '@/types'
 import { worldsModule } from '@/presentations/store/ModuleFactory'
+import { parseLocation } from '@/shame/parseLocation'
 
 @Module({ namespaced: true, name: 'instanceWatchDialog' })
 export default class InstanceWatchDialogStore extends VuexModule {
@@ -16,8 +17,7 @@ export default class InstanceWatchDialogStore extends VuexModule {
       return undefined
     }
 
-    // TODO SOON: locationをworldIdとinstanceIdに分ける処理共通化
-    const worldId = instance.location.split(':')[0]
+    const { worldId } = parseLocation(instance.location)
     return worldsModule.world(worldId)
   }
 

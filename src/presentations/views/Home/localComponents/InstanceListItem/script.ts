@@ -11,6 +11,7 @@ import Permission from '@/presentations/views/Home/localComponents/InstanceListI
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WatchInstanceButton/index.vue'
 import { Friend, Instance, InstancePermission, World } from '@/types'
+import { parseLocation } from '@/shame/parseLocation'
 
 // TODO: めっちゃごちゃってる。リファクタリング必須
 // TODO: ユーザー数更新ボタン関係の処理が肥大化してきたので分けたい
@@ -43,7 +44,7 @@ export default class InstanceListItem extends Vue {
   }
 
   get worldId(): string {
-    return this.location.split(':')[0]
+    return parseLocation(this.location).worldId
   }
 
   get capacity(): number {

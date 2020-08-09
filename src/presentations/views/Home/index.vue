@@ -24,12 +24,17 @@
       </template>
     </div>
     <!-- TODO SOON: ローカルコンポーネント化 -->
-    <div v-if="isVisibleInstanceModal" class="instanceModal">
-      <div class="overlay" @click="onClickInstanceModalOverlay" />
-      <div class="instance">
-        <InstanceListItem :instance="instanceModalInstance" />
+    <transition name="t-fade">
+      <div v-if="isVisibleInstanceModal" class="instanceModal">
+        <div class="overlay" @click="onClickInstanceModalOverlay" />
+        <div class="instance" @click="onClickInstanceModalOverlay">
+          <InstanceListItem
+            :instance="instanceModalInstance"
+            @click.native.stop
+          />
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 

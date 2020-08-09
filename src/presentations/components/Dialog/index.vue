@@ -1,6 +1,6 @@
 <template>
   <transition
-    name="fade"
+    name="t-fade"
     @before-enter="$emit('beforeEnter')"
     @enter="$emit('enter')"
     @after-enter="$emit('afterEnter')"

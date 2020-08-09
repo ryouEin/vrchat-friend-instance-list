@@ -1,0 +1,9 @@
+.t-fade-enter-active,
+.t-fade-leave-active {
+  transition: opacity $mainAnimationDuration;
+}
+
+.t-fade-enter,
+.t-fade-leave-to {
+  opacity: 0;
+}

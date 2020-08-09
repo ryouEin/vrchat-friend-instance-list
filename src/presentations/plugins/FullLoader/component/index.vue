@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade">
+  <transition name="t-fade">
     <div v-if="visible" class="c-fullLoader">
       <g-Spinner />
     </div>

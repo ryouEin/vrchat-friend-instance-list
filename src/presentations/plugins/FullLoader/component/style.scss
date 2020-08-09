@@ -11,13 +11,3 @@
   justify-content: center;
   background-color: rgba($whiteColor, 0.8);
 }
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.25s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}

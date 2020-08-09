@@ -50,13 +50,3 @@
   padding: 0 20px 20px;
   text-align: right;
 }
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity $mainAnimationDuration;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}

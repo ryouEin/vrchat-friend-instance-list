@@ -119,17 +119,17 @@ export default class InstancesStore extends VuexModule {
   }
 
   // TODO SOON: Friendsの更新がある度にこれを呼び出す必要があるのが違和感
-  @Action({ commit: 'initInstancesWithLocations' })
+  @Action({ commit: 'initInstancesWithLocations', rawError: true })
   async updateInstances() {
     return getLocationsFromFriends(friendsModule.friends)
   }
 
-  @Action({ commit: 'updateInstanceInfo' })
+  @Action({ commit: 'updateInstanceInfo', rawError: true })
   async updateUserNum(location: string) {
     return await fetchInstanceInfo(location)
   }
 
-  @Action({ commit: 'startWatching' })
+  @Action({ commit: 'startWatching', rawError: true })
   async watchInstance({
     location,
     notifyUserNum,
@@ -146,12 +146,12 @@ export default class InstancesStore extends VuexModule {
     }
   }
 
-  @Action({ commit: 'endWatching' })
+  @Action({ commit: 'endWatching', rawError: true })
   async unwatchInstance(location: string) {
     return location
   }
 
-  @Action
+  @Action({ rawError: true })
   async checkWatchingInstances() {
     const watchingInstances = this.instances.filter(
       instance => instance.isWatching

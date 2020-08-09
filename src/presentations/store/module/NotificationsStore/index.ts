@@ -16,7 +16,7 @@ export default class NotificationsStore extends VuexModule {
     this._notifications.push(notification)
   }
 
-  @Action({ commit: 'addNotification' })
+  @Action({ commit: 'addNotification', rawError: true })
   pushNotification(notification: Notification) {
     const notify = new window.Notification(notification.text)
     notify.onshow = () => {

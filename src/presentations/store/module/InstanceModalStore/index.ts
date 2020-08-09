@@ -22,12 +22,12 @@ export default class InstanceModalStore extends VuexModule {
     this._location = null
   }
 
-  @Action({ commit: 'setLocation' })
+  @Action({ commit: 'setLocation', rawError: true })
   show(location: string) {
     return location
   }
 
-  @Action({ commit: 'clearLocation' })
+  @Action({ commit: 'clearLocation', rawError: true })
   hide() {
     // clearLocationを呼び出すだけなので空
   }

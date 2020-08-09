@@ -44,7 +44,7 @@ export default class WorldsStore extends VuexModule {
     return memFetchWorld(id)
   }
 
-  @Action({ commit: 'setWorlds' })
+  @Action({ commit: 'setWorlds', rawError: true })
   async init() {
     const popularWorlds = await vrcApiService.fetchPopularWorlds()
     worldStorage.addWorlds(popularWorlds)

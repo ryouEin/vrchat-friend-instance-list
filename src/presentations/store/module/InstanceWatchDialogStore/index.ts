@@ -35,12 +35,12 @@ export default class InstanceWatchDialogStore extends VuexModule {
     this._instance = null
   }
 
-  @Action({ commit: 'setInstance' })
+  @Action({ commit: 'setInstance', rawError: true })
   show(instance: Instance) {
     return instance
   }
 
-  @Action({ commit: 'clearInstance' })
+  @Action({ commit: 'clearInstance', rawError: true })
   hide() {
     // clearInstanceを呼び出すだけなので空
   }

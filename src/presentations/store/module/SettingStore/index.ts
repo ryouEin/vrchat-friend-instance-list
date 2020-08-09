@@ -19,14 +19,14 @@ export default class SettingStore extends VuexModule {
     this._setting = setting
   }
 
-  @Action({ commit: 'updateSetting' })
+  @Action({ commit: 'updateSetting', rawError: true })
   changeSetting(setting: Setting) {
     settingStorage.updateSetting(setting)
 
     return setting
   }
 
-  @Action({ commit: 'updateSetting' })
+  @Action({ commit: 'updateSetting', rawError: true })
   init(): Setting {
     return settingStorage.getSetting()
   }

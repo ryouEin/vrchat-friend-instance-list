@@ -31,7 +31,7 @@ export default class FriendsStore extends VuexModule {
     this._friends = markNewFriends(this._friends, friends)
   }
 
-  @Action({ commit: 'setFriends' })
+  @Action({ commit: 'setFriends', rawError: true })
   async fetchFriends() {
     const [friends, favorites] = await Promise.all([
       fetchAllFriends(vrcApiService.fetchFriends),

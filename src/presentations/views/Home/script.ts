@@ -42,7 +42,7 @@ export default class Home extends Vue {
 
   async fetchData() {
     await friendsModule.fetchFriends()
-    await instancesModule.updateInstances()
+    await instancesModule.update(friendsModule.friends)
   }
 
   async reload() {

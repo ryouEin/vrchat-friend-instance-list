@@ -1,5 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { World } from '@/types'
+import * as ApiResponse from '@/types/ApiResponse'
 import * as vrcApiService from '@/infras/network/vrcApi'
 import { WorldStorage } from '@/infras/storage/World/WorldStorage'
 import pMemoize from 'p-memoize'
@@ -12,6 +13,18 @@ const worldStorage = new WorldStorage(storage)
 const memFetchWorld = pMemoize(vrcApiService.fetchWorld, {
   maxAge: 10000,
 })
+
+// TODO SOON: VRChat関係のユーティリティ系の関数まとめたい
+const calcWorldHardCapacity: (capacity: number) => number = capacity => {
+  return capacity === 1 ? 1 : capacity * 2
+}
+
+const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
+  return {
+    ...world,
+    hardCapacity: calcWorldHardCapacity(world.capacity),
+  }
+}
 
 @Module({ namespaced: true, name: 'worlds' })
 export default class WorldsStore extends VuexModule {
@@ -28,15 +41,15 @@ export default class WorldsStore extends VuexModule {
   }
 
   @Mutation
-  private setWorlds(worlds: World[]) {
-    this._worlds = worlds
+  private setWorlds(worlds: ApiResponse.World[]) {
+    this._worlds = worlds.map(world => makeWorldFromApiResponse(world))
   }
 
   @Mutation
-  private addWorld(world: World) {
+  private addWorld(world: ApiResponse.World) {
     // TODO: localStorageが満杯になった際の処理
     worldStorage.addWorld(world)
-    this._worlds.push(world)
+    this._worlds.push(makeWorldFromApiResponse(world))
   }
 
   @Action({ commit: 'addWorld', rawError: true })

@@ -1,9 +1,13 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { Instance, InstanceLocation } from '@/types'
-import { friendsModule } from '@/presentations/store/ModuleFactory'
-import { getLocationsFromFriends } from './functions'
+import { Friend, Instance, InstanceLocation } from '@/types'
+import {
+  applyOldInstanceStatesToNewInstances,
+  getLocationsFromFriends,
+  makeInstancesFromLocations,
+} from './functions'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
+import { worldsModule } from '@/presentations/store/ModuleFactory'
 
 @Module({ namespaced: true, name: 'instances' })
 export default class InstancesStore extends VuexModule {
@@ -19,71 +23,41 @@ export default class InstancesStore extends VuexModule {
     }
   }
 
-  // TODO SOON: 命名微妙（古いデータを利用する処理なのにinitは違うだろ感）
-  // TODO SOON: 内部処理関数化・テスト
   @Mutation
-  private initInstancesWithLocations(locations: string[]) {
-    this._instances = locations.map(location => {
-      const instance = this._instances.find(
-        instance => instance.location === location
-      )
-      if (instance === undefined) {
-        return {
-          location,
-          isWatching: false,
-          notifyUserNum: 1,
-        }
-      }
-
-      return instance
-    })
+  private updateInstancesWithLocations(locations: InstanceLocation[]) {
+    const newInstances = makeInstancesFromLocations(locations)
+    this._instances = applyOldInstanceStatesToNewInstances(
+      newInstances,
+      this._instances
+    )
   }
 
+  // TODO SOON: 内部処理関数化
   @Mutation
-  private updateInstanceInfo(instanceInfo: InstanceInfo) {
+  private setInstanceInfo(instanceInfo: InstanceInfo) {
     this._instances = this._instances.map(instance => {
       if (instanceInfo.location === instance.location) {
-        // TODO SOON: hardCapの算出場所とかを統一
-        const hardCapacity =
-          instanceInfo.capacity === 1 ? 1 : instanceInfo.capacity * 2
         const userNum = instanceInfo.n_users
-        const newInstance = {
+
+        return {
           ...instance,
           userNum,
-          hardCapacity,
         }
-
-        // TODO SOON: 論理的凝集になってしまってる
-        if (
-          instance.isWatching &&
-          userNum + instance.notifyUserNum <= hardCapacity
-        ) {
-          // TODO SOON: 通知の実装
-          const callback = instance.callback
-          if (callback !== undefined) {
-            // TODO SOON: Mutationの中でAction呼び出しはダメ？
-            callback()
-          }
-          newInstance.isWatching = false
-        }
-
-        return newInstance
       }
 
       return instance
     })
   }
 
-  // TODO SOON: callbackって名前どうにかしたい
   @Mutation
   private startWatching({
     location,
     notifyUserNum,
-    callback,
+    onFindVacancy,
   }: {
     location: InstanceLocation
     notifyUserNum: number
-    callback: () => void
+    onFindVacancy: () => void
   }) {
     this._instances = this._instances.map(instance => {
       if (instance.location === location) {
@@ -91,9 +65,10 @@ export default class InstancesStore extends VuexModule {
           ...instance,
           isWatching: true,
           notifyUserNum,
-          callback,
+          onFindVacancy,
         }
       }
+
       return instance
     })
   }
@@ -112,31 +87,64 @@ export default class InstancesStore extends VuexModule {
     })
   }
 
-  // TODO SOON: Friendsの更新がある度にこれを呼び出す必要があるのが違和感
-  @Action({ commit: 'initInstancesWithLocations', rawError: true })
-  async updateInstances() {
-    return getLocationsFromFriends(friendsModule.friends)
+  // TODO: Friendsの更新がある度にこれを呼び出す必要があるのが違和感
+  @Action({ commit: 'updateInstancesWithLocations', rawError: true })
+  async update(friends: Friend[]) {
+    return getLocationsFromFriends(friends)
   }
 
-  @Action({ commit: 'updateInstanceInfo', rawError: true })
-  async updateUserNum(location: InstanceLocation) {
+  @Action({ commit: 'setInstanceInfo', rawError: true })
+  async updateInstanceInfo(location: InstanceLocation) {
     return await fetchInstanceInfo(location)
+  }
+
+  // TODO SOON: 内部処理の関数化を検討
+  @Action({ rawError: true })
+  async checkWatchingInstanceVacancy(location: InstanceLocation) {
+    const instance = this.instances.find(
+      instance => instance.location === location
+    )
+    if (instance === undefined) {
+      throw new Error('instance is undefined.')
+    }
+    if (!instance.isWatching) {
+      throw new Error('instance is not watching.')
+    }
+    if (instance.userNum === undefined) {
+      throw new Error('userNum is undefined.')
+    }
+
+    const world = worldsModule.world(instance.worldId)
+    if (world === undefined) {
+      throw new Error('world is undefined.')
+    }
+
+    const hasRequiredVacancy =
+      instance.userNum + instance.notifyUserNum <= world.hardCapacity
+    if (hasRequiredVacancy) {
+      const onFindVacancy = instance.onFindVacancy
+      if (onFindVacancy !== undefined) {
+        onFindVacancy()
+      }
+
+      this.context.commit('endWatching', instance.location)
+    }
   }
 
   @Action({ commit: 'startWatching', rawError: true })
   async watchInstance({
     location,
     notifyUserNum,
-    callback,
+    onFindVacancy,
   }: {
     location: InstanceLocation
     notifyUserNum: number
-    callback: () => void
+    onFindVacancy: () => void
   }) {
     return {
       location,
       notifyUserNum,
-      callback,
+      onFindVacancy,
     }
   }
 
@@ -150,9 +158,13 @@ export default class InstancesStore extends VuexModule {
     const watchingInstances = this.instances.filter(
       instance => instance.isWatching
     )
-    const promises = watchingInstances.map(instance =>
-      this.context.dispatch('updateUserNum', instance.location)
-    )
+    const promises = watchingInstances.map(async instance => {
+      await this.context.dispatch('updateInstanceInfo', instance.location)
+      await this.context.dispatch(
+        'checkWatchingInstanceVacancy',
+        instance.location
+      )
+    })
 
     return Promise.all(promises)
   }

@@ -4,7 +4,7 @@ const { getRandomString } = require('../util')
 const makeWorld = index => {
   return {
     id: `wrld_${index}`,
-    name: `World ${index}`,
+    name: `World ${index} long name long name long name`,
     imageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
     thumbnailImageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
     capacity: 1 + index

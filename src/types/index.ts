@@ -20,6 +20,7 @@ export interface World {
   imageUrl: string
   thumbnailImageUrl: string
   capacity: number
+  hardCapacity: number
 }
 
 export const InstancePermission = {
@@ -48,10 +49,10 @@ export type Setting = {
 }
 
 export type Instance = {
+  worldId: string
   location: InstanceLocation
   isWatching: boolean
   notifyUserNum: number
   userNum?: number
-  hardCapacity?: number
-  callback?: () => void
+  onFindVacancy?: () => void
 }

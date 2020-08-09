@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/InstanceButton/index.vue'
+import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
 import {
   instancesModule,
   instanceWatchDialogModule,

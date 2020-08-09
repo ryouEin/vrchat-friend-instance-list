@@ -1,5 +1,6 @@
-import { Friend } from '@/types'
+import { Friend, Instance, InstanceLocation } from '@/types'
 import uniqBy from 'lodash/uniqBy'
+import { parseLocation } from '@/shame/parseLocation'
 
 // TODO SOON: テスト
 export const getLocationsFromFriends: (
@@ -13,4 +14,38 @@ export const getLocationsFromFriends: (
   const privateInstance = locations.filter(location => location === 'private')
 
   return instancesWithoutPrivate.concat(privateInstance)
+}
+
+// TODO SOON: テスト
+export const makeInstancesFromLocations: (
+  locations: InstanceLocation[]
+) => Instance[] = locations => {
+  return locations.map(location => {
+    const { worldId } = parseLocation(location)
+
+    // TODO SOON: Instanceのデフォルト値をどっかで定義したほうが良いのでは
+    return {
+      worldId,
+      location,
+      isWatching: false,
+      notifyUserNum: 1,
+    }
+  })
+}
+
+// TODO SOON: テスト
+export const applyOldInstanceStatesToNewInstances: (
+  newInstances: Instance[],
+  oldInstances: Instance[]
+) => Instance[] = (newInstances, oldInstances) => {
+  return newInstances.map(newInstance => {
+    const oldInstance = oldInstances.find(
+      oldInstance => oldInstance.location === newInstance.location
+    )
+    if (oldInstance === undefined) {
+      return newInstance
+    }
+
+    return oldInstance
+  })
 }

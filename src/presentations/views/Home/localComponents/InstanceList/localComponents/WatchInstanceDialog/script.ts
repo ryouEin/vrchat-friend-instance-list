@@ -87,7 +87,7 @@ export default class WatchInstanceDialog extends Vue {
     await instancesModule.watchInstance({
       location: this.location,
       notifyUserNum: this.notifyUserNum,
-      callback: () => {
+      onFindVacancy: () => {
         notificationsModule.pushNotification({
           text: `${worldName}に空きができました。`,
           date: Date.now(),

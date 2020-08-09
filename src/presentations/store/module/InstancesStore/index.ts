@@ -1,15 +1,9 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { Instance } from '@/types'
+import { Instance, InstanceLocation } from '@/types'
 import { friendsModule } from '@/presentations/store/ModuleFactory'
 import { getLocationsFromFriends } from './functions'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
-
-export type WatchingInstance = {
-  location: string
-  notifyUserNum: number
-  userNum?: number
-}
 
 @Module({ namespaced: true, name: 'instances' })
 export default class InstancesStore extends VuexModule {
@@ -20,7 +14,7 @@ export default class InstancesStore extends VuexModule {
   }
 
   get instanceByLocation() {
-    return (location: string) => {
+    return (location: InstanceLocation) => {
       return this.instances.find(instance => instance.location === location)
     }
   }
@@ -87,7 +81,7 @@ export default class InstancesStore extends VuexModule {
     notifyUserNum,
     callback,
   }: {
-    location: string
+    location: InstanceLocation
     notifyUserNum: number
     callback: () => void
   }) {
@@ -105,7 +99,7 @@ export default class InstancesStore extends VuexModule {
   }
 
   @Mutation
-  private endWatching(location: string) {
+  private endWatching(location: InstanceLocation) {
     this._instances = this._instances.map(instance => {
       if (instance.location === location) {
         return {
@@ -125,7 +119,7 @@ export default class InstancesStore extends VuexModule {
   }
 
   @Action({ commit: 'updateInstanceInfo', rawError: true })
-  async updateUserNum(location: string) {
+  async updateUserNum(location: InstanceLocation) {
     return await fetchInstanceInfo(location)
   }
 
@@ -135,7 +129,7 @@ export default class InstancesStore extends VuexModule {
     notifyUserNum,
     callback,
   }: {
-    location: string
+    location: InstanceLocation
     notifyUserNum: number
     callback: () => void
   }) {
@@ -147,7 +141,7 @@ export default class InstancesStore extends VuexModule {
   }
 
   @Action({ commit: 'endWatching', rawError: true })
-  async unwatchInstance(location: string) {
+  async unwatchInstance(location: InstanceLocation) {
     return location
   }
 

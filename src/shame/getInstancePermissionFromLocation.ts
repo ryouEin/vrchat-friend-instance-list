@@ -1,10 +1,10 @@
 /*
 どこか適切な場所に置きたい
  */
-import { InstancePermission } from '@/types'
+import { InstanceLocation, InstancePermission } from '@/types'
 
 export const getInstancePermissionFromLocation: (
-  location: string
+  location: InstanceLocation
 ) => InstancePermission = location => {
   const [beforeColon, afterColon] = location.split(':')
   if (beforeColon === 'private') {

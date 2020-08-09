@@ -1,10 +1,12 @@
+import { InstanceLocation } from '@/types/index'
+
 export interface User {
   id: string
   username: string
   displayName: string
   currentAvatarImageUrl: string
   currentAvatarThumbnailImageUrl: string
-  location: string
+  location: InstanceLocation
 }
 
 export interface World {
@@ -16,7 +18,7 @@ export interface World {
 }
 
 export interface InstanceInfo {
-  location: string
+  location: InstanceLocation
   n_users: number
   capacity: number
 }

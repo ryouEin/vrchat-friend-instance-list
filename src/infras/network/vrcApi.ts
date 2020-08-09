@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Favorite, InstanceInfo, User, World } from '@/types/ApiResponse'
 import { VRC_API_URL } from '@/config/env'
+import { InstanceLocation } from '@/types'
 
 export type ApiServiceErrorCallback = (status: number) => void
 
@@ -57,7 +58,7 @@ export const fetchWorld: (id: string) => Promise<World> = async id => {
 }
 
 export const fetchInstanceInfo: (
-  location: string
+  location: InstanceLocation
 ) => Promise<InstanceInfo> = async location => {
   const response = await instance.get(`/api/1/instances/${location}`)
 

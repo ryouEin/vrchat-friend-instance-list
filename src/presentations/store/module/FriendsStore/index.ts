@@ -1,6 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import * as vrcApiService from '@/infras/network/vrcApi'
-import { Friend } from '@/types'
+import { Friend, InstanceLocation } from '@/types'
 import {
   fetchAllFriends,
   makePresentationFriends,
@@ -16,7 +16,7 @@ export default class FriendsStore extends VuexModule {
   }
 
   get friendsByLocation() {
-    return (location: string) => {
+    return (location: InstanceLocation) => {
       return this.friends.filter(friend => friend.location === location)
     }
   }

@@ -1,13 +1,15 @@
 // TODO: typeとinterfaceの使い分け方針決める
 export type UnixTime = number
 
+export type InstanceLocation = string
+
 export interface Friend {
   id: string
   username: string
   displayName: string
   currentAvatarImageUrl: string
   currentAvatarThumbnailImageUrl: string
-  location: string
+  location: InstanceLocation
   isFavorited: boolean
   isNew: boolean
 }
@@ -45,13 +47,8 @@ export type Setting = {
   enableNotificationSound: boolean
 }
 
-export type InstanceDetail = {
-  location: string
-  friends: Friend[]
-}
-
 export type Instance = {
-  location: string
+  location: InstanceLocation
   isWatching: boolean
   notifyUserNum: number
   userNum?: number

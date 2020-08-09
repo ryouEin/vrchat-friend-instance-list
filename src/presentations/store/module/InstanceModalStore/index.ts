@@ -1,8 +1,9 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import { InstanceLocation } from '@/types'
 
 @Module({ namespaced: true, name: 'instanceModal' })
 export default class InstanceModalStore extends VuexModule {
-  private _location: string | null = null
+  private _location: InstanceLocation | null = null
 
   get location() {
     return this._location
@@ -13,7 +14,7 @@ export default class InstanceModalStore extends VuexModule {
   }
 
   @Mutation
-  setLocation(location: string) {
+  setLocation(location: InstanceLocation) {
     this._location = location
   }
 
@@ -23,7 +24,7 @@ export default class InstanceModalStore extends VuexModule {
   }
 
   @Action({ commit: 'setLocation', rawError: true })
-  show(location: string) {
+  show(location: InstanceLocation) {
     return location
   }
 

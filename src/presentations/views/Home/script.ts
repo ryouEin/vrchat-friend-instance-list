@@ -2,19 +2,18 @@ import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import {
   friendsModule,
-  instanceModalModule,
   instancesModule,
 } from '@/presentations/store/ModuleFactory'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'
-import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
+import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
 
 @Component({
   components: {
     OnlineFriendsList,
     InstanceList,
-    InstanceListItem,
+    InstanceModal,
   },
 })
 export default class Home extends Vue {
@@ -29,19 +28,6 @@ export default class Home extends Vue {
     return instancesModule.instances
   }
 
-  get isVisibleInstanceModal() {
-    return instanceModalModule.isVisible
-  }
-
-  get instanceModalInstance() {
-    const location = instanceModalModule.location
-    if (location === null) {
-      throw new Error('location is null')
-    }
-
-    return instancesModule.instanceByLocation(location)
-  }
-
   get showOnlineFriendsListLoading() {
     return this.isInitialLoading
   }
@@ -52,10 +38,6 @@ export default class Home extends Vue {
 
   get showFABLoading() {
     return this.isLaterLoading
-  }
-
-  onClickInstanceModalOverlay() {
-    instanceModalModule.hide()
   }
 
   async fetchData() {

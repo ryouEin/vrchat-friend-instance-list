@@ -23,18 +23,7 @@
         </g-FAB>
       </template>
     </div>
-    <!-- TODO SOON: ローカルコンポーネント化 -->
-    <transition name="t-fade">
-      <div v-if="isVisibleInstanceModal" class="instanceModal">
-        <div class="overlay" @click="onClickInstanceModalOverlay" />
-        <div class="instance" @click="onClickInstanceModalOverlay">
-          <InstanceListItem
-            :instance="instanceModalInstance"
-            @click.native.stop
-          />
-        </div>
-      </div>
-    </transition>
+    <InstanceModal />
   </div>
 </template>
 

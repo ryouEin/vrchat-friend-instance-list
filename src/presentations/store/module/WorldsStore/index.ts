@@ -3,16 +3,8 @@ import { World } from '@/types'
 import * as ApiResponse from '@/types/ApiResponse'
 import * as vrcApiService from '@/infras/network/vrcApi'
 import { WorldStorage } from '@/infras/storage/World/WorldStorage'
-import pMemoize from 'p-memoize'
 import Storage from '@/libs/Storage/Storage'
-
-const storage = new Storage()
-const worldStorage = new WorldStorage(storage)
-
-// TODO: memoizeした関数、ここにこういうふうに定義するので良いの？
-const memFetchWorld = pMemoize(vrcApiService.fetchWorld, {
-  maxAge: 10000,
-})
+import { memoizedFetchWorld } from '@/infras/network/vrcApi'
 
 // TODO SOON: VRChat関係のユーティリティ系の関数まとめたい
 const calcWorldHardCapacity: (capacity: number) => number = capacity => {
@@ -48,20 +40,34 @@ export default class WorldsStore extends VuexModule {
   @Mutation
   private addWorld(world: ApiResponse.World) {
     // TODO: localStorageが満杯になった際の処理
+    const worldStorage = new WorldStorage(new Storage())
     worldStorage.addWorld(world)
+
     this._worlds.push(makeWorldFromApiResponse(world))
+  }
+
+  @Mutation
+  private clearWorlds() {
+    this._worlds = []
   }
 
   @Action({ commit: 'addWorld', rawError: true })
   async fetchWorld(id: string) {
-    return memFetchWorld(id)
+    return memoizedFetchWorld(id)
   }
 
   @Action({ commit: 'setWorlds', rawError: true })
   async init() {
     const popularWorlds = await vrcApiService.fetchPopularWorlds()
+
+    const worldStorage = new WorldStorage(new Storage())
     worldStorage.addWorlds(popularWorlds)
 
     return worldStorage.getWorlds()
+  }
+
+  @Action({ rawError: true })
+  async clear() {
+    this.context.commit('clearWorlds')
   }
 }

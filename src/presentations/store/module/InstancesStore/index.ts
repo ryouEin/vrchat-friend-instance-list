@@ -106,7 +106,6 @@ export default class InstancesStore extends VuexModule {
   //  本来ならコンストラクタインジェクション等で対応するがvuex-module-decoratorsは
   //  コンストラクタを自分で呼ぶ方法を提供していないため出来なかった。
   //  もっといい方法を模索
-  // TODO SOON: 内部処理の関数化を検討
   @Action({ rawError: true })
   async checkWatchingInstanceVacancy({
     location,
@@ -115,9 +114,8 @@ export default class InstancesStore extends VuexModule {
     location: InstanceLocation
     hardCapacity: number
   }) {
-    const instance = this.instances.find(
-      instance => instance.location === location
-    )
+    const instance = this.instanceByLocation(location)
+
     if (instance === undefined) {
       throw new Error('instance is undefined.')
     }

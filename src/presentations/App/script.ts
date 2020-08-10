@@ -13,6 +13,7 @@ import NotificationButton from '@/presentations/App/localComponents/Notification
 import AboutCapacity from '@/presentations/App/localComponents/AboutCapacity/index.vue'
 import { News } from '@/types'
 import SettingButton from '@/presentations/App/localComponents/SettingButton/index.vue'
+import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 
 @Component({
   components: {
@@ -55,10 +56,9 @@ export default class App extends Vue {
   }
 
   startCheckWatchingInstances() {
-    // TODO SOON: interval時間をconfigから取得
     setInterval(async () => {
       await instancesModule.checkWatchingInstances()
-    }, 10 * 1000)
+    }, INSTANCE_WATCH_INTERVAL)
   }
 
   async created() {

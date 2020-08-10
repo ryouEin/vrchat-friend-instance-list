@@ -5,11 +5,7 @@ import * as vrcApiService from '@/infras/network/vrcApi'
 import { WorldStorage } from '@/infras/storage/World/WorldStorage'
 import Storage from '@/libs/Storage/Storage'
 import { memoizedFetchWorld } from '@/infras/network/vrcApi'
-
-// TODO SOON: VRChat関係のユーティリティ系の関数まとめたい
-const calcWorldHardCapacity: (capacity: number) => number = capacity => {
-  return capacity === 1 ? 1 : capacity * 2
-}
+import { calcWorldHardCapacity } from '@/shame/calcWorldHardCapacity'
 
 const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
   return {

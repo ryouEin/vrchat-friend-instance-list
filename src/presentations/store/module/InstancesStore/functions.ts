@@ -21,7 +21,6 @@ export const makeInstancesFromLocations: (
   return locations.map(location => {
     const { worldId } = parseLocation(location)
 
-    // TODO SOON: Instanceのデフォルト値をどっかで定義したほうが良いのでは
     return {
       worldId,
       location,

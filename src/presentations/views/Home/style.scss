@@ -6,8 +6,6 @@ $tmpSideWidth: 250px;
 }
 
 .side {
-  $tmpHeaderHeight: 46px;
-
   position: fixed;
   top: $navHeight;
   bottom: 0;
@@ -15,26 +13,6 @@ $tmpSideWidth: 250px;
   z-index: $zIndexSideMenu;
   width: $tmpSideWidth;
   background-color: #fff;
-
-  .header {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1;
-    box-sizing: border-box;
-    height: $tmpHeaderHeight;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: $paleGrayColor;
-  }
-
-  .content {
-    box-sizing: border-box;
-    height: 100%;
-    padding-top: $tmpHeaderHeight;
-  }
 }
 
 .main {

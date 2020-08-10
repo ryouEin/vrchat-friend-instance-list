@@ -5,7 +5,7 @@ import {
   fetchAllFriends,
   makePresentationFriends,
   markNewFriends,
-} from '@/presentations/store/module/FriendsStore/functions'
+} from '@/store/module/FriendsStore/functions'
 
 @Module({ namespaced: true, name: 'friends' })
 export default class FriendsStore extends VuexModule {

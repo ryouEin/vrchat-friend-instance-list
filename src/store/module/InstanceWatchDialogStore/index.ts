@@ -1,6 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { Instance } from '@/types'
-import { worldsModule } from '@/presentations/store/ModuleFactory'
+import { worldsModule } from '@/store/ModuleFactory'
 import { parseLocation } from '@/shame/parseLocation'
 
 @Module({ namespaced: true, name: 'instanceWatchDialog' })

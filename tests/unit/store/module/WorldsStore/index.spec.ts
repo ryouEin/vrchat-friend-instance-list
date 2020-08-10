@@ -1,5 +1,5 @@
 import * as vrcApi from '@/infras/network/vrcApi'
-import { worldsModule } from '@/presentations/store/ModuleFactory'
+import { worldsModule } from '@/store/ModuleFactory'
 import Storage from '@/libs/Storage/Storage'
 import { World } from '@/types/ApiResponse'
 

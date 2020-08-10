@@ -1,5 +1,5 @@
 import * as vrcApi from '@/infras/network/vrcApi'
-import { instancesModule } from '@/presentations/store/ModuleFactory'
+import { instancesModule } from '@/store/ModuleFactory'
 import { Friend, Instance } from '@/types'
 
 const dummyFriendData: Friend = {

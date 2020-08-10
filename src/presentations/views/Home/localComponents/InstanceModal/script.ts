@@ -1,9 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import {
-  instanceModalModule,
-  instancesModule,
-} from '@/presentations/store/ModuleFactory'
+import { instanceModalModule, instancesModule } from '@/store/ModuleFactory'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 
 @Component({

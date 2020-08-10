@@ -5,7 +5,7 @@ import {
   instancesModule,
   settingModule,
   worldsModule,
-} from '@/presentations/store/ModuleFactory'
+} from '@/store/ModuleFactory'
 import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsApplicationService } from '@/applications/NewsApplicationService'

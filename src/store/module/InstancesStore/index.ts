@@ -7,7 +7,7 @@ import {
 } from './functions'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
-import { worldsModule } from '@/presentations/store/ModuleFactory'
+import { worldsModule } from '@/store/ModuleFactory'
 
 @Module({ namespaced: true, name: 'instances' })
 export default class InstancesStore extends VuexModule {

@@ -1,9 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import {
-  friendsModule,
-  instancesModule,
-} from '@/presentations/store/ModuleFactory'
+import { friendsModule, instancesModule } from '@/store/ModuleFactory'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'

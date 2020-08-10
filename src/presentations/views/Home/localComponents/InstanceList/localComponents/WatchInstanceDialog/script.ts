@@ -5,7 +5,7 @@ import {
   instancesModule,
   instanceWatchDialogModule,
   notificationsModule,
-} from '@/presentations/store/ModuleFactory'
+} from '@/store/ModuleFactory'
 
 const generateSelectItems = (count: number) => {
   const tmp = []

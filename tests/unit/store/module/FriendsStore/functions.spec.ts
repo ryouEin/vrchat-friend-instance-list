@@ -1,5 +1,5 @@
 import { FetchFriendsFunction } from '@/infras/network/vrcApi'
-import { fetchAllFriends } from '@/presentations/store/module/FriendsStore/functions'
+import { fetchAllFriends } from '@/store/module/FriendsStore/functions'
 
 describe('fetchAllFriends', () => {
   const dummyFriend = {

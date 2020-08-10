@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { instancesModule } from '@/presentations/store/ModuleFactory'
+import { instancesModule } from '@/store/ModuleFactory'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import Permission from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/Permission/index.vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'

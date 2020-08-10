@@ -2,7 +2,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { Friend, InstancePermission } from '@/types'
-import { instanceModalModule } from '@/presentations/store/ModuleFactory'
+import { instanceModalModule } from '@/store/ModuleFactory'
 
 const Status = {
   Private: 'private',

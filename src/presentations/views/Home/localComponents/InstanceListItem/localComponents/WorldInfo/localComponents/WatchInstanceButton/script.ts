@@ -4,7 +4,7 @@ import InstanceButton from '@/presentations/views/Home/localComponents/InstanceL
 import {
   instancesModule,
   instanceWatchDialogModule,
-} from '@/presentations/store/ModuleFactory'
+} from '@/store/ModuleFactory'
 import { Instance } from '@/types'
 
 @Component({

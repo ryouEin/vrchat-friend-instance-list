@@ -1,9 +1,6 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
-import {
-  friendsModule,
-  worldsModule,
-} from '@/presentations/store/ModuleFactory'
+import { friendsModule, worldsModule } from '@/store/ModuleFactory'
 import UserList from './localComponents/UserList/index.vue'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { Friend, Instance, InstancePermission, World } from '@/types'

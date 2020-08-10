@@ -1,5 +1,5 @@
 import * as vrcApi from '@/infras/network/vrcApi'
-import { friendsModule } from '@/presentations/store/ModuleFactory'
+import { friendsModule } from '@/store/ModuleFactory'
 import { User } from '@/types/ApiResponse'
 import { Friend } from '@/types'
 

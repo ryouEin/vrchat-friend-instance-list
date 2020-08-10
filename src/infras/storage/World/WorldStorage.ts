@@ -7,10 +7,6 @@ const WORLD_STORAGE_KEY = 'worldData'
 export class WorldStorage {
   constructor(private _storage: IStorage) {}
 
-  clearStorage() {
-    this._storage.clear()
-  }
-
   getWorlds(): World[] {
     const worldsJson = this._storage.getItem(WORLD_STORAGE_KEY)
     if (worldsJson === undefined) return []

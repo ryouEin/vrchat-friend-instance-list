@@ -1,0 +1,94 @@
+.c-worldInfo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.worldImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.userNum {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 10px;
+  font-size: 15px;
+  color: $whiteColor;
+  background-color: rgba($blackColor, 0.8);
+
+  .current {
+    font-size: 20px;
+    line-height: 1.7;
+  }
+
+  .capacity {
+    font-size: 14px;
+  }
+
+  &.-full {
+    background-color: rgba($redColor, 0.8);
+  }
+}
+
+.worldName {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 90%;
+  padding: 10px 15px;
+  overflow: hidden;
+  font-size: 26px;
+  font-weight: bold;
+  color: $whiteColor;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: rgba($blackColor, 0.9);
+}
+
+.instanceButtonArea {
+  position: absolute;
+  right: 10px;
+  bottom: 15px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.instanceButtonGroup {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  height: 50px;
+  overflow: hidden;
+  background-color: $grayColor;
+  border-radius: 5px;
+  box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
+
+  .instanceButtonGroup_item {
+    flex: 1 1 100%;
+
+    &.-watch {
+      flex-basis: 40%;
+    }
+
+    &:not(:last-child) {
+      margin-right: 1px;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+.c-instanceListItem {
+  display: flex;
+  min-height: 220px;
+  background-color: $whiteColor;
+  box-shadow: rgba($blackColor, 0.1) 0 0 5px 1px;
+}
+
+.instanceInfo {
+  flex: 0 0 25%;
+  overflow: hidden;
+  background-color: $blackColor;
+
+  // TODO: メディアクエリの幅情報、何らかの方法で共通化する
+  @media only screen and (max-width: 1300px) {
+    flex-basis: 35%;
+  }
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.privateTitle {
+  padding: 80px 0;
+  font-size: 30px;
+  font-weight: bold;
+  color: $whiteColor;
+  text-align: center;
+}
+
+.userInfo {
+  box-sizing: border-box;
+  flex: 1 1 100%;
+}

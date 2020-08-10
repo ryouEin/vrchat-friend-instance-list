@@ -1,8 +1,8 @@
 import { sortUsers } from '@/shame/sortUsers'
-import { User } from '@/types'
+import { Friend } from '@/types'
 
 describe('sortUsers', () => {
-  const dummyData: User = {
+  const dummyData: Friend = {
     id: 'sample',
     username: 'sample',
     displayName: 'sample',

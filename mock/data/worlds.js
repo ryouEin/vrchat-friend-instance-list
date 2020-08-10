@@ -1,15 +1,18 @@
+const { BASE_URL } = require('../config')
+const { getRandomString } = require('../util')
+
 const makeWorld = index => {
   return {
     id: `wrld_${index}`,
-    name: `World ${index}`,
-    imageUrl: 'https://placehold.jp/150x150.png',
-    thumbnailImageUrl: 'https://placehold.jp/150x150.png',
+    name: `World ${index} long name long name long name`,
+    imageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
+    thumbnailImageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
     capacity: 1 + index
   }
 }
 
 const worlds = []
-for (let index = 0; index < 10; index++) {
+for (let index = 0; index < 100; index++) {
   worlds.push(makeWorld(index))
 }
 

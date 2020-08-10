@@ -1,6 +1,6 @@
 import { INewsStorage } from '@/infras/storage/News/INewsStorage'
 import { INewsApi } from '@/infras/network/News/INewsApi'
-import { NewsService } from '@/domains/News/NewsService'
+import { NewsApplicationService } from '@/applications/NewsApplicationService'
 import { advanceTo } from 'jest-date-mock'
 import { News, UnixTime } from '@/types'
 
@@ -50,7 +50,7 @@ describe('getNews', () => {
   it('最終お知らせ確認日時以降のお知らせを最大三件公開日降順で取得する', async () => {
     const newsApi = new MockNewsApi()
     const newsStorage = new MockNewsStorage()
-    const newsService = new NewsService(newsApi, newsStorage)
+    const newsService = new NewsApplicationService(newsApi, newsStorage)
     const result = await newsService.getNews()
 
     expect(result).toEqual([
@@ -77,7 +77,7 @@ describe('getNews', () => {
 
     const newsApi = new MockNewsApi()
     const newsStorage = new MockNewsStorage()
-    const newsService = new NewsService(newsApi, newsStorage)
+    const newsService = new NewsApplicationService(newsApi, newsStorage)
     await newsService.getNews()
 
     expect(newsStorage.lastCheckAt).toBe(Date.now())

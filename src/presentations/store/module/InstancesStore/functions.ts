@@ -2,7 +2,6 @@ import { Friend, Instance, InstanceLocation } from '@/types'
 import uniqBy from 'lodash/uniqBy'
 import { parseLocation } from '@/shame/parseLocation'
 
-// TODO SOON: テスト
 export const getLocationsFromFriends: (
   friends: Friend[]
 ) => string[] = friends => {
@@ -16,7 +15,6 @@ export const getLocationsFromFriends: (
   return instancesWithoutPrivate.concat(privateInstance)
 }
 
-// TODO SOON: テスト
 export const makeInstancesFromLocations: (
   locations: InstanceLocation[]
 ) => Instance[] = locations => {
@@ -33,7 +31,6 @@ export const makeInstancesFromLocations: (
   })
 }
 
-// TODO SOON: テスト
 export const applyOldInstanceStatesToNewInstances: (
   newInstances: Instance[],
   oldInstances: Instance[]

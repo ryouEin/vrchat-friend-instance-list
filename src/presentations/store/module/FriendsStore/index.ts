@@ -31,6 +31,11 @@ export default class FriendsStore extends VuexModule {
     this._friends = markNewFriends(this._friends, friends)
   }
 
+  @Mutation
+  private clearFriends() {
+    this._friends = []
+  }
+
   @Action({ commit: 'setFriends', rawError: true })
   async fetchFriends() {
     const [friends, favorites] = await Promise.all([
@@ -39,5 +44,10 @@ export default class FriendsStore extends VuexModule {
     ])
 
     return makePresentationFriends(friends, favorites)
+  }
+
+  @Action({ rawError: true })
+  async clear() {
+    this.context.commit('clearFriends')
   }
 }

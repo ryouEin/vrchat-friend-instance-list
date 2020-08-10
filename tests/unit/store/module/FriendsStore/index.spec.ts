@@ -20,6 +20,10 @@ const generateDummyFriends = (count: number) => {
   return dummyFriends
 }
 
+beforeEach(async () => {
+  await friendsModule.clear()
+})
+
 describe('fetchFriends', () => {
   it('APIから取得したフレンドデータを取得できる', async () => {
     const dummyData: User[] = generateDummyFriends(310)

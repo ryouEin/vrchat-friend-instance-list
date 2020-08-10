@@ -24,6 +24,11 @@ export default class InstancesStore extends VuexModule {
   }
 
   @Mutation
+  private clearInstances() {
+    this._instances = []
+  }
+
+  @Mutation
   private updateInstancesWithLocations(locations: InstanceLocation[]) {
     const newInstances = makeInstancesFromLocations(locations)
     this._instances = applyOldInstanceStatesToNewInstances(
@@ -32,7 +37,6 @@ export default class InstancesStore extends VuexModule {
     )
   }
 
-  // TODO SOON: 内部処理関数化
   @Mutation
   private setInstanceInfo(instanceInfo: InstanceInfo) {
     this._instances = this._instances.map(instance => {
@@ -98,9 +102,19 @@ export default class InstancesStore extends VuexModule {
     return await fetchInstanceInfo(location)
   }
 
+  // TODO: テストのために依存をはがすため、hardCapacityを引数として渡しているが微妙。
+  //  本来ならコンストラクタインジェクション等で対応するがvuex-module-decoratorsは
+  //  コンストラクタを自分で呼ぶ方法を提供していないため出来なかった。
+  //  もっといい方法を模索
   // TODO SOON: 内部処理の関数化を検討
   @Action({ rawError: true })
-  async checkWatchingInstanceVacancy(location: InstanceLocation) {
+  async checkWatchingInstanceVacancy({
+    location,
+    hardCapacity,
+  }: {
+    location: InstanceLocation
+    hardCapacity: number
+  }) {
     const instance = this.instances.find(
       instance => instance.location === location
     )
@@ -114,13 +128,8 @@ export default class InstancesStore extends VuexModule {
       throw new Error('userNum is undefined.')
     }
 
-    const world = worldsModule.world(instance.worldId)
-    if (world === undefined) {
-      throw new Error('world is undefined.')
-    }
-
     const hasRequiredVacancy =
-      instance.userNum + instance.notifyUserNum <= world.hardCapacity
+      instance.userNum + instance.notifyUserNum <= hardCapacity
     if (hasRequiredVacancy) {
       const onFindVacancy = instance.onFindVacancy
       if (onFindVacancy !== undefined) {
@@ -160,12 +169,21 @@ export default class InstancesStore extends VuexModule {
     )
     const promises = watchingInstances.map(async instance => {
       await this.context.dispatch('updateInstanceInfo', instance.location)
-      await this.context.dispatch(
-        'checkWatchingInstanceVacancy',
-        instance.location
-      )
+      const world = worldsModule.world(instance.worldId)
+      if (world === undefined) {
+        throw new Error('world is undefined.')
+      }
+      await this.context.dispatch('checkWatchingInstanceVacancy', {
+        location: instance.location,
+        hardCapacity: world.hardCapacity,
+      })
     })
 
     return Promise.all(promises)
+  }
+
+  @Action({ rawError: true })
+  async clear() {
+    this.context.commit('clearInstances')
   }
 }

@@ -15,6 +15,7 @@ import Spinner from '@/presentations/components/Spinner/index.vue'
 import Toggle from '@/presentations/components/Toggle/index.vue'
 import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import { VueHammer } from 'vue2-hammer'
 
 Vue.config.productionTip = false
 
@@ -22,6 +23,7 @@ Vue.config.productionTip = false
 Vue.use(AlertPlugin)
 Vue.use(FullLoaderPlugin)
 Vue.use(VueVirtualScroller)
+Vue.use(VueHammer)
 
 // グローバルコンポーネント登録
 Vue.component('g-Button', Button)

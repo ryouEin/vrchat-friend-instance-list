@@ -10,6 +10,10 @@
         <g-Icon :size="24">help</g-Icon>
         <div class="text">インスタンスの最大人数に関して</div>
       </div>
+      <div class="item" @click="showAuthorDialog">
+        <g-Icon :size="24">account_circle</g-Icon>
+        <div class="text">製作者</div>
+      </div>
     </div>
     <div class="dialogs">
       <!-- TODO: 各ダイアログのコンポーネント化 -->
@@ -54,6 +58,29 @@
         </template>
         <template v-slot:buttonArea>
           <g-Button @click="hideAboutCapacityDialog">閉じる</g-Button>
+        </template>
+      </g-Dialog>
+
+      <g-Dialog v-if="isVisibleAuthorDialog" title="製作者">
+        <template v-slot:content>
+          <div class="author">
+            <div class="author_image">
+              <img src="@/presentations/assets/creditThumbnail.jpg" alt="" />
+            </div>
+            <div class="author_name">ryou</div>
+            <div class="author_role">Silent Club オーナー</div>
+            <div class="author_sns">
+              <a
+                href="https://twitter.com/ryou_Ein"
+                target="_blank"
+                rel="noopener"
+                ><img src="@/presentations/assets/twitterLogo.png" alt="Twitter"
+              /></a>
+            </div>
+          </div>
+        </template>
+        <template v-slot:buttonArea>
+          <g-Button @click="hideAuthorDialog">閉じる</g-Button>
         </template>
       </g-Dialog>
     </div>

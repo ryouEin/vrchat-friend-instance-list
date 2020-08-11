@@ -7,6 +7,7 @@ import { settingModule } from '@/store/ModuleFactory'
 export default class Menu extends Vue {
   isVisibleSettingDialog = false
   isVisibleAboutCapacityDialog = false
+  isVisibleAuthorDialog = false
 
   @Prop()
   value!: boolean
@@ -34,6 +35,14 @@ export default class Menu extends Vue {
 
   hideAboutCapacityDialog() {
     this.isVisibleAboutCapacityDialog = false
+  }
+
+  showAuthorDialog() {
+    this.isVisibleAuthorDialog = true
+  }
+
+  hideAuthorDialog() {
+    this.isVisibleAuthorDialog = false
   }
 
   hideMenu() {

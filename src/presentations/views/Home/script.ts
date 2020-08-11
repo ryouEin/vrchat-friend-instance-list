@@ -16,6 +16,7 @@ import InstanceModal from '@/presentations/views/Home/localComponents/InstanceMo
 export default class Home extends Vue {
   isInitialLoading = false
   isLaterLoading = false
+  isVisibleSideMenu = false
 
   get friends(): Friend[] {
     return friendsModule.friends
@@ -35,6 +36,14 @@ export default class Home extends Vue {
 
   get showFABLoading() {
     return this.isLaterLoading
+  }
+
+  showInstanceList() {
+    this.isVisibleSideMenu = true
+  }
+
+  hideInstanceList() {
+    this.isVisibleSideMenu = false
   }
 
   async fetchData() {

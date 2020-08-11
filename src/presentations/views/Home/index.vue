@@ -1,10 +1,17 @@
 <template>
-  <div class="c-home">
-    <div class="side">
-      <div v-if="showOnlineFriendsListLoading" class="u-alignCenter u-pt20">
-        <g-Spinner color="black" :size="24" />
+  <div class="c-home" v-hammer:swipe.right="showInstanceList">
+    <div
+      class="side"
+      :class="{ '-visible': isVisibleSideMenu }"
+      v-hammer:swipe.left="hideInstanceList"
+    >
+      <div class="overlay" @click="hideInstanceList" />
+      <div class="content">
+        <div v-if="showOnlineFriendsListLoading" class="u-alignCenter u-pt20">
+          <g-Spinner color="black" :size="24" />
+        </div>
+        <OnlineFriendsList v-else :friends="friends" />
       </div>
-      <OnlineFriendsList v-else :friends="friends" />
     </div>
     <div class="main">
       <div v-if="showInstanceListLoading" class="u-alignCenter u-pt40">
@@ -12,7 +19,12 @@
       </div>
       <template v-else>
         <InstanceList :instances="instances" />
-        <g-FAB @click="reload">
+        <div class="u-spOnly">
+          <g-FAB position="left" @click="showInstanceList">
+            <g-Icon :size="50" color="black">people</g-Icon>
+          </g-FAB>
+        </div>
+        <g-FAB color="green" @click="reload">
           <g-Spinner v-if="showFABLoading" color="white" />
           <g-Icon v-else :size="50" color="white">refresh</g-Icon>
         </g-FAB>

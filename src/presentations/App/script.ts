@@ -10,24 +10,33 @@ import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsApplicationService } from '@/applications/NewsApplicationService'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
-import AboutCapacity from '@/presentations/App/localComponents/AboutCapacity/index.vue'
 import { News } from '@/types'
-import SettingButton from '@/presentations/App/localComponents/SettingButton/index.vue'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
+import Menu from '@/presentations/App/localComponents/Menu/index.vue'
+import { UAParser } from 'ua-parser-js'
 
 @Component({
   components: {
     NotificationButton,
-    SettingButton,
-    AboutCapacity,
+    Menu,
   },
 })
 export default class App extends Vue {
   initialized = false
   showAuthErrorDialog = false
+  isVisibleMenu = false
+  isPC = false
 
   reload() {
     location.reload()
+  }
+
+  showMenu() {
+    this.isVisibleMenu = true
+  }
+
+  hideMenu() {
+    this.isVisibleMenu = false
   }
 
   showNewsDialogs(newsArray: News[]) {
@@ -61,6 +70,25 @@ export default class App extends Vue {
     }, INSTANCE_WATCH_INTERVAL)
   }
 
+  judgeDevice() {
+    const parser = new UAParser()
+    const device = parser.getDevice()
+    console.log(device)
+    if (device.type !== 'mobile') {
+      this.isPC = true
+    }
+  }
+
+  // TODO: id経由でアクセスしているが、もっといい方法がないか…
+  scrollTopInstanceList() {
+    const instanceListElement = document.getElementById('InstanceList')
+    if (instanceListElement === null) {
+      throw new Error('Element has id "InstanceList" is not found.')
+    }
+
+    instanceListElement.scrollTo(0, 0)
+  }
+
   async created() {
     addErrorCallback(status => {
       if (status === 401) {
@@ -73,6 +101,8 @@ export default class App extends Vue {
         })
       }
     })
+
+    this.judgeDevice()
 
     this.$fullLoader.show()
     settingModule.init()

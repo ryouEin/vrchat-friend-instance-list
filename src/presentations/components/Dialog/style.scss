@@ -22,11 +22,18 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 600px;
   max-height: 90vh;
   overflow: hidden;
   background-color: $whiteColor;
   border-radius: 5px;
+
+  @include mqPc {
+    width: 600px;
+  }
+
+  @include mqSp {
+    width: 90vw;
+  }
 }
 
 .header {

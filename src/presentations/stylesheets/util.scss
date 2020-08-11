@@ -60,3 +60,19 @@
 .u-alignRight {
   text-align: right;
 }
+
+.u-spOnly {
+  @include mqPc {
+    display: none;
+  }
+}
+
+.u-pcOnly {
+  @include mqSp {
+    display: none;
+  }
+}
+
+.u-interactive {
+  cursor: pointer;
+}

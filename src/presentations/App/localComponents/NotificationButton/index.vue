@@ -2,7 +2,7 @@
   <div class="c-notificationButton">
     <div class="button" @click="showMenu">
       <g-Icon :size="24" color="white">notifications</g-Icon>
-      <span class="text">通知一覧</span>
+      <span class="text u-pcOnly">通知一覧</span>
       <div v-if="hasUnreadNotification" class="badge"></div>
     </div>
     <div v-if="menuIsVisible" class="menu" v-click-outside="hideMenu">

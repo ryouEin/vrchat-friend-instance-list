@@ -1,12 +1,15 @@
+// TODO: typeとinterfaceの使い分け方針決める
 export type UnixTime = number
 
-export interface User {
+export type InstanceLocation = string
+
+export interface Friend {
   id: string
   username: string
   displayName: string
   currentAvatarImageUrl: string
   currentAvatarThumbnailImageUrl: string
-  location: string
+  location: InstanceLocation
   isFavorited: boolean
   isNew: boolean
 }
@@ -17,6 +20,7 @@ export interface World {
   imageUrl: string
   thumbnailImageUrl: string
   capacity: number
+  hardCapacity: number
 }
 
 export const InstancePermission = {
@@ -42,4 +46,13 @@ export type Notification = {
 
 export type Setting = {
   enableNotificationSound: boolean
+}
+
+export type Instance = {
+  worldId: string
+  location: InstanceLocation
+  isWatching: boolean
+  notifyUserNum: number
+  userNum?: number
+  onFindVacancy?: () => void
 }

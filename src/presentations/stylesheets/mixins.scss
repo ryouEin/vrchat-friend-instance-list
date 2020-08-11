@@ -1,0 +1,29 @@
+@mixin mqSp {
+  @media only screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mqPc {
+  @media only screen and (min-width: 769px) {
+    @content;
+  }
+}
+
+@mixin mqPcWide {
+  @media only screen and (min-width: 1301px) {
+    @content;
+  }
+}
+
+@mixin mqPcMid {
+  @media only screen and (min-width: 1028px) and (max-width: 1300px) {
+    @content;
+  }
+}
+
+@mixin mqPcNarrow {
+  @media only screen and (min-width: 769px) and (max-width: 1027px) {
+    @content;
+  }
+}

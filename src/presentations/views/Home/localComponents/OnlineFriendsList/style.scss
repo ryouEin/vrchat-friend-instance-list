@@ -1,0 +1,30 @@
+.c-userList {
+  height: 100%;
+}
+
+.scroller {
+  height: 100%;
+  overscroll-behavior: none;
+
+  @include mqPc {
+    &::before {
+      position: sticky;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1;
+      box-sizing: border-box;
+      display: block;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      content: 'Online Friends';
+      background-color: $paleGrayColor;
+    }
+  }
+}
+
+.item {
+  box-sizing: border-box;
+  border-bottom: 1px solid $paleGrayColor;
+}

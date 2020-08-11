@@ -1,0 +1,13 @@
+.c-fullLoader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zIndexFullLoader;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($whiteColor, 0.8);
+}

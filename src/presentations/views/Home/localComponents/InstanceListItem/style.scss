@@ -1,18 +1,36 @@
 .c-instanceListItem {
-  display: flex;
-  min-height: 220px;
   background-color: $whiteColor;
   box-shadow: rgba($blackColor, 0.1) 0 0 5px 1px;
+
+  @include mqPc {
+    display: flex;
+    min-height: 220px;
+  }
+
+  @include mqPcNarrow {
+    display: block;
+  }
 }
 
 .instanceInfo {
-  flex: 0 0 25%;
-  overflow: hidden;
   background-color: $blackColor;
 
-  // TODO: メディアクエリの幅情報、何らかの方法で共通化する
-  @media only screen and (max-width: 1300px) {
-    flex-basis: 35%;
+  @include mqPc {
+    flex: 0 0 25%;
+    overflow: hidden;
+
+    // TODO: メディアクエリの幅情報、何らかの方法で共通化する
+    @include mqPcMid {
+      flex-basis: 35%;
+    }
+  }
+
+  @include mqPcNarrow {
+    height: 200px;
+  }
+
+  @include mqSp {
+    height: 200px;
   }
 }
 

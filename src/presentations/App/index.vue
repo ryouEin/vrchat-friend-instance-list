@@ -1,12 +1,16 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'is-pc': isPC }">
     <template v-if="initialized">
       <div class="navBar">
-        <div class="appTitle">VRChat Friend Instance List</div>
+        <div class="appTitle u-interactive" @click="scrollTopInstanceList">
+          VRC Friend Instance List
+        </div>
         <div class="spacer"></div>
-        <AboutCapacity class="u-mr25" />
-        <NotificationButton class="u-mr25" />
-        <SettingButton />
+        <NotificationButton class="u-mr5" />
+        <div class="iconButton" @click="showMenu">
+          <g-Icon :size="24" color="white">menu</g-Icon>
+        </div>
+        <Menu v-model="isVisibleMenu" />
       </div>
       <div class="main">
         <router-view />

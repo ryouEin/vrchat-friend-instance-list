@@ -1,6 +1,7 @@
 <template>
   <div class="c-instanceList">
     <DynamicScroller
+      id="InstanceList"
       :items="instances"
       :min-item-size="250"
       class="scroller"

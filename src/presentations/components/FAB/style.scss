@@ -22,7 +22,13 @@
   }
 
   &.-right {
+    // スクロールバー分左にずらす
     right: 25px;
+
+    // スマホではスクロールバーないので10px
+    @include mqSp {
+      right: 10px;
+    }
   }
 
   &.-white {

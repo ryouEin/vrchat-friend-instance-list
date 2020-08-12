@@ -1,6 +1,10 @@
 <template>
   <div class="c-worldInfo">
-    <img :src="world.thumbnailImageUrl" class="worldImage" />
+    <img
+      class="worldImage"
+      :src="world.thumbnailImageUrl"
+      :key="world.thumbnailImageUrl"
+    />
     <div class="tag">
       <Permission :permission="instancePermission" />
     </div>

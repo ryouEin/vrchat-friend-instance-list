@@ -1,6 +1,10 @@
 <template>
   <div class="c-userListItem" :id="user.id">
-    <img class="userImage" :src="user.currentAvatarThumbnailImageUrl" />
+    <img
+      class="userImage"
+      :src="user.currentAvatarThumbnailImageUrl"
+      :key="user.currentAvatarThumbnailImageUrl"
+    />
     <div v-if="user.isFavorited" class="favorite">
       <g-FavoriteMark />
     </div>

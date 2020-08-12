@@ -1,7 +1,11 @@
 <template>
   <div class="c-userListItem" @click="onClick">
     <div class="figure">
-      <img class="userImage" :src="friend.currentAvatarThumbnailImageUrl" />
+      <img
+        class="userImage"
+        :src="friend.currentAvatarThumbnailImageUrl"
+        :key="friend.currentAvatarThumbnailImageUrl"
+      />
       <div v-if="friend.isFavorited" class="favorite">
         <g-FavoriteMark />
       </div>

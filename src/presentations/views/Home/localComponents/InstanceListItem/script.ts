@@ -17,12 +17,11 @@ export default class InstanceListItem extends Vue {
   @Prop({ required: true })
   private instance!: Instance
 
+  @Prop({ required: true })
+  private friends!: Friend[]
+
   get location(): string {
     return this.instance.location
-  }
-
-  get friends(): Friend[] {
-    return friendsModule.friendsByLocation(this.location)
   }
 
   get worldId(): string {

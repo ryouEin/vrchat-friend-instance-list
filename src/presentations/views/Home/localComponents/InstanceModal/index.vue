@@ -3,7 +3,11 @@
     <div v-if="isVisible" class="c-instanceModal">
       <div class="overlay" @click="hide" />
       <div class="instance" @click="hide">
-        <InstanceListItem :instance="instance" @click.native.stop />
+        <InstanceListItem
+          :instance="instance"
+          :friends="friends"
+          @click.native.stop
+        />
       </div>
     </div>
   </transition>

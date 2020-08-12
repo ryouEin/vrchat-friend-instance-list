@@ -2,21 +2,23 @@
   <div class="c-instanceList">
     <DynamicScroller
       id="InstanceList"
-      :items="instances"
+      :items="items"
       :min-item-size="250"
       class="scroller"
-      key-field="location"
       :buffer="1500"
     >
       <template v-slot="{ item, index, active }">
         <DynamicScrollerItem
           :item="item"
           :active="active"
-          :size-dependencies="[item.users]"
+          :size-dependencies="[item.friends.length]"
           :data-index="index"
         >
           <div class="item">
-            <InstanceListItem :instance="item" />
+            <InstanceListItem
+              :instance="item.instance"
+              :friends="item.friends"
+            />
           </div>
         </DynamicScrollerItem>
       </template>

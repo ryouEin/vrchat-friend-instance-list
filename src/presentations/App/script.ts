@@ -73,7 +73,6 @@ export default class App extends Vue {
   judgeDevice() {
     const parser = new UAParser()
     const device = parser.getDevice()
-    console.log(device)
     if (device.type !== 'mobile') {
       this.isPC = true
     }

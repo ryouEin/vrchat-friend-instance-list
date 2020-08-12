@@ -5,10 +5,26 @@
 .scroller {
   box-sizing: border-box;
   height: 100%;
-  padding: 30px 30px 80px;
+  padding: 30px 30px 0;
 
   // hammer.jsの横スワイプを検知するために必要
   touch-action: pan-y;
+
+  @include mqPc {
+    &::after {
+      display: block;
+      height: 80px;
+      content: '';
+    }
+  }
+
+  @include mqSp {
+    &::after {
+      display: block;
+      height: 120px;
+      content: '';
+    }
+  }
 }
 
 .item {

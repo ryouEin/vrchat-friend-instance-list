@@ -1,6 +1,7 @@
 <template>
   <div class="c-instanceList">
     <DynamicScroller
+      v-if="isPC"
       id="InstanceList"
       :items="instances"
       :min-item-size="250"
@@ -21,6 +22,19 @@
         </DynamicScrollerItem>
       </template>
     </DynamicScroller>
+    <RecycleScroller
+      v-else
+      id="InstanceList"
+      class="scroller"
+      :items="instancesWithSize"
+      key-field="location"
+      v-slot="{ item }"
+      :buffer="1500"
+    >
+      <div class="item">
+        <InstanceListItem :instance="item" />
+      </div>
+    </RecycleScroller>
     <WatchInstanceDialog />
   </div>
 </template>

@@ -13,7 +13,7 @@ import NotificationButton from '@/presentations/App/localComponents/Notification
 import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
-import { isPcDevice } from '@/shame/isPcDevice'
+import { UAParser } from 'ua-parser-js'
 
 @Component({
   components: {
@@ -25,10 +25,7 @@ export default class App extends Vue {
   initialized = false
   showAuthErrorDialog = false
   isVisibleMenu = false
-
-  get isPC() {
-    return isPcDevice
-  }
+  isPC = false
 
   reload() {
     location.reload()
@@ -73,6 +70,14 @@ export default class App extends Vue {
     }, INSTANCE_WATCH_INTERVAL)
   }
 
+  judgeDevice() {
+    const parser = new UAParser()
+    const device = parser.getDevice()
+    if (device.type !== 'mobile') {
+      this.isPC = true
+    }
+  }
+
   // TODO: id経由でアクセスしているが、もっといい方法がないか…
   scrollTopInstanceList() {
     const instanceListElement = document.getElementById('InstanceList')
@@ -95,6 +100,8 @@ export default class App extends Vue {
         })
       }
     })
+
+    this.judgeDevice()
 
     this.$fullLoader.show()
     settingModule.init()

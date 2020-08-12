@@ -1,6 +1,10 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { instanceModalModule, instancesModule } from '@/store/ModuleFactory'
+import {
+  friendsModule,
+  instanceModalModule,
+  instancesModule,
+} from '@/store/ModuleFactory'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 
 @Component({
@@ -20,6 +24,15 @@ export default class InstanceModal extends Vue {
     }
 
     return instancesModule.instanceByLocation(location)
+  }
+
+  get friends() {
+    const instance = this.instance
+    if (instance === undefined) {
+      throw new Error('instance is undefined.')
+    }
+
+    return friendsModule.friendsByLocation(instance.location)
   }
 
   hide() {

@@ -1,15 +1,23 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Users from '@/store/module/Users'
-import Worlds from '@/store/module/Worlds'
-import Notifications from '@/store/module/Notifications'
+import FriendsStore from '@/store/module/FriendsStore'
+import WorldsStore from '@/store/module/WorldsStore'
+import NotificationsStore from '@/store/module/NotificationsStore'
+import SettingStore from '@/store/module/SettingStore'
+import InstancesStore from '@/store/module/InstancesStore'
+import InstanceModalStore from '@/store/module/InstanceModalStore'
+import InstanceWatchDialogStore from '@/store/module/InstanceWatchDialogStore'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    users: Users,
-    worlds: Worlds,
-    notifications: Notifications,
+    friends: FriendsStore,
+    instances: InstancesStore,
+    worlds: WorldsStore,
+    notifications: NotificationsStore,
+    setting: SettingStore,
+    instanceModal: InstanceModalStore,
+    instanceWatchDialog: InstanceWatchDialogStore,
   },
 })

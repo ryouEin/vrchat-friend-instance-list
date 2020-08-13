@@ -9,6 +9,30 @@
         {
           "version": "3.2.1",
           "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.2.1/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.3.0",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.3.0/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.4.0",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.4.0/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.4.1",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.4.1/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.4.2",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.4.2/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.4.3",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.4.3/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.4.4",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.4.4/vrchat_friend_instance_list.xpi"
         }
       ]
     }

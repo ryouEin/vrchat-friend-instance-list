@@ -1,5 +1,6 @@
 const express = require('express')
-const { getFriends, listFavorites, getWorld, listWorlds, getInstanceInfo, listNews } = require('./controller')
+const { PORT } = require('./config')
+const { getFriends, listFavorites, getWorld, listWorlds, getInstanceInfo, listNews, getDummyImage } = require('./controller')
 
 const app = express()
 
@@ -18,7 +19,7 @@ app.use((req, res, next) => {
 })
 
 app.use(async (req, res, next) => {
-  await sleep(3000)
+  await sleep(1000)
   next()
 })
 
@@ -36,5 +37,6 @@ app.get('/api/1/worlds/:id', getWorld)
 app.get('/api/1/worlds', listWorlds)
 app.get('/api/1/instances/:location', getInstanceInfo)
 app.get('/news', listNews)
+app.get('/dummyImage/:uid', getDummyImage)
 
-app.listen(3000, () => console.log('Api mock listening on port 3000!'))
+app.listen(PORT, () => console.log(`Api mock listening on port ${PORT}!`))

@@ -10,6 +10,8 @@ jobs:
       - run: npm run lint
       - run: npm run test:unit
       - run: npm run build
+      - run: npm run ff_addon_lint:checkVersion
+      - run: npm run ff_addon_lint:checkUpdateLinkFormat
 workflows:
   version: 2
   check:

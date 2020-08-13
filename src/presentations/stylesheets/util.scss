@@ -1,0 +1,78 @@
+// margin
+@for $i from 1 through 20 {
+  .u-mt#{$i * 5} {
+    margin-top: #{$i * 5}px;
+  }
+}
+
+@for $i from 1 through 20 {
+  .u-mr#{$i * 5} {
+    margin-right: #{$i * 5}px;
+  }
+}
+
+@for $i from 1 through 20 {
+  .u-mb#{$i * 5} {
+    margin-bottom: #{$i * 5}px;
+  }
+}
+
+@for $i from 1 through 20 {
+  .u-ml#{$i * 5} {
+    margin-left: #{$i * 5}px;
+  }
+}
+
+
+// padding
+@for $i from 1 through 20 {
+  .u-pt#{$i * 5} {
+    padding-top: #{$i * 5}px;
+  }
+}
+
+@for $i from 1 through 20 {
+  .u-pb#{$i * 5} {
+    padding-bottom: #{$i * 5}px;
+  }
+}
+
+@for $i from 1 through 20 {
+  .u-pl#{$i * 5} {
+    padding-left: #{$i * 5}px;
+  }
+}
+
+@for $i from 1 through 20 {
+  .u-pr#{$i * 5} {
+    padding-right: #{$i * 5}px;
+  }
+}
+
+.u-alignLeft {
+  text-align: left;
+}
+
+.u-alignCenter {
+  text-align: center;
+}
+
+.u-alignRight {
+  text-align: right;
+}
+
+.u-spOnly {
+  @include mqPc {
+    display: none;
+  }
+}
+
+.u-pcOnly {
+  @include mqSp {
+    display: none;
+  }
+}
+
+.u-interactive {
+  cursor: pointer;
+}

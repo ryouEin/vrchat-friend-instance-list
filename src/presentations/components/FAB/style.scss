@@ -1,0 +1,43 @@
+.c-fab {
+  position: fixed;
+  bottom: 10px;
+  z-index: $zIndexFAB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 75px;
+  height: 75px;
+  cursor: pointer;
+  border-radius: 9999px;
+  box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
+  transition: background-color $mainAnimationDuration;
+
+  &:hover {
+    background-color: lighten($mainColor, 5);
+  }
+
+  &.-left {
+    left: 10px;
+  }
+
+  &.-right {
+    // スクロールバー分左にずらす
+    right: 25px;
+
+    // スマホではスクロールバーないので10px
+    @include mqSp {
+      right: 10px;
+    }
+  }
+
+  &.-white {
+    color: $blackColor;
+    background-color: $whiteColor;
+  }
+
+  &.-green {
+    color: $whiteColor;
+    background-color: $greenColor;
+  }
+}

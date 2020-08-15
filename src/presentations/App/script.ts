@@ -1,11 +1,7 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { addErrorCallback } from '@/infras/network/vrcApi'
-import {
-  instancesModule,
-  settingModule,
-  worldsModule,
-} from '@/store/ModuleFactory'
+import { instancesModule, worldsModule } from '@/store/ModuleFactory'
 import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsApplicationService } from '@/applications/NewsApplicationService'
@@ -14,6 +10,7 @@ import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
+import settingStore from '@/store/module/SettingStore'
 
 @Component({
   components: {
@@ -104,7 +101,7 @@ export default class App extends Vue {
     this.judgeDevice()
 
     this.$fullLoader.show()
-    settingModule.init()
+    settingStore.initAction()
     await worldsModule.init().finally(() => {
       this.$fullLoader.hide()
     })

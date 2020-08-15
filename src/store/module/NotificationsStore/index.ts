@@ -1,7 +1,7 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { Notification } from '@/types'
 import { playNotificationSound } from '@/libs/Sound'
-import { settingModule } from '@/store/ModuleFactory'
+import settingStore from '@/store/module/SettingStore'
 
 @Module({ namespaced: true, name: 'notifications' })
 export default class NotificationsStore extends VuexModule {
@@ -20,7 +20,7 @@ export default class NotificationsStore extends VuexModule {
   pushNotification(notification: Notification) {
     const notify = new window.Notification(notification.text)
     notify.onshow = () => {
-      if (settingModule.setting?.enableNotificationSound) {
+      if (settingStore.setting.isEnabledNotificationSound) {
         playNotificationSound()
       }
     }

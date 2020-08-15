@@ -1,7 +1,6 @@
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Setting } from '@/types'
-import { settingModule } from '@/store/ModuleFactory'
+import settingStore from '@/store/module/SettingStore'
 
 @Component({})
 export default class Menu extends Vue {
@@ -13,12 +12,15 @@ export default class Menu extends Vue {
   value!: boolean
 
   get setting() {
-    return settingModule.setting
+    return settingStore.setting
   }
 
-  @Watch('setting', { deep: true })
-  onChangeSetting(newSetting: Setting) {
-    settingModule.changeSetting(newSetting)
+  async onChangeEnableNotificationSound(isEnabled: boolean) {
+    if (isEnabled) {
+      await settingStore.enableNotificationSoundAction()
+    } else {
+      await settingStore.disableNotificationSoundAction()
+    }
   }
 
   showSettingDialog() {

@@ -29,7 +29,10 @@
                   </div>
                 </div>
                 <div class="settingItem_input">
-                  <g-Toggle v-model="setting.enableNotificationSound" />
+                  <g-Toggle
+                    :value="setting.isEnabledNotificationSound"
+                    @input="onChangeEnableNotificationSound"
+                  />
                 </div>
               </div>
             </div>

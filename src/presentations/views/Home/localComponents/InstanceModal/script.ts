@@ -1,9 +1,9 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { instanceModalModule } from '@/store/ModuleFactory'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 import friendsStore from '@/store/module/FriendsStore'
 import instancesStore from '@/store/module/InstancesStore'
+import instanceModalStore from '@/store/module/InstanceModalStore'
 
 @Component({
   components: {
@@ -12,11 +12,11 @@ import instancesStore from '@/store/module/InstancesStore'
 })
 export default class InstanceModal extends Vue {
   get isVisible() {
-    return instanceModalModule.isVisible
+    return instanceModalStore.isVisible
   }
 
   get instance() {
-    const location = instanceModalModule.location
+    const location = instanceModalStore.location
     if (location === null) {
       throw new Error('location is null')
     }
@@ -33,7 +33,7 @@ export default class InstanceModal extends Vue {
     return friendsStore.friendsByLocation(instance.location)
   }
 
-  hide() {
-    instanceModalModule.hide()
+  async hide() {
+    await instanceModalStore.hideAction()
   }
 }

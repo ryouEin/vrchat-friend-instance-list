@@ -1,11 +1,9 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import {
-  instanceModalModule,
-  instanceWatchDialogModule,
-} from '@/store/ModuleFactory'
+import { instanceWatchDialogModule } from '@/store/ModuleFactory'
 import notificationsStore from '@/store/module/NotificationsStore'
 import instancesStore from '@/store/module/InstancesStore'
+import instanceModalStore from '@/store/module/InstanceModalStore'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -91,8 +89,8 @@ export default class WatchInstanceDialog extends Vue {
         await notificationsStore.pushNotificationAction({
           text: `${worldName}に空きができました。`,
           date: Date.now(),
-          onClick: () => {
-            instanceModalModule.show(location)
+          onClick: async () => {
+            await instanceModalStore.showAction(location)
           },
         })
       },

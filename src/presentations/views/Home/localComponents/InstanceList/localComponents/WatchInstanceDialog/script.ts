@@ -4,8 +4,8 @@ import {
   instanceModalModule,
   instancesModule,
   instanceWatchDialogModule,
-  notificationsModule,
 } from '@/store/ModuleFactory'
+import notificationsStore from '@/store/module/NotificationsStore'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -87,8 +87,8 @@ export default class WatchInstanceDialog extends Vue {
     await instancesModule.watchInstance({
       location: this.location,
       notifyUserNum: this.notifyUserNum,
-      onFindVacancy: () => {
-        notificationsModule.pushNotification({
+      onFindVacancy: async () => {
+        await notificationsStore.pushNotificationAction({
           text: `${worldName}に空きができました。`,
           date: Date.now(),
           onClick: () => {

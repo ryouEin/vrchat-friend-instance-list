@@ -2,12 +2,16 @@ import { Notification } from '@/types'
 import { playNotificationSound } from '@/libs/Sound'
 import settingStore from '@/store/data/SettingStore'
 import Vue from 'vue'
-import { LogBeforeAfter } from '@/libs/Decorators'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 // TODO SOON: テスト
 type State = {
   notifications: Notification[]
 }
+@MakeReferenceToWindowObjectInDevelopment('notificationsStore')
 export class NotificationsStore {
   private _state = Vue.observable<State>({
     notifications: [],
@@ -36,12 +40,5 @@ export class NotificationsStore {
 }
 
 const notificationsStore = new NotificationsStore()
-
-// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line
-  // @ts-ignore
-  window.notificationsStore = notificationsStore
-}
 
 export default notificationsStore

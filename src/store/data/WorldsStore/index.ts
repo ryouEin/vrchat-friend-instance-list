@@ -6,7 +6,10 @@ import Storage from '@/libs/Storage/Storage'
 import { memoizedFetchWorld } from '@/infras/network/vrcApi'
 import { calcWorldHardCapacity } from '@/shame/calcWorldHardCapacity'
 import Vue from 'vue'
-import { LogBeforeAfter } from '@/libs/Decorators'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 import { IWorldStorage } from '@/infras/storage/World/IWorldStorage'
 
 const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
@@ -19,6 +22,7 @@ const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
 type State = {
   worlds: World[]
 }
+@MakeReferenceToWindowObjectInDevelopment('worldsStore')
 export class WorldsStore {
   private _state = Vue.observable<State>({
     worlds: [],
@@ -68,12 +72,5 @@ export class WorldsStore {
 
 const worldStorage = new WorldStorage(new Storage())
 const worldsStore = new WorldsStore(worldStorage)
-
-// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line
-  // @ts-ignore
-  window.worldsStore = worldsStore
-}
 
 export default worldsStore

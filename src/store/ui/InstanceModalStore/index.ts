@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import { InstanceLocation } from '@/types'
-import { LogBeforeAfter } from '@/libs/Decorators'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   location: InstanceLocation | null
 }
+@MakeReferenceToWindowObjectInDevelopment('instanceModalStore')
 class InstanceModalStore {
   private _state = Vue.observable<State>({
     location: null,
@@ -38,12 +42,5 @@ class InstanceModalStore {
 }
 
 const instanceModalStore = new InstanceModalStore()
-
-// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line
-  // @ts-ignore
-  window.instanceModalStore = instanceModalStore
-}
 
 export default instanceModalStore

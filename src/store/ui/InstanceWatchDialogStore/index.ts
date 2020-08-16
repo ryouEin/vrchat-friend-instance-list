@@ -2,11 +2,15 @@ import { Instance } from '@/types'
 import { parseLocation } from '@/shame/parseLocation'
 import worldsStore from '@/store/data/WorldsStore'
 import Vue from 'vue'
-import { LogBeforeAfter } from '@/libs/Decorators'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   instance: Instance | null
 }
+@MakeReferenceToWindowObjectInDevelopment('instanceWatchDialogStore')
 class InstanceWatchDialogStore {
   private _state = Vue.observable<State>({
     instance: null,
@@ -50,12 +54,5 @@ class InstanceWatchDialogStore {
 }
 
 const instanceWatchDialogStore = new InstanceWatchDialogStore()
-
-// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line
-  // @ts-ignore
-  window.instanceWatchDialogStore = instanceWatchDialogStore
-}
 
 export default instanceWatchDialogStore

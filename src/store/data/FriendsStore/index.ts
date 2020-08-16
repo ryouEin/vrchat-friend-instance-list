@@ -6,11 +6,15 @@ import {
   makePresentationFriends,
   markNewFriends,
 } from '@/store/data/FriendsStore/functions'
-import { LogBeforeAfter } from '@/libs/Decorators'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   friends: Friend[]
 }
+@MakeReferenceToWindowObjectInDevelopment('friendsStore')
 export class FriendsStore {
   private _state = Vue.observable<State>({
     friends: [],
@@ -47,12 +51,5 @@ export class FriendsStore {
 }
 
 const friendsStore = new FriendsStore()
-
-// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line
-  // @ts-ignore
-  window.friendsStore = friendsStore
-}
 
 export default friendsStore

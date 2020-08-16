@@ -8,11 +8,15 @@ import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
 import worldsStore from '@/store/data/WorldsStore'
 import Vue from 'vue'
-import { LogBeforeAfter } from '@/libs/Decorators'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   instances: Instance[]
 }
+@MakeReferenceToWindowObjectInDevelopment('instancesStore')
 export class InstancesStore {
   private _state = Vue.observable<State>({
     instances: [],
@@ -178,12 +182,5 @@ export class InstancesStore {
 }
 
 const instancesStore = new InstancesStore()
-
-// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line
-  // @ts-ignore
-  window.instancesStore = instancesStore
-}
 
 export default instancesStore

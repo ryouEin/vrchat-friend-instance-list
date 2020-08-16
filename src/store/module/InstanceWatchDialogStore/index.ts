@@ -1,7 +1,7 @@
 import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { Instance } from '@/types'
-import { worldsModule } from '@/store/ModuleFactory'
 import { parseLocation } from '@/shame/parseLocation'
+import worldsStore from '@/store/module/WorldsStore'
 
 @Module({ namespaced: true, name: 'instanceWatchDialog' })
 export default class InstanceWatchDialogStore extends VuexModule {
@@ -18,7 +18,7 @@ export default class InstanceWatchDialogStore extends VuexModule {
     }
 
     const { worldId } = parseLocation(instance.location)
-    return worldsModule.world(worldId)
+    return worldsStore.world(worldId)
   }
 
   get isVisible() {

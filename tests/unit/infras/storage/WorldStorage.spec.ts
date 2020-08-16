@@ -17,7 +17,7 @@ class MockStorage implements IStorage {
 }
 
 describe('addWorlds', () => {
-  it('ID重複は除去した上で追加される', () => {
+  it('ID重複は除去した上で追加される', async () => {
     const initialData = {
       worldData: JSON.stringify([
         {
@@ -53,8 +53,8 @@ describe('addWorlds', () => {
       },
     ]
     const worldStorage = new WorldStorage(new MockStorage(initialData))
-    worldStorage.addWorlds(appendData)
-    const result = worldStorage.getWorlds()
+    await worldStorage.addWorlds(appendData)
+    const result = await worldStorage.getWorlds()
 
     expect(result).toEqual([
       {
@@ -81,10 +81,10 @@ describe('addWorlds', () => {
     ])
   })
 
-  it('データが1000件を超える場合、1000件になるように古いデータが削除される', () => {
+  it('データが1000件を超える場合、1000件になるように古いデータが削除される', async () => {
     const worldStorage = new WorldStorage(new MockStorage({}))
     for (let index = 0; index < 1000; index++) {
-      worldStorage.addWorlds([
+      await worldStorage.addWorlds([
         {
           id: `wrld_${index}`,
           name: `world ${index}`,
@@ -94,7 +94,7 @@ describe('addWorlds', () => {
         },
       ])
     }
-    const result1 = worldStorage.getWorlds()
+    const result1 = await worldStorage.getWorlds()
     expect(result1.length).toBe(1000)
     expect(result1).toEqual(
       expect.arrayContaining([
@@ -108,7 +108,7 @@ describe('addWorlds', () => {
       ])
     )
 
-    worldStorage.addWorlds([
+    await worldStorage.addWorlds([
       {
         id: `wrld_1000`,
         name: `world 1000`,
@@ -117,7 +117,7 @@ describe('addWorlds', () => {
         capacity: 10,
       },
     ])
-    const result2 = worldStorage.getWorlds()
+    const result2 = await worldStorage.getWorlds()
     expect(result2.length).toBe(1000)
     expect(result2).not.toEqual(
       expect.arrayContaining([

@@ -1,4 +1,3 @@
-import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { World } from '@/types'
 import * as ApiResponse from '@/types/ApiResponse'
 import * as vrcApiService from '@/infras/network/vrcApi'
@@ -6,6 +5,9 @@ import { WorldStorage } from '@/infras/storage/World/WorldStorage'
 import Storage from '@/libs/Storage/Storage'
 import { memoizedFetchWorld } from '@/infras/network/vrcApi'
 import { calcWorldHardCapacity } from '@/shame/calcWorldHardCapacity'
+import Vue from 'vue'
+import { LogBeforeAfter } from '@/libs/Decorators'
+import { IWorldStorage } from '@/infras/storage/World/IWorldStorage'
 
 const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
   return {
@@ -14,56 +16,64 @@ const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
   }
 }
 
-@Module({ namespaced: true, name: 'worlds' })
-export default class WorldsStore extends VuexModule {
-  private _worlds: World[] = []
+type State = {
+  worlds: World[]
+}
+export class WorldsStore {
+  private _state = Vue.observable<State>({
+    worlds: [],
+  })
+
+  constructor(private readonly _worldStorage: IWorldStorage) {}
 
   get worlds() {
-    return this._worlds
+    return this._state.worlds
   }
 
   get world() {
     return (id: string) => {
-      return this._worlds.find(world => world.id === id)
+      return this.worlds.find(world => world.id === id)
     }
   }
 
-  @Mutation
-  private setWorlds(worlds: ApiResponse.World[]) {
-    this._worlds = worlds.map(world => makeWorldFromApiResponse(world))
+  @LogBeforeAfter('_state')
+  private setWorldsMutation(worlds: ApiResponse.World[]) {
+    this._state.worlds = worlds.map(world => makeWorldFromApiResponse(world))
   }
 
-  @Mutation
-  private addWorld(world: ApiResponse.World) {
+  @LogBeforeAfter('_state')
+  private addWorldMutation(world: ApiResponse.World) {
+    this._state.worlds.push(makeWorldFromApiResponse(world))
+  }
+
+  async fetchWorldAction(id: string) {
+    const world = await memoizedFetchWorld(id)
+
     // TODO: localStorageが満杯になった際の処理
-    const worldStorage = new WorldStorage(new Storage())
-    worldStorage.addWorld(world)
+    await this._worldStorage.addWorld(world)
 
-    this._worlds.push(makeWorldFromApiResponse(world))
+    this.addWorldMutation(world)
   }
 
-  @Mutation
-  private clearWorlds() {
-    this._worlds = []
-  }
-
-  @Action({ commit: 'addWorld', rawError: true })
-  async fetchWorld(id: string) {
-    return memoizedFetchWorld(id)
-  }
-
-  @Action({ commit: 'setWorlds', rawError: true })
-  async init() {
+  async initAction() {
+    // TODO SOON: APIに関して中小に依存するようにする
     const popularWorlds = await vrcApiService.fetchPopularWorlds()
 
-    const worldStorage = new WorldStorage(new Storage())
-    worldStorage.addWorlds(popularWorlds)
+    await this._worldStorage.addWorlds(popularWorlds)
+    const worlds = await this._worldStorage.getWorlds()
 
-    return worldStorage.getWorlds()
-  }
-
-  @Action({ rawError: true })
-  async clear() {
-    this.context.commit('clearWorlds')
+    this.setWorldsMutation(worlds)
   }
 }
+
+const worldStorage = new WorldStorage(new Storage())
+const worldsStore = new WorldsStore(worldStorage)
+
+// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line
+  // @ts-ignore
+  window.worldsStore = worldsStore
+}
+
+export default worldsStore

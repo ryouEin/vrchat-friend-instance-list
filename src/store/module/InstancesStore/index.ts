@@ -7,7 +7,7 @@ import {
 } from './functions'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
-import { worldsModule } from '@/store/ModuleFactory'
+import worldsStore from '@/store/module/WorldsStore'
 
 @Module({ namespaced: true, name: 'instances' })
 export default class InstancesStore extends VuexModule {
@@ -167,7 +167,7 @@ export default class InstancesStore extends VuexModule {
     )
     const promises = watchingInstances.map(async instance => {
       await this.context.dispatch('updateInstanceInfo', instance.location)
-      const world = worldsModule.world(instance.worldId)
+      const world = worldsStore.world(instance.worldId)
       if (world === undefined) {
         throw new Error('world is undefined.')
       }

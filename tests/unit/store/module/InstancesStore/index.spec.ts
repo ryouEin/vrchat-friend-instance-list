@@ -1,6 +1,6 @@
 import * as vrcApi from '@/infras/network/vrcApi'
-import { instancesModule } from '@/store/ModuleFactory'
 import { Friend, Instance } from '@/types'
+import { InstancesStore } from '@/store/module/InstancesStore'
 
 const dummyFriendData: Friend = {
   location: '',
@@ -31,9 +31,12 @@ const dummyFriends = [
   },
 ]
 
+let instancesStore: InstancesStore
+
 beforeEach(async () => {
-  await instancesModule.clear()
-  await instancesModule.update(dummyFriends)
+  // TODO SOON: beforeEachでのこの初期化に違和感。コンストラクタでstateの初期値を与えられるようにしてこの必要が無いようにすることを検討すべきか
+  instancesStore = new InstancesStore()
+  await instancesStore.updateAction(dummyFriends)
 })
 
 describe('update', () => {
@@ -59,7 +62,7 @@ describe('update', () => {
       },
     ]
 
-    expect(instancesModule.instances).toEqual(expectInstances)
+    expect(instancesStore.instances).toEqual(expectInstances)
   })
 })
 
@@ -73,7 +76,7 @@ describe('updateInstanceInfo', () => {
       capacity: 10,
     })
 
-    await instancesModule.updateInstanceInfo(location)
+    await instancesStore.updateInstanceInfoAction(location)
 
     const expectInstances: Instance[] = [
       {
@@ -97,7 +100,7 @@ describe('updateInstanceInfo', () => {
       },
     ]
 
-    expect(instancesModule.instances).toEqual(expectInstances)
+    expect(instancesStore.instances).toEqual(expectInstances)
   })
 
   it('updateが実行された際も、以前のuserNumは保持される', async () => {
@@ -109,8 +112,8 @@ describe('updateInstanceInfo', () => {
       capacity: 10,
     })
 
-    await instancesModule.updateInstanceInfo(location)
-    await instancesModule.update(dummyFriends)
+    await instancesStore.updateInstanceInfoAction(location)
+    await instancesStore.updateAction(dummyFriends)
 
     const expectInstances: Instance[] = [
       {
@@ -134,7 +137,7 @@ describe('updateInstanceInfo', () => {
       },
     ]
 
-    expect(instancesModule.instances).toEqual(expectInstances)
+    expect(instancesStore.instances).toEqual(expectInstances)
   })
 })
 
@@ -142,7 +145,7 @@ describe('watchInstance', () => {
   it('指定されたインスタンスが監視状態になる', async () => {
     const location = 'wrld_1:1'
     const onFindVacancy = jest.fn()
-    await instancesModule.watchInstance({
+    await instancesStore.watchInstanceAction({
       location,
       notifyUserNum: 10,
       onFindVacancy,
@@ -156,7 +159,7 @@ describe('watchInstance', () => {
       onFindVacancy,
     }
 
-    expect(instancesModule.instanceByLocation(location)).toEqual(
+    expect(instancesStore.instanceByLocation(location)).toEqual(
       expectedInstance
     )
   })
@@ -166,13 +169,13 @@ describe('unwatchInstance', () => {
   it('指定されたインスタンスが非監視状態になる', async () => {
     const location = 'wrld_1:1'
     const onFindVacancy = jest.fn()
-    await instancesModule.watchInstance({
+    await instancesStore.watchInstanceAction({
       location,
       notifyUserNum: 10,
       onFindVacancy,
     })
 
-    await instancesModule.unwatchInstance(location)
+    await instancesStore.unwatchInstanceAction(location)
 
     const expectedInstance: Instance = {
       location: 'wrld_1:1',
@@ -182,7 +185,7 @@ describe('unwatchInstance', () => {
       onFindVacancy,
     }
 
-    expect(instancesModule.instanceByLocation(location)).toEqual(
+    expect(instancesStore.instanceByLocation(location)).toEqual(
       expectedInstance
     )
   })
@@ -194,7 +197,7 @@ describe('checkWatchingInstanceVacancy', () => {
   beforeEach(async () => {
     const notifyUserNum = 10
     const onFindVacancy = jest.fn()
-    await instancesModule.watchInstance({
+    await instancesStore.watchInstanceAction({
       location,
       notifyUserNum,
       onFindVacancy,
@@ -206,16 +209,16 @@ describe('checkWatchingInstanceVacancy', () => {
       n_users: 10,
       capacity: 10,
     })
-    await instancesModule.updateInstanceInfo(location)
+    await instancesStore.updateInstanceInfoAction(location)
   })
 
   it('指定されたインスタンスに指定ギリギリの空きがあった場合、onFindVacancyが実行されisWatchingがfalseとなる', async () => {
-    await instancesModule.checkWatchingInstanceVacancy({
+    await instancesStore.checkWatchingInstanceVacancyAction({
       location,
       hardCapacity: 20,
     })
 
-    const instance = instancesModule.instanceByLocation(location)
+    const instance = instancesStore.instanceByLocation(location)
     if (instance === undefined) {
       throw new Error('instance is undefined.')
     }
@@ -225,12 +228,12 @@ describe('checkWatchingInstanceVacancy', () => {
   })
 
   it('指定されたインスタンスに指定の空きより1足らなかった場合、何も変わらない', async () => {
-    await instancesModule.checkWatchingInstanceVacancy({
+    await instancesStore.checkWatchingInstanceVacancyAction({
       location,
       hardCapacity: 19,
     })
 
-    const instance = instancesModule.instanceByLocation(location)
+    const instance = instancesStore.instanceByLocation(location)
     if (instance === undefined) {
       throw new Error('instance is undefined.')
     }

@@ -1,8 +1,9 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { instanceModalModule, instancesModule } from '@/store/ModuleFactory'
+import { instanceModalModule } from '@/store/ModuleFactory'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 import friendsStore from '@/store/module/FriendsStore'
+import instancesStore from '@/store/module/InstancesStore'
 
 @Component({
   components: {
@@ -20,7 +21,7 @@ export default class InstanceModal extends Vue {
       throw new Error('location is null')
     }
 
-    return instancesModule.instanceByLocation(location)
+    return instancesStore.instanceByLocation(location)
   }
 
   get friends() {

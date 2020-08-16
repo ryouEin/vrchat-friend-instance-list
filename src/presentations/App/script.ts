@@ -1,7 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { addErrorCallback } from '@/infras/network/vrcApi'
-import { instancesModule } from '@/store/ModuleFactory'
 import NewsApi from '@/infras/network/News/NewsApi'
 import { NewsStorage } from '@/infras/storage/News/NewsStorage'
 import { NewsApplicationService } from '@/applications/NewsApplicationService'
@@ -12,6 +11,7 @@ import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
 import settingStore from '@/store/module/SettingStore'
 import worldsStore from '@/store/module/WorldsStore'
+import instancesStore from '@/store/module/InstancesStore'
 
 @Component({
   components: {
@@ -64,7 +64,7 @@ export default class App extends Vue {
 
   startCheckWatchingInstances() {
     setInterval(async () => {
-      await instancesModule.checkWatchingInstances()
+      await instancesStore.checkWatchingInstancesAction()
     }, INSTANCE_WATCH_INTERVAL)
   }
 

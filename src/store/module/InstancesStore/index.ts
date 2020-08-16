@@ -1,4 +1,3 @@
-import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { Friend, Instance, InstanceLocation } from '@/types'
 import {
   applyOldInstanceStatesToNewInstances,
@@ -8,13 +7,19 @@ import {
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
 import worldsStore from '@/store/module/WorldsStore'
+import Vue from 'vue'
+import { LogBeforeAfter } from '@/libs/Decorators'
 
-@Module({ namespaced: true, name: 'instances' })
-export default class InstancesStore extends VuexModule {
-  private _instances: Instance[] = []
+type State = {
+  instances: Instance[]
+}
+export class InstancesStore {
+  private _state = Vue.observable<State>({
+    instances: [],
+  })
 
   get instances() {
-    return this._instances
+    return this._state.instances
   }
 
   get instanceByLocation() {
@@ -23,23 +28,18 @@ export default class InstancesStore extends VuexModule {
     }
   }
 
-  @Mutation
-  private clearInstances() {
-    this._instances = []
-  }
-
-  @Mutation
-  private updateInstancesWithLocations(locations: InstanceLocation[]) {
+  @LogBeforeAfter('_state')
+  private updateInstancesWithLocationsMutation(locations: InstanceLocation[]) {
     const newInstances = makeInstancesFromLocations(locations)
-    this._instances = applyOldInstanceStatesToNewInstances(
+    this._state.instances = applyOldInstanceStatesToNewInstances(
       newInstances,
-      this._instances
+      this.instances
     )
   }
 
-  @Mutation
-  private setInstanceInfo(instanceInfo: InstanceInfo) {
-    this._instances = this._instances.map(instance => {
+  @LogBeforeAfter('_state')
+  private setInstanceInfoMutation(instanceInfo: InstanceInfo) {
+    this._state.instances = this.instances.map(instance => {
       if (instanceInfo.location === instance.location) {
         const userNum = instanceInfo.n_users
 
@@ -53,8 +53,8 @@ export default class InstancesStore extends VuexModule {
     })
   }
 
-  @Mutation
-  private startWatching({
+  @LogBeforeAfter('_state')
+  private startWatchingMutation({
     location,
     notifyUserNum,
     onFindVacancy,
@@ -63,7 +63,7 @@ export default class InstancesStore extends VuexModule {
     notifyUserNum: number
     onFindVacancy: () => void
   }) {
-    this._instances = this._instances.map(instance => {
+    this._state.instances = this.instances.map(instance => {
       if (instance.location === location) {
         return {
           ...instance,
@@ -77,9 +77,9 @@ export default class InstancesStore extends VuexModule {
     })
   }
 
-  @Mutation
-  private endWatching(location: InstanceLocation) {
-    this._instances = this._instances.map(instance => {
+  @LogBeforeAfter('_state')
+  private endWatchingMutation(location: InstanceLocation) {
+    this._state.instances = this.instances.map(instance => {
       if (instance.location === location) {
         return {
           ...instance,
@@ -92,22 +92,21 @@ export default class InstancesStore extends VuexModule {
   }
 
   // TODO: Friendsの更新がある度にこれを呼び出す必要があるのが違和感
-  @Action({ commit: 'updateInstancesWithLocations', rawError: true })
-  async update(friends: Friend[]) {
-    return getLocationsFromFriends(friends)
+  async updateAction(friends: Friend[]) {
+    const locations = getLocationsFromFriends(friends)
+    this.updateInstancesWithLocationsMutation(locations)
   }
 
-  @Action({ commit: 'setInstanceInfo', rawError: true })
-  async updateInstanceInfo(location: InstanceLocation) {
-    return await fetchInstanceInfo(location)
+  async updateInstanceInfoAction(location: InstanceLocation) {
+    const instanceInfo = await fetchInstanceInfo(location)
+    this.setInstanceInfoMutation(instanceInfo)
   }
 
-  // TODO: テストのために依存をはがすため、hardCapacityを引数として渡しているが微妙。
+  // TODO SOON: テストのために依存をはがすため、hardCapacityを引数として渡しているが微妙。
   //  本来ならコンストラクタインジェクション等で対応するがvuex-module-decoratorsは
   //  コンストラクタを自分で呼ぶ方法を提供していないため出来なかった。
   //  もっといい方法を模索
-  @Action({ rawError: true })
-  async checkWatchingInstanceVacancy({
+  async checkWatchingInstanceVacancyAction({
     location,
     hardCapacity,
   }: {
@@ -134,12 +133,11 @@ export default class InstancesStore extends VuexModule {
         onFindVacancy()
       }
 
-      this.context.commit('endWatching', instance.location)
+      this.endWatchingMutation(instance.location)
     }
   }
 
-  @Action({ commit: 'startWatching', rawError: true })
-  async watchInstance({
+  async watchInstanceAction({
     location,
     notifyUserNum,
     onFindVacancy,
@@ -148,30 +146,28 @@ export default class InstancesStore extends VuexModule {
     notifyUserNum: number
     onFindVacancy: () => void
   }) {
-    return {
+    this.startWatchingMutation({
       location,
       notifyUserNum,
       onFindVacancy,
-    }
+    })
   }
 
-  @Action({ commit: 'endWatching', rawError: true })
-  async unwatchInstance(location: InstanceLocation) {
-    return location
+  async unwatchInstanceAction(location: InstanceLocation) {
+    this.endWatchingMutation(location)
   }
 
-  @Action({ rawError: true })
-  async checkWatchingInstances() {
+  async checkWatchingInstancesAction() {
     const watchingInstances = this.instances.filter(
       instance => instance.isWatching
     )
     const promises = watchingInstances.map(async instance => {
-      await this.context.dispatch('updateInstanceInfo', instance.location)
+      await this.updateInstanceInfoAction(instance.location)
       const world = worldsStore.world(instance.worldId)
       if (world === undefined) {
         throw new Error('world is undefined.')
       }
-      await this.context.dispatch('checkWatchingInstanceVacancy', {
+      await this.checkWatchingInstanceVacancyAction({
         location: instance.location,
         hardCapacity: world.hardCapacity,
       })
@@ -179,9 +175,15 @@ export default class InstancesStore extends VuexModule {
 
     return Promise.all(promises)
   }
-
-  @Action({ rawError: true })
-  async clear() {
-    this.context.commit('clearInstances')
-  }
 }
+
+const instancesStore = new InstancesStore()
+
+// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line
+  // @ts-ignore
+  window.instancesStore = instancesStore
+}
+
+export default instancesStore

@@ -1,11 +1,11 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { instancesModule } from '@/store/ModuleFactory'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
 import friendsStore from '@/store/module/FriendsStore'
+import instancesStore from '@/store/module/InstancesStore'
 
 @Component({
   components: {
@@ -24,7 +24,7 @@ export default class Home extends Vue {
   }
 
   get instances(): Instance[] {
-    return instancesModule.instances
+    return instancesStore.instances
   }
 
   get showOnlineFriendsListLoading() {
@@ -49,7 +49,7 @@ export default class Home extends Vue {
 
   async fetchData() {
     await friendsStore.fetchFriendsAction()
-    await instancesModule.update(friendsStore.friends)
+    await instancesStore.updateAction(friendsStore.friends)
   }
 
   async reload() {

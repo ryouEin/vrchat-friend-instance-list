@@ -1,11 +1,9 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
-import {
-  instancesModule,
-  instanceWatchDialogModule,
-} from '@/store/ModuleFactory'
+import { instanceWatchDialogModule } from '@/store/ModuleFactory'
 import { Instance } from '@/types'
+import instancesStore from '@/store/module/InstancesStore'
 
 @Component({
   components: {
@@ -25,7 +23,7 @@ export default class WatchInstanceButton extends Vue {
   }
 
   async endWatch() {
-    await instancesModule.unwatchInstance(this.location)
+    await instancesStore.unwatchInstanceAction(this.location)
   }
 
   showDialog() {

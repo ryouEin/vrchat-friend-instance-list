@@ -1,9 +1,9 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import notificationsStore from '@/store/module/NotificationsStore'
-import instancesStore from '@/store/module/InstancesStore'
-import instanceModalStore from '@/store/module/InstanceModalStore'
-import instanceWatchDialogStore from '@/store/module/InstanceWatchDialogStore'
+import notificationsStore from '@/store/data/NotificationsStore'
+import instancesStore from '@/store/data/InstancesStore'
+import instanceModalStore from '@/store/ui/InstanceModalStore'
+import instanceWatchDialogStore from '@/store/ui/InstanceWatchDialogStore'
 
 const generateSelectItems = (count: number) => {
   const tmp = []

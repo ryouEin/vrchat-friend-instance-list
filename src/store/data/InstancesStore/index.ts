@@ -6,7 +6,7 @@ import {
 } from './functions'
 import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
-import worldsStore from '@/store/module/WorldsStore'
+import worldsStore from '@/store/data/WorldsStore'
 import Vue from 'vue'
 import { LogBeforeAfter } from '@/libs/Decorators'
 
@@ -103,7 +103,7 @@ export class InstancesStore {
   }
 
   // TODO SOON: テストのために依存をはがすため、hardCapacityを引数として渡しているが微妙。
-  //  本来ならコンストラクタインジェクション等で対応するがvuex-module-decoratorsは
+  //  本来ならコンストラクタインジェクション等で対応するがvuex-data-decoratorsは
   //  コンストラクタを自分で呼ぶ方法を提供していないため出来なかった。
   //  もっといい方法を模索
   async checkWatchingInstanceVacancyAction({

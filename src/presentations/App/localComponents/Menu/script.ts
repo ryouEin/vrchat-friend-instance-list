@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import settingStore from '@/store/module/SettingStore'
+import settingStore from '@/store/data/SettingStore'
 
 @Component({})
 export default class Menu extends Vue {

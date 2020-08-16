@@ -1,6 +1,6 @@
 import { Notification } from '@/types'
 import { playNotificationSound } from '@/libs/Sound'
-import settingStore from '@/store/module/SettingStore'
+import settingStore from '@/store/data/SettingStore'
 import Vue from 'vue'
 import { LogBeforeAfter } from '@/libs/Decorators'
 

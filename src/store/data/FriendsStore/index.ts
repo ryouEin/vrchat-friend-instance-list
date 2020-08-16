@@ -5,7 +5,7 @@ import {
   fetchAllFriends,
   makePresentationFriends,
   markNewFriends,
-} from '@/store/module/FriendsStore/functions'
+} from '@/store/data/FriendsStore/functions'
 import { LogBeforeAfter } from '@/libs/Decorators'
 
 type State = {

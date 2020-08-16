@@ -1,6 +1,6 @@
 import { ISettingStorage } from '@/infras/storage/Setting/ISettingStorage'
 import { Setting } from '@/types'
-import { SettingStore } from '@/store/module/SettingStore'
+import { SettingStore } from '@/store/data/SettingStore'
 import { DEFAULT_SETTING } from '@/config/settings'
 
 class MockSettingStorage implements ISettingStorage {

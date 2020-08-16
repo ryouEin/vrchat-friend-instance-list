@@ -1,6 +1,6 @@
 import * as vrcApi from '@/infras/network/vrcApi'
 import { Friend, Instance } from '@/types'
-import { InstancesStore } from '@/store/module/InstancesStore'
+import { InstancesStore } from '@/store/data/InstancesStore'
 
 const dummyFriendData: Friend = {
   location: '',

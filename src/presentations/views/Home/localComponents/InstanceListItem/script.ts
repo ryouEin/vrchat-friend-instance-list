@@ -5,7 +5,7 @@ import { getInstancePermissionFromLocation } from '@/shame/getInstancePermission
 import { Friend, Instance, InstancePermission, World } from '@/types'
 import { parseLocation } from '@/shame/parseLocation'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
-import worldsStore from '@/store/module/WorldsStore'
+import worldsStore from '@/store/data/WorldsStore'
 
 @Component({
   components: {

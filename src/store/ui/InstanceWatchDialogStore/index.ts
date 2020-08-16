@@ -1,6 +1,6 @@
 import { Instance } from '@/types'
 import { parseLocation } from '@/shame/parseLocation'
-import worldsStore from '@/store/module/WorldsStore'
+import worldsStore from '@/store/data/WorldsStore'
 import Vue from 'vue'
 import { LogBeforeAfter } from '@/libs/Decorators'
 

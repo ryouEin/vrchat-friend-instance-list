@@ -3,7 +3,7 @@ import Vue from 'vue'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 import { Friend, Instance } from '@/types'
 import WatchInstanceDialog from '@/presentations/views/Home/localComponents/InstanceList/localComponents/WatchInstanceDialog/index.vue'
-import friendsStore from '@/store/module/FriendsStore'
+import friendsStore from '@/store/data/FriendsStore'
 
 @Component({
   components: {

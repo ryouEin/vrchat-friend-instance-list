@@ -1,7 +1,7 @@
 import * as vrcApi from '@/infras/network/vrcApi'
 import { World } from '@/types/ApiResponse'
 import { IWorldStorage } from '@/infras/storage/World/IWorldStorage'
-import { WorldsStore } from '@/store/module/WorldsStore'
+import { WorldsStore } from '@/store/data/WorldsStore'
 
 class MockWorldStorage implements IWorldStorage {
   constructor(public items: World[] = []) {}

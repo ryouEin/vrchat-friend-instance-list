@@ -1,9 +1,9 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
-import friendsStore from '@/store/module/FriendsStore'
-import instancesStore from '@/store/module/InstancesStore'
-import instanceModalStore from '@/store/module/InstanceModalStore'
+import friendsStore from '@/store/data/FriendsStore'
+import instancesStore from '@/store/data/InstancesStore'
+import instanceModalStore from '@/store/ui/InstanceModalStore'
 
 @Component({
   components: {

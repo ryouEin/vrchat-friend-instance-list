@@ -9,9 +9,9 @@ import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
-import settingStore from '@/store/module/SettingStore'
-import worldsStore from '@/store/module/WorldsStore'
-import instancesStore from '@/store/module/InstancesStore'
+import settingStore from '@/store/data/SettingStore'
+import worldsStore from '@/store/data/WorldsStore'
+import instancesStore from '@/store/data/InstancesStore'
 
 @Component({
   components: {

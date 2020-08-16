@@ -1,7 +1,7 @@
 import * as vrcApi from '@/infras/network/vrcApi'
 import { User } from '@/types/ApiResponse'
 import { Friend } from '@/types'
-import { FriendsStore } from '@/store/module/FriendsStore'
+import { FriendsStore } from '@/store/data/FriendsStore'
 
 const generateDummyFriends = (count: number) => {
   const dummyFriends: User[] = []

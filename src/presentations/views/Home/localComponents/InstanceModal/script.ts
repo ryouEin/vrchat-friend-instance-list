@@ -1,11 +1,8 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import {
-  friendsModule,
-  instanceModalModule,
-  instancesModule,
-} from '@/store/ModuleFactory'
+import { instanceModalModule, instancesModule } from '@/store/ModuleFactory'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
+import friendsStore from '@/store/module/FriendsStore'
 
 @Component({
   components: {
@@ -32,7 +29,7 @@ export default class InstanceModal extends Vue {
       throw new Error('instance is undefined.')
     }
 
-    return friendsModule.friendsByLocation(instance.location)
+    return friendsStore.friendsByLocation(instance.location)
   }
 
   hide() {

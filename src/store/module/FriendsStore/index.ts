@@ -1,4 +1,4 @@
-import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import Vue from 'vue'
 import * as vrcApiService from '@/infras/network/vrcApi'
 import { Friend, InstanceLocation } from '@/types'
 import {
@@ -6,13 +6,18 @@ import {
   makePresentationFriends,
   markNewFriends,
 } from '@/store/module/FriendsStore/functions'
+import { LogBeforeAfter } from '@/libs/Decorators'
 
-@Module({ namespaced: true, name: 'friends' })
-export default class FriendsStore extends VuexModule {
-  private _friends: Friend[] = []
+type State = {
+  friends: Friend[]
+}
+export class FriendsStore {
+  private _state = Vue.observable<State>({
+    friends: [],
+  })
 
   get friends() {
-    return this._friends
+    return this._state.friends
   }
 
   get friendsByLocation() {
@@ -21,33 +26,33 @@ export default class FriendsStore extends VuexModule {
     }
   }
 
-  @Mutation
-  private setFriends(friends: Friend[]) {
-    if (this._friends.length <= 0) {
-      this._friends = friends
+  @LogBeforeAfter('_state')
+  private setFriendsMutation(friends: Friend[]) {
+    if (this.friends.length <= 0) {
+      this._state.friends = friends
       return
     }
 
-    this._friends = markNewFriends(this._friends, friends)
+    this._state.friends = markNewFriends(this.friends, friends)
   }
 
-  @Mutation
-  private clearFriends() {
-    this._friends = []
-  }
-
-  @Action({ commit: 'setFriends', rawError: true })
-  async fetchFriends() {
+  async fetchFriendsAction() {
     const [friends, favorites] = await Promise.all([
       fetchAllFriends(vrcApiService.fetchFriends),
       vrcApiService.fetchFavoriteFriends(),
     ])
 
-    return makePresentationFriends(friends, favorites)
-  }
-
-  @Action({ rawError: true })
-  async clear() {
-    this.context.commit('clearFriends')
+    this.setFriendsMutation(makePresentationFriends(friends, favorites))
   }
 }
+
+const friendsStore = new FriendsStore()
+
+// TODO SOON: development環境で、デバッグのためグローバルに参照を通す処理を共通化
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line
+  // @ts-ignore
+  window.friendsStore = friendsStore
+}
+
+export default friendsStore

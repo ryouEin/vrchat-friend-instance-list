@@ -1,10 +1,11 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { friendsModule, instancesModule } from '@/store/ModuleFactory'
+import { instancesModule } from '@/store/ModuleFactory'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
+import friendsStore from '@/store/module/FriendsStore'
 
 @Component({
   components: {
@@ -19,7 +20,7 @@ export default class Home extends Vue {
   isVisibleSideMenu = false
 
   get friends(): Friend[] {
-    return friendsModule.friends
+    return friendsStore.friends
   }
 
   get instances(): Instance[] {
@@ -47,8 +48,8 @@ export default class Home extends Vue {
   }
 
   async fetchData() {
-    await friendsModule.fetchFriends()
-    await instancesModule.update(friendsModule.friends)
+    await friendsStore.fetchFriendsAction()
+    await instancesModule.update(friendsStore.friends)
   }
 
   async reload() {

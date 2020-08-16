@@ -1,7 +1,7 @@
 import * as vrcApi from '@/infras/network/vrcApi'
-import { friendsModule } from '@/store/ModuleFactory'
 import { User } from '@/types/ApiResponse'
 import { Friend } from '@/types'
+import { FriendsStore } from '@/store/module/FriendsStore'
 
 const generateDummyFriends = (count: number) => {
   const dummyFriends: User[] = []
@@ -20,10 +20,6 @@ const generateDummyFriends = (count: number) => {
   return dummyFriends
 }
 
-beforeEach(async () => {
-  await friendsModule.clear()
-})
-
 describe('fetchFriends', () => {
   it('APIから取得したフレンドデータを取得できる', async () => {
     const dummyData: User[] = generateDummyFriends(310)
@@ -36,8 +32,9 @@ describe('fetchFriends', () => {
       .mockResolvedValue([])
     jest.spyOn(vrcApi, 'fetchFavoriteFriends').mockResolvedValueOnce([])
 
-    await friendsModule.fetchFriends()
-    expect(friendsModule.friends).toEqual(
+    const friendsStore = new FriendsStore()
+    await friendsStore.fetchFriendsAction()
+    expect(friendsStore.friends).toEqual(
       dummyData.map(item => ({
         ...item,
         isNew: false,
@@ -64,8 +61,9 @@ describe('fetchFriends', () => {
       },
     ])
 
-    await friendsModule.fetchFriends()
-    expect(friendsModule.friends).toEqual(
+    const friendsStore = new FriendsStore()
+    await friendsStore.fetchFriendsAction()
+    expect(friendsStore.friends).toEqual(
       dummyData.map<Friend>(item => {
         return {
           ...item,
@@ -84,7 +82,8 @@ describe('fetchFriends', () => {
       .mockResolvedValue([])
     jest.spyOn(vrcApi, 'fetchFavoriteFriends').mockResolvedValueOnce([])
 
-    await friendsModule.fetchFriends()
+    const friendsStore = new FriendsStore()
+    await friendsStore.fetchFriendsAction()
 
     jest
       .spyOn(vrcApi, 'fetchFriends')
@@ -94,9 +93,9 @@ describe('fetchFriends', () => {
       .mockResolvedValue([])
     jest.spyOn(vrcApi, 'fetchFavoriteFriends').mockResolvedValueOnce([])
 
-    await friendsModule.fetchFriends()
+    await friendsStore.fetchFriendsAction()
 
-    expect(friendsModule.friends).toEqual(
+    expect(friendsStore.friends).toEqual(
       dummyData.slice(100, 400).map<Friend>(item => {
         return {
           ...item,

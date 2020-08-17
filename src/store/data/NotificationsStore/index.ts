@@ -1,11 +1,11 @@
 import { Notification } from '@/types'
 import { playNotificationSound } from '@/libs/Sound'
-import settingStore from '@/store/data/SettingStore'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
+import { settingStore } from '@/store/data/DataStoreFactory'
 
 // TODO SOON: テスト
 type State = {
@@ -38,7 +38,3 @@ export class NotificationsStore {
     this.addNotificationMutation(notification)
   }
 }
-
-const notificationsStore = new NotificationsStore()
-
-export default notificationsStore

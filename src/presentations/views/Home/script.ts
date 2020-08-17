@@ -4,8 +4,7 @@ import OnlineFriendsList from '@/presentations/views/Home/localComponents/Online
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
-import friendsStore from '@/store/data/FriendsStore'
-import instancesStore from '@/store/data/InstancesStore'
+import { friendsStore, instancesStore } from '@/store/data/DataStoreFactory'
 
 @Component({
   components: {

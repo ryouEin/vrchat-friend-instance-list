@@ -9,9 +9,6 @@ import {
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
-import { FriendsRepository } from '@/infras/Friends/FriendsRepository'
-import { FriendsApi } from '@/infras/Friends/Api/FriendsApi'
-import { Network } from '@/libs/Network/Network'
 
 type State = {
   friends: Friend[]
@@ -53,8 +50,3 @@ export class FriendsStore {
     this.setFriendsMutation(makePresentationFriends(friends, favorites))
   }
 }
-
-const friendsRepository = new FriendsRepository(new FriendsApi(new Network()))
-const friendsStore = new FriendsStore(friendsRepository)
-
-export default friendsStore

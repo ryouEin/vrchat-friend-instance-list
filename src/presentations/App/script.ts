@@ -8,9 +8,11 @@ import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
-import settingStore from '@/store/data/SettingStore'
-import worldsStore from '@/store/data/WorldsStore'
-import instancesStore from '@/store/data/InstancesStore'
+import {
+  instancesStore,
+  settingStore,
+  worldsStore,
+} from '@/store/data/DataStoreFactory'
 
 @Component({
   components: {
@@ -90,6 +92,7 @@ export default class App extends Vue {
   // TODO: 現状401になるのはVRChatAPIだけだから問題にならないが
   //  将来他の401出すAPI混ざってきたら困る
   // TODO: anyを使ってしまっている
+  // eslint-disable-next-line
   errorHandler(error: any) {
     const status = error.response?.status
 

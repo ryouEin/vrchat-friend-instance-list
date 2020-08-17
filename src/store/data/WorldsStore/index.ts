@@ -1,7 +1,5 @@
 import { World } from '@/types'
 import * as ApiResponse from '@/types/ApiResponse'
-import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
-import Storage from '@/libs/Storage/Storage'
 import { calcWorldHardCapacity } from '@/shame/calcWorldHardCapacity'
 import Vue from 'vue'
 import {
@@ -9,9 +7,6 @@ import {
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IWorldsRepository } from '@/infras/Worlds/IWorldsRepository'
-import { WorldsApi } from '@/infras/Worlds/Api/WorldsApi'
-import { Network } from '@/libs/Network/Network'
-import { WorldsRepository } from '@/infras/Worlds/WorldsRepository'
 
 const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
   return {
@@ -64,11 +59,3 @@ export class WorldsStore {
     this.setWorldsMutation(worlds)
   }
 }
-
-// TODO SOON: DIがややこしくなってきたので、DIコンテナーを試す
-const worldStorage = new WorldStorage(new Storage())
-const worldsApi = new WorldsApi(new Network())
-const worldsRepository = new WorldsRepository(worldsApi, worldStorage)
-const worldsStore = new WorldsStore(worldsRepository)
-
-export default worldsStore

@@ -1,14 +1,11 @@
 import Vue from 'vue'
 import { Setting } from '@/types'
-import { SettingStorage } from '@/infras/Setting/Storage/SettingStorage'
-import Storage from '@/libs/Storage/Storage'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
-import { SettingRepository } from '@/infras/Setting/SettingRepository'
 
 type State = {
   setting: Setting
@@ -54,10 +51,3 @@ export class SettingStore {
     }
   }
 }
-
-const settingRepository = new SettingRepository(
-  new SettingStorage(new Storage())
-)
-const settingStore = new SettingStore(settingRepository)
-
-export default settingStore

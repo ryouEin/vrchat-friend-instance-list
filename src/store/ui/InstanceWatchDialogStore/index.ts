@@ -1,17 +1,17 @@
 import { Instance } from '@/types'
 import { parseLocation } from '@/shame/parseLocation'
-import worldsStore from '@/store/data/WorldsStore'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
+import { worldsStore } from '@/store/data/DataStoreFactory'
 
 type State = {
   instance: Instance | null
 }
 @MakeReferenceToWindowObjectInDevelopment('instanceWatchDialogStore')
-class InstanceWatchDialogStore {
+export class InstanceWatchDialogStore {
   private _state = Vue.observable<State>({
     instance: null,
   })
@@ -52,7 +52,3 @@ class InstanceWatchDialogStore {
     this.clearInstanceMutation()
   }
 }
-
-const instanceWatchDialogStore = new InstanceWatchDialogStore()
-
-export default instanceWatchDialogStore

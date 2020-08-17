@@ -9,7 +9,7 @@ type State = {
   location: InstanceLocation | null
 }
 @MakeReferenceToWindowObjectInDevelopment('instanceModalStore')
-class InstanceModalStore {
+export class InstanceModalStore {
   private _state = Vue.observable<State>({
     location: null,
   })
@@ -40,7 +40,3 @@ class InstanceModalStore {
     this.clearLocationMutation()
   }
 }
-
-const instanceModalStore = new InstanceModalStore()
-
-export default instanceModalStore

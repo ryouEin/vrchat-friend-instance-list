@@ -5,16 +5,13 @@ import {
   makeInstancesFromLocations,
 } from './functions'
 import { InstanceInfo } from '@/types/ApiResponse'
-import worldsStore from '@/store/data/WorldsStore'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
-import { InstancesRepository } from '@/infras/Instances/InstancesRepository'
-import { InstancesApi } from '@/infras/Instances/Api/InstancesApi'
-import { Network } from '@/libs/Network/Network'
+import { worldsStore } from '@/store/data/DataStoreFactory'
 
 type State = {
   instances: Instance[]
@@ -185,10 +182,3 @@ export class InstancesStore {
     return Promise.all(promises)
   }
 }
-
-const instancesRepository = new InstancesRepository(
-  new InstancesApi(new Network())
-)
-const instancesStore = new InstancesStore(instancesRepository)
-
-export default instancesStore

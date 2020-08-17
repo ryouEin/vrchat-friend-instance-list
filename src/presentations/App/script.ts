@@ -86,19 +86,30 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
+  // TODO: エラーの判別がaxiosに依存してしまっている
+  // TODO: 現状401になるのはVRChatAPIだけだから問題にならないが
+  //  将来他の401出すAPI混ざってきたら困る
+  // TODO: anyを使ってしまっている
+  errorHandler(error: any) {
+    const status = error.response?.status
+
+    if (status === 401) {
+      this.showAuthErrorDialog = true
+    } else {
+      throw error
+    }
+  }
+
+  setupErrorHandlers() {
+    // 全てのエラーをキャプチャするには以下の3パターン登録する必要がある
+    // https://qiita.com/clomie/items/73fa1e9f61e5b88826bc
+    Vue.config.errorHandler = this.errorHandler
+    window.addEventListener('error', this.errorHandler)
+    window.addEventListener('unhandledrejection', this.errorHandler)
+  }
+
   async created() {
-    // TODO SOON: APIコールに対して401が帰ってきた場合の処理考え直す
-    // addErrorCallback(status => {
-    //   if (status === 401) {
-    //     this.showAuthErrorDialog = true
-    //   } else {
-    //     this.$alert({
-    //       title: `エラー [${status}]`,
-    //       content:
-    //         'データの取得に失敗しました。しばらく時間をおいてからやり直してください。',
-    //     })
-    //   }
-    // })
+    this.setupErrorHandlers()
 
     this.judgeDevice()
 

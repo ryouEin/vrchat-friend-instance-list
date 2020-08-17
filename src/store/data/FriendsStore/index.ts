@@ -1,8 +1,6 @@
 import Vue from 'vue'
-import * as vrcApiService from '@/infras/network/vrcApi'
 import { Friend, InstanceLocation } from '@/types'
 import {
-  fetchAllFriends,
   makePresentationFriends,
   markNewFriends,
 } from '@/store/data/FriendsStore/functions'
@@ -10,6 +8,10 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
+import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
+import { FriendsRepository } from '@/infras/Friends/FriendsRepository'
+import { FriendsApi } from '@/infras/Friends/Api/FriendsApi'
+import { Network } from '@/libs/Network/Network'
 
 type State = {
   friends: Friend[]
@@ -19,6 +21,8 @@ export class FriendsStore {
   private _state = Vue.observable<State>({
     friends: [],
   })
+
+  constructor(private readonly _friendsRepository: IFriendsRepository) {}
 
   get friends() {
     return this._state.friends
@@ -42,14 +46,15 @@ export class FriendsStore {
 
   async fetchFriendsAction() {
     const [friends, favorites] = await Promise.all([
-      fetchAllFriends(vrcApiService.fetchFriends),
-      vrcApiService.fetchFavoriteFriends(),
+      this._friendsRepository.fetchAllFriends(),
+      this._friendsRepository.fetchFavoritesAboutFriends(),
     ])
 
     this.setFriendsMutation(makePresentationFriends(friends, favorites))
   }
 }
 
-const friendsStore = new FriendsStore()
+const friendsRepository = new FriendsRepository(new FriendsApi(new Network()))
+const friendsStore = new FriendsStore(friendsRepository)
 
 export default friendsStore

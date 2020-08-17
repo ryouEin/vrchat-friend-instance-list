@@ -1,41 +1,8 @@
-import * as vrcApiService from '@/infras/network/vrcApi'
 import * as ApiResponse from '@/types/ApiResponse'
 import { Favorite } from '@/types/ApiResponse'
-import uniqBy from 'lodash/uniqBy'
 import { Friend } from '@/types'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
-
-// TODO: この関数は汎用的だから別のファイルに配置したほうがいいのでは？再考
-// TODO: コードがゴリ押しなので整理
-export const fetchAllFriends = async (
-  fetchFriends: vrcApiService.FetchFriendsFunction
-) => {
-  let friends: ApiResponse.User[] = []
-  let currentPage = 0
-
-  // eslint-disable-next-line
-  while (true) {
-    const [tmp01, tmp02, tmp03] = await Promise.all([
-      fetchFriends(currentPage),
-      fetchFriends(currentPage + 1),
-      fetchFriends(currentPage + 2),
-    ])
-
-    friends = friends.concat(tmp01)
-    friends = friends.concat(tmp02)
-    friends = friends.concat(tmp03)
-    if (tmp01.length <= 0 || tmp02.length <= 0 || tmp03.length <= 0) {
-      break
-    }
-
-    currentPage += 3
-  }
-
-  friends = uniqBy(friends, 'id')
-
-  return friends
-}
 
 // TODO: ここでisNewを設定していることの是非を再考
 // TODO: 関数名を再考

@@ -1,6 +1,5 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { addErrorCallback } from '@/infras/network/vrcApi'
 import NewsApi from '@/infras/News/Api/NewsApi'
 import { NewsStorage } from '@/infras/News/Storage/NewsStorage'
 import { NewsRepository } from '@/infras/News/NewsRepository'
@@ -89,17 +88,17 @@ export default class App extends Vue {
 
   async created() {
     // TODO SOON: APIコールに対して401が帰ってきた場合の処理考え直す
-    addErrorCallback(status => {
-      if (status === 401) {
-        this.showAuthErrorDialog = true
-      } else {
-        this.$alert({
-          title: `エラー [${status}]`,
-          content:
-            'データの取得に失敗しました。しばらく時間をおいてからやり直してください。',
-        })
-      }
-    })
+    // addErrorCallback(status => {
+    //   if (status === 401) {
+    //     this.showAuthErrorDialog = true
+    //   } else {
+    //     this.$alert({
+    //       title: `エラー [${status}]`,
+    //       content:
+    //         'データの取得に失敗しました。しばらく時間をおいてからやり直してください。',
+    //     })
+    //   }
+    // })
 
     this.judgeDevice()
 

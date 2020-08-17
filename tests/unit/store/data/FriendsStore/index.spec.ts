@@ -1,7 +1,7 @@
-import * as vrcApi from '@/infras/network/vrcApi'
-import { User } from '@/types/ApiResponse'
+import { Favorite, User } from '@/types/ApiResponse'
 import { Friend } from '@/types'
 import { FriendsStore } from '@/store/data/FriendsStore'
+import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 
 const generateDummyFriends = (count: number) => {
   const dummyFriends: User[] = []
@@ -20,20 +20,26 @@ const generateDummyFriends = (count: number) => {
   return dummyFriends
 }
 
+class MockFriendsRepository implements IFriendsRepository {
+  constructor(public friends: User[], public favorites: Favorite[]) {}
+
+  async fetchAllFriends(): Promise<User[]> {
+    return this.friends
+  }
+
+  async fetchFavoritesAboutFriends(): Promise<Favorite[]> {
+    return this.favorites
+  }
+}
+
 describe('fetchFriends', () => {
   it('APIから取得したフレンドデータを取得できる', async () => {
     const dummyData: User[] = generateDummyFriends(310)
-    jest
-      .spyOn(vrcApi, 'fetchFriends')
-      .mockResolvedValueOnce(dummyData.slice(0, 100))
-      .mockResolvedValueOnce(dummyData.slice(100, 200))
-      .mockResolvedValueOnce(dummyData.slice(200, 300))
-      .mockResolvedValueOnce(dummyData.slice(300, 400))
-      .mockResolvedValue([])
-    jest.spyOn(vrcApi, 'fetchFavoriteFriends').mockResolvedValueOnce([])
+    const mockFriendsRepository = new MockFriendsRepository(dummyData, [])
+    const friendsStore = new FriendsStore(mockFriendsRepository)
 
-    const friendsStore = new FriendsStore()
     await friendsStore.fetchFriendsAction()
+
     expect(friendsStore.friends).toEqual(
       dummyData.map(item => ({
         ...item,
@@ -45,14 +51,7 @@ describe('fetchFriends', () => {
 
   it('Favorite登録されているユーザーはisFavoritedがtrueになる', async () => {
     const dummyData: User[] = generateDummyFriends(310)
-    jest
-      .spyOn(vrcApi, 'fetchFriends')
-      .mockResolvedValueOnce(dummyData.slice(0, 100))
-      .mockResolvedValueOnce(dummyData.slice(100, 200))
-      .mockResolvedValueOnce(dummyData.slice(200, 300))
-      .mockResolvedValueOnce(dummyData.slice(300, 400))
-      .mockResolvedValue([])
-    jest.spyOn(vrcApi, 'fetchFavoriteFriends').mockResolvedValueOnce([
+    const mockFriendsRepository = new MockFriendsRepository(dummyData, [
       {
         favoriteId: '10',
       },
@@ -60,9 +59,10 @@ describe('fetchFriends', () => {
         favoriteId: '123',
       },
     ])
+    const friendsStore = new FriendsStore(mockFriendsRepository)
 
-    const friendsStore = new FriendsStore()
     await friendsStore.fetchFriendsAction()
+
     expect(friendsStore.friends).toEqual(
       dummyData.map<Friend>(item => {
         return {
@@ -76,22 +76,15 @@ describe('fetchFriends', () => {
 
   it('複数回呼ばれた場合、いなくなったユーザーのデータは消え、新しくログインしたユーザーはisNewがtrueになる', async () => {
     const dummyData: User[] = generateDummyFriends(310)
-    jest
-      .spyOn(vrcApi, 'fetchFriends')
-      .mockResolvedValueOnce(dummyData.slice(0, 200))
-      .mockResolvedValue([])
-    jest.spyOn(vrcApi, 'fetchFavoriteFriends').mockResolvedValueOnce([])
+    const mockFriendsRepository = new MockFriendsRepository(
+      dummyData.slice(0, 200),
+      []
+    )
+    const friendsStore = new FriendsStore(mockFriendsRepository)
 
-    const friendsStore = new FriendsStore()
     await friendsStore.fetchFriendsAction()
 
-    jest
-      .spyOn(vrcApi, 'fetchFriends')
-      .mockResolvedValueOnce(dummyData.slice(100, 200))
-      .mockResolvedValueOnce(dummyData.slice(200, 300))
-      .mockResolvedValueOnce(dummyData.slice(300, 400))
-      .mockResolvedValue([])
-    jest.spyOn(vrcApi, 'fetchFavoriteFriends').mockResolvedValueOnce([])
+    mockFriendsRepository.friends = dummyData.slice(100, 400)
 
     await friendsStore.fetchFriendsAction()
 

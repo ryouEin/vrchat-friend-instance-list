@@ -1,48 +1,41 @@
-import * as vrcApi from '@/infras/network/vrcApi'
 import { World } from '@/types/ApiResponse'
-import { IWorldStorage } from '@/infras/storage/World/IWorldStorage'
 import { WorldsStore } from '@/store/data/WorldsStore'
-
-class MockWorldStorage implements IWorldStorage {
-  constructor(public items: World[] = []) {}
-
-  async getWorlds(): Promise<World[]> {
-    return this.items
-  }
-
-  async addWorld(world: World): Promise<void> {
-    this.items.push(world)
-  }
-
-  async addWorlds(worlds: World[]): Promise<void> {
-    this.items = this.items.concat(worlds)
-  }
-}
+import { IWorldsRepository } from '@/infras/Worlds/IWorldsRepository'
 
 describe('initAction', () => {
-  it('API及びストレージからデータを取得し設定する', async () => {
-    const dummyPopularWorlds: World[] = [
-      {
-        id: 'wrld_1',
-        name: 'world 1',
-        imageUrl: 'http://example.com/file1',
-        thumbnailImageUrl: 'http://example.com/file1',
-        capacity: 10,
-      },
-      {
-        id: 'wrld_2',
-        name: 'world 2',
-        imageUrl: 'http://example.com/file2',
-        thumbnailImageUrl: 'http://example.com/file2',
-        capacity: 20,
-      },
-    ]
-    jest
-      .spyOn(vrcApi, 'fetchPopularWorlds')
-      .mockResolvedValueOnce(dummyPopularWorlds)
+  it('キャッシュから取得したデータがworldsに設定される', async () => {
+    class MockWorldsRepository implements IWorldsRepository {
+      async updateCacheByPopularWorlds(): Promise<void> {
+        return
+      }
 
-    const mockWorldStorage = new MockWorldStorage()
-    const worldsStore = new WorldsStore(mockWorldStorage)
+      async getWorldsFromCache(): Promise<World[]> {
+        return [
+          {
+            id: 'wrld_1',
+            name: 'world 1',
+            imageUrl: 'http://example.com/file1',
+            thumbnailImageUrl: 'http://example.com/file1',
+            capacity: 10,
+          },
+          {
+            id: 'wrld_2',
+            name: 'world 2',
+            imageUrl: 'http://example.com/file2',
+            thumbnailImageUrl: 'http://example.com/file2',
+            capacity: 20,
+          },
+        ]
+      }
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      // eslint-disable-next-line
+      getWorld(worldId: string): Promise<World> {}
+    }
+
+    const mockWorldsRepository = new MockWorldsRepository()
+    const worldsStore = new WorldsStore(mockWorldsRepository)
     await worldsStore.initAction()
 
     expect(worldsStore.worlds).toEqual([
@@ -67,22 +60,32 @@ describe('initAction', () => {
 })
 
 describe('fetchWorld', () => {
-  it('API及びストレージからデータを取得しworldsが更新される', async () => {
+  it('永続化層からワールド情報を取得し、friendsに設定する', async () => {
     const worldId = 'wrld_3'
-    const dummyPopularWorld: World = {
+    const dummyPopularWorld = {
       id: worldId,
       name: 'world 3',
       imageUrl: 'http://example.com/file3',
       thumbnailImageUrl: 'http://example.com/file3',
       capacity: 1,
     }
+    class MockWorldsRepository implements IWorldsRepository {
+      async updateCacheByPopularWorlds(): Promise<void> {
+        return
+      }
 
-    jest
-      .spyOn(vrcApi, 'memoizedFetchWorld')
-      .mockResolvedValueOnce(dummyPopularWorld)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      // eslint-disable-next-line
+      async getWorldsFromCache(): Promise<World[]> {}
 
-    const mockWorldStorage = new MockWorldStorage()
-    const worldsStore = new WorldsStore(mockWorldStorage)
+      async getWorld(worldId: string): Promise<World> {
+        return dummyPopularWorld
+      }
+    }
+
+    const mockWorldsRepository = new MockWorldsRepository()
+    const worldsStore = new WorldsStore(mockWorldsRepository)
     await worldsStore.fetchWorldAction(worldId)
     const expectWorlds = [
       {
@@ -92,8 +95,5 @@ describe('fetchWorld', () => {
     ]
 
     expect(worldsStore.worlds).toEqual(expectWorlds)
-
-    const storageWorlds = await mockWorldStorage.getWorlds()
-    expect(storageWorlds).toEqual([dummyPopularWorld])
   })
 })

@@ -1,7 +1,7 @@
 import unionBy from 'lodash/unionBy'
 import { World } from '@/types/ApiResponse'
 import IStorage from '@/libs/Storage/IStorage'
-import { IWorldStorage } from '@/infras/storage/World/IWorldStorage'
+import { IWorldStorage } from '@/infras/Worlds/Storage/IWorldStorage'
 
 const WORLD_STORAGE_KEY = 'worldData'
 

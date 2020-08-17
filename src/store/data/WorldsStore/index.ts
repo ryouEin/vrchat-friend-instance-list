@@ -1,16 +1,17 @@
 import { World } from '@/types'
 import * as ApiResponse from '@/types/ApiResponse'
-import * as vrcApiService from '@/infras/network/vrcApi'
-import { WorldStorage } from '@/infras/storage/World/WorldStorage'
+import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
 import Storage from '@/libs/Storage/Storage'
-import { memoizedFetchWorld } from '@/infras/network/vrcApi'
 import { calcWorldHardCapacity } from '@/shame/calcWorldHardCapacity'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { IWorldStorage } from '@/infras/storage/World/IWorldStorage'
+import { IWorldsRepository } from '@/infras/Worlds/IWorldsRepository'
+import { WorldsApi } from '@/infras/Worlds/Api/WorldsApi'
+import { Network } from '@/libs/Network/Network'
+import { WorldsRepository } from '@/infras/Worlds/WorldsRepository'
 
 const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
   return {
@@ -28,7 +29,7 @@ export class WorldsStore {
     worlds: [],
   })
 
-  constructor(private readonly _worldStorage: IWorldStorage) {}
+  constructor(private readonly _worldRepository: IWorldsRepository) {}
 
   get worlds() {
     return this._state.worlds
@@ -51,26 +52,23 @@ export class WorldsStore {
   }
 
   async fetchWorldAction(id: string) {
-    const world = await memoizedFetchWorld(id)
-
-    // TODO: localStorageが満杯になった際の処理
-    await this._worldStorage.addWorld(world)
+    const world = await this._worldRepository.getWorld(id)
 
     this.addWorldMutation(world)
   }
 
   async initAction() {
-    // TODO SOON: APIに関して中小に依存するようにする
-    const popularWorlds = await vrcApiService.fetchPopularWorlds()
-
-    await this._worldStorage.addWorlds(popularWorlds)
-    const worlds = await this._worldStorage.getWorlds()
+    await this._worldRepository.updateCacheByPopularWorlds()
+    const worlds = await this._worldRepository.getWorldsFromCache()
 
     this.setWorldsMutation(worlds)
   }
 }
 
+// TODO SOON: DIがややこしくなってきたので、DIコンテナーを試す
 const worldStorage = new WorldStorage(new Storage())
-const worldsStore = new WorldsStore(worldStorage)
+const worldsApi = new WorldsApi(new Network())
+const worldsRepository = new WorldsRepository(worldsApi, worldStorage)
+const worldsStore = new WorldsStore(worldsRepository)
 
 export default worldsStore

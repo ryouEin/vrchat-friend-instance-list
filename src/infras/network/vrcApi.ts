@@ -2,7 +2,6 @@ import axios from 'axios'
 import { Favorite, InstanceInfo, User, World } from '@/types/ApiResponse'
 import { VRC_API_URL } from '@/config/env'
 import { InstanceLocation } from '@/types'
-import pMemoize from 'p-memoize'
 
 export type ApiServiceErrorCallback = (status: number) => void
 
@@ -52,35 +51,10 @@ export const fetchFavoriteFriends: () => Promise<Favorite[]> = async () => {
   return response.data
 }
 
-export const fetchWorld: (id: string) => Promise<World> = async id => {
-  const response = await instance.get(`/api/1/worlds/${id}`)
-
-  return response.data
-}
-
-const memoizedFetchWorldFunction = pMemoize(fetchWorld, {
-  maxAge: 10000,
-})
-export const memoizedFetchWorld: (id: string) => Promise<World> = async id => {
-  return memoizedFetchWorldFunction(id)
-}
-
 export const fetchInstanceInfo: (
   location: InstanceLocation
 ) => Promise<InstanceInfo> = async location => {
   const response = await instance.get(`/api/1/instances/${location}`)
-
-  return response.data
-}
-
-export const fetchPopularWorlds: () => Promise<World[]> = async () => {
-  const response = await instance.get(`/api/1/worlds`, {
-    params: {
-      n: 100,
-      sort: 'popularity',
-      order: 'descending',
-    },
-  })
 
   return response.data
 }

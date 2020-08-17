@@ -1,5 +1,5 @@
 import IStorage from '@/libs/Storage/IStorage'
-import { WorldStorage } from '@/infras/storage/World/WorldStorage'
+import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
 
 class MockStorage implements IStorage {
   constructor(private _dictionary: { [key: string]: string }) {}

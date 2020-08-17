@@ -16,6 +16,7 @@ export class WorldsApi implements IWorldsApi {
   }
 
   async fetchPopularWorlds(): Promise<World[]> {
+    // TODO SOON: URLの扱いを考える
     return await this._network.get<World[]>(VRC_API_URL + `/api/1/worlds`, {
       n: 100,
       sort: 'popularity',

@@ -4,7 +4,6 @@ import {
   getLocationsFromFriends,
   makeInstancesFromLocations,
 } from './functions'
-import { fetchInstanceInfo } from '@/infras/network/vrcApi'
 import { InstanceInfo } from '@/types/ApiResponse'
 import worldsStore from '@/store/data/WorldsStore'
 import Vue from 'vue'
@@ -12,6 +11,10 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
+import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
+import { InstancesRepository } from '@/infras/Instances/InstancesRepository'
+import { InstancesApi } from '@/infras/Instances/Api/InstancesApi'
+import { Network } from '@/libs/Network/Network'
 
 type State = {
   instances: Instance[]
@@ -21,6 +24,8 @@ export class InstancesStore {
   private _state = Vue.observable<State>({
     instances: [],
   })
+
+  constructor(private readonly _instancesRepository: IInstancesRepository) {}
 
   get instances() {
     return this._state.instances
@@ -102,7 +107,7 @@ export class InstancesStore {
   }
 
   async updateInstanceInfoAction(location: InstanceLocation) {
-    const instanceInfo = await fetchInstanceInfo(location)
+    const instanceInfo = await this._instancesRepository.fetchInstance(location)
     this.setInstanceInfoMutation(instanceInfo)
   }
 
@@ -181,6 +186,9 @@ export class InstancesStore {
   }
 }
 
-const instancesStore = new InstancesStore()
+const instancesRepository = new InstancesRepository(
+  new InstancesApi(new Network())
+)
+const instancesStore = new InstancesStore(instancesRepository)
 
 export default instancesStore

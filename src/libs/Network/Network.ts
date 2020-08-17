@@ -1,5 +1,5 @@
 import axios, { AxiosAdapter } from 'axios'
-import { throttleAdapterEnhancer, cacheAdapterEnhancer } from 'axios-extensions'
+import { throttleAdapterEnhancer } from 'axios-extensions'
 import { INetwork, Params } from '@/libs/Network/INetwork'
 
 const adapter = axios.defaults.adapter

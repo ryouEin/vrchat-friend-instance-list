@@ -1,6 +1,7 @@
-import * as vrcApi from '@/infras/network/vrcApi'
 import { Friend, Instance } from '@/types'
 import { InstancesStore } from '@/store/data/InstancesStore'
+import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
+import { InstanceInfo } from '@/types/ApiResponse'
 
 const dummyFriendData: Friend = {
   location: '',
@@ -31,16 +32,18 @@ const dummyFriends = [
   },
 ]
 
-let instancesStore: InstancesStore
-
-beforeEach(async () => {
-  // TODO SOON: beforeEachでのこの初期化に違和感。コンストラクタでstateの初期値を与えられるようにしてこの必要が無いようにすることを検討すべきか
-  instancesStore = new InstancesStore()
-  await instancesStore.updateAction(dummyFriends)
-})
-
 describe('update', () => {
   it('フレンドのlocationを元にinstancesが更新される', async () => {
+    class MockInstancesRepository implements IInstancesRepository {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      // eslint-disable-next-line
+      async fetchInstance(location: string): Promise<InstanceInfo> {}
+    }
+    const mockInstancesRepository = new MockInstancesRepository()
+    const instancesStore = new InstancesStore(mockInstancesRepository)
+    await instancesStore.updateAction(dummyFriends)
+
     const expectInstances: Instance[] = [
       {
         location: 'wrld_1:1',
@@ -69,13 +72,20 @@ describe('update', () => {
 describe('updateInstanceInfo', () => {
   it('インスタンスの状態をAPIから取得し、反映する', async () => {
     const location = 'wrld_1:1'
-    jest.spyOn(vrcApi, 'fetchInstanceInfo').mockResolvedValueOnce({
-      location: location,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      n_users: 10,
-      capacity: 10,
-    })
+    class MockInstancesRepository implements IInstancesRepository {
+      async fetchInstance(location: string): Promise<InstanceInfo> {
+        return {
+          location: location,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          n_users: 10,
+          capacity: 10,
+        }
+      }
+    }
+    const mockInstancesRepository = new MockInstancesRepository()
+    const instancesStore = new InstancesStore(mockInstancesRepository)
 
+    await instancesStore.updateAction(dummyFriends)
     await instancesStore.updateInstanceInfoAction(location)
 
     const expectInstances: Instance[] = [
@@ -105,13 +115,20 @@ describe('updateInstanceInfo', () => {
 
   it('updateが実行された際も、以前のuserNumは保持される', async () => {
     const location = 'wrld_1:1'
-    jest.spyOn(vrcApi, 'fetchInstanceInfo').mockResolvedValueOnce({
-      location: location,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      n_users: 10,
-      capacity: 10,
-    })
+    class MockInstancesRepository implements IInstancesRepository {
+      async fetchInstance(location: string): Promise<InstanceInfo> {
+        return {
+          location: location,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          n_users: 10,
+          capacity: 10,
+        }
+      }
+    }
+    const mockInstancesRepository = new MockInstancesRepository()
+    const instancesStore = new InstancesStore(mockInstancesRepository)
 
+    await instancesStore.updateAction(dummyFriends)
     await instancesStore.updateInstanceInfoAction(location)
     await instancesStore.updateAction(dummyFriends)
 
@@ -144,6 +161,16 @@ describe('updateInstanceInfo', () => {
 describe('watchInstance', () => {
   it('指定されたインスタンスが監視状態になる', async () => {
     const location = 'wrld_1:1'
+    class MockInstancesRepository implements IInstancesRepository {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      // eslint-disable-next-line
+      async fetchInstance(location: string): Promise<InstanceInfo> {}
+    }
+    const mockInstancesRepository = new MockInstancesRepository()
+    const instancesStore = new InstancesStore(mockInstancesRepository)
+
+    await instancesStore.updateAction(dummyFriends)
     const onFindVacancy = jest.fn()
     await instancesStore.watchInstanceAction({
       location,
@@ -168,6 +195,17 @@ describe('watchInstance', () => {
 describe('unwatchInstance', () => {
   it('指定されたインスタンスが非監視状態になる', async () => {
     const location = 'wrld_1:1'
+    class MockInstancesRepository implements IInstancesRepository {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      // eslint-disable-next-line
+      async fetchInstance(location: string): Promise<InstanceInfo> {}
+    }
+    const mockInstancesRepository = new MockInstancesRepository()
+    const instancesStore = new InstancesStore(mockInstancesRepository)
+
+    await instancesStore.updateAction(dummyFriends)
+
     const onFindVacancy = jest.fn()
     await instancesStore.watchInstanceAction({
       location,
@@ -192,9 +230,25 @@ describe('unwatchInstance', () => {
 })
 
 describe('checkWatchingInstanceVacancy', () => {
+  let instancesStore: InstancesStore
   const location = 'wrld_1:1'
 
   beforeEach(async () => {
+    class MockInstancesRepository implements IInstancesRepository {
+      async fetchInstance(location: string): Promise<InstanceInfo> {
+        return {
+          location: location,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          n_users: 10,
+          capacity: 10,
+        }
+      }
+    }
+    const mockInstancesRepository = new MockInstancesRepository()
+    instancesStore = new InstancesStore(mockInstancesRepository)
+
+    await instancesStore.updateAction(dummyFriends)
+
     const notifyUserNum = 10
     const onFindVacancy = jest.fn()
     await instancesStore.watchInstanceAction({
@@ -203,12 +257,6 @@ describe('checkWatchingInstanceVacancy', () => {
       onFindVacancy,
     })
 
-    jest.spyOn(vrcApi, 'fetchInstanceInfo').mockResolvedValue({
-      location: location,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      n_users: 10,
-      capacity: 10,
-    })
     await instancesStore.updateInstanceInfoAction(location)
   })
 

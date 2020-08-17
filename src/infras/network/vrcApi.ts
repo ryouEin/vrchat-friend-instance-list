@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { Favorite, InstanceInfo, User, World } from '@/types/ApiResponse'
+import { Favorite, User } from '@/types/ApiResponse'
 import { VRC_API_URL } from '@/config/env'
-import { InstanceLocation } from '@/types'
 
 export type ApiServiceErrorCallback = (status: number) => void
 
@@ -47,14 +46,6 @@ export const fetchFavoriteFriends: () => Promise<Favorite[]> = async () => {
       n: 100,
     },
   })
-
-  return response.data
-}
-
-export const fetchInstanceInfo: (
-  location: InstanceLocation
-) => Promise<InstanceInfo> = async location => {
-  const response = await instance.get(`/api/1/instances/${location}`)
 
   return response.data
 }

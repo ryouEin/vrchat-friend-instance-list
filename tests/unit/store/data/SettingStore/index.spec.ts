@@ -1,4 +1,4 @@
-import { ISettingStorage } from '@/infras/storage/Setting/ISettingStorage'
+import { ISettingStorage } from '@/infras/Setting/Storage/ISettingStorage'
 import { Setting } from '@/types'
 import { SettingStore } from '@/store/data/SettingStore'
 import { DEFAULT_SETTING } from '@/config/settings'

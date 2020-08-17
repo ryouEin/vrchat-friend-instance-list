@@ -1,6 +1,6 @@
 import IStorage from '@/libs/Storage/IStorage'
 import { Setting } from '@/types'
-import { ISettingStorage } from '@/infras/storage/Setting/ISettingStorage'
+import { ISettingStorage } from '@/infras/Setting/Storage/ISettingStorage'
 
 const SETTING_STORAGE_KEY = 'setting'
 

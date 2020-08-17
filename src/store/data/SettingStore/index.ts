@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import { Setting } from '@/types'
-import { SettingStorage } from '@/infras/storage/Setting/SettingStorage'
+import { SettingStorage } from '@/infras/Setting/Storage/SettingStorage'
 import Storage from '@/libs/Storage/Storage'
-import { ISettingStorage } from '@/infras/storage/Setting/ISettingStorage'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { DEFAULT_SETTING } from '@/config/settings'
+import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
+import { SettingRepository } from '@/infras/Setting/SettingRepository'
 
 type State = {
   setting: Setting
@@ -18,7 +19,7 @@ export class SettingStore {
     setting: DEFAULT_SETTING,
   })
 
-  constructor(private readonly _settingStorage: ISettingStorage) {}
+  constructor(private readonly _settingRepository: ISettingRepository) {}
 
   get setting() {
     return this._state.setting
@@ -37,25 +38,26 @@ export class SettingStore {
   async enableNotificationSoundAction() {
     this.updateEnableNotificationSoundMutation(true)
 
-    await this._settingStorage.updateSetting(this.setting)
+    await this._settingRepository.updateSetting(this.setting)
   }
 
   async disableNotificationSoundAction() {
     this.updateEnableNotificationSoundMutation(false)
 
-    await this._settingStorage.updateSetting(this.setting)
+    await this._settingRepository.updateSetting(this.setting)
   }
 
   async initAction() {
-    const setting = await this._settingStorage.getSetting()
+    const setting = await this._settingRepository.getSetting()
     if (setting !== undefined) {
       await this.updateSettingMutation(setting)
     }
   }
 }
 
-const storage = new Storage()
-const settingStorage = new SettingStorage(storage)
-const settingStore = new SettingStore(settingStorage)
+const settingRepository = new SettingRepository(
+  new SettingStorage(new Storage())
+)
+const settingStore = new SettingStore(settingRepository)
 
 export default settingStore

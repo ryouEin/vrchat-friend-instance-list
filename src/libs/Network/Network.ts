@@ -1,12 +1,25 @@
-import axios from 'axios'
-import { INetwork } from '@/libs/Network/INetwork'
+import axios, { AxiosAdapter } from 'axios'
+import { throttleAdapterEnhancer, cacheAdapterEnhancer } from 'axios-extensions'
+import { INetwork, Params } from '@/libs/Network/INetwork'
+
+const adapter = axios.defaults.adapter
+if (adapter === undefined) {
+  throw new Error('axios adapter is undefined.')
+}
+// TODO SOON: 使用側でthrottleの時間を設定できるようにしたい
+const throttleAdapter = throttleAdapterEnhancer(adapter, {
+  threshold: 10 * 1000,
+})
 
 export class Network implements INetwork {
-  async get<T>(
-    url: string,
-    params?: { [p: string]: number | string | boolean }
-  ): Promise<T> {
-    const response = await axios.get<T>(url, { params })
+  async get<T>(url: string, params: Params = {}, throttle = false): Promise<T> {
+    const config: { params: Params; adapter?: AxiosAdapter } = {
+      params,
+    }
+
+    if (throttle) config.adapter = throttleAdapter
+
+    const response = await axios.get<T>(url, config)
 
     return response.data
   }

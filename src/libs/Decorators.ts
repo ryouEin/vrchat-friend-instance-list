@@ -20,7 +20,7 @@ export function LogBeforeAfter(outputPropertyName?: string) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const outputProperty = (context: any) => {
       if (outputPropertyName !== undefined) {
-        console.log(JSON.stringify(context[outputPropertyName]))
+        console.log(JSON.parse(JSON.stringify(context[outputPropertyName])))
       }
     }
 

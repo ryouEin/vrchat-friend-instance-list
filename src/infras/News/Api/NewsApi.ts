@@ -1,4 +1,4 @@
-import { INewsApi } from '@/infras/network/News/INewsApi'
+import { INewsApi } from '@/infras/News/Api/INewsApi'
 import axios from 'axios'
 import { NEWS_API_KEY, NEWS_API_URL } from '@/config/env'
 import { convertUnixTimeToISO8601ExtendedUTC } from '@/shame/convertUnixTimeToISO8601ExtendedUTC'

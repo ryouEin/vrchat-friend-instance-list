@@ -1,4 +1,4 @@
-import { INewsStorage } from '@/infras/storage/News/INewsStorage'
+import { INewsStorage } from '@/infras/News/Storage/INewsStorage'
 import Storage from '@/libs/Storage/Storage'
 
 const KEY = 'lastCheckNewsAt'

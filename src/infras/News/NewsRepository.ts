@@ -1,15 +1,17 @@
-import { INewsApi } from '@/infras/network/News/INewsApi'
-import { INewsStorage } from '@/infras/storage/News/INewsStorage'
+import { INewsApi } from '@/infras/News/Api/INewsApi'
+import { INewsStorage } from '@/infras/News/Storage/INewsStorage'
 import { News } from '@/types'
 
-export class NewsApplicationService {
+const DEFAULT_NEWS_COUNT = 3
+
+export class NewsRepository {
   constructor(
     private readonly _newsApi: INewsApi,
     private readonly _newsStorage: INewsStorage
   ) {}
 
-  async getNews(): Promise<News[]> {
-    const NEWS_COUNT = 3
+  // TODO: Repositoryで処理をやりすぎではないか？再考の余地あり
+  async fetchUnreadNews(count: number = DEFAULT_NEWS_COUNT): Promise<News[]> {
     const lastCheckAt = this._newsStorage.getLastCheckNewsAt() ?? 0
     const newsJsonArray = await this._newsApi.fetchNewsSince(lastCheckAt)
 
@@ -24,6 +26,6 @@ export class NewsApplicationService {
       .sort((a, b) => {
         return a.publishedAt > b.publishedAt ? -1 : 1
       })
-      .slice(0, NEWS_COUNT)
+      .slice(0, count)
   }
 }

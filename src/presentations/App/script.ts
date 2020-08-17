@@ -1,9 +1,9 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { addErrorCallback } from '@/infras/network/vrcApi'
-import NewsApi from '@/infras/network/News/NewsApi'
-import { NewsStorage } from '@/infras/storage/News/NewsStorage'
-import { NewsApplicationService } from '@/applications/NewsApplicationService'
+import NewsApi from '@/infras/News/Api/NewsApi'
+import { NewsStorage } from '@/infras/News/Storage/NewsStorage'
+import { NewsRepository } from '@/infras/News/NewsRepository'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
 import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
@@ -54,10 +54,11 @@ export default class App extends Vue {
   }
 
   async checkNews() {
+    // TODO SOON: Presentation層でRepositoryインスタンスの作成の知識が必要なのはおかしいのでは？
     const newsApi = new NewsApi()
     const newsStorage = new NewsStorage()
-    const newsService = new NewsApplicationService(newsApi, newsStorage)
-    const newsArray = await newsService.getNews()
+    const newsRepository = new NewsRepository(newsApi, newsStorage)
+    const newsArray = await newsRepository.fetchUnreadNews()
 
     this.showNewsDialogs(newsArray)
   }
@@ -87,6 +88,7 @@ export default class App extends Vue {
   }
 
   async created() {
+    // TODO SOON: APIコールに対して401が帰ってきた場合の処理考え直す
     addErrorCallback(status => {
       if (status === 401) {
         this.showAuthErrorDialog = true

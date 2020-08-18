@@ -1,10 +1,10 @@
-import { ISettingStorage } from '@/infras/Setting/Storage/ISettingStorage'
 import { Setting } from '@/types'
 import { SettingStore } from '@/store/data/SettingStore'
 import { DEFAULT_SETTING } from '@/config/settings'
+import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
 
-class MockSettingStorage implements ISettingStorage {
-  constructor(public setting: Setting | undefined) {}
+class MockSettingRepository implements ISettingRepository {
+  constructor(public setting: Setting | undefined = undefined) {}
 
   async getSetting(): Promise<Setting | undefined> {
     return this.setting
@@ -16,56 +16,58 @@ class MockSettingStorage implements ISettingStorage {
 }
 
 describe('initAction', () => {
-  it('ストレージに設定がない場合は、初期設定が使用される', async () => {
-    const mockSettingStorage = new MockSettingStorage(undefined)
-    const settingStore = new SettingStore(mockSettingStorage)
+  it('リポジトリに設定がない場合は、初期設定が使用される', async () => {
+    const mockSettingRepository = new MockSettingRepository()
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
 
     expect(settingStore.setting).toBe(DEFAULT_SETTING)
   })
 
-  it('ストレージに設定がある場合は、ストレージの内容が適用される', async () => {
-    const storageSetting: Setting = {
+  it('リポジトリに設定がある場合は、リポジトリの内容が適用される', async () => {
+    const repositorySetting: Setting = {
       isEnabledNotificationSound: false,
     }
-    const mockSettingStorage = new MockSettingStorage(storageSetting)
-    const settingStore = new SettingStore(mockSettingStorage)
+    const mockSettingRepository = new MockSettingRepository(repositorySetting)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
 
-    expect(settingStore.setting).toEqual(storageSetting)
+    expect(settingStore.setting).toEqual(repositorySetting)
   })
 })
 
 describe('enableNotificationSoundAction', () => {
-  it('isEnabledNotificationSoundがtrueになり、ストレージにもその内容が保存される', async () => {
-    const storageSetting: Setting = {
+  it('isEnabledNotificationSoundがtrueになり、リポジトリにもその内容が保存される', async () => {
+    const repositorySetting: Setting = {
       isEnabledNotificationSound: false,
     }
-    const mockSettingStorage = new MockSettingStorage(storageSetting)
-    const settingStore = new SettingStore(mockSettingStorage)
+    const mockSettingRepository = new MockSettingRepository(repositorySetting)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.enableNotificationSoundAction()
 
     expect(settingStore.setting.isEnabledNotificationSound).toBe(true)
-    expect(mockSettingStorage.setting?.isEnabledNotificationSound).toBe(true)
+    expect(mockSettingRepository.setting?.isEnabledNotificationSound).toBe(true)
   })
 })
 
 describe('disableNotificationSoundAction', () => {
-  it('isEnabledNotificationSoundがfalseになり、ストレージにもその内容が保存される', async () => {
-    const storageSetting: Setting = {
+  it('isEnabledNotificationSoundがfalseになり、リポジトリにもその内容が保存される', async () => {
+    const repositorySetting: Setting = {
       isEnabledNotificationSound: true,
     }
-    const mockSettingStorage = new MockSettingStorage(storageSetting)
-    const settingStore = new SettingStore(mockSettingStorage)
+    const mockSettingRepository = new MockSettingRepository(repositorySetting)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.disableNotificationSoundAction()
 
     expect(settingStore.setting.isEnabledNotificationSound).toBe(false)
-    expect(mockSettingStorage.setting?.isEnabledNotificationSound).toBe(false)
+    expect(mockSettingRepository.setting?.isEnabledNotificationSound).toBe(
+      false
+    )
   })
 })

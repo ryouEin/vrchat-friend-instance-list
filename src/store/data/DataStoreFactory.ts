@@ -6,8 +6,7 @@ import { InstancesRepository } from '@/infras/Instances/InstancesRepository'
 import { InstancesApi } from '@/infras/Instances/Api/InstancesApi'
 import { InstancesStore } from '@/store/data/InstancesStore'
 import { NotificationsStore } from '@/store/data/NotificationsStore'
-import { SettingRepository } from '@/infras/Setting/SettingRepository'
-import { SettingStorage } from '@/infras/Setting/Storage/SettingStorage'
+import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import Storage from '@/libs/Storage/Storage'
 import { SettingStore } from '@/store/data/SettingStore'
 import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
@@ -32,9 +31,7 @@ export const notificationsStore = (() => {
 })()
 
 export const settingStore = (() => {
-  const settingRepository = new SettingRepository(
-    new SettingStorage(new Storage())
-  )
+  const settingRepository = new KeyValueStorageSettingRepository(new Storage())
   return new SettingStore(settingRepository)
 })()
 

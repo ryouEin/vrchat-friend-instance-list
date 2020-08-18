@@ -1,10 +1,10 @@
-import IStorage from '@/libs/Storage/IStorage'
+import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
 import { Setting } from '@/types'
-import { ISettingStorage } from '@/infras/Setting/Storage/ISettingStorage'
+import IStorage from '@/libs/Storage/IStorage'
 
 const SETTING_STORAGE_KEY = 'setting'
 
-export class SettingStorage implements ISettingStorage {
+export class KeyValueStorageSettingRepository implements ISettingRepository {
   constructor(private _storage: IStorage) {}
 
   async getSetting(): Promise<Setting | undefined> {
@@ -16,7 +16,7 @@ export class SettingStorage implements ISettingStorage {
     return JSON.parse(settingJson)
   }
 
-  async updateSetting(setting: Setting) {
+  async updateSetting(setting: Setting): Promise<void> {
     this._storage.setItem(SETTING_STORAGE_KEY, JSON.stringify(setting))
   }
 }

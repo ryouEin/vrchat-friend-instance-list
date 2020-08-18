@@ -11,6 +11,7 @@ import {
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
+// TODO SOON: テスト時に循環参照か何か発生していてて、ここでworldStoreをimportしている影響で落ちる
 import { worldsStore } from '@/store/data/DataStoreFactory'
 
 type State = {

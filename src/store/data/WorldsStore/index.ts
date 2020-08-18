@@ -15,11 +15,16 @@ const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
   }
 }
 
+// TODO: InstancesStoreでインジェクションするために定義したがこんな名前でいいのか？
+export interface ICanGetWorldById {
+  world: (id: string) => World | undefined
+}
+
 type State = {
   worlds: World[]
 }
 @MakeReferenceToWindowObjectInDevelopment('worldsStore')
-export class WorldsStore {
+export class WorldsStore implements ICanGetWorldById {
   private _state = Vue.observable<State>({
     worlds: [],
   })

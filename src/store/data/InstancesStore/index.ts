@@ -11,8 +11,7 @@ import {
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
-// TODO SOON: テスト時に循環参照か何か発生していてて、ここでworldStoreをimportしている影響で落ちる
-import { worldsStore } from '@/store/data/DataStoreFactory'
+import { ICanGetWorldById } from '@/store/data/WorldsStore'
 
 type State = {
   instances: Instance[]
@@ -23,7 +22,10 @@ export class InstancesStore {
     instances: [],
   })
 
-  constructor(private readonly _instancesRepository: IInstancesRepository) {}
+  constructor(
+    private readonly _instancesRepository: IInstancesRepository,
+    private readonly _worldStore: ICanGetWorldById
+  ) {}
 
   get instances() {
     return this._state.instances
@@ -109,19 +111,10 @@ export class InstancesStore {
     this.setInstanceInfoMutation(instanceInfo)
   }
 
-  // TODO SOON: テストのために依存をはがすため、hardCapacityを引数として渡しているが微妙。
-  //  本来ならコンストラクタインジェクション等で対応するがvuex-data-decoratorsは
-  //  コンストラクタを自分で呼ぶ方法を提供していないため出来なかった。
-  //  もっといい方法を模索
-  async checkWatchingInstanceVacancyAction({
-    location,
-    hardCapacity,
-  }: {
-    location: InstanceLocation
-    hardCapacity: number
-  }) {
+  async checkWatchingInstanceVacancyAction(location: InstanceLocation) {
     const instance = this.instanceByLocation(location)
 
+    // TODO: こんな適当な例外の投げ方で良いのか再考
     if (instance === undefined) {
       throw new Error('instance is undefined.')
     }
@@ -131,6 +124,12 @@ export class InstancesStore {
     if (instance.userNum === undefined) {
       throw new Error('userNum is undefined.')
     }
+
+    const world = this._worldStore.world(instance.worldId)
+    if (world === undefined) {
+      throw new Error('world is undefined.')
+    }
+    const hardCapacity = world.hardCapacity
 
     const hasRequiredVacancy =
       instance.userNum + instance.notifyUserNum <= hardCapacity
@@ -170,14 +169,7 @@ export class InstancesStore {
     )
     const promises = watchingInstances.map(async instance => {
       await this.updateInstanceInfoAction(instance.location)
-      const world = worldsStore.world(instance.worldId)
-      if (world === undefined) {
-        throw new Error('world is undefined.')
-      }
-      await this.checkWatchingInstanceVacancyAction({
-        location: instance.location,
-        hardCapacity: world.hardCapacity,
-      })
+      await this.checkWatchingInstanceVacancyAction(instance.location)
     })
 
     return Promise.all(promises)

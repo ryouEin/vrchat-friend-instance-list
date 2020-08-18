@@ -1,7 +1,8 @@
-import { Friend, Instance } from '@/types'
+import { Friend, Instance, World } from '@/types'
 import { InstancesStore } from '@/store/data/InstancesStore'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
 import { InstanceInfo } from '@/types/ApiResponse'
+import { ICanGetWorldById } from '@/store/data/WorldsStore'
 
 const dummyFriendData: Friend = {
   location: '',
@@ -32,6 +33,16 @@ const dummyFriends = [
   },
 ]
 
+class MockCanGetWorldById implements ICanGetWorldById {
+  constructor(public worlds: World[] = []) {}
+
+  get world() {
+    return (id: string) => {
+      return this.worlds.find(world => world.id === id)
+    }
+  }
+}
+
 describe('update', () => {
   it('フレンドのlocationを元にinstancesが更新される', async () => {
     class MockInstancesRepository implements IInstancesRepository {
@@ -41,7 +52,11 @@ describe('update', () => {
       async fetchInstance(location: string): Promise<InstanceInfo> {}
     }
     const mockInstancesRepository = new MockInstancesRepository()
-    const instancesStore = new InstancesStore(mockInstancesRepository)
+    const mockCanGetWorldById = new MockCanGetWorldById()
+    const instancesStore = new InstancesStore(
+      mockInstancesRepository,
+      mockCanGetWorldById
+    )
     await instancesStore.updateAction(dummyFriends)
 
     const expectInstances: Instance[] = [
@@ -83,7 +98,11 @@ describe('updateInstanceInfo', () => {
       }
     }
     const mockInstancesRepository = new MockInstancesRepository()
-    const instancesStore = new InstancesStore(mockInstancesRepository)
+    const mockCanGetWorldById = new MockCanGetWorldById()
+    const instancesStore = new InstancesStore(
+      mockInstancesRepository,
+      mockCanGetWorldById
+    )
 
     await instancesStore.updateAction(dummyFriends)
     await instancesStore.updateInstanceInfoAction(location)
@@ -126,7 +145,11 @@ describe('updateInstanceInfo', () => {
       }
     }
     const mockInstancesRepository = new MockInstancesRepository()
-    const instancesStore = new InstancesStore(mockInstancesRepository)
+    const mockCanGetWorldById = new MockCanGetWorldById()
+    const instancesStore = new InstancesStore(
+      mockInstancesRepository,
+      mockCanGetWorldById
+    )
 
     await instancesStore.updateAction(dummyFriends)
     await instancesStore.updateInstanceInfoAction(location)
@@ -168,7 +191,11 @@ describe('watchInstance', () => {
       async fetchInstance(location: string): Promise<InstanceInfo> {}
     }
     const mockInstancesRepository = new MockInstancesRepository()
-    const instancesStore = new InstancesStore(mockInstancesRepository)
+    const mockCanGetWorldById = new MockCanGetWorldById()
+    const instancesStore = new InstancesStore(
+      mockInstancesRepository,
+      mockCanGetWorldById
+    )
 
     await instancesStore.updateAction(dummyFriends)
     const onFindVacancy = jest.fn()
@@ -202,7 +229,11 @@ describe('unwatchInstance', () => {
       async fetchInstance(location: string): Promise<InstanceInfo> {}
     }
     const mockInstancesRepository = new MockInstancesRepository()
-    const instancesStore = new InstancesStore(mockInstancesRepository)
+    const mockCanGetWorldById = new MockCanGetWorldById()
+    const instancesStore = new InstancesStore(
+      mockInstancesRepository,
+      mockCanGetWorldById
+    )
 
     await instancesStore.updateAction(dummyFriends)
 
@@ -231,6 +262,7 @@ describe('unwatchInstance', () => {
 
 describe('checkWatchingInstanceVacancy', () => {
   let instancesStore: InstancesStore
+  let mockCanGetWorldById: MockCanGetWorldById
   const location = 'wrld_1:1'
 
   beforeEach(async () => {
@@ -245,7 +277,11 @@ describe('checkWatchingInstanceVacancy', () => {
       }
     }
     const mockInstancesRepository = new MockInstancesRepository()
-    instancesStore = new InstancesStore(mockInstancesRepository)
+    mockCanGetWorldById = new MockCanGetWorldById()
+    instancesStore = new InstancesStore(
+      mockInstancesRepository,
+      mockCanGetWorldById
+    )
 
     await instancesStore.updateAction(dummyFriends)
 
@@ -261,10 +297,17 @@ describe('checkWatchingInstanceVacancy', () => {
   })
 
   it('指定されたインスタンスに指定ギリギリの空きがあった場合、onFindVacancyが実行されisWatchingがfalseとなる', async () => {
-    await instancesStore.checkWatchingInstanceVacancyAction({
-      location,
-      hardCapacity: 20,
-    })
+    mockCanGetWorldById.worlds = [
+      {
+        id: 'wrld_1',
+        name: 'sample',
+        imageUrl: '',
+        thumbnailImageUrl: '',
+        capacity: 10,
+        hardCapacity: 20,
+      },
+    ]
+    await instancesStore.checkWatchingInstanceVacancyAction(location)
 
     const instance = instancesStore.instanceByLocation(location)
     if (instance === undefined) {
@@ -276,10 +319,17 @@ describe('checkWatchingInstanceVacancy', () => {
   })
 
   it('指定されたインスタンスに指定の空きより1足らなかった場合、何も変わらない', async () => {
-    await instancesStore.checkWatchingInstanceVacancyAction({
-      location,
-      hardCapacity: 19,
-    })
+    mockCanGetWorldById.worlds = [
+      {
+        id: 'wrld_1',
+        name: 'sample',
+        imageUrl: '',
+        thumbnailImageUrl: '',
+        capacity: 10,
+        hardCapacity: 19,
+      },
+    ]
+    await instancesStore.checkWatchingInstanceVacancyAction(location)
 
     const instance = instancesStore.instanceByLocation(location)
     if (instance === undefined) {

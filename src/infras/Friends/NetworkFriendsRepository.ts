@@ -1,10 +1,23 @@
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import { Favorite, User } from '@/types/ApiResponse'
 import uniqBy from 'lodash/uniqBy'
-import { IFriendsApi } from '@/infras/Friends/Api/IFriendsApi'
+import { VRC_API_URL } from '@/config/env'
+import { INetwork } from '@/libs/Network/INetwork'
 
-export class FriendsRepository implements IFriendsRepository {
-  constructor(private readonly _friendsApi: IFriendsApi) {}
+export class NetworkFriendsRepository implements IFriendsRepository {
+  constructor(private readonly _network: INetwork) {}
+
+  private async fetchFriends(page: number): Promise<User[]> {
+    const COUNT_PER_PAGE = 100
+
+    return await this._network.get<User[]>(
+      VRC_API_URL + '/api/1/auth/user/friends',
+      {
+        n: COUNT_PER_PAGE,
+        offset: COUNT_PER_PAGE * page,
+      }
+    )
+  }
 
   async fetchAllFriends(): Promise<User[]> {
     let friends: User[] = []
@@ -13,9 +26,9 @@ export class FriendsRepository implements IFriendsRepository {
     // eslint-disable-next-line
     while (true) {
       const [tmp01, tmp02, tmp03] = await Promise.all([
-        this._friendsApi.fetchFriends(currentPage),
-        this._friendsApi.fetchFriends(currentPage + 1),
-        this._friendsApi.fetchFriends(currentPage + 2),
+        this.fetchFriends(currentPage),
+        this.fetchFriends(currentPage + 1),
+        this.fetchFriends(currentPage + 2),
       ])
 
       friends = friends.concat(tmp01)
@@ -34,6 +47,9 @@ export class FriendsRepository implements IFriendsRepository {
   }
 
   async fetchFavoritesAboutFriends(): Promise<Favorite[]> {
-    return this._friendsApi.fetchFavoritesAboutFriend()
+    return await this._network.get(VRC_API_URL + '/api/1/favorites', {
+      type: 'friend',
+      n: 100,
+    })
   }
 }

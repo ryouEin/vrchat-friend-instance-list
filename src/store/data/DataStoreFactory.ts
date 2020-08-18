@@ -1,6 +1,5 @@
 import { FriendsStore } from '@/store/data/FriendsStore'
-import { FriendsRepository } from '@/infras/Friends/FriendsRepository'
-import { FriendsApi } from '@/infras/Friends/Api/FriendsApi'
+import { NetworkFriendsRepository } from '@/infras/Friends/NetworkFriendsRepository'
 import { Network } from '@/libs/Network/Network'
 import { NetworkInstancesRepository } from '@/infras/Instances/NetworkInstancesRepository'
 import { InstancesStore } from '@/store/data/InstancesStore'
@@ -14,7 +13,7 @@ import { WorldsRepository } from '@/infras/Worlds/WorldsRepository'
 import { WorldsStore } from '@/store/data/WorldsStore'
 
 export const friendsStore = (() => {
-  const friendsRepository = new FriendsRepository(new FriendsApi(new Network()))
+  const friendsRepository = new NetworkFriendsRepository(new Network())
   return new FriendsStore(friendsRepository)
 })()
 

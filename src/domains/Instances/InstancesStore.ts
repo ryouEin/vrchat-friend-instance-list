@@ -3,7 +3,7 @@ import {
   applyOldInstanceStatesToNewInstances,
   getLocationsFromFriends,
   makeInstancesFromLocations,
-} from './functions'
+} from './InstancesService'
 import { InstanceInfo } from '@/types/ApiResponse'
 import Vue from 'vue'
 import {
@@ -11,7 +11,7 @@ import {
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
-import { ICanGetWorldById } from '@/store/data/WorldsStore'
+import { ICanGetWorldById } from '@/domains/WorldsStore/WorldsStore'
 
 type State = {
   instances: Instance[]

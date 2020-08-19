@@ -1,5 +1,5 @@
 import { World } from '@/types/ApiResponse'
-import { WorldsStore } from '@/store/data/WorldsStore'
+import { WorldsStore } from '@/domains/WorldsStore/WorldsStore'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 

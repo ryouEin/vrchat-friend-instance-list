@@ -5,7 +5,7 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { settingStore } from '@/store/data/DataStoreFactory'
+import { settingStore } from '@/domains/DomainStoreFactory'
 
 // TODO SOON: テスト
 type State = {

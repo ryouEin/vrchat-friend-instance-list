@@ -5,7 +5,7 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { worldsStore } from '@/store/data/DataStoreFactory'
+import { worldsStore } from '@/domains/DomainStoreFactory'
 
 type State = {
   instance: Instance | null

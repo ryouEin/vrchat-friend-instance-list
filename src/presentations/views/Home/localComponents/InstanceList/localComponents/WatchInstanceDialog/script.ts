@@ -3,11 +3,11 @@ import Vue from 'vue'
 import {
   instanceModalStore,
   instanceWatchDialogStore,
-} from '@/store/ui/UiStoreFactory'
+} from '@/presentations/ui_store/UiStoreFactory'
 import {
   instancesStore,
   notificationsStore,
-} from '@/store/data/DataStoreFactory'
+} from '@/domains/DomainStoreFactory'
 
 const generateSelectItems = (count: number) => {
   const tmp = []

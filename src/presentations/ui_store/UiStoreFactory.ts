@@ -1,5 +1,5 @@
-import { InstanceModalStore } from '@/store/ui/InstanceModalStore'
-import { InstanceWatchDialogStore } from '@/store/ui/InstanceWatchDialogStore'
+import { InstanceModalStore } from '@/presentations/ui_store/InstanceModalStore'
+import { InstanceWatchDialogStore } from '@/presentations/ui_store/InstanceWatchDialogStore'
 
 export const instanceModalStore = (() => {
   return new InstanceModalStore()

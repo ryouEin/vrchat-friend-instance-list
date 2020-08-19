@@ -12,7 +12,7 @@ import {
   instancesStore,
   settingStore,
   worldsStore,
-} from '@/store/data/DataStoreFactory'
+} from '@/domains/DomainStoreFactory'
 
 @Component({
   components: {

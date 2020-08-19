@@ -1,6 +1,6 @@
 import { Favorite, User } from '@/types/ApiResponse'
 import { Friend } from '@/types'
-import { FriendsStore } from '@/store/data/FriendsStore'
+import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 
 const generateDummyFriends = (count: number) => {

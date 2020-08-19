@@ -5,7 +5,7 @@ import Permission from '@/presentations/views/Home/localComponents/InstanceListI
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/WatchInstanceButton/index.vue'
 import { Instance, InstancePermission, World } from '@/types'
-import { instancesStore } from '@/store/data/DataStoreFactory'
+import { instancesStore } from '@/domains/DomainStoreFactory'
 
 @Component({
   components: {

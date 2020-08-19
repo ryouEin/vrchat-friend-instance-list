@@ -1,15 +1,15 @@
-import { FriendsStore } from '@/store/data/FriendsStore'
+import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { NetworkFriendsRepository } from '@/infras/Friends/NetworkFriendsRepository'
 import { Network } from '@/libs/Network/Network'
 import { NetworkInstancesRepository } from '@/infras/Instances/NetworkInstancesRepository'
-import { InstancesStore } from '@/store/data/InstancesStore'
-import { NotificationsStore } from '@/store/data/NotificationsStore'
+import { InstancesStore } from '@/domains/Instances/InstancesStore'
+import { NotificationsStore } from '@/domains/Notifications/NotificationsStore'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
-import { SettingStore } from '@/store/data/SettingStore'
+import { SettingStore } from '@/domains/Setting/SettingStore'
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { NetworkWorldsRepository } from '@/infras/Worlds/NetworkWorldsRepository'
-import { WorldsStore } from '@/store/data/WorldsStore'
+import { WorldsStore } from '@/domains/WorldsStore/WorldsStore'
 
 export const friendsStore = (() => {
   const friendsRepository = new NetworkFriendsRepository(new Network())

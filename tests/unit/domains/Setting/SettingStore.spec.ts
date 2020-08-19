@@ -1,5 +1,5 @@
 import { Setting } from '@/types'
-import { SettingStore } from '@/store/data/SettingStore'
+import { SettingStore } from '@/domains/Setting/SettingStore'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
 

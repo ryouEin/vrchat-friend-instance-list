@@ -6,7 +6,7 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { getWorld } from '@/store/data/WorldsStore/functions'
+import { getWorld } from '@/domains/WorldsStore/WorldsService'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 

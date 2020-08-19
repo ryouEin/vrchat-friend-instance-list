@@ -1,8 +1,8 @@
 import { Friend, Instance, World } from '@/types'
-import { InstancesStore } from '@/store/data/InstancesStore'
+import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
 import { InstanceInfo } from '@/types/ApiResponse'
-import { ICanGetWorldById } from '@/store/data/WorldsStore'
+import { ICanGetWorldById } from '@/domains/WorldsStore/WorldsStore'
 
 const dummyFriendData: Friend = {
   location: '',

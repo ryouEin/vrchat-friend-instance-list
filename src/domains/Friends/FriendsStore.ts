@@ -3,7 +3,7 @@ import { Friend, InstanceLocation } from '@/types'
 import {
   makePresentationFriends,
   markNewFriends,
-} from '@/store/data/FriendsStore/functions'
+} from '@/domains/Friends/FriendsService'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,

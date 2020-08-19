@@ -1,11 +1,11 @@
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
 import { Setting } from '@/types'
-import IStorage from '@/libs/Storage/IStorage'
+import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
 
 const SETTING_STORAGE_KEY = 'setting'
 
 export class KeyValueStorageSettingRepository implements ISettingRepository {
-  constructor(private _storage: IStorage) {}
+  constructor(private _storage: IKeyValueStorage) {}
 
   async getSetting(): Promise<Setting | undefined> {
     // TODO SOON: ストレージに保存されている形式が古かったり、おかしくなっている場合の対処が必要

@@ -1,6 +1,6 @@
-import IStorage from '@/libs/Storage/IStorage'
+import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
 
-export default class Storage implements IStorage {
+export default class LocalStorage implements IKeyValueStorage {
   clear() {
     localStorage.clear()
   }

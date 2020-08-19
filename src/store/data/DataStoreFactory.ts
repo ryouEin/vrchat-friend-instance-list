@@ -5,7 +5,7 @@ import { NetworkInstancesRepository } from '@/infras/Instances/NetworkInstancesR
 import { InstancesStore } from '@/store/data/InstancesStore'
 import { NotificationsStore } from '@/store/data/NotificationsStore'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
-import Storage from '@/libs/Storage/Storage'
+import LocalStorage from '@/libs/Storage/LocalStorage'
 import { SettingStore } from '@/store/data/SettingStore'
 import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
 import { WorldsApi } from '@/infras/Worlds/Api/WorldsApi'
@@ -22,12 +22,14 @@ export const notificationsStore = (() => {
 })()
 
 export const settingStore = (() => {
-  const settingRepository = new KeyValueStorageSettingRepository(new Storage())
+  const settingRepository = new KeyValueStorageSettingRepository(
+    new LocalStorage()
+  )
   return new SettingStore(settingRepository)
 })()
 
 export const worldsStore = (() => {
-  const worldStorage = new WorldStorage(new Storage())
+  const worldStorage = new WorldStorage(new LocalStorage())
   const worldsApi = new WorldsApi(new Network())
   const worldsRepository = new WorldsRepository(worldsApi, worldStorage)
   return new WorldsStore(worldsRepository)

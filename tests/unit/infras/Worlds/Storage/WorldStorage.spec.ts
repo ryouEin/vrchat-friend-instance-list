@@ -1,7 +1,7 @@
-import IStorage from '@/libs/Storage/IStorage'
+import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
 import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
 
-class MockStorage implements IStorage {
+class MockStorage implements IKeyValueStorage {
   constructor(private _dictionary: { [key: string]: string }) {}
 
   // eslint-disable-next-line

@@ -1,8 +1,8 @@
 import { INewsStorage } from '@/infras/News/Storage/INewsStorage'
-import Storage from '@/libs/Storage/Storage'
+import LocalStorage from '@/libs/Storage/LocalStorage'
 
 const KEY = 'lastCheckNewsAt'
-const storage = new Storage()
+const storage = new LocalStorage()
 
 export class NewsStorage implements INewsStorage {
   setLastCheckNewsAt(unixtime: number): void {

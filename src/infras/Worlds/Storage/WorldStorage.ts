@@ -1,12 +1,12 @@
 import unionBy from 'lodash/unionBy'
 import { World } from '@/types/ApiResponse'
-import IStorage from '@/libs/Storage/IStorage'
+import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
 import { IWorldStorage } from '@/infras/Worlds/Storage/IWorldStorage'
 
 const WORLD_STORAGE_KEY = 'worldData'
 
 export class WorldStorage implements IWorldStorage {
-  constructor(private _storage: IStorage) {}
+  constructor(private _storage: IKeyValueStorage) {}
 
   async getWorlds(): Promise<World[]> {
     const worldsJson = this._storage.getItem(WORLD_STORAGE_KEY)

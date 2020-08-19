@@ -33,12 +33,7 @@ export class FriendsStore {
 
   @LogBeforeAfter('_state')
   private setFriendsMutation(friends: Friend[]) {
-    if (this.friends.length <= 0) {
-      this._state.friends = friends
-      return
-    }
-
-    this._state.friends = markNewFriends(this.friends, friends)
+    this._state.friends = friends
   }
 
   async fetchFriendsAction() {
@@ -47,6 +42,7 @@ export class FriendsStore {
       this._friendsRepository.fetchFavoritesAboutFriends(),
     ])
 
-    this.setFriendsMutation(makePresentationFriends(friends, favorites))
+    const presentationFriends = makePresentationFriends(friends, favorites)
+    this.setFriendsMutation(markNewFriends(this.friends, presentationFriends))
   }
 }

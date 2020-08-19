@@ -24,9 +24,12 @@ export const makePresentationFriends: (
 
 // TODO: 引数名、変数名が混同しそう。命名を再考
 export const markNewFriends: (
-  oldUsers: Friend[],
-  newUsers: Friend[]
+  oldFriends: Friend[],
+  newFriends: Friend[]
 ) => Friend[] = (oldFriends, newFriends) => {
+  // oldFriendsが0名の時にNewタグをつけると、全員についてしまうのでそういうときはつけない
+  if (oldFriends.length <= 0) return newFriends
+
   const friendMarkedNotNew = intersectionBy(newFriends, oldFriends, 'id').map(
     friend => {
       return {

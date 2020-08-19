@@ -1,8 +1,8 @@
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
 import uniqBy from 'lodash/uniqBy'
-import { VRC_API_URL } from '@/config/env'
 import { INetwork } from '@/libs/Network/INetwork'
+import { VrcApiUrl } from '@/config/url'
 
 export class NetworkFriendsRepository implements IFriendsRepository {
   constructor(private readonly _network: INetwork) {}
@@ -11,7 +11,7 @@ export class NetworkFriendsRepository implements IFriendsRepository {
     const COUNT_PER_PAGE = 100
 
     // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
-    return (await this._network.get(VRC_API_URL + '/api/1/auth/user/friends', {
+    return (await this._network.get(VrcApiUrl.getFetchFriendsUrl(), {
       params: {
         n: COUNT_PER_PAGE,
         offset: COUNT_PER_PAGE * page,
@@ -46,9 +46,9 @@ export class NetworkFriendsRepository implements IFriendsRepository {
     return friends
   }
 
-  // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
   async fetchFavoritesAboutFriends(): Promise<FavoriteApiResponse[]> {
-    return (await this._network.get(VRC_API_URL + '/api/1/favorites', {
+    // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+    return (await this._network.get(VrcApiUrl.getFetchFavoritesUrl(), {
       params: {
         type: 'friend',
         n: 100,

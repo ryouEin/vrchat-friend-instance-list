@@ -10,7 +10,7 @@ export class NetworkInstancesRepository implements IInstancesRepository {
   async fetchInstance(
     location: InstanceLocation
   ): Promise<InstanceApiResponse> {
-    // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+    // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return (await this._network.get(
       VrcApiUrl.getFetchInstanceUrl(location)
     )) as InstanceApiResponse

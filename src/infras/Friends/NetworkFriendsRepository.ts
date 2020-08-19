@@ -10,7 +10,7 @@ export class NetworkFriendsRepository implements IFriendsRepository {
   private async fetchFriends(page: number): Promise<UserApiResponse[]> {
     const COUNT_PER_PAGE = 100
 
-    // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+    // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return (await this._network.get(VrcApiUrl.getFetchFriendsUrl(), {
       params: {
         n: COUNT_PER_PAGE,
@@ -47,7 +47,7 @@ export class NetworkFriendsRepository implements IFriendsRepository {
   }
 
   async fetchFavoritesAboutFriends(): Promise<FavoriteApiResponse[]> {
-    // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+    // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return (await this._network.get(VrcApiUrl.getFetchFavoritesUrl(), {
       params: {
         type: 'friend',

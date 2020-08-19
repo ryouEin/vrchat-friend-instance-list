@@ -19,7 +19,7 @@ export default class NetworkNewsRepository implements INewsRepository {
       },
     })
 
-    // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+    // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return (response as NewsApiResponse).contents.map(item => {
       return {
         title: item.title,

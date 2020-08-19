@@ -4,7 +4,7 @@ import {
   getLocationsFromFriends,
   makeInstancesFromLocations,
 } from './InstancesService'
-import { InstanceInfo } from '@/types/ApiResponse'
+import { InstanceApiResponse } from '@/types/ApiResponse'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
@@ -47,7 +47,7 @@ export class InstancesStore {
   }
 
   @LogBeforeAfter('_state')
-  private setInstanceInfoMutation(instanceInfo: InstanceInfo) {
+  private setInstanceInfoMutation(instanceInfo: InstanceApiResponse) {
     this._state.instances = this.instances.map(instance => {
       if (instanceInfo.location === instance.location) {
         const userNum = instanceInfo.n_users

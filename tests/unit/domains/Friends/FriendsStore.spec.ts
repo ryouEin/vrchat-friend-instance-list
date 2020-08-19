@@ -1,10 +1,10 @@
-import { Favorite, User } from '@/types/ApiResponse'
+import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
 import { Friend } from '@/types'
 import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 
 const generateDummyFriends = (count: number) => {
-  const dummyFriends: User[] = []
+  const dummyFriends: UserApiResponse[] = []
 
   for (let index = 0; index < count; index++) {
     dummyFriends.push({
@@ -21,20 +21,23 @@ const generateDummyFriends = (count: number) => {
 }
 
 class MockFriendsRepository implements IFriendsRepository {
-  constructor(public friends: User[], public favorites: Favorite[]) {}
+  constructor(
+    public friends: UserApiResponse[],
+    public favorites: FavoriteApiResponse[]
+  ) {}
 
-  async fetchAllFriends(): Promise<User[]> {
+  async fetchAllFriends(): Promise<UserApiResponse[]> {
     return this.friends
   }
 
-  async fetchFavoritesAboutFriends(): Promise<Favorite[]> {
+  async fetchFavoritesAboutFriends(): Promise<FavoriteApiResponse[]> {
     return this.favorites
   }
 }
 
 describe('fetchFriends', () => {
   it('APIから取得したフレンドデータを取得できる', async () => {
-    const dummyData: User[] = generateDummyFriends(310)
+    const dummyData: UserApiResponse[] = generateDummyFriends(310)
     const mockFriendsRepository = new MockFriendsRepository(dummyData, [])
     const friendsStore = new FriendsStore(mockFriendsRepository)
 
@@ -50,7 +53,7 @@ describe('fetchFriends', () => {
   })
 
   it('Favorite登録されているユーザーはisFavoritedがtrueになる', async () => {
-    const dummyData: User[] = generateDummyFriends(310)
+    const dummyData: UserApiResponse[] = generateDummyFriends(310)
     const mockFriendsRepository = new MockFriendsRepository(dummyData, [
       {
         favoriteId: '10',
@@ -75,7 +78,7 @@ describe('fetchFriends', () => {
   })
 
   it('複数回呼ばれた場合、いなくなったユーザーのデータは消え、新しくログインしたユーザーはisNewがtrueになる', async () => {
-    const dummyData: User[] = generateDummyFriends(310)
+    const dummyData: UserApiResponse[] = generateDummyFriends(310)
     const mockFriendsRepository = new MockFriendsRepository(
       dummyData.slice(0, 200),
       []

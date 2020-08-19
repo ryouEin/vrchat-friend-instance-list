@@ -10,7 +10,9 @@ import { getWorld } from '@/domains/WorldsStore/WorldsService'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 
-const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
+const makeWorldFromApiResponse: (
+  world: ApiResponse.WorldApiResponse
+) => World = world => {
   return {
     ...world,
     hardCapacity: calcWorldHardCapacity(world.capacity),
@@ -47,12 +49,12 @@ export class WorldsStore implements ICanGetWorldById {
   }
 
   @LogBeforeAfter('_state')
-  private setWorldsMutation(worlds: ApiResponse.World[]) {
+  private setWorldsMutation(worlds: ApiResponse.WorldApiResponse[]) {
     this._state.worlds = worlds.map(world => makeWorldFromApiResponse(world))
   }
 
   @LogBeforeAfter('_state')
-  private addWorldMutation(world: ApiResponse.World) {
+  private addWorldMutation(world: ApiResponse.WorldApiResponse) {
     this._state.worlds.push(makeWorldFromApiResponse(world))
   }
 

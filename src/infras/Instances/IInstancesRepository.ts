@@ -1,6 +1,6 @@
 import { InstanceLocation } from '@/types'
-import { InstanceInfo } from '@/types/ApiResponse'
+import { InstanceApiResponse } from '@/types/ApiResponse'
 
 export interface IInstancesRepository {
-  fetchInstance(location: InstanceLocation): Promise<InstanceInfo>
+  fetchInstance(location: InstanceLocation): Promise<InstanceApiResponse>
 }

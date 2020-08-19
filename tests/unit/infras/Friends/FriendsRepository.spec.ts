@@ -1,6 +1,6 @@
-import { User } from '@/types/ApiResponse'
+import { UserApiResponse } from '@/types/ApiResponse'
 import { NetworkFriendsRepository } from '@/infras/Friends/NetworkFriendsRepository'
-import { INetwork, Params } from '@/libs/Network/INetwork'
+import { INetwork, NetworkOptions } from '@/libs/Network/INetwork'
 import { VRC_API_URL } from '@/config/env'
 
 describe('fetchAllFriends', () => {
@@ -13,22 +13,19 @@ describe('fetchAllFriends', () => {
     location: 'dummy',
   }
 
-  // TODO: Tに指定されている型によって分岐させる方法がわからないので一旦無理やりやる
-  //       テストコードといえど無理矢理過ぎるので改善必要
   class MockNetwork implements INetwork {
-    async get<T>(url: string, params?: Params, throttle?: boolean): Promise<T> {
+    async get(url: string, options: NetworkOptions): Promise<unknown> {
       if (url === VRC_API_URL + '/api/1/favorites') {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
         return []
       }
 
+      const params = options.params
       if (params === undefined) {
         throw new Error('params is undefined')
       }
 
       const page = (params.offset as number) / 100
-      let out: User[] = []
+      let out: UserApiResponse[] = []
       if (page === 0) {
         out = [
           {
@@ -62,8 +59,6 @@ describe('fetchAllFriends', () => {
         ]
       }
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
       return out
     }
   }

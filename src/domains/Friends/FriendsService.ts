@@ -1,5 +1,5 @@
 import * as ApiResponse from '@/types/ApiResponse'
-import { Favorite } from '@/types/ApiResponse'
+import { FavoriteApiResponse } from '@/types/ApiResponse'
 import { Friend } from '@/types'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
@@ -7,8 +7,8 @@ import differenceBy from 'lodash/differenceBy'
 // TODO: ここでisNewを設定していることの是非を再考
 // TODO: 関数名を再考
 export const makePresentationFriends: (
-  friends: ApiResponse.User[],
-  favorites: Favorite[]
+  friends: ApiResponse.UserApiResponse[],
+  favorites: FavoriteApiResponse[]
 ) => Friend[] = (friends, favorites) => {
   return friends.map(friend => {
     const isFavorited =

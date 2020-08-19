@@ -1,5 +1,5 @@
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
-import { Favorite, User } from '@/types/ApiResponse'
+import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
 import uniqBy from 'lodash/uniqBy'
 import { VRC_API_URL } from '@/config/env'
 import { INetwork } from '@/libs/Network/INetwork'
@@ -7,20 +7,20 @@ import { INetwork } from '@/libs/Network/INetwork'
 export class NetworkFriendsRepository implements IFriendsRepository {
   constructor(private readonly _network: INetwork) {}
 
-  private async fetchFriends(page: number): Promise<User[]> {
+  private async fetchFriends(page: number): Promise<UserApiResponse[]> {
     const COUNT_PER_PAGE = 100
 
-    return await this._network.get<User[]>(
-      VRC_API_URL + '/api/1/auth/user/friends',
-      {
+    // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+    return (await this._network.get(VRC_API_URL + '/api/1/auth/user/friends', {
+      params: {
         n: COUNT_PER_PAGE,
         offset: COUNT_PER_PAGE * page,
-      }
-    )
+      },
+    })) as UserApiResponse[]
   }
 
-  async fetchAllFriends(): Promise<User[]> {
-    let friends: User[] = []
+  async fetchAllFriends(): Promise<UserApiResponse[]> {
+    let friends: UserApiResponse[] = []
     let currentPage = 0
 
     // eslint-disable-next-line
@@ -46,10 +46,13 @@ export class NetworkFriendsRepository implements IFriendsRepository {
     return friends
   }
 
-  async fetchFavoritesAboutFriends(): Promise<Favorite[]> {
-    return await this._network.get(VRC_API_URL + '/api/1/favorites', {
-      type: 'friend',
-      n: 100,
-    })
+  // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+  async fetchFavoritesAboutFriends(): Promise<FavoriteApiResponse[]> {
+    return (await this._network.get(VRC_API_URL + '/api/1/favorites', {
+      params: {
+        type: 'friend',
+        n: 100,
+      },
+    })) as FavoriteApiResponse[]
   }
 }

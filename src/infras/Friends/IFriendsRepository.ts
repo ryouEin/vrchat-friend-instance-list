@@ -1,8 +1,8 @@
-import { Favorite, User } from '@/types/ApiResponse'
+import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
 
 export interface IFriendsRepository {
-  fetchAllFriends(): Promise<User[]>
+  fetchAllFriends(): Promise<UserApiResponse[]>
 
   // TODO: Favoriteというカテゴリを作成してそこに移動したほうがいいか？
-  fetchFavoritesAboutFriends(): Promise<Favorite[]>
+  fetchFavoritesAboutFriends(): Promise<FavoriteApiResponse[]>
 }

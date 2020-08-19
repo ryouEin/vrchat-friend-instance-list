@@ -1,19 +1,19 @@
-import { World } from '@/types/ApiResponse'
+import { WorldApiResponse } from '@/types/ApiResponse'
 import { WorldsStore } from '@/domains/WorldsStore/WorldsStore'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 
 class MockNetworkRepository implements INetworkWorldsRepository {
   constructor(
-    public worlds: World[] = [],
-    public popularWorlds: World[] = []
+    public worlds: WorldApiResponse[] = [],
+    public popularWorlds: WorldApiResponse[] = []
   ) {}
 
-  async fetchPopularWorlds(): Promise<World[]> {
+  async fetchPopularWorlds(): Promise<WorldApiResponse[]> {
     return this.popularWorlds
   }
 
-  async fetchWorld(worldId: string): Promise<World> {
+  async fetchWorld(worldId: string): Promise<WorldApiResponse> {
     const world = this.worlds.find(world => world.id === worldId)
 
     if (world === undefined) {
@@ -25,17 +25,17 @@ class MockNetworkRepository implements INetworkWorldsRepository {
 }
 
 class MockCacheWorldsRepository implements ICacheWorldsRepository {
-  constructor(public worlds: World[] = []) {}
+  constructor(public worlds: WorldApiResponse[] = []) {}
 
-  async getWorlds(): Promise<World[]> {
+  async getWorlds(): Promise<WorldApiResponse[]> {
     return this.worlds
   }
 
-  async addWorlds(worlds: World[]): Promise<void> {
+  async addWorlds(worlds: WorldApiResponse[]): Promise<void> {
     this.worlds = this.worlds.concat(worlds)
   }
 
-  async addWorld(world: World): Promise<void> {
+  async addWorld(world: WorldApiResponse): Promise<void> {
     this.worlds.push(world)
   }
 }

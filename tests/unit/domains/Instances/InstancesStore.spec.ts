@@ -1,7 +1,7 @@
 import { Friend, Instance, World } from '@/types'
 import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
-import { InstanceInfo } from '@/types/ApiResponse'
+import { InstanceApiResponse } from '@/types/ApiResponse'
 import { ICanGetWorldById } from '@/domains/WorldsStore/WorldsStore'
 
 const dummyFriendData: Friend = {
@@ -49,7 +49,7 @@ describe('update', () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       // eslint-disable-next-line
-      async fetchInstance(location: string): Promise<InstanceInfo> {}
+      async fetchInstance(location: string): Promise<InstanceApiResponse> {}
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
@@ -88,7 +88,7 @@ describe('updateInstanceInfo', () => {
   it('インスタンスの状態をAPIから取得し、反映する', async () => {
     const location = 'wrld_1:1'
     class MockInstancesRepository implements IInstancesRepository {
-      async fetchInstance(location: string): Promise<InstanceInfo> {
+      async fetchInstance(location: string): Promise<InstanceApiResponse> {
         return {
           location: location,
           // eslint-disable-next-line @typescript-eslint/camelcase
@@ -135,7 +135,7 @@ describe('updateInstanceInfo', () => {
   it('updateが実行された際も、以前のuserNumは保持される', async () => {
     const location = 'wrld_1:1'
     class MockInstancesRepository implements IInstancesRepository {
-      async fetchInstance(location: string): Promise<InstanceInfo> {
+      async fetchInstance(location: string): Promise<InstanceApiResponse> {
         return {
           location: location,
           // eslint-disable-next-line @typescript-eslint/camelcase
@@ -188,7 +188,7 @@ describe('watchInstance', () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       // eslint-disable-next-line
-      async fetchInstance(location: string): Promise<InstanceInfo> {}
+      async fetchInstance(location: string): Promise<InstanceApiResponse> {}
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
@@ -226,7 +226,7 @@ describe('unwatchInstance', () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       // eslint-disable-next-line
-      async fetchInstance(location: string): Promise<InstanceInfo> {}
+      async fetchInstance(location: string): Promise<InstanceApiResponse> {}
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
@@ -267,7 +267,7 @@ describe('checkWatchingInstanceVacancy', () => {
 
   beforeEach(async () => {
     class MockInstancesRepository implements IInstancesRepository {
-      async fetchInstance(location: string): Promise<InstanceInfo> {
+      async fetchInstance(location: string): Promise<InstanceApiResponse> {
         return {
           location: location,
           // eslint-disable-next-line @typescript-eslint/camelcase

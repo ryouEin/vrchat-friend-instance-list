@@ -1,14 +1,16 @@
 import { INewsRepository } from '@/infras/News/INewsRepository'
-import axios from 'axios'
 import { NEWS_API_KEY, NEWS_API_URL } from '@/config/env'
 import { convertUnixTimeToISO8601ExtendedUTC } from '@/shame/convertUnixTimeToISO8601ExtendedUTC'
-import * as ApiResponse from '@/types/ApiResponse'
 import { News, UnixTime } from '@/types'
+import { INetwork } from '@/libs/Network/INetwork'
+import { NewsApiResponse } from '@/types/ApiResponse'
 
 export default class NetworkNewsRepository implements INewsRepository {
+  constructor(private readonly _network: INetwork) {}
+
   async fetchNewsSince(unixTime: UnixTime): Promise<News[]> {
     const sinceString = convertUnixTimeToISO8601ExtendedUTC(unixTime)
-    const response = await axios.get<ApiResponse.News>(NEWS_API_URL, {
+    const response = await this._network.get(NEWS_API_URL, {
       params: {
         filters: `publishedAt[greater_than]${sinceString}`,
       },
@@ -17,7 +19,8 @@ export default class NetworkNewsRepository implements INewsRepository {
       },
     })
 
-    return response.data.contents.map(item => {
+    // TODO SOON: Networkから取得したデータのバリデーションして型アサーション外す
+    return (response as NewsApiResponse).contents.map(item => {
       return {
         ...item,
         publishedAt: new Date(item.publishedAt).getTime(),

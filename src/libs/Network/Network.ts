@@ -1,6 +1,6 @@
 import axios, { AxiosAdapter } from 'axios'
 import { throttleAdapterEnhancer } from 'axios-extensions'
-import { INetwork, Params } from '@/libs/Network/INetwork'
+import { INetwork, NetworkOptions, Params } from '@/libs/Network/INetwork'
 
 const adapter = axios.defaults.adapter
 if (adapter === undefined) {
@@ -12,14 +12,14 @@ const throttleAdapter = throttleAdapterEnhancer(adapter, {
 })
 
 export class Network implements INetwork {
-  async get<T>(url: string, params: Params = {}, throttle = false): Promise<T> {
+  async get(url: string, options: NetworkOptions = {}): Promise<unknown> {
     const config: { params: Params; adapter?: AxiosAdapter } = {
-      params,
+      params: options.params ?? {},
     }
 
-    if (throttle) config.adapter = throttleAdapter
+    if (options.throttle) config.adapter = throttleAdapter
 
-    const response = await axios.get<T>(url, config)
+    const response = await axios.get(url, config)
 
     return response.data
   }

@@ -1,7 +1,7 @@
-import { World } from '@/types/ApiResponse'
+import { WorldApiResponse } from '@/types/ApiResponse'
 
 export interface INetworkWorldsRepository {
-  fetchWorld(worldId: string): Promise<World>
+  fetchWorld(worldId: string): Promise<WorldApiResponse>
 
-  fetchPopularWorlds(): Promise<World[]>
+  fetchPopularWorlds(): Promise<WorldApiResponse[]>
 }

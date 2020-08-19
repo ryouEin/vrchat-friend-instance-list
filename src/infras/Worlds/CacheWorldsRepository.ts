@@ -1,5 +1,5 @@
 import unionBy from 'lodash/unionBy'
-import { World } from '@/types/ApiResponse'
+import { WorldApiResponse } from '@/types/ApiResponse'
 import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 
@@ -8,18 +8,18 @@ const WORLD_STORAGE_KEY = 'worldData'
 export class CacheWorldsRepository implements ICacheWorldsRepository {
   constructor(private _storage: IKeyValueStorage) {}
 
-  async getWorlds(): Promise<World[]> {
+  async getWorlds(): Promise<WorldApiResponse[]> {
     const worldsJson = this._storage.getItem(WORLD_STORAGE_KEY)
     if (worldsJson === undefined) return []
 
     return JSON.parse(worldsJson)
   }
 
-  async addWorld(world: World) {
+  async addWorld(world: WorldApiResponse) {
     this.addWorlds([world])
   }
 
-  async addWorlds(worlds: World[]) {
+  async addWorlds(worlds: WorldApiResponse[]) {
     const MAX_WORLD_NUM = 1000
     const storageWorlds = await this.getWorlds()
     const unionWorlds = unionBy(worlds, storageWorlds, 'id')

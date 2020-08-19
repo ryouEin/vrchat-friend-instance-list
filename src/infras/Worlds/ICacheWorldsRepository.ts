@@ -1,9 +1,9 @@
-import { World } from '@/types/ApiResponse'
+import { WorldApiResponse } from '@/types/ApiResponse'
 
 export interface ICacheWorldsRepository {
-  getWorlds(): Promise<World[]>
+  getWorlds(): Promise<WorldApiResponse[]>
 
-  addWorld(world: World): Promise<void>
+  addWorld(world: WorldApiResponse): Promise<void>
 
-  addWorlds(worlds: World[]): Promise<void>
+  addWorlds(worlds: WorldApiResponse[]): Promise<void>
 }

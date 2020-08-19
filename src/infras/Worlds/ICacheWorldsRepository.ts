@@ -1,6 +1,6 @@
 import { World } from '@/types/ApiResponse'
 
-export interface IWorldStorage {
+export interface ICacheWorldsRepository {
   getWorlds(): Promise<World[]>
 
   addWorld(world: World): Promise<void>

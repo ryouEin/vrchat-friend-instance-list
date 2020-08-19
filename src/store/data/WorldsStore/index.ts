@@ -6,7 +6,9 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { IWorldsRepository } from '@/infras/Worlds/IWorldsRepository'
+import { getWorld } from '@/store/data/WorldsStore/functions'
+import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
+import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 
 const makeWorldFromApiResponse: (world: ApiResponse.World) => World = world => {
   return {
@@ -29,7 +31,10 @@ export class WorldsStore implements ICanGetWorldById {
     worlds: [],
   })
 
-  constructor(private readonly _worldRepository: IWorldsRepository) {}
+  constructor(
+    private readonly _networkWorldsRepository: INetworkWorldsRepository,
+    private readonly _cacheWorldsRepository: ICacheWorldsRepository
+  ) {}
 
   get worlds() {
     return this._state.worlds
@@ -52,14 +57,20 @@ export class WorldsStore implements ICanGetWorldById {
   }
 
   async fetchWorldAction(id: string) {
-    const world = await this._worldRepository.getWorld(id)
+    const world = await getWorld(
+      id,
+      this._cacheWorldsRepository,
+      this._networkWorldsRepository
+    )
 
     this.addWorldMutation(world)
   }
 
   async initAction() {
-    await this._worldRepository.updateCacheByPopularWorlds()
-    const worlds = await this._worldRepository.getWorldsFromCache()
+    const popularWorlds = await this._networkWorldsRepository.fetchPopularWorlds()
+    await this._cacheWorldsRepository.addWorlds(popularWorlds)
+
+    const worlds = await this._cacheWorldsRepository.getWorlds()
 
     this.setWorldsMutation(worlds)
   }

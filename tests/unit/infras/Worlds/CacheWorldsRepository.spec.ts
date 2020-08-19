@@ -1,5 +1,5 @@
 import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
-import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
+import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 
 class MockStorage implements IKeyValueStorage {
   constructor(private _dictionary: { [key: string]: string }) {}
@@ -52,7 +52,7 @@ describe('addWorlds', () => {
         capacity: 10,
       },
     ]
-    const worldStorage = new WorldStorage(new MockStorage(initialData))
+    const worldStorage = new CacheWorldsRepository(new MockStorage(initialData))
     await worldStorage.addWorlds(appendData)
     const result = await worldStorage.getWorlds()
 
@@ -82,7 +82,7 @@ describe('addWorlds', () => {
   })
 
   it('データが1000件を超える場合、1000件になるように古いデータが削除される', async () => {
-    const worldStorage = new WorldStorage(new MockStorage({}))
+    const worldStorage = new CacheWorldsRepository(new MockStorage({}))
     for (let index = 0; index < 1000; index++) {
       await worldStorage.addWorlds([
         {

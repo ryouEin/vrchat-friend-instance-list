@@ -1,9 +1,9 @@
-import { IWorldsApi } from '@/infras/Worlds/Api/IWorldsApi'
+import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { INetwork } from '@/libs/Network/INetwork'
 import { World } from '@/types/ApiResponse'
 import { VRC_API_URL } from '@/config/env'
 
-export class WorldsApi implements IWorldsApi {
+export class NetworkWorldsRepository implements INetworkWorldsRepository {
   constructor(private readonly _network: INetwork) {}
 
   async fetchWorld(worldId: string): Promise<World> {

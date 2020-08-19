@@ -7,9 +7,8 @@ import { NotificationsStore } from '@/store/data/NotificationsStore'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
 import { SettingStore } from '@/store/data/SettingStore'
-import { WorldStorage } from '@/infras/Worlds/Storage/WorldStorage'
-import { WorldsApi } from '@/infras/Worlds/Api/WorldsApi'
-import { WorldsRepository } from '@/infras/Worlds/WorldsRepository'
+import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
+import { NetworkWorldsRepository } from '@/infras/Worlds/NetworkWorldsRepository'
 import { WorldsStore } from '@/store/data/WorldsStore'
 
 export const friendsStore = (() => {
@@ -29,10 +28,9 @@ export const settingStore = (() => {
 })()
 
 export const worldsStore = (() => {
-  const worldStorage = new WorldStorage(new LocalStorage())
-  const worldsApi = new WorldsApi(new Network())
-  const worldsRepository = new WorldsRepository(worldsApi, worldStorage)
-  return new WorldsStore(worldsRepository)
+  const cacheWorldsRepository = new CacheWorldsRepository(new LocalStorage())
+  const networkWorldsRepository = new NetworkWorldsRepository(new Network())
+  return new WorldsStore(networkWorldsRepository, cacheWorldsRepository)
 })()
 
 export const instancesStore = (() => {

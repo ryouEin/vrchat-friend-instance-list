@@ -1,11 +1,11 @@
 import unionBy from 'lodash/unionBy'
 import { World } from '@/types/ApiResponse'
 import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
-import { IWorldStorage } from '@/infras/Worlds/Storage/IWorldStorage'
+import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 
 const WORLD_STORAGE_KEY = 'worldData'
 
-export class WorldStorage implements IWorldStorage {
+export class CacheWorldsRepository implements ICacheWorldsRepository {
   constructor(private _storage: IKeyValueStorage) {}
 
   async getWorlds(): Promise<World[]> {

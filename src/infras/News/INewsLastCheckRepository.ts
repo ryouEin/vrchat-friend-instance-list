@@ -1,6 +1,6 @@
 import { UnixTime } from '@/types'
 
-export interface INewsStorage {
+export interface INewsLastCheckRepository {
   setLastCheckNewsAt(unixtime: UnixTime): void
   getLastCheckNewsAt(): UnixTime | undefined
 }

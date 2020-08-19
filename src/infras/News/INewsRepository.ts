@@ -1,5 +1,5 @@
-import { News } from '@/types'
+import { News, UnixTime } from '@/types'
 
 export interface INewsRepository {
-  fetchUnreadNews(count?: number): Promise<News[]>
+  fetchNewsSince(unixTime: UnixTime): Promise<News[]>
 }

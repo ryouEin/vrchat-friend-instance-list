@@ -1,8 +1,7 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import NewsApi from '@/infras/News/Api/NewsApi'
-import { NewsStorage } from '@/infras/News/Storage/NewsStorage'
-import { NewsRepository } from '@/infras/News/NewsRepository'
+import NetworkNewsRepository from '@/infras/News/NetworkNewsRepository'
+import { KeyValueStorageNewsLastCheckRepository } from '@/infras/News/KeyValueStorageNewsLastCheckRepository'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
 import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
@@ -13,6 +12,7 @@ import {
   settingStore,
   worldsStore,
 } from '@/domains/DomainStoreFactory'
+import { fetchUnreadNews } from '@/domains/News/NewsService'
 
 @Component({
   components: {
@@ -55,11 +55,10 @@ export default class App extends Vue {
   }
 
   async checkNews() {
-    // TODO SOON: Presentation層でRepositoryインスタンスの作成の知識が必要なのはおかしいのでは？
-    const newsApi = new NewsApi()
-    const newsStorage = new NewsStorage()
-    const newsRepository = new NewsRepository(newsApi, newsStorage)
-    const newsArray = await newsRepository.fetchUnreadNews()
+    // TODO SOON: Presentation層でInfraのインスタンス生成してるのは微妙では？
+    const newsApi = new NetworkNewsRepository()
+    const newsStorage = new KeyValueStorageNewsLastCheckRepository()
+    const newsArray = await fetchUnreadNews(newsApi, newsStorage)
 
     this.showNewsDialogs(newsArray)
   }

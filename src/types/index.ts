@@ -45,7 +45,7 @@ export type Notification = {
 }
 
 export type Setting = {
-  isEnabledNotificationSound: boolean
+  enableNotificationSound: boolean
 }
 
 export type Instance = {

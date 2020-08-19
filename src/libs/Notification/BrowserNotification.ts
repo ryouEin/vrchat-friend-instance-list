@@ -6,7 +6,7 @@ export class BrowserNotification implements INotification {
   notify(message: string): void {
     const notify = new window.Notification(message)
     notify.onshow = () => {
-      if (settingStore.setting.isEnabledNotificationSound) {
+      if (settingStore.setting.enableNotificationSound) {
         playNotificationSound()
       }
     }

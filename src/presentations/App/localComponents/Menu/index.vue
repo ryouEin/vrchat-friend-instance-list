@@ -30,7 +30,7 @@
                 </div>
                 <div class="settingItem_input">
                   <g-Toggle
-                    :value="setting.isEnabledNotificationSound"
+                    :value="setting.enableNotificationSound"
                     @input="onChangeEnableNotificationSound"
                   />
                 </div>

@@ -27,7 +27,7 @@ describe('initAction', () => {
 
   it('リポジトリに設定がある場合は、リポジトリの内容が適用される', async () => {
     const repositorySetting: Setting = {
-      isEnabledNotificationSound: false,
+      enableNotificationSound: false,
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)
@@ -41,7 +41,7 @@ describe('initAction', () => {
 describe('enableNotificationSoundAction', () => {
   it('isEnabledNotificationSoundがtrueになり、リポジトリにもその内容が保存される', async () => {
     const repositorySetting: Setting = {
-      isEnabledNotificationSound: false,
+      enableNotificationSound: false,
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)
@@ -49,15 +49,15 @@ describe('enableNotificationSoundAction', () => {
     await settingStore.initAction()
     await settingStore.enableNotificationSoundAction()
 
-    expect(settingStore.setting.isEnabledNotificationSound).toBe(true)
-    expect(mockSettingRepository.setting?.isEnabledNotificationSound).toBe(true)
+    expect(settingStore.setting.enableNotificationSound).toBe(true)
+    expect(mockSettingRepository.setting?.enableNotificationSound).toBe(true)
   })
 })
 
 describe('disableNotificationSoundAction', () => {
   it('isEnabledNotificationSoundがfalseになり、リポジトリにもその内容が保存される', async () => {
     const repositorySetting: Setting = {
-      isEnabledNotificationSound: true,
+      enableNotificationSound: true,
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)
@@ -65,9 +65,7 @@ describe('disableNotificationSoundAction', () => {
     await settingStore.initAction()
     await settingStore.disableNotificationSoundAction()
 
-    expect(settingStore.setting.isEnabledNotificationSound).toBe(false)
-    expect(mockSettingRepository.setting?.isEnabledNotificationSound).toBe(
-      false
-    )
+    expect(settingStore.setting.enableNotificationSound).toBe(false)
+    expect(mockSettingRepository.setting?.enableNotificationSound).toBe(false)
   })
 })

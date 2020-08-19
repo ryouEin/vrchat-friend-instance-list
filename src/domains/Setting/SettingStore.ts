@@ -24,7 +24,7 @@ export class SettingStore {
 
   @LogBeforeAfter('_state')
   private updateEnableNotificationSoundMutation(isEnabled: boolean) {
-    this._state.setting.isEnabledNotificationSound = isEnabled
+    this._state.setting.enableNotificationSound = isEnabled
   }
 
   @LogBeforeAfter('_state')

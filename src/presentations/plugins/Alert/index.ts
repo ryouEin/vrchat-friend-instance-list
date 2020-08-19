@@ -39,6 +39,7 @@ const launchAlert: AlertHandler = props => {
 
 export default {
   // TODO: ここ本当にanyにするしかない？
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   install(Vue: any) {
     Vue.prototype.$alert = launchAlert
   },

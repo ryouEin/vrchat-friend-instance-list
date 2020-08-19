@@ -1,11 +1,11 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { instancesModule } from '@/store/ModuleFactory'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import Permission from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/Permission/index.vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/WatchInstanceButton/index.vue'
 import { Instance, InstancePermission, World } from '@/types'
+import { instancesStore } from '@/domains/DomainStoreFactory'
 
 @Component({
   components: {
@@ -68,7 +68,7 @@ export default class WorldInfo extends Vue {
 
     this.fetchUserNumButtonDisabled = true
     this.isFetchingUserNum = true
-    await instancesModule.updateInstanceInfo(this.location).finally(() => {
+    await instancesStore.updateInstanceInfoAction(this.location).finally(() => {
       this.isFetchingUserNum = false
       setTimeout(() => {
         this.fetchUserNumButtonDisabled = false

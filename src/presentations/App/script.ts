@@ -56,7 +56,7 @@ export default class App extends Vue {
   }
 
   async checkNews() {
-    // TODO SOON: Presentation層でInfraのインスタンス生成してるのは微妙では？
+    // TODO: Presentation層でInfraのインスタンス生成してるのは微妙では？
     const newsApi = new NetworkNewsRepository(new Network())
     const newsStorage = new KeyValueStorageNewsLastCheckRepository()
     const newsArray = await fetchUnreadNews(newsApi, newsStorage)

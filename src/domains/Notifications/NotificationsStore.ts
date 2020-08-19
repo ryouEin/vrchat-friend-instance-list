@@ -1,13 +1,11 @@
 import { Notification } from '@/types'
-import { playNotificationSound } from '@/libs/Sound'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { settingStore } from '@/domains/DomainStoreFactory'
+import { INotification } from '@/libs/Notification/INotification'
 
-// TODO SOON: テスト
 type State = {
   notifications: Notification[]
 }
@@ -16,6 +14,8 @@ export class NotificationsStore {
   private _state = Vue.observable<State>({
     notifications: [],
   })
+
+  constructor(private readonly _notification: INotification) {}
 
   get notifications() {
     return this._state.notifications
@@ -27,13 +27,7 @@ export class NotificationsStore {
   }
 
   async pushNotificationAction(notification: Notification) {
-    // TODO SOON: 通知送信する処理別でまとめて、DIする
-    const notify = new window.Notification(notification.text)
-    notify.onshow = () => {
-      if (settingStore.setting.isEnabledNotificationSound) {
-        playNotificationSound()
-      }
-    }
+    this._notification.notify(notification.text)
 
     this.addNotificationMutation(notification)
   }

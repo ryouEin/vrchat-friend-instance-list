@@ -10,6 +10,7 @@ import { SettingStore } from '@/domains/Setting/SettingStore'
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { NetworkWorldsRepository } from '@/infras/Worlds/NetworkWorldsRepository'
 import { WorldsStore } from '@/domains/WorldsStore/WorldsStore'
+import { BrowserNotification } from '@/libs/Notification/BrowserNotification'
 
 export const friendsStore = (() => {
   const friendsRepository = new NetworkFriendsRepository(new Network())
@@ -17,7 +18,8 @@ export const friendsStore = (() => {
 })()
 
 export const notificationsStore = (() => {
-  return new NotificationsStore()
+  const browserNotification = new BrowserNotification()
+  return new NotificationsStore(browserNotification)
 })()
 
 export const settingStore = (() => {

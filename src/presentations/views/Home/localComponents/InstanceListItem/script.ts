@@ -6,6 +6,7 @@ import { Friend, Instance, InstancePermission, World } from '@/types'
 import { parseLocation } from '@/shame/parseLocation'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
 import { worldsStore } from '@/domains/DomainStoreFactory'
+import { UserListItemPropFriend } from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/UserListItem/script'
 
 @Component({
   components: {
@@ -34,6 +35,15 @@ export default class InstanceListItem extends Vue {
     }
 
     return undefined
+  }
+
+  get userListItemPropFriends(): UserListItemPropFriend[] {
+    return this.friends.map(friend => {
+      return {
+        ...friend,
+        isOwner: friend.id === this.instance.ownerId,
+      }
+    })
   }
 
   get instancePermission(): InstancePermission {

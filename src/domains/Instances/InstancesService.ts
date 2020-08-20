@@ -1,6 +1,7 @@
 import { Friend, Instance, InstanceLocation } from '@/types'
 import uniqBy from 'lodash/uniqBy'
 import { parseLocation } from '@/shame/parseLocation'
+import { getOwnerIdFromLocation } from '@/shame/getOwnerIdFromLocation'
 
 export const getLocationsFromFriends: (
   friends: Friend[]
@@ -24,6 +25,7 @@ export const makeInstancesFromLocations: (
     return {
       worldId,
       location,
+      ownerId: getOwnerIdFromLocation(location),
       isWatching: false,
       notifyUserNum: 1,
     }

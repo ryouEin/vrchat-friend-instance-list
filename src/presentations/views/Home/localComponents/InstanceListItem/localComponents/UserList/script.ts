@@ -1,7 +1,7 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import UserListItem from '../UserListItem/index.vue'
-import { Friend } from '@/types'
+import { UserListItemPropFriend } from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/UserListItem/script'
 
 @Component({
   components: {
@@ -10,5 +10,5 @@ import { Friend } from '@/types'
 })
 export default class UserList extends Vue {
   @Prop()
-  private users!: Friend[]
+  private friends!: UserListItemPropFriend[]
 }

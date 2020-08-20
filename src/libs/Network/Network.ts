@@ -1,4 +1,4 @@
-import axios, { AxiosAdapter } from 'axios'
+import axios, { AxiosAdapter, AxiosRequestConfig } from 'axios'
 import { throttleAdapterEnhancer } from 'axios-extensions'
 import { INetwork, NetworkOptions, Params } from '@/libs/Network/INetwork'
 
@@ -13,11 +13,11 @@ const throttleAdapter = throttleAdapterEnhancer(adapter, {
 
 export class Network implements INetwork {
   async get(url: string, options: NetworkOptions = {}): Promise<unknown> {
-    const config: { params: Params; adapter?: AxiosAdapter } = {
+    const config: AxiosRequestConfig = {
       params: options.params ?? {},
+      headers: options.headers,
+      adapter: options.throttle ? throttleAdapter : undefined,
     }
-
-    if (options.throttle) config.adapter = throttleAdapter
 
     const response = await axios.get(url, config)
 

@@ -5,12 +5,14 @@ import InstanceList from '@/presentations/views/Home/localComponents/InstanceLis
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
 import { friendsStore, instancesStore } from '@/domains/DomainStoreFactory'
+import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/index.vue'
 
 @Component({
   components: {
     OnlineFriendsList,
     InstanceList,
     InstanceModal,
+    JoinDialog,
   },
 })
 export default class Home extends Vue {

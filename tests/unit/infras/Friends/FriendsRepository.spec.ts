@@ -61,6 +61,14 @@ describe('fetchAllFriends', () => {
 
       return out
     }
+
+    async post(
+      url: string,
+      data: { [p: string]: string },
+      options?: NetworkOptions
+    ): Promise<unknown> {
+      return
+    }
   }
 
   it('全ユーザーを取得し、重複は除去される', async () => {

@@ -23,4 +23,20 @@ export class Network implements INetwork {
 
     return response.data
   }
+
+  async post(
+    url: string,
+    data: { [key: string]: string },
+    options: NetworkOptions = {}
+  ): Promise<unknown> {
+    const config: AxiosRequestConfig = {
+      params: options.params ?? {},
+      headers: options.headers,
+      adapter: options.throttle ? throttleAdapter : undefined,
+    }
+
+    const response = await axios.post(url, config)
+
+    return response.data
+  }
 }

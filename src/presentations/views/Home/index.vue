@@ -31,6 +31,7 @@
       </template>
     </div>
     <InstanceModal />
+    <JoinDialog />
   </div>
 </template>
 

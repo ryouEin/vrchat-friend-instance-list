@@ -6,6 +6,7 @@ import InstanceButton from '@/presentations/views/Home/localComponents/InstanceL
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/WatchInstanceButton/index.vue'
 import { Instance, InstancePermission, World } from '@/types'
 import { instancesStore } from '@/domains/DomainStoreFactory'
+import { joinDialogStore } from '@/presentations/ui_store/UiStoreFactory'
 
 @Component({
   components: {
@@ -59,8 +60,8 @@ export default class WorldInfo extends Vue {
     }
   }
 
-  join() {
-    window.location.href = `vrchat://launch?id=${this.location}`
+  async onClickJoinButton() {
+    await joinDialogStore.showAction(this.location)
   }
 
   async updateUserNum() {

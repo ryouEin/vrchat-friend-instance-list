@@ -9,14 +9,6 @@
 1. Releasesに作成したxpiファイルをアップロード
 1. `npm run ff_addon_lint:checkUpdateLinkValidity` で、update_linkが有効であることを確認する
 
-## ストア（Vuex）の方針
-
-+ State及びMutationはprivateにし、外部からはGettersとActionのみアクセス出来るように
-    + Stateは外部で書き換えられると困るので言わずもがな
-    + Mutationに関しては、外部からアクセス出来るMutationとそうでないものが混在すると混乱しそうなので
-+ ストアはモジュール毎にディレクトリで分け、メイン部分は `index.ts` 、ロジックは `functions.ts` に記述する。
-+ テストはActionsのみ（functionsのロジックの正当性はActionsのテストで担保出来ると判断）
-
 ## CSSの規約
 
 ### 全体

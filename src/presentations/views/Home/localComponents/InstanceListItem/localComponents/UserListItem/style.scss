@@ -12,6 +12,16 @@
   height: 100%;
 }
 
+.owner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2px 5px;
+  font-size: 12px;
+  color: $whiteColor;
+  background-color: $greenColor;
+}
+
 .favorite {
   position: absolute;
   top: 2px;

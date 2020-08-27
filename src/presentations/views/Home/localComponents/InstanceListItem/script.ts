@@ -1,11 +1,12 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
-import { friendsModule, worldsModule } from '@/store/ModuleFactory'
 import UserList from './localComponents/UserList/index.vue'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { Friend, Instance, InstancePermission, World } from '@/types'
 import { parseLocation } from '@/shame/parseLocation'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
+import { worldsStore } from '@/domains/DomainStoreFactory'
+import { UserListItemPropFriend } from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/UserListItem/script'
 
 @Component({
   components: {
@@ -30,10 +31,19 @@ export default class InstanceListItem extends Vue {
 
   get world(): World | undefined {
     if (this.showWorldInfo) {
-      return worldsModule.world(this.worldId)
+      return worldsStore.world(this.worldId)
     }
 
     return undefined
+  }
+
+  get userListItemPropFriends(): UserListItemPropFriend[] {
+    return this.friends.map(friend => {
+      return {
+        ...friend,
+        isOwner: friend.id === this.instance.ownerId,
+      }
+    })
   }
 
   get instancePermission(): InstancePermission {
@@ -55,17 +65,17 @@ export default class InstanceListItem extends Vue {
   // virtual-scrollerはコンポーネントを使い回すためlocationの変更を見て
   // 初期化する必要がある
   @Watch('instance.location')
-  onChangeLocation() {
-    this.init()
+  async onChangeLocation() {
+    await this.init()
   }
 
-  init() {
+  async init() {
     if (this.showWorldInfo && this.world === undefined) {
-      worldsModule.fetchWorld(this.worldId)
+      await worldsStore.fetchWorldAction(this.worldId)
     }
   }
 
   async created() {
-    this.init()
+    await this.init()
   }
 }

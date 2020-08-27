@@ -1,7 +1,7 @@
 import { Component, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
 import NotificationItem from '@/presentations/App/localComponents/NotificationButton/localComponents/NotificationItem/index.vue'
-import { notificationsModule } from '@/store/ModuleFactory'
+import { notificationsStore } from '@/domains/DomainStoreFactory'
 // TODO: requireで読み込むしか無いか検討
 // eslint-disable-next-line
 const ClickOutside = require('vue-click-outside')
@@ -25,7 +25,7 @@ export default class NotificationButton extends Vue {
   }
 
   get notifications() {
-    return [...notificationsModule.notifications].reverse()
+    return [...notificationsStore.notifications].reverse()
   }
 
   showMenu() {

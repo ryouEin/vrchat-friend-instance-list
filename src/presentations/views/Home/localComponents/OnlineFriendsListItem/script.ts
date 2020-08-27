@@ -2,7 +2,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { Friend, InstancePermission } from '@/types'
-import { instanceModalModule } from '@/store/ModuleFactory'
+import { instanceModalStore } from '@/presentations/ui_store/UiStoreFactory'
 
 const Status = {
   Private: 'private',
@@ -36,7 +36,7 @@ export default class OnlineFriendsListItem extends Vue {
     }
   }
 
-  onClick() {
-    instanceModalModule.show(this.friend.location)
+  async onClick() {
+    await instanceModalStore.showAction(this.friend.location)
   }
 }

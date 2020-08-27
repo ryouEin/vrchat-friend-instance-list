@@ -1,10 +1,10 @@
-import { INewsStorage } from '@/infras/storage/News/INewsStorage'
-import { INewsApi } from '@/infras/network/News/INewsApi'
-import { NewsApplicationService } from '@/applications/NewsApplicationService'
+import { INewsLastCheckRepository } from '@/infras/News/INewsLastCheckRepository'
+import { INewsRepository } from '@/infras/News/INewsRepository'
 import { advanceTo } from 'jest-date-mock'
 import { News, UnixTime } from '@/types'
+import { fetchUnreadNews } from '@/domains/News/NewsService'
 
-describe('getNews', () => {
+describe('fetchUnreadNews', () => {
   const dummyNewsArray: News[] = [
     {
       title: 'お知らせ3',
@@ -32,12 +32,12 @@ describe('getNews', () => {
       publishedAt: 1593950124000,
     },
   ]
-  class MockNewsApi implements INewsApi {
+  class MockNewsApi implements INewsRepository {
     async fetchNewsSince(unixTime: UnixTime): Promise<News[]> {
       return dummyNewsArray
     }
   }
-  class MockNewsStorage implements INewsStorage {
+  class MockNewsStorage implements INewsLastCheckRepository {
     lastCheckAt = 1593950122500
     setLastCheckNewsAt(unixtime: number): void {
       this.lastCheckAt = unixtime
@@ -50,8 +50,7 @@ describe('getNews', () => {
   it('最終お知らせ確認日時以降のお知らせを最大三件公開日降順で取得する', async () => {
     const newsApi = new MockNewsApi()
     const newsStorage = new MockNewsStorage()
-    const newsService = new NewsApplicationService(newsApi, newsStorage)
-    const result = await newsService.getNews()
+    const result = await fetchUnreadNews(newsApi, newsStorage)
 
     expect(result).toEqual([
       {
@@ -77,8 +76,7 @@ describe('getNews', () => {
 
     const newsApi = new MockNewsApi()
     const newsStorage = new MockNewsStorage()
-    const newsService = new NewsApplicationService(newsApi, newsStorage)
-    await newsService.getNews()
+    await fetchUnreadNews(newsApi, newsStorage)
 
     expect(newsStorage.lastCheckAt).toBe(Date.now())
   })

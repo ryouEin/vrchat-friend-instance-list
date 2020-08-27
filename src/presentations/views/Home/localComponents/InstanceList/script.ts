@@ -3,7 +3,7 @@ import Vue from 'vue'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 import { Friend, Instance } from '@/types'
 import WatchInstanceDialog from '@/presentations/views/Home/localComponents/InstanceList/localComponents/WatchInstanceDialog/index.vue'
-import { friendsModule } from '@/store/ModuleFactory'
+import { friendsStore } from '@/domains/DomainStoreFactory'
 
 @Component({
   components: {
@@ -20,7 +20,7 @@ export default class InstanceList extends Vue {
       return {
         id: instance.location,
         instance,
-        friends: friendsModule.friendsByLocation(instance.location),
+        friends: friendsStore.friendsByLocation(instance.location),
       }
     })
   }

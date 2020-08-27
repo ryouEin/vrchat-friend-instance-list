@@ -56,6 +56,7 @@ class FullLoaderManager {
 }
 
 export default {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   install(Vue: any) {
     Vue.prototype.$fullLoader = new FullLoaderManager()
   },

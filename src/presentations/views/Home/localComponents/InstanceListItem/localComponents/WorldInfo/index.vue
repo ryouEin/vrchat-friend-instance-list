@@ -16,7 +16,7 @@
     <div class="instanceButtonArea">
       <div class="instanceButtonGroup">
         <div class="instanceButtonGroup_item">
-          <InstanceButton @click="join">JOIN</InstanceButton>
+          <InstanceButton @click="onClickJoinButton">JOIN</InstanceButton>
         </div>
         <div class="instanceButtonGroup_item">
           <InstanceButton

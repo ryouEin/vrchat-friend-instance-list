@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './presentations/App/index.vue'
 import router from './router'
-import store from './store'
 import AlertPlugin from './presentations/plugins/Alert'
 import FullLoaderPlugin from './presentations/plugins/FullLoader'
 import Button from '@/presentations/components/Button/index.vue'
@@ -38,6 +37,5 @@ Vue.component('g-Toggle', Toggle)
 
 new Vue({
   router,
-  store,
   render: h => h(App),
 }).$mount('#app')

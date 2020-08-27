@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="userInfo">
-      <UserList :users="friends" />
+      <UserList :friends="userListItemPropFriends" />
     </div>
   </div>
 </template>

@@ -1,11 +1,13 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import {
-  instanceModalModule,
-  instancesModule,
-  instanceWatchDialogModule,
-  notificationsModule,
-} from '@/store/ModuleFactory'
+  instanceModalStore,
+  instanceWatchDialogStore,
+} from '@/presentations/ui_store/UiStoreFactory'
+import {
+  instancesStore,
+  notificationsStore,
+} from '@/domains/DomainStoreFactory'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -24,11 +26,11 @@ export default class WatchInstanceDialog extends Vue {
   notifyUserNum = 1
 
   get isVisible() {
-    return instanceWatchDialogModule.isVisible
+    return instanceWatchDialogStore.isVisible
   }
 
   get instance() {
-    const instance = instanceWatchDialogModule.instance
+    const instance = instanceWatchDialogStore.instance
     if (instance === null) {
       throw new Error('instance is null.')
     }
@@ -37,7 +39,7 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   get world() {
-    const world = instanceWatchDialogModule.world
+    const world = instanceWatchDialogStore.world
     if (world === undefined) {
       throw new Error('world is null.')
     }
@@ -84,27 +86,27 @@ export default class WatchInstanceDialog extends Vue {
 
     const worldName = this.world.name
     const location = this.instance.location
-    await instancesModule.watchInstance({
+    await instancesStore.watchInstanceAction({
       location: this.location,
       notifyUserNum: this.notifyUserNum,
-      onFindVacancy: () => {
-        notificationsModule.pushNotification({
+      onFindVacancy: async () => {
+        await notificationsStore.pushNotificationAction({
           text: `${worldName}に空きができました。`,
           date: Date.now(),
-          onClick: () => {
-            instanceModalModule.show(location)
+          onClick: async () => {
+            await instanceModalStore.showAction(location)
           },
         })
       },
     })
   }
 
-  hideDialog() {
-    instanceWatchDialogModule.hide()
+  async hideDialog() {
+    await instanceWatchDialogStore.hideAction()
   }
 
-  onClickWatchStart() {
-    this.startWatch()
-    this.hideDialog()
+  async onClickWatchStart() {
+    await this.startWatch()
+    await this.hideDialog()
   }
 }

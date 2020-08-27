@@ -53,6 +53,7 @@ export type Instance = {
   location: InstanceLocation
   isWatching: boolean
   notifyUserNum: number
+  ownerId?: string
   userNum?: number
   onFindVacancy?: () => void
 }

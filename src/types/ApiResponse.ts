@@ -1,6 +1,6 @@
 import { InstanceLocation } from '@/types/index'
 
-export interface User {
+export interface UserApiResponse {
   id: string
   username: string
   displayName: string
@@ -9,7 +9,7 @@ export interface User {
   location: InstanceLocation
 }
 
-export interface World {
+export interface WorldApiResponse {
   id: string
   name: string
   imageUrl: string
@@ -17,17 +17,17 @@ export interface World {
   capacity: number
 }
 
-export interface InstanceInfo {
+export interface InstanceApiResponse {
   location: InstanceLocation
   n_users: number
   capacity: number
 }
 
-export interface Favorite {
+export interface FavoriteApiResponse {
   favoriteId: string
 }
 
-export interface News {
+export interface NewsApiResponse {
   contents: {
     title: string
     content: string

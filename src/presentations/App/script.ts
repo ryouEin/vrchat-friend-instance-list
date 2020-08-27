@@ -1,19 +1,19 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { addErrorCallback } from '@/infras/network/vrcApi'
-import {
-  instancesModule,
-  settingModule,
-  worldsModule,
-} from '@/store/ModuleFactory'
-import NewsApi from '@/infras/network/News/NewsApi'
-import { NewsStorage } from '@/infras/storage/News/NewsStorage'
-import { NewsApplicationService } from '@/applications/NewsApplicationService'
+import NetworkNewsRepository from '@/infras/News/NetworkNewsRepository'
+import { KeyValueStorageNewsLastCheckRepository } from '@/infras/News/KeyValueStorageNewsLastCheckRepository'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
 import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
+import {
+  instancesStore,
+  settingStore,
+  worldsStore,
+} from '@/domains/DomainStoreFactory'
+import { fetchUnreadNews } from '@/domains/News/NewsService'
+import { Network } from '@/libs/Network/Network'
 
 @Component({
   components: {
@@ -56,17 +56,17 @@ export default class App extends Vue {
   }
 
   async checkNews() {
-    const newsApi = new NewsApi()
-    const newsStorage = new NewsStorage()
-    const newsService = new NewsApplicationService(newsApi, newsStorage)
-    const newsArray = await newsService.getNews()
+    // TODO: Presentation層でInfraのインスタンス生成してるのは微妙では？
+    const newsApi = new NetworkNewsRepository(new Network())
+    const newsStorage = new KeyValueStorageNewsLastCheckRepository()
+    const newsArray = await fetchUnreadNews(newsApi, newsStorage)
 
     this.showNewsDialogs(newsArray)
   }
 
   startCheckWatchingInstances() {
     setInterval(async () => {
-      await instancesModule.checkWatchingInstances()
+      await instancesStore.checkWatchingInstancesAction()
     }, INSTANCE_WATCH_INTERVAL)
   }
 
@@ -88,24 +88,37 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
+  // TODO: エラーの判別がaxiosに依存してしまっている
+  // TODO: 現状401になるのはVRChatAPIだけだから問題にならないが
+  //  将来他の401出すAPI混ざってきたら困る
+  // TODO: anyを使ってしまっている
+  // eslint-disable-next-line
+  errorHandler(error: any) {
+    const status = error.response?.status
+
+    if (status === 401) {
+      this.showAuthErrorDialog = true
+    } else {
+      throw error
+    }
+  }
+
+  setupErrorHandlers() {
+    // 全てのエラーをキャプチャするには以下の3パターン登録する必要がある
+    // https://qiita.com/clomie/items/73fa1e9f61e5b88826bc
+    Vue.config.errorHandler = this.errorHandler
+    window.addEventListener('error', this.errorHandler)
+    window.addEventListener('unhandledrejection', this.errorHandler)
+  }
+
   async created() {
-    addErrorCallback(status => {
-      if (status === 401) {
-        this.showAuthErrorDialog = true
-      } else {
-        this.$alert({
-          title: `エラー [${status}]`,
-          content:
-            'データの取得に失敗しました。しばらく時間をおいてからやり直してください。',
-        })
-      }
-    })
+    this.setupErrorHandlers()
 
     this.judgeDevice()
 
     this.$fullLoader.show()
-    settingModule.init()
-    await worldsModule.init().finally(() => {
+    await settingStore.initAction()
+    await worldsStore.initAction().finally(() => {
       this.$fullLoader.hide()
     })
 

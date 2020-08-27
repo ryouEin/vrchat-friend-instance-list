@@ -49,7 +49,7 @@ module.exports = {
     res.json(world)
   },
   listWorlds (req, res) {
-    const listedWorlds = [...worlds].slice(0, -1)
+    const listedWorlds = [...worlds].slice(0, Math.round(worlds.length / 2))
 
     res.json(listedWorlds)
   },

@@ -6,4 +6,10 @@ export type NetworkOptions = {
 }
 export interface INetwork {
   get(url: string, options?: NetworkOptions): Promise<unknown>
+
+  post(
+    url: string,
+    data: { [key: string]: string },
+    options?: NetworkOptions
+  ): Promise<unknown>
 }

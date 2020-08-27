@@ -7,6 +7,14 @@ class MockNetwork implements INetwork {
   async get(url: string, options?: NetworkOptions): Promise<unknown> {
     return this.response
   }
+
+  async post(
+    url: string,
+    data: { [p: string]: string },
+    options?: NetworkOptions
+  ): Promise<unknown> {
+    return
+  }
 }
 
 describe('fetchNewsSince', () => {

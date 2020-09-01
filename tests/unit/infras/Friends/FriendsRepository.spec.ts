@@ -1,5 +1,5 @@
 import { UserApiResponse } from '@/types/ApiResponse'
-import { NetworkFriendsRepository } from '@/infras/Friends/NetworkFriendsRepository'
+import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRepository'
 import { INetwork, NetworkOptions } from '@/libs/Network/INetwork'
 import { VRC_API_URL } from '@/config/env'
 
@@ -73,7 +73,7 @@ describe('fetchAllFriends', () => {
 
   it('全ユーザーを取得し、重複は除去される', async () => {
     const mockNetwork = new MockNetwork()
-    const friendsRepository = new NetworkFriendsRepository(mockNetwork)
+    const friendsRepository = new VRChatApiFriendsRepository(mockNetwork)
     const result = await friendsRepository.fetchAllFriends()
 
     expect(result).toEqual([

@@ -19,13 +19,13 @@ export type SortOptions =
 export type OrderOptions = 'ascending' | 'descending'
 
 export type GetFriendsParams = {
-  n?: number
-  offset?: number
+  n: number
+  offset: number
 }
 
 export type ListFavoritesParams = {
-  type?: FavoriteType
-  n?: number
+  type: FavoriteType
+  n: number
 }
 
 export type GetWorldParams = {
@@ -33,9 +33,9 @@ export type GetWorldParams = {
 }
 
 export type ListWorldsParams = {
-  n?: number
-  sort?: SortOptions
-  order?: OrderOptions
+  n: number
+  sort: SortOptions
+  order: OrderOptions
 }
 
 export type GetInstanceParams = {

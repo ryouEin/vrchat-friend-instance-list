@@ -1,7 +1,5 @@
-import { UserApiResponse } from '@/types/ApiResponse'
 import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRepository'
-import { INetwork, NetworkOptions } from '@/libs/Network/INetwork'
-import { VRC_API_URL } from '@/config/env'
+import { MockVRChatApi } from '../../../mock/MockVRChatApi'
 
 describe('fetchAllFriends', () => {
   const dummyFriend = {
@@ -13,82 +11,20 @@ describe('fetchAllFriends', () => {
     location: 'dummy',
   }
 
-  class MockNetwork implements INetwork {
-    async get(url: string, options: NetworkOptions): Promise<unknown> {
-      if (url === VRC_API_URL + '/api/1/favorites') {
-        return []
-      }
-
-      const params = options.params
-      if (params === undefined) {
-        throw new Error('params is undefined')
-      }
-
-      const page = (params.offset as number) / 100
-      let out: UserApiResponse[] = []
-      if (page === 0) {
-        out = [
-          {
-            ...dummyFriend,
-            id: 'usr_0',
-          },
-        ]
-      }
-      if (page === 1) {
-        out = [
-          {
-            ...dummyFriend,
-            id: 'usr_1',
-          },
-        ]
-      }
-      if (page === 2) {
-        out = [
-          {
-            ...dummyFriend,
-            id: 'usr_1',
-          },
-        ]
-      }
-      if (page === 3) {
-        out = [
-          {
-            ...dummyFriend,
-            id: 'usr_2',
-          },
-        ]
-      }
-
-      return out
+  it('全ユーザーを取得する', async () => {
+    const dummyFriends = []
+    for (let index = 0; index < 301; index++) {
+      dummyFriends.push({
+        ...dummyFriend,
+        id: `usr_${index}`,
+      })
     }
 
-    async post(
-      url: string,
-      data: { [p: string]: string },
-      options?: NetworkOptions
-    ): Promise<unknown> {
-      return
-    }
-  }
-
-  it('全ユーザーを取得し、重複は除去される', async () => {
-    const mockNetwork = new MockNetwork()
-    const friendsRepository = new VRChatApiFriendsRepository(mockNetwork)
+    const mockVRChatApi = new MockVRChatApi()
+    mockVRChatApi.friends = [...dummyFriends]
+    const friendsRepository = new VRChatApiFriendsRepository(mockVRChatApi)
     const result = await friendsRepository.fetchAllFriends()
 
-    expect(result).toEqual([
-      {
-        ...dummyFriend,
-        id: 'usr_0',
-      },
-      {
-        ...dummyFriend,
-        id: 'usr_1',
-      },
-      {
-        ...dummyFriend,
-        id: 'usr_2',
-      },
-    ])
+    expect(result).toEqual(dummyFriends)
   })
 })

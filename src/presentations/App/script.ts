@@ -13,7 +13,7 @@ import {
   worldsStore,
 } from '@/domains/DomainStoreFactory'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
-import { Network } from '@/libs/Network/Network'
+import { Network, NetworkError } from '@/libs/Network/Network'
 
 @Component({
   components: {
@@ -88,19 +88,17 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
-  // TODO: エラーの判別がaxiosに依存してしまっている
   // TODO: 現状401になるのはVRChatAPIだけだから問題にならないが
   //  将来他の401出すAPI混ざってきたら困る
   // TODO: anyを使ってしまっている
   // eslint-disable-next-line
   errorHandler(error: any) {
-    const status = error.response?.status
-
-    if (status === 401) {
+    if (error instanceof NetworkError && error.details.status === 401) {
       this.showAuthErrorDialog = true
-    } else {
-      throw error
+      return
     }
+
+    throw error
   }
 
   setupErrorHandlers() {

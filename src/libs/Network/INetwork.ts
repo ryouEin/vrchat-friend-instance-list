@@ -1,4 +1,4 @@
-export type Params = { [key: string]: number | string | boolean }
+export type Params = { [key: string]: number | string | boolean | undefined }
 export type NetworkOptions = {
   params?: Params
   throttle?: boolean

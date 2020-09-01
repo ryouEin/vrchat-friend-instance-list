@@ -7,6 +7,26 @@
 1. Releasesに作成したxpiファイルをアップロード
 1. `npm run ff_addon_lint:checkUpdateLinkValidity` で、update_linkが有効であることを確認する
 
+## カスタムエラー型
+
+以下のような形で使用できる `BaseError` クラスを用意しているので、カスタムエラー型が必要な場合はこれを使うこと
+
+```
+export class NetworkError extends BaseError<{ status?: number }> {
+  constructor(private readonly _status?: number, e?: string) {
+    super(e)
+  }
+
+  get details() {
+    return {
+      status: this._status,
+    }
+  }
+}
+```
+
+エラーに付加情報が必要な場合は、 `details` で返すようにすること。abstractにしているので付加情報が不要な場合でも空オブジェクトを返す必要がある。
+
 ## CSSの規約
 
 ### 全体

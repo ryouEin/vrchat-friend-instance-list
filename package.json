@@ -2,15 +2,15 @@
   "name": "vrchat-friend-instance-list",
   "private": true,
   "scripts": {
-    "ff_addon_lint:checkVersion": "firefox-addon-version-linter checkVersion --manifestFilePath ./public/manifest.json --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\"",
-    "ff_addon_lint:checkUpdateLinkFormat": "firefox-addon-version-linter checkUpdateLinkFormat --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\" --format \"https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/[version]/vrchat_friend_instance_list.xpi\"",
-    "ff_addon_lint:checkUpdateLinkValidity": "firefox-addon-version-linter checkUpdateLinkValidity --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\"",
     "serve": "vue-cli-service serve",
-    "dev": "npm run serve & npm run mock",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
+    "dev": "npm run serve & npm run mock",
+    "ff_addon_lint:checkUpdateLinkFormat": "firefox-addon-version-linter checkUpdateLinkFormat --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\" --format \"https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/[version]/vrchat_friend_instance_list.xpi\"",
+    "ff_addon_lint:checkUpdateLinkValidity": "firefox-addon-version-linter checkUpdateLinkValidity --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\"",
+    "ff_addon_lint:checkVersion": "firefox-addon-version-linter checkVersion --manifestFilePath ./public/manifest.json --updatesFilePath ./updates.json --addonUUID \"{aa88fe5f-72c8-46ee-8089-678af6c93b1f}\"",
     "mock": "node mock",
     "mock:401Error": "SEND_ERROR_STATUS=401 node mock",
     "mock:500Error": "SEND_ERROR_STATUS=500 node mock"
@@ -29,6 +29,7 @@
     "vue-click-outside": "^1.1.0",
     "vue-property-decorator": "^8.4.1",
     "vue-router": "^3.1.6",
+    "vue-tsx-support": "^2.3.0",
     "vue-virtual-scroller": "^1.0.10",
     "vue2-hammer": "^2.1.2"
   },
@@ -75,6 +76,8 @@
     "stylelint-scss": "^3.17.0",
     "typescript": "~3.8.3",
     "vue-cli-plugin-style-resources-loader": "~0.1.4",
+    "vue-cli-plugin-tsx-support": "~0.4.1",
+    "vue-jsx-hot-loader": "^1.4.1",
     "vue-template-compiler": "^2.6.11"
   },
   "engines": {

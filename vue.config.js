@@ -3,6 +3,13 @@
 const path = require('path')
 
 module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `@import "~@/presentations/stylesheets/init.scss";`
+      }
+    }
+  },
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',

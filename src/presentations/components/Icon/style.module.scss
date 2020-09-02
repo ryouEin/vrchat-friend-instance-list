@@ -1,21 +1,21 @@
-.material-icons {
+.cIcon {
   font-size: $mainFontSize;
   line-height: 1;
   vertical-align: middle;
 
-  &.-white {
+  &.white {
     color: $whiteColor;
   }
 
-  &.-gray {
+  &.gray {
     color: $grayColor;
   }
 
-  &.-black {
+  &.black {
     color: $blackColor;
   }
 
-  &.-green {
+  &.green {
     color: $greenColor;
   }
 }

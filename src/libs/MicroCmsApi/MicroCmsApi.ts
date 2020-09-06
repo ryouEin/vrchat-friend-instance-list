@@ -7,7 +7,6 @@ import { NewsApiResponse } from '@/types/ApiResponse'
 import { INetwork, Params } from '@/libs/Network/INetwork'
 import { NEWS_API_KEY, NEWS_API_URL } from '@/config/env'
 
-// TODO SOON: テスト
 export class MicroCmsApi implements IMicroCmsApi {
   constructor(private readonly _network: INetwork) {}
 
@@ -15,7 +14,10 @@ export class MicroCmsApi implements IMicroCmsApi {
     let filtersString = `${filters.key}[${filters.comparisonMethod}]`
     if (filters.value !== undefined) {
       filtersString += filters.value
-    } else if (filters.key !== 'exists' && filters.key !== 'not_exists') {
+    } else if (
+      filters.comparisonMethod !== 'exists' &&
+      filters.comparisonMethod !== 'not_exists'
+    ) {
       throw new Error(
         'value is required if comparison methods not equal "exists" or "not_exists"'
       )

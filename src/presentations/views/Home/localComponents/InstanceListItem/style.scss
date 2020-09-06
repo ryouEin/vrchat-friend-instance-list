@@ -19,7 +19,6 @@
     flex: 0 0 25%;
     overflow: hidden;
 
-    // TODO: メディアクエリの幅情報、何らかの方法で共通化する
     @include mqPcMid {
       flex-basis: 35%;
     }

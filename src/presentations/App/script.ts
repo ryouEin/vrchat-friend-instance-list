@@ -29,6 +29,19 @@ export default class App extends Vue {
   isVisibleMenu = false
   isPC = false
 
+  // TODO SOON: 色を管理するファイルなりを作ってそこでまとめる
+  rootStyle = {
+    '--blackColor': '44, 62, 80',
+    '--greenColor': '26, 188, 156',
+    '--blueColor': '52, 152, 219',
+    '--redColor': '192, 57, 43',
+    '--yellowColor': '241, 196, 15',
+    '--orangeColor': '230, 126, 34',
+    '--grayColor': '149, 165, 166',
+    '--paleGrayColor': '236, 240, 241',
+    '--whiteColor': '255, 255, 255',
+  }
+
   reload() {
     location.reload()
   }

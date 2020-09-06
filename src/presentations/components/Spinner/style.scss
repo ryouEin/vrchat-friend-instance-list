@@ -1,22 +1,22 @@
 .c-spinner {
   display: inline-block;
-  color: $mainColor;
+  color: rgb(var(--mainColor));
   vertical-align: middle;
 
   &.-white {
-    color: $whiteColor;
+    color: rgb(var(--whiteColor));
   }
 
   &.-black {
-    color: $blackColor;
+    color: rgb(var(--blackColor));
   }
 
   &.-blue {
-    color: $blueColor;
+    color: rgb(var(--blueColor));
   }
 
   &.-green {
-    color: $greenColor;
+    color: rgb(var(--greenColor));
   }
 }
 

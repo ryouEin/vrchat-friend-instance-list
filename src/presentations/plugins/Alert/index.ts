@@ -7,7 +7,11 @@ export type AlertHandler = (props: AlertProps) => Promise<void>
 const launchAlert: AlertHandler = props => {
   return new Promise(resolve => {
     const node = document.createElement('div')
-    document.body.appendChild(node)
+    const app = document.getElementById('app')
+    if (app === null) {
+      throw new Error('set id "app" to Vue root element.')
+    }
+    app.appendChild(node)
 
     const vm = new Vue({
       el: node,

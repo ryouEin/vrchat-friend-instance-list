@@ -4,18 +4,18 @@
   vertical-align: middle;
 
   &.-white {
-    color: $whiteColor;
+    color: rgb(var(--whiteColor));
   }
 
   &.-gray {
-    color: $grayColor;
+    color: rgb(var(--grayColor));
   }
 
   &.-black {
-    color: $blackColor;
+    color: rgb(var(--blackColor));
   }
 
   &.-green {
-    color: $greenColor;
+    color: rgb(var(--greenColor));
   }
 }

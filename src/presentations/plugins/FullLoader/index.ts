@@ -12,7 +12,11 @@ class FullLoaderManager implements FullLoaderController {
 
   _createElement() {
     const node = document.createElement('div')
-    document.body.appendChild(node)
+    const app = document.getElementById('app')
+    if (app === null) {
+      throw new Error('set id "app" to Vue root element.')
+    }
+    app.appendChild(node)
 
     this.vm = new Vue({
       el: node,

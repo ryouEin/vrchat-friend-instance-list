@@ -18,8 +18,8 @@
   left: 0;
   padding: 2px 5px;
   font-size: 12px;
-  color: $whiteColor;
-  background-color: $greenColor;
+  color: rgb(var(--whiteColor));
+  background-color: rgb(var(--greenColor));
 }
 
 .favorite {
@@ -34,12 +34,12 @@
   bottom: 0;
   left: 0;
   padding: 8px 5px;
-  color: $whiteColor;
+  color: rgb(var(--whiteColor));
   text-align: center;
-  background-color: rgba($blackColor, 0.8);
+  background-color: rgba(var(--blackColor), 0.8);
 
   .c-userListItem.-active & {
-    background-color: rgba($mainColor, 0.8);
+    background-color: rgba(var(--mainColor), 0.8);
   }
 }
 

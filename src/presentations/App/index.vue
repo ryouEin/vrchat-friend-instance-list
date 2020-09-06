@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ 'is-pc': isPC }">
+  <div id="app" :class="{ 'is-pc': isPC }" :style="rootStyle">
     <template v-if="initialized">
       <div class="navBar">
         <div class="appTitle u-interactive" @click="scrollTopInstanceList">

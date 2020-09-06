@@ -16,6 +16,7 @@ import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
+import { getRGB } from '@/presentations/Colors'
 
 @Component({
   components: {
@@ -29,17 +30,16 @@ export default class App extends Vue {
   isVisibleMenu = false
   isPC = false
 
-  // TODO SOON: 色を管理するファイルなりを作ってそこでまとめる
   rootStyle = {
-    '--blackColor': '44, 62, 80',
-    '--greenColor': '26, 188, 156',
-    '--blueColor': '52, 152, 219',
-    '--redColor': '192, 57, 43',
-    '--yellowColor': '241, 196, 15',
-    '--orangeColor': '230, 126, 34',
-    '--grayColor': '149, 165, 166',
-    '--paleGrayColor': '236, 240, 241',
-    '--whiteColor': '255, 255, 255',
+    '--blackColor': getRGB('black'),
+    '--greenColor': getRGB('green'),
+    '--blueColor': getRGB('blue'),
+    '--redColor': getRGB('red'),
+    '--yellowColor': getRGB('yellow'),
+    '--orangeColor': getRGB('orange'),
+    '--grayColor': getRGB('gray'),
+    '--paleGrayColor': getRGB('paleGray'),
+    '--whiteColor': getRGB('white'),
   }
 
   reload() {

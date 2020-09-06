@@ -3,9 +3,7 @@
 body {
   font-size: $mainFontSize;
   line-height: $mainLineHeight;
-  color: rgb(var(--mainTextColor));
   word-break: break-word;
-  background-color: rgb(var(--mainBgColor));
 }
 
 a {
@@ -32,6 +30,9 @@ a {
   --linkColor: var(--greenColor);
   --mainTextColor: var(--blackColor);
   --mainBgColor: var(--paleGrayColor);
+
+  color: rgb(var(--mainTextColor));
+  background-color: rgb(var(--mainBgColor));
 }
 
 @import "../stylesheets/transitions";

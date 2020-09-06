@@ -2,22 +2,6 @@
   display: inline-block;
   color: rgb(var(--mainColor));
   vertical-align: middle;
-
-  &.-white {
-    color: rgb(var(--whiteColor));
-  }
-
-  &.-black {
-    color: rgb(var(--blackColor));
-  }
-
-  &.-blue {
-    color: rgb(var(--blueColor));
-  }
-
-  &.-green {
-    color: rgb(var(--greenColor));
-  }
 }
 
 .svg {

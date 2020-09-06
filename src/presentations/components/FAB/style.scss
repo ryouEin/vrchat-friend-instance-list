@@ -26,14 +26,4 @@
       right: 10px;
     }
   }
-
-  &.-white {
-    color: rgb(var(--blackColor));
-    background-color: rgb(var(--whiteColor));
-  }
-
-  &.-green {
-    color: rgb(var(--whiteColor));
-    background-color: rgb(var(--greenColor));
-  }
 }

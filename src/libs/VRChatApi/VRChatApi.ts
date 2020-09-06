@@ -1,4 +1,3 @@
-// TODO SOON: 共通のエラーハンドリング
 import {
   GetFriendsParams,
   GetInstanceParams,

@@ -91,9 +91,7 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
-  // TODO: anyを使ってしまっている
-  // eslint-disable-next-line
-  errorHandler(error: any) {
+  errorHandler(error: unknown) {
     if (error instanceof VRChatApiUnauthorizedError) {
       this.showAuthErrorDialog = true
       return

@@ -1,4 +1,3 @@
-// TODO: WebStorm上だとAlertPropsがないよって言われるのの解決したい。多分vue-loaderをサポートしきれてないとかそういうやつ
 import Vue from 'vue'
 import Alert from './component/index.vue'
 import { AlertProps } from './component/script'

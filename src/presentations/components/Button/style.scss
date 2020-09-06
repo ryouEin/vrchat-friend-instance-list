@@ -4,10 +4,10 @@
   padding: 15px;
   font-size: 16px;
   line-height: 1;
-  color: $whiteColor;
+  color: rgb(var(--whiteColor));
   text-align: center;
   cursor: pointer;
-  background-color: $grayColor;
+  background-color: rgb(var(--grayColor));
   transition: filter $mainAnimationDuration;
 
   &:hover {
@@ -15,7 +15,7 @@
   }
 
   &.-primary {
-    background-color: $mainColor;
+    background-color: rgb(var(--mainColor));
   }
 
   &.-full {

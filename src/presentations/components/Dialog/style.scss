@@ -15,7 +15,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba($blackColor, 0.8);
+  background-color: rgba(var(--blackColor), 0.8);
 }
 
 .body {
@@ -24,7 +24,7 @@
   flex-direction: column;
   max-height: 90vh;
   overflow: hidden;
-  background-color: $whiteColor;
+  background-color: rgb(var(--whiteColor));
   border-radius: 5px;
 
   @include mqPc {
@@ -41,8 +41,8 @@
   font-size: 18px;
   font-weight: bold;
   line-height: 1.2;
-  color: $whiteColor;
-  background-color: $mainColor;
+  color: rgb(var(--whiteColor));
+  background-color: rgb(var(--mainColor));
 }
 
 .content {
@@ -50,7 +50,7 @@
   margin-bottom: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  color: $mainTextColor;
+  color: rgb(var(--mainTextColor));
 }
 
 .buttonArea {

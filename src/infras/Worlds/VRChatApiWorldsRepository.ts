@@ -6,7 +6,6 @@ export class VRChatApiWorldsRepository implements INetworkWorldsRepository {
   constructor(private readonly _vrchatApi: IVRChatApi) {}
 
   async fetchWorld(worldId: string): Promise<WorldApiResponse> {
-    // TODO SOON: throttle対応
     return await this._vrchatApi.getWorld({ id: worldId })
   }
 

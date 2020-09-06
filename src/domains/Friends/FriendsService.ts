@@ -4,9 +4,7 @@ import { Friend } from '@/types'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
 
-// TODO: ここでisNewを設定していることの是非を再考
-// TODO: 関数名を再考
-export const makePresentationFriends: (
+export const convertApiResponseForPresentation: (
   friends: ApiResponse.UserApiResponse[],
   favorites: FavoriteApiResponse[]
 ) => Friend[] = (friends, favorites) => {
@@ -22,7 +20,6 @@ export const makePresentationFriends: (
   })
 }
 
-// TODO: 引数名、変数名が混同しそう。命名を再考
 export const markNewFriends: (
   oldFriends: Friend[],
   newFriends: Friend[]

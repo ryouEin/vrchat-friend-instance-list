@@ -54,3 +54,10 @@ export class NetworkError extends BaseError<{ status?: number }> {
 
 + 接頭語として `t-` を記述
 + vueのtransitionに使用するスタイル
+
+### 色の指定
+
+色はCSS Variablesでアプリルート（#app）に対して指定している。
+
+この変数を利用して色を指定する際は `rgb` または `rgba` を必ず使用すること。（`rgba(var(--mainColor), 0.8)` みたいに指定できるようにするために、色を16進数ではなく `--blackcolor: 0, 0, 0` みたいにrgbで設定しているのでそうしないと反映されない。）
+

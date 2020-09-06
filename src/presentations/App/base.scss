@@ -3,19 +3,36 @@
 body {
   font-size: $mainFontSize;
   line-height: $mainLineHeight;
-  color: $mainTextColor;
   word-break: break-word;
-  background-color: $mainBgColor;
 }
 
 a {
-  color: $linkColor;
+  color: rgb(var(--linkColor));
   text-decoration: underline;
   transition: filter $mainAnimationDuration;
 
   &:hover {
     filter: brightness(120%);
   }
+}
+
+#app {
+  --blackColor: 0, 0, 0;
+  --greenColor: 0, 0, 0;
+  --blueColor: 0, 0, 0;
+  --redColor: 0, 0, 0;
+  --yellowColor: 0, 0, 0;
+  --orangeColor: 0, 0, 0;
+  --grayColor: 0, 0, 0;
+  --paleGrayColor: 0, 0, 0;
+  --whiteColor: 0, 0, 0;
+  --mainColor: var(--greenColor);
+  --linkColor: var(--greenColor);
+  --mainTextColor: var(--blackColor);
+  --mainBgColor: var(--paleGrayColor);
+
+  color: rgb(var(--mainTextColor));
+  background-color: rgb(var(--mainBgColor));
 }
 
 @import "../stylesheets/transitions";

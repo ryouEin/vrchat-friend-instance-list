@@ -17,7 +17,6 @@
         </div>
         <div class="displayName">{{ friend.displayName }}</div>
       </div>
-      <!-- TODO: ステータスを動的に表示させる -->
       <div class="status" :class="statusCssClass">{{ status }}</div>
     </div>
   </div>

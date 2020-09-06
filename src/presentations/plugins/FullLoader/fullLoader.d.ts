@@ -1,7 +1,7 @@
-import { FullLoaderHandler } from '@/presentations/plugins/FullLoader/index'
+import { FullLoaderController } from '@/presentations/plugins/FullLoader/index'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $fullLoader: FullLoaderHandler
+    $fullLoader: FullLoaderController
   }
 }

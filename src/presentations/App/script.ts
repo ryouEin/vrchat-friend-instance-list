@@ -1,6 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import NetworkNewsRepository from '@/infras/News/NetworkNewsRepository'
+import MicroCmsApiNewsRepository from '@/infras/News/MicroCmsApiNewsRepository'
 import { KeyValueStorageNewsLastCheckRepository } from '@/infras/News/KeyValueStorageNewsLastCheckRepository'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
 import { News } from '@/types'
@@ -15,6 +15,8 @@ import {
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
+import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
+import { getRGB } from '@/presentations/Colors'
 
 @Component({
   components: {
@@ -27,6 +29,18 @@ export default class App extends Vue {
   showAuthErrorDialog = false
   isVisibleMenu = false
   isPC = false
+
+  rootStyle = {
+    '--blackColor': getRGB('black'),
+    '--greenColor': getRGB('green'),
+    '--blueColor': getRGB('blue'),
+    '--redColor': getRGB('red'),
+    '--yellowColor': getRGB('yellow'),
+    '--orangeColor': getRGB('orange'),
+    '--grayColor': getRGB('gray'),
+    '--paleGrayColor': getRGB('paleGray'),
+    '--whiteColor': getRGB('white'),
+  }
 
   reload() {
     location.reload()
@@ -58,9 +72,10 @@ export default class App extends Vue {
 
   async checkNews() {
     // TODO: Presentation層でInfraのインスタンス生成してるのは微妙では？
-    const newsApi = new NetworkNewsRepository(new Network())
+    const newsApi = new MicroCmsApi(new Network())
+    const newsRepository = new MicroCmsApiNewsRepository(newsApi)
     const newsStorage = new KeyValueStorageNewsLastCheckRepository()
-    const newsArray = await fetchUnreadNews(newsApi, newsStorage)
+    const newsArray = await fetchUnreadNews(newsRepository, newsStorage)
 
     this.showNewsDialogs(newsArray)
   }
@@ -89,9 +104,7 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
-  // TODO: anyを使ってしまっている
-  // eslint-disable-next-line
-  errorHandler(error: any) {
+  errorHandler(error: unknown) {
     if (error instanceof VRChatApiUnauthorizedError) {
       this.showAuthErrorDialog = true
       return

@@ -10,12 +10,8 @@
   height: 75px;
   cursor: pointer;
   border-radius: 9999px;
-  box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
+  box-shadow: rgba(var(--blackColor), 0.2) 0 0 5px 1px;
   transition: background-color $mainAnimationDuration;
-
-  &:hover {
-    background-color: lighten($mainColor, 5);
-  }
 
   &.-left {
     left: 10px;
@@ -29,15 +25,5 @@
     @include mqSp {
       right: 10px;
     }
-  }
-
-  &.-white {
-    color: $blackColor;
-    background-color: $whiteColor;
-  }
-
-  &.-green {
-    color: $whiteColor;
-    background-color: $greenColor;
   }
 }

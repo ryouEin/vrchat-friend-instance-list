@@ -19,7 +19,16 @@ const makeWorldFromApiResponse: (
   }
 }
 
-// TODO: InstancesStoreでインジェクションするために定義したがこんな名前でいいのか？
+// TODO:
+//  以下の内容に関して、再考
+//  「前提」
+//  ・InstancesStoreは「get world()」に依存している
+//  ・なので、InstancesStoreのテストでインジェクションする必要があった
+//  ・ただ、WorldsStore全体をinterface定義するのは大仰に感じた
+//  ・なので、「get world()」のみを切り出してinterface化した
+//  「再考するべき点」
+//  ・前述の「get world()」のみinterface化した行為は正しいのか
+//  ・正しいとして、こんなinterfaceの命名でいいのか
 export interface ICanGetWorldById {
   world: (id: string) => World | undefined
 }

@@ -1,9 +1,8 @@
-// TODO: typeとinterfaceの使い分け方針決める
 export type UnixTime = number
 
 export type InstanceLocation = string
 
-export interface Friend {
+export type Friend = {
   id: string
   username: string
   displayName: string
@@ -14,7 +13,7 @@ export interface Friend {
   isNew: boolean
 }
 
-export interface World {
+export type World = {
   id: string
   name: string
   imageUrl: string
@@ -32,7 +31,7 @@ export const InstancePermission = {
 } as const
 export type InstancePermission = typeof InstancePermission[keyof typeof InstancePermission]
 
-export interface News {
+export type News = {
   title: string
   content: string
   publishedAt: UnixTime

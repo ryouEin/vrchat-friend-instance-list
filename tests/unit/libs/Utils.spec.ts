@@ -1,4 +1,4 @@
-import { convertUnixTimeToISO8601ExtendedUTC } from '@/shame/convertUnixTimeToISO8601ExtendedUTC'
+import { convertUnixTimeToISO8601ExtendedUTC } from '@/libs/Utils'
 
 describe('convertUnixTimeToISO8601ExtendedUTC', () => {
   it('UnixTimeをISO8601拡張形式（UTC）に変換する', () => {

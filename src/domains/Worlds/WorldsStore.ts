@@ -1,12 +1,11 @@
 import { World } from '@/types'
 import * as ApiResponse from '@/types/ApiResponse'
-import { calcWorldHardCapacity } from '@/shame/calcWorldHardCapacity'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { getWorld } from '@/domains/WorldsStore/WorldsService'
+import { calcWorldHardCapacity, getWorld } from '@/domains/Worlds/WorldsService'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 

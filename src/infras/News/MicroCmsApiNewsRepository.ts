@@ -1,7 +1,7 @@
 import { INewsRepository } from '@/infras/News/INewsRepository'
-import { convertUnixTimeToISO8601ExtendedUTC } from '@/shame/convertUnixTimeToISO8601ExtendedUTC'
 import { News, UnixTime } from '@/types'
 import { IMicroCmsApi } from '@/libs/MicroCmsApi/IMicroCmsApi'
+import { convertUnixTimeToISO8601ExtendedUTC } from '@/libs/Utils'
 
 export default class MicroCmsApiNewsRepository implements INewsRepository {
   constructor(private readonly _newsApi: IMicroCmsApi) {}

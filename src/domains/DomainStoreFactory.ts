@@ -9,7 +9,7 @@ import LocalStorage from '@/libs/Storage/LocalStorage'
 import { SettingStore } from '@/domains/Setting/SettingStore'
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
-import { WorldsStore } from '@/domains/WorldsStore/WorldsStore'
+import { WorldsStore } from '@/domains/Worlds/WorldsStore'
 import { BrowserNotification } from '@/libs/Notification/BrowserNotification'
 import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
 

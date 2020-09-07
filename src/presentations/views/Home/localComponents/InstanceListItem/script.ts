@@ -1,7 +1,6 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
 import UserList from './localComponents/UserList/index.vue'
-import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { Friend, Instance, InstancePermission, World } from '@/types'
 import { parseLocation } from '@/shame/parseLocation'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
@@ -47,7 +46,7 @@ export default class InstanceListItem extends Vue {
   }
 
   get instancePermission(): InstancePermission {
-    return getInstancePermissionFromLocation(this.location)
+    return this.instance.permission
   }
 
   get showWorldInfo(): boolean {

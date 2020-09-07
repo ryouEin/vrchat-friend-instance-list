@@ -50,6 +50,7 @@ export type Setting = {
 export type Instance = {
   worldId: string
   location: InstanceLocation
+  permission: InstancePermission
   isWatching: boolean
   notifyUserNum: number
   ownerId?: string

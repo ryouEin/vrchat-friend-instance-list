@@ -1,5 +1,5 @@
 <template>
-  <div class="c-userListItem" @click="onClick">
+  <div v-if="isVisible" class="c-userListItem" @click="onClick">
     <div class="figure">
       <img
         class="userImage"

@@ -18,16 +18,22 @@ export default class OnlineFriendsListItem extends Vue {
   private friend!: Friend
 
   get instance() {
-    const instance = instancesStore.instanceByLocation(this.friend.location)
+    return instancesStore.instanceByLocation(this.friend.location)
+  }
 
-    if (instance === undefined) {
-      throw new Error('instance is undefined.')
-    }
-
-    return instance
+  // フレンド情報をストアに格納したあと、そのデータをつかってインスタンス情報を
+  // ストアに格納するという都合上、フレンドの情報はあるがインスタンスの情報がないという
+  // タイミングが存在してしまい、そのタイミングでinstanceがundefinedとなってしまう
+  // そのタイミングでコンポーネントを表示させないためのgetter
+  get isVisible() {
+    return this.instance !== undefined
   }
 
   get status(): Status {
+    if (this.instance === undefined) {
+      throw new Error('instance is undefined')
+    }
+
     const permission = this.instance.permission
     if (
       permission === InstancePermission.Public ||

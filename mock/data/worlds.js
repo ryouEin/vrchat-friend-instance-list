@@ -7,7 +7,7 @@ const makeWorld = index => {
     name: `World ${index} long name long name long name`,
     imageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
     thumbnailImageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
-    capacity: 1 + index
+    capacity: 1 + index,
   }
 }
 

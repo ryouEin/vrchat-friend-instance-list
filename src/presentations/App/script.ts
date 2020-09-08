@@ -14,7 +14,6 @@ import {
 } from '@/domains/DomainStoreFactory'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
-import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import { getRGB } from '@/presentations/Colors'
 
@@ -26,7 +25,6 @@ import { getRGB } from '@/presentations/Colors'
 })
 export default class App extends Vue {
   initialized = false
-  showAuthErrorDialog = false
   isVisibleMenu = false
   isPC = false
 
@@ -48,10 +46,6 @@ export default class App extends Vue {
 
   showMenu() {
     this.isVisibleMenu = true
-  }
-
-  hideMenu() {
-    this.isVisibleMenu = false
   }
 
   showNewsDialogs(newsArray: News[]) {
@@ -104,12 +98,8 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
+  // どこでも拾われなかった例外を処理する関数
   errorHandler(error: unknown) {
-    if (error instanceof VRChatApiUnauthorizedError) {
-      this.showAuthErrorDialog = true
-      return
-    }
-
     throw error
   }
 

@@ -32,6 +32,8 @@ class FullLoaderManager implements FullLoaderController {
     if (this.vm === null) {
       this._createElement()
     }
+    // TODO: this.vmが!==nullであることを!以外で示せないか？
+    // eslint-disable-next-line
     const vm = this.vm!
 
     // TODO: ここ本当に型アサーションするしかない？

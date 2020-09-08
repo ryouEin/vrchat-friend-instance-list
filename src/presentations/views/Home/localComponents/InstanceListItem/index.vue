@@ -6,11 +6,15 @@
     <div v-else-if="isPrivate" class="instanceInfo">
       <div class="privateTitle">Private</div>
     </div>
-    <div v-else class="instanceInfo">
+    <div v-else-if="isLoading" class="instanceInfo">
       <div class="loading">
         <g-Spinner color="white" />
       </div>
     </div>
+    <div v-else class="instanceInfo">
+      <div class="textOnlyTitle">Error</div>
+    </div>
+
     <div class="userInfo">
       <UserList :friends="userListItemPropFriends" />
     </div>

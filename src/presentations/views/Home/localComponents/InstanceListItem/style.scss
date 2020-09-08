@@ -1,6 +1,5 @@
 .c-instanceListItem {
-  background-color: rgb(var(--whiteColor));
-  box-shadow: rgba(var(--blackColor), 0.1) 0 0 5px 1px;
+  background-color: rgb(var(--backColor));
 
   @include mqPc {
     display: flex;

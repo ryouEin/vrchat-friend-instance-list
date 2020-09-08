@@ -9,12 +9,12 @@
   font-size: 18px;
   font-weight: bold;
   line-height: 1.2;
-  color: rgb(var(--blackColor));
+  color: rgb(var(--frontColor));
   text-align: center;
   text-decoration: none;
   letter-spacing: 0.05em;
   cursor: pointer;
-  background-color: rgb(var(--whiteColor));
+  background-color: rgb(var(--backColor));
   transition: filter $mainAnimationDuration;
 
   &:hover {
@@ -22,7 +22,7 @@
   }
 
   &.-disabled {
-    color: rgb(var(--paleGrayColor));
+    color: rgb(var(--weakBackColor));
     pointer-events: none;
     cursor: auto;
   }

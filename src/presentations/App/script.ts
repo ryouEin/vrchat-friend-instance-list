@@ -33,6 +33,8 @@ export default class App extends Vue {
 
     return {
       '--blackColor': getRGB('black', theme),
+      '--paleBlackColor': getRGB('paleBlack', theme),
+      '--trueBlackColor': getRGB('trueBlack', theme),
       '--greenColor': getRGB('green', theme),
       '--blueColor': getRGB('blue', theme),
       '--redColor': getRGB('red', theme),

@@ -28,7 +28,7 @@
               >ユーザー数<br />更新</span
             >
             <span v-else class="instanceButton_text"
-              ><g-Spinner :size="24" color="black"
+              ><g-Spinner :size="24" color="front"
             /></span>
           </InstanceButton>
         </div>

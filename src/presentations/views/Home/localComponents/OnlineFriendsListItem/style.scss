@@ -7,7 +7,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: rgb(var(--paleGrayColor));
+    background-color: rgb(var(--weakBackColor));
   }
 }
 
@@ -56,10 +56,6 @@
     font-size: 14px;
     font-weight: bold;
     line-height: 1.2;
-
-    .c-userListItem.-active & {
-      color: rgb(var(--mainColor));
-    }
   }
 
   .status {

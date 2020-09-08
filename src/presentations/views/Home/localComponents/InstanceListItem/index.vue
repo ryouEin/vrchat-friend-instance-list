@@ -4,7 +4,7 @@
       <WorldInfo :instance="instance" :world="world" />
     </div>
     <div v-else-if="isPrivate" class="instanceInfo">
-      <div class="privateTitle">Private</div>
+      <div class="textOnlyTitle">Private</div>
     </div>
     <div v-else-if="isLoading" class="instanceInfo">
       <div class="loading">

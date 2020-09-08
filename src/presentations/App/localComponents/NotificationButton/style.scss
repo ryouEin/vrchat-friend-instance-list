@@ -34,9 +34,9 @@
   right: 0;
   width: 250px;
   color: rgb(var(--frontColor));
-  background-color: rgb(var(--whiteColor));
+  background-color: rgb(var(--backColor));
   border-radius: 3px;
-  box-shadow: rgba(var(--blackColor), 0.15) 0 0 3px 1px;
+  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
 
   &::after {
     position: absolute;
@@ -46,7 +46,7 @@
     width: 0;
     height: 0;
     content: '';
-    border-color: transparent transparent rgb(var(--whiteColor)) transparent;
+    border-color: transparent transparent rgb(var(--backColor)) transparent;
     border-style: solid;
     border-width: 0 6px 6px 6px;
   }

@@ -8,14 +8,14 @@
       <div class="overlay" @click="hideInstanceList" />
       <div class="content">
         <div v-if="showOnlineFriendsListLoading" class="u-alignCenter u-pt20">
-          <g-Spinner color="black" :size="24" />
+          <g-Spinner color="front" :size="24" />
         </div>
         <OnlineFriendsList v-else :friends="friends" />
       </div>
     </div>
     <div class="main">
       <div v-if="showInstanceListLoading" class="u-alignCenter u-pt40">
-        <g-Spinner color="black" />
+        <g-Spinner color="front" />
       </div>
       <template v-else>
         <InstanceList :instances="instances" />

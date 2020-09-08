@@ -1,6 +1,7 @@
 export type Color =
   | 'black'
   | 'paleBlack'
+  | 'trueBlack'
   | 'green'
   | 'blue'
   | 'red'
@@ -20,6 +21,8 @@ export type Theme = 'light' | 'dark'
 const blackColor = '44, 62, 80'
 
 const paleBlackColor = '52, 73, 94'
+
+const trueBlackColor = '0, 0, 0'
 
 const greenColor = '26, 188, 156'
 
@@ -79,6 +82,8 @@ export const getRGB = (color: Color, theme: Theme) => {
       return blackColor
     case 'paleBlack':
       return paleBlackColor
+    case 'trueBlack':
+      return trueBlackColor
     case 'green':
       return greenColor
     case 'blue':

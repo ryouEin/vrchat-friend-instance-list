@@ -3,15 +3,15 @@
     <div class="overlay" @click="hideMenu" />
     <div class="list">
       <div class="item" @click="showSettingDialog">
-        <g-Icon :size="24">settings</g-Icon>
+        <g-Icon color="front" :size="24">settings</g-Icon>
         <div class="text">設定</div>
       </div>
       <div class="item" @click="showAboutCapacityDialog">
-        <g-Icon :size="24">help</g-Icon>
+        <g-Icon color="front" :size="24">help</g-Icon>
         <div class="text">インスタンスの最大人数に関して</div>
       </div>
       <div class="item" @click="showAuthorDialog">
-        <g-Icon :size="24">account_circle</g-Icon>
+        <g-Icon color="front" :size="24">account_circle</g-Icon>
         <div class="text">製作者</div>
       </div>
     </div>

@@ -11,10 +11,26 @@ import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
 import { WorldsStore } from '@/domains/Worlds/WorldsStore'
 import { BrowserNotification } from '@/libs/Notification/BrowserNotification'
-import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
+import {
+  VRChatApi,
+  VRChatApiUnauthorizedError,
+} from '@/libs/VRChatApi/VRChatApi'
+import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialog'
+
+const network = new Network()
+const vrchatApi = new VRChatApi(network, error => {
+  // TODO
+  //  ここは一応ドメイン層だけど、UI層の処理が入り込んでくることに違和感
+  //  ただ他に共通エラーダイアログを表示するいい方法が思い浮かばないので一旦ここで
+  //  （ファクトリなので、ドメイン層ではないという感じも
+  if (error instanceof VRChatApiUnauthorizedError) {
+    showAuthorizationErrorDialog()
+  }
+
+  throw error
+})
 
 export const friendsStore = (() => {
-  const vrchatApi = new VRChatApi(new Network())
   const friendsRepository = new VRChatApiFriendsRepository(vrchatApi)
   return new FriendsStore(friendsRepository)
 })()
@@ -33,13 +49,11 @@ export const settingStore = (() => {
 
 export const worldsStore = (() => {
   const cacheWorldsRepository = new CacheWorldsRepository(new LocalStorage())
-  const vrchatApi = new VRChatApi(new Network())
   const networkWorldsRepository = new VRChatApiWorldsRepository(vrchatApi)
   return new WorldsStore(networkWorldsRepository, cacheWorldsRepository)
 })()
 
 export const instancesStore = (() => {
-  const vrchatApi = new VRChatApi(new Network())
   const instancesRepository = new VRChatApiInstancesRepository(vrchatApi)
   return new InstancesStore(instancesRepository, worldsStore)
 })()

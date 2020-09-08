@@ -99,28 +99,8 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
+  // どこでも拾われなかった例外を処理する関数
   errorHandler(error: unknown) {
-    if (error instanceof VRChatApiUnauthorizedError) {
-      this.$alert({
-        title: '認証エラー',
-        content: `VRChat公式サイトのセッションが切れました。  
-公式サイトでログインし直したあと、再読込して下さい。
-
-[公式サイトログインページ](https://www.vrchat.com/login)`,
-        isMarkdown: true,
-        showCloseButton: false,
-        customButtonOptions: [
-          {
-            text: '再読込',
-            onClick: () => {
-              location.reload()
-            },
-          },
-        ],
-      })
-      return
-    }
-
     throw error
   }
 

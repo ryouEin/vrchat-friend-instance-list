@@ -26,18 +26,27 @@ export class VRChatApiUnauthorizedError extends VRChatApiError {
 }
 
 export class VRChatApi implements IVRChatApi {
-  constructor(private readonly _network: INetwork) {}
+  constructor(
+    private readonly _network: INetwork,
+    private readonly _onError?: (error: unknown) => void
+  ) {}
 
-  commonErrorHandle(error: any) {
+  commonErrorHandle(error: unknown) {
+    let throwError = error
+
     if (error instanceof NetworkError) {
       if (error.details.status === 401) {
-        throw new VRChatApiUnauthorizedError()
+        throwError = new VRChatApiUnauthorizedError()
       } else {
-        throw new VRChatApiError(error.details.status, error.message)
+        throwError = new VRChatApiError(error.details.status, error.message)
       }
     }
 
-    throw error
+    if (this._onError !== undefined) {
+      this._onError(throwError)
+    } else {
+      throw throwError
+    }
   }
 
   async getFriends(params: GetFriendsParams): Promise<UserApiResponse[]> {

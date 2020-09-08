@@ -15,7 +15,7 @@ import {
   VRChatApi,
   VRChatApiUnauthorizedError,
 } from '@/libs/VRChatApi/VRChatApi'
-import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialog'
+import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 
 const network = new Network()
 const vrchatApi = new VRChatApi(network, error => {
@@ -25,9 +25,9 @@ const vrchatApi = new VRChatApi(network, error => {
   //  （ファクトリなので、ドメイン層ではないという感じも
   if (error instanceof VRChatApiUnauthorizedError) {
     showAuthorizationErrorDialog()
+  } else {
+    throw error
   }
-
-  throw error
 })
 
 export const friendsStore = (() => {

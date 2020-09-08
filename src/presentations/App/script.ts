@@ -14,7 +14,6 @@ import {
 } from '@/domains/DomainStoreFactory'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
-import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import { getRGB } from '@/presentations/Colors'
 

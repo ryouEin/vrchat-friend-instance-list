@@ -1,3 +1,5 @@
+import { Theme } from '@/presentations/Colors'
+
 export type UnixTime = number
 
 export type InstanceLocation = string
@@ -45,6 +47,7 @@ export type Notification = {
 
 export type Setting = {
   enableNotificationSound: boolean
+  theme: Theme
 }
 
 export type Instance = {

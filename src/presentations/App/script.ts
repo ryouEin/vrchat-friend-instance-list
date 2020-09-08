@@ -15,7 +15,7 @@ import {
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
-import { getRGB } from '@/presentations/Colors'
+import { getRGB, Theme } from '@/presentations/Colors'
 
 @Component({
   components: {
@@ -27,17 +27,23 @@ export default class App extends Vue {
   initialized = false
   isVisibleMenu = false
   isPC = false
+  theme: Theme = 'light'
 
   rootStyle = {
-    '--blackColor': getRGB('black'),
-    '--greenColor': getRGB('green'),
-    '--blueColor': getRGB('blue'),
-    '--redColor': getRGB('red'),
-    '--yellowColor': getRGB('yellow'),
-    '--orangeColor': getRGB('orange'),
-    '--grayColor': getRGB('gray'),
-    '--paleGrayColor': getRGB('paleGray'),
-    '--whiteColor': getRGB('white'),
+    '--blackColor': getRGB('black', this.theme),
+    '--greenColor': getRGB('green', this.theme),
+    '--blueColor': getRGB('blue', this.theme),
+    '--redColor': getRGB('red', this.theme),
+    '--yellowColor': getRGB('yellow', this.theme),
+    '--orangeColor': getRGB('orange', this.theme),
+    '--grayColor': getRGB('gray', this.theme),
+    '--paleGrayColor': getRGB('paleGray', this.theme),
+    '--whiteColor': getRGB('white', this.theme),
+    '--frontColor': getRGB('front', this.theme),
+    '--weakFrontColor': getRGB('weakFront', this.theme),
+    '--backColor': getRGB('back', this.theme),
+    '--weakBackColor': getRGB('weakBack', this.theme),
+    '--mainColor': getRGB('main', this.theme),
   }
 
   reload() {

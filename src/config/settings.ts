@@ -5,4 +5,5 @@ export const INSTANCE_WATCH_INTERVAL = 60 * 1000
 
 export const DEFAULT_SETTING: Setting = {
   enableNotificationSound: true,
+  theme: 'light',
 }

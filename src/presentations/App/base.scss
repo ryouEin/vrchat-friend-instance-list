@@ -26,13 +26,15 @@ a {
   --grayColor: 0, 0, 0;
   --paleGrayColor: 0, 0, 0;
   --whiteColor: 0, 0, 0;
-  --mainColor: var(--greenColor);
-  --linkColor: var(--greenColor);
-  --mainTextColor: var(--blackColor);
-  --mainBgColor: var(--paleGrayColor);
+  --mainColor: 0, 0, 0, 0;
+  --frontColor: 0, 0, 0, 0;
+  --weakFrontColor: 0, 0, 0, 0;
+  --backColor: 0, 0, 0, 0;
+  --weakBackColor: 0, 0, 0, 0;
+  --linkColor: var(--mainColor);
 
-  color: rgb(var(--mainTextColor));
-  background-color: rgb(var(--mainBgColor));
+  color: rgb(var(--frontColor));
+  background-color: rgb(var(--weakBackColor));
 }
 
 @import "../stylesheets/transitions";

@@ -1,6 +1,7 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Color, getRGB } from '@/presentations/Colors'
+import { settingStore } from '@/domains/DomainStoreFactory'
 
 @Component
 export default class Icon extends Vue {
@@ -13,7 +14,7 @@ export default class Icon extends Vue {
   get rootStyle() {
     return {
       'font-size': `${this.size}px`,
-      color: `rgb(${getRGB(this.color)})`,
+      color: `rgb(${getRGB(this.color, settingStore.setting.theme)})`,
     }
   }
 }

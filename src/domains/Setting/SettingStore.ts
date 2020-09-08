@@ -45,8 +45,19 @@ export class SettingStore {
   }
 
   async initAction() {
-    const setting = await this._settingRepository.getSetting()
-    if (setting !== undefined) {
+    const repositorySetting = await this._settingRepository.getSetting()
+
+    if (repositorySetting !== undefined) {
+      /*
+      Settingの項目を追加した際に、ユーザーの古いストレージのデータを
+      そのまま反映してしまうと追加した項目の設定が消えてしまうので、
+      マージをする
+       */
+      const setting = {
+        ...this.setting,
+        ...repositorySetting,
+      }
+
       await this.updateSettingMutation(setting)
     }
   }

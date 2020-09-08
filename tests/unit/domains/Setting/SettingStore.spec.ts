@@ -28,6 +28,7 @@ describe('initAction', () => {
   it('リポジトリに設定がある場合は、リポジトリの内容が適用される', async () => {
     const repositorySetting: Setting = {
       enableNotificationSound: false,
+      theme: 'dark',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)
@@ -42,6 +43,7 @@ describe('enableNotificationSoundAction', () => {
   it('isEnabledNotificationSoundがtrueになり、リポジトリにもその内容が保存される', async () => {
     const repositorySetting: Setting = {
       enableNotificationSound: false,
+      theme: 'dark',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)
@@ -58,6 +60,7 @@ describe('disableNotificationSoundAction', () => {
   it('isEnabledNotificationSoundがfalseになり、リポジトリにもその内容が保存される', async () => {
     const repositorySetting: Setting = {
       enableNotificationSound: true,
+      theme: 'dark',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)

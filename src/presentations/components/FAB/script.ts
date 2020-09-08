@@ -1,6 +1,7 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Color, getRGB } from '@/presentations/Colors'
+import { settingStore } from '@/domains/DomainStoreFactory'
 
 @Component
 export default class FAB extends Vue {
@@ -12,7 +13,10 @@ export default class FAB extends Vue {
 
   get rootStyle() {
     return {
-      'background-color': `rgb(${getRGB(this.color)})`,
+      'background-color': `rgb(${getRGB(
+        this.color,
+        settingStore.setting.theme
+      )})`,
     }
   }
 

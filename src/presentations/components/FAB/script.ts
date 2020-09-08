@@ -13,10 +13,7 @@ export default class FAB extends Vue {
 
   get rootStyle() {
     return {
-      'background-color': `rgb(${getRGB(
-        this.color,
-        settingStore.setting.theme
-      )})`,
+      'background-color': `rgb(${getRGB(this.color)})`,
     }
   }
 

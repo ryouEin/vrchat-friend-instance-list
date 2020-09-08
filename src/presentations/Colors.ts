@@ -1,3 +1,5 @@
+import { settingStore } from '@/domains/DomainStoreFactory'
+
 export type Color =
   | 'black'
   | 'paleBlack'
@@ -76,7 +78,10 @@ const getWeakBackColor = (theme: Theme) => {
   }
 }
 
-export const getRGB = (color: Color, theme: Theme) => {
+export const getRGB: (color: Color) => string = color => {
+  const theme = settingStore.setting.theme
+  const mainColor = settingStore.setting.mainColor
+
   switch (color) {
     case 'black':
       return blackColor
@@ -101,7 +106,7 @@ export const getRGB = (color: Color, theme: Theme) => {
     case 'white':
       return whiteColor
     case 'main':
-      return greenColor
+      return getRGB(mainColor)
     case 'front':
       return getFrontColor(theme)
     case 'weakFront':

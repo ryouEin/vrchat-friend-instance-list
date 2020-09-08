@@ -14,7 +14,7 @@ export default class Icon extends Vue {
   get rootStyle() {
     return {
       'font-size': `${this.size}px`,
-      color: `rgb(${getRGB(this.color, settingStore.setting.theme)})`,
+      color: `rgb(${getRGB(this.color)})`,
     }
   }
 }

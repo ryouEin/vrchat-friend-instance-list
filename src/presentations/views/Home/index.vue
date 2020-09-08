@@ -24,7 +24,7 @@
             <g-Icon :size="50" color="black">people</g-Icon>
           </g-FAB>
         </div>
-        <g-FAB color="green" @click="reload">
+        <g-FAB color="main" @click="reload">
           <g-Spinner v-if="showFABLoading" color="white" />
           <g-Icon v-else :size="50" color="white">refresh</g-Icon>
         </g-FAB>

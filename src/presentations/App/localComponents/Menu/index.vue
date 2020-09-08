@@ -50,6 +50,43 @@
                 </div>
               </div>
             </div>
+            <div class="settingList_item">
+              <div class="settingItem">
+                <div class="settingItem_left">
+                  <div class="settingItem_title">メインカラー</div>
+                  <div class="settingItem_note"></div>
+                </div>
+                <div class="settingItem_input">
+                  <g-Select
+                    class="u-mr5"
+                    :items="[
+                      {
+                        label: 'グリーン',
+                        value: 'green',
+                      },
+                      {
+                        label: 'レッド',
+                        value: 'red',
+                      },
+                      {
+                        label: 'ブルー',
+                        value: 'blue',
+                      },
+                      {
+                        label: 'イエロー',
+                        value: 'yellow',
+                      },
+                      {
+                        label: 'オレンジ',
+                        value: 'orange',
+                      },
+                    ]"
+                    :value="setting.mainColor"
+                    @input="onChangeMainColor"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template v-slot:buttonArea>

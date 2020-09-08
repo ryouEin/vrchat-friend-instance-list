@@ -1,6 +1,7 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { settingStore } from '@/domains/DomainStoreFactory'
+import { Color } from '@/presentations/Colors'
 
 @Component({})
 export default class Menu extends Vue {
@@ -29,6 +30,10 @@ export default class Menu extends Vue {
     } else {
       await settingStore.enableLightModeAction()
     }
+  }
+
+  async onChangeMainColor(color: Color) {
+    await settingStore.updateMainColorAction(color)
   }
 
   showSettingDialog() {

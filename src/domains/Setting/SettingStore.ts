@@ -6,7 +6,7 @@ import {
 } from '@/libs/Decorators'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
-import { Theme } from '@/presentations/Colors'
+import { Color, Theme } from '@/presentations/Colors'
 
 type State = {
   setting: Setting
@@ -34,6 +34,11 @@ export class SettingStore {
   }
 
   @LogBeforeAfter('_state')
+  private updateMainColorMutation(color: Color) {
+    this._state.setting.mainColor = color
+  }
+
+  @LogBeforeAfter('_state')
   private updateSettingMutation(setting: Setting) {
     this._state.setting = setting
   }
@@ -58,6 +63,12 @@ export class SettingStore {
 
   async enableLightModeAction() {
     this.updateThemeMutation('light')
+
+    await this._settingRepository.updateSetting(this.setting)
+  }
+
+  async updateMainColorAction(color: Color) {
+    this.updateMainColorMutation(color)
 
     await this._settingRepository.updateSetting(this.setting)
   }

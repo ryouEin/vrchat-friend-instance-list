@@ -16,7 +16,7 @@ export default class Spinner extends Vue {
       width: `${this.size}px`,
       height: `${this.size}px`,
       'line-height': `${this.size}px`,
-      color: `rgb(${getRGB(this.color, settingStore.setting.theme)})`,
+      color: `rgb(${getRGB(this.color)})`,
     }
   }
 }

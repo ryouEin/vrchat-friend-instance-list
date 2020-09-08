@@ -29,6 +29,7 @@ describe('initAction', () => {
     const repositorySetting: Setting = {
       enableNotificationSound: false,
       theme: 'dark',
+      mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)
@@ -44,6 +45,7 @@ describe('enableNotificationSoundAction', () => {
     const repositorySetting: Setting = {
       enableNotificationSound: false,
       theme: 'dark',
+      mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)
@@ -61,6 +63,7 @@ describe('disableNotificationSoundAction', () => {
     const repositorySetting: Setting = {
       enableNotificationSound: true,
       theme: 'dark',
+      mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
     const settingStore = new SettingStore(mockSettingRepository)

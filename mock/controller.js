@@ -2,6 +2,7 @@ const path = require('path')
 const { getRandomInteger } = require('./util')
 const worlds = require('./data/worlds')
 const friends = require('./data/friends')
+const { dummyErrorResponseList } = require('./dummyErrorResponseList')
 
 const locations = (() => {
   return [
@@ -107,5 +108,17 @@ module.exports = {
   },
   getDummyImage (req, res) {
     res.sendFile(path.resolve(__dirname, './data/dummy.png'))
+  },
+  mockError (req, res) {
+    dummyErrorResponseList.addItem({
+      controllerName: req.body.controllerName,
+      status: req.body.status
+    })
+
+    res.json(dummyErrorResponseList.items)
+  },
+  unmockError (req, res) {
+    dummyErrorResponseList.clear()
+    res.json(dummyErrorResponseList.items)
   }
 }

@@ -5,13 +5,16 @@ const getRandomInteger = (min, max) => {
 }
 
 const getRandomChar = () => {
-  const charList = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  const charList =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
   return charList[Math.floor(Math.random() * charList.length)]
 }
 
-const getRandomString = (length) => {
-  return Array.from(Array(length)).map(() => getRandomChar()).join('')
+const getRandomString = length => {
+  return Array.from(Array(length))
+    .map(() => getRandomChar())
+    .join('')
 }
 
 const getRandomName = () => {
@@ -22,5 +25,5 @@ module.exports = {
   getRandomInteger,
   getRandomChar,
   getRandomString,
-  getRandomName
+  getRandomName,
 }

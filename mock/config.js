@@ -4,5 +4,5 @@ const BASE_URL = `http://localhost:${PORT}`
 
 module.exports = {
   PORT,
-  BASE_URL
+  BASE_URL,
 }

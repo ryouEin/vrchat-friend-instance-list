@@ -1,5 +1,5 @@
 class DummyErrorResponseList {
-  constructor () {
+  constructor() {
     this.items = [
       // sample
       // {
@@ -9,12 +9,14 @@ class DummyErrorResponseList {
     ]
   }
 
-  addItem (targetItem) {
-    this.items = this.items.filter(item => item.controllerName !== targetItem.controllerName)
+  addItem(targetItem) {
+    this.items = this.items.filter(
+      item => item.controllerName !== targetItem.controllerName
+    )
     this.items.push(targetItem)
   }
 
-  clear () {
+  clear() {
     this.items = []
   }
 }
@@ -22,5 +24,5 @@ class DummyErrorResponseList {
 const dummyErrorResponseList = new DummyErrorResponseList()
 
 module.exports = {
-  dummyErrorResponseList
+  dummyErrorResponseList,
 }

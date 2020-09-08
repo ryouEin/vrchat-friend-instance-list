@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    es6: true,
   },
   extends: [
     'eslint:recommended',
@@ -25,6 +26,22 @@ module.exports = {
     ],
   },
   overrides: [
+    {
+      files: [
+        './mock/public/**/*.js',
+      ],
+      env: {
+        browser: true
+      },
+    },
+    {
+      files: [
+        './public/icon_clicked.js',
+      ],
+      env: {
+        webextensions: true,
+      },
+    },
     {
       files: ["*.vue", "*.ts", "*.tsx"],
       extends: [

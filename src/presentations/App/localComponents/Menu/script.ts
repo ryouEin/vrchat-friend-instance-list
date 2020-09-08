@@ -23,6 +23,14 @@ export default class Menu extends Vue {
     }
   }
 
+  async onChangeDarkMode(isEnabled: boolean) {
+    if (isEnabled) {
+      await settingStore.enableDarkModeAction()
+    } else {
+      await settingStore.enableLightModeAction()
+    }
+  }
+
   showSettingDialog() {
     this.isVisibleSettingDialog = true
   }

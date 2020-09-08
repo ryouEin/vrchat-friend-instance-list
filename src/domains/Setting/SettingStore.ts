@@ -6,6 +6,7 @@ import {
 } from '@/libs/Decorators'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
+import { Theme } from '@/presentations/Colors'
 
 type State = {
   setting: Setting
@@ -28,6 +29,11 @@ export class SettingStore {
   }
 
   @LogBeforeAfter('_state')
+  private updateThemeMutation(theme: Theme) {
+    this._state.setting.theme = theme
+  }
+
+  @LogBeforeAfter('_state')
   private updateSettingMutation(setting: Setting) {
     this._state.setting = setting
   }
@@ -40,6 +46,18 @@ export class SettingStore {
 
   async disableNotificationSoundAction() {
     this.updateEnableNotificationSoundMutation(false)
+
+    await this._settingRepository.updateSetting(this.setting)
+  }
+
+  async enableDarkModeAction() {
+    this.updateThemeMutation('dark')
+
+    await this._settingRepository.updateSetting(this.setting)
+  }
+
+  async enableLightModeAction() {
+    this.updateThemeMutation('light')
 
     await this._settingRepository.updateSetting(this.setting)
   }

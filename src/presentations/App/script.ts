@@ -27,23 +27,26 @@ export default class App extends Vue {
   initialized = false
   isVisibleMenu = false
   isPC = false
-  theme: Theme = 'light'
 
-  rootStyle = {
-    '--blackColor': getRGB('black', this.theme),
-    '--greenColor': getRGB('green', this.theme),
-    '--blueColor': getRGB('blue', this.theme),
-    '--redColor': getRGB('red', this.theme),
-    '--yellowColor': getRGB('yellow', this.theme),
-    '--orangeColor': getRGB('orange', this.theme),
-    '--grayColor': getRGB('gray', this.theme),
-    '--paleGrayColor': getRGB('paleGray', this.theme),
-    '--whiteColor': getRGB('white', this.theme),
-    '--frontColor': getRGB('front', this.theme),
-    '--weakFrontColor': getRGB('weakFront', this.theme),
-    '--backColor': getRGB('back', this.theme),
-    '--weakBackColor': getRGB('weakBack', this.theme),
-    '--mainColor': getRGB('main', this.theme),
+  get rootStyle() {
+    const theme = settingStore.setting.theme
+
+    return {
+      '--blackColor': getRGB('black', theme),
+      '--greenColor': getRGB('green', theme),
+      '--blueColor': getRGB('blue', theme),
+      '--redColor': getRGB('red', theme),
+      '--yellowColor': getRGB('yellow', theme),
+      '--orangeColor': getRGB('orange', theme),
+      '--grayColor': getRGB('gray', theme),
+      '--paleGrayColor': getRGB('paleGray', theme),
+      '--whiteColor': getRGB('white', theme),
+      '--frontColor': getRGB('front', theme),
+      '--weakFrontColor': getRGB('weakFront', theme),
+      '--backColor': getRGB('back', theme),
+      '--weakBackColor': getRGB('weakBack', theme),
+      '--mainColor': getRGB('main', theme),
+    }
   }
 
   reload() {

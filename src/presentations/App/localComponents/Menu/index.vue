@@ -36,6 +36,20 @@
                 </div>
               </div>
             </div>
+            <div class="settingList_item">
+              <div class="settingItem">
+                <div class="settingItem_left">
+                  <div class="settingItem_title">ダークモード</div>
+                  <div class="settingItem_note"></div>
+                </div>
+                <div class="settingItem_input">
+                  <g-Toggle
+                    :value="setting.theme === 'dark'"
+                    @input="onChangeDarkMode"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template v-slot:buttonArea>

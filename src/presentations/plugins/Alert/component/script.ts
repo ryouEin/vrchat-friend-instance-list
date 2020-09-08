@@ -1,11 +1,19 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
+import { Color } from '@/presentations/Colors'
 
 export interface AlertProps {
   title?: string
   content: string
   isMarkdown?: boolean
   onClose?: () => void
+  customButtonOptions?: CustomButtonOption[]
+  showCloseButton?: boolean
+}
+
+export type CustomButtonOption = {
+  text: string
+  onClick: () => void
 }
 
 @Component({
@@ -23,6 +31,12 @@ export default class Alert extends Vue implements AlertProps {
 
   @Prop()
   readonly onClose?: () => void
+
+  @Prop({ type: Array, default: () => [] })
+  readonly customButtonOptions!: CustomButtonOption[]
+
+  @Prop({ type: Boolean, default: true })
+  readonly showCloseButton!: boolean
 
   visible = false
 

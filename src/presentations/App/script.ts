@@ -26,7 +26,6 @@ import { getRGB } from '@/presentations/Colors'
 })
 export default class App extends Vue {
   initialized = false
-  showAuthErrorDialog = false
   isVisibleMenu = false
   isPC = false
 
@@ -48,10 +47,6 @@ export default class App extends Vue {
 
   showMenu() {
     this.isVisibleMenu = true
-  }
-
-  hideMenu() {
-    this.isVisibleMenu = false
   }
 
   showNewsDialogs(newsArray: News[]) {
@@ -106,7 +101,23 @@ export default class App extends Vue {
 
   errorHandler(error: unknown) {
     if (error instanceof VRChatApiUnauthorizedError) {
-      this.showAuthErrorDialog = true
+      this.$alert({
+        title: '認証エラー',
+        content: `VRChat公式サイトのセッションが切れました。  
+公式サイトでログインし直したあと、再読込して下さい。
+
+[公式サイトログインページ](https://www.vrchat.com/login)`,
+        isMarkdown: true,
+        showCloseButton: false,
+        customButtonOptions: [
+          {
+            text: '再読込',
+            onClick: () => {
+              location.reload()
+            },
+          },
+        ],
+      })
       return
     }
 

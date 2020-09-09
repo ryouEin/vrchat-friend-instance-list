@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { Friend, InstanceLocation } from '@/types'
 import {
-  makePresentationFriends,
+  convertApiResponseForPresentation,
   markNewFriends,
 } from '@/domains/Friends/FriendsService'
 import {
@@ -42,7 +42,10 @@ export class FriendsStore {
       this._friendsRepository.fetchFavoritesAboutFriends(),
     ])
 
-    const presentationFriends = makePresentationFriends(friends, favorites)
+    const presentationFriends = convertApiResponseForPresentation(
+      friends,
+      favorites
+    )
     this.setFriendsMutation(markNewFriends(this.friends, presentationFriends))
   }
 }

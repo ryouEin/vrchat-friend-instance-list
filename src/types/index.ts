@@ -1,9 +1,10 @@
-// TODO: typeとinterfaceの使い分け方針決める
+import { Color, Theme } from '@/presentations/Colors'
+
 export type UnixTime = number
 
 export type InstanceLocation = string
 
-export interface Friend {
+export type Friend = {
   id: string
   username: string
   displayName: string
@@ -14,7 +15,7 @@ export interface Friend {
   isNew: boolean
 }
 
-export interface World {
+export type World = {
   id: string
   name: string
   imageUrl: string
@@ -32,7 +33,7 @@ export const InstancePermission = {
 } as const
 export type InstancePermission = typeof InstancePermission[keyof typeof InstancePermission]
 
-export interface News {
+export type News = {
   title: string
   content: string
   publishedAt: UnixTime
@@ -46,11 +47,14 @@ export type Notification = {
 
 export type Setting = {
   enableNotificationSound: boolean
+  theme: Theme
+  mainColor: Color
 }
 
 export type Instance = {
   worldId: string
   location: InstanceLocation
+  permission: InstancePermission
   isWatching: boolean
   notifyUserNum: number
   ownerId?: string

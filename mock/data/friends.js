@@ -7,7 +7,9 @@ const makeUser = index => {
     username: `username${index}`,
     displayName: getRandomName(),
     currentAvatarImageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`,
-    currentAvatarThumbnailImageUrl: `${BASE_URL}/dummyImage/${getRandomString(20)}`
+    currentAvatarThumbnailImageUrl: `${BASE_URL}/dummyImage/${getRandomString(
+      20
+    )}`,
   }
 }
 

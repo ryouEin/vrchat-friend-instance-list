@@ -1,8 +1,8 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { sortUsers } from '@/shame/sortUsers'
 import OnlineFriendsListItem from '@/presentations/views/Home/localComponents/OnlineFriendsListItem/index.vue'
 import { Friend } from '@/types'
+import { sortUsers } from '@/presentations/views/Home/localComponents/OnlineFriendsList/sortUsers'
 
 @Component({
   components: {

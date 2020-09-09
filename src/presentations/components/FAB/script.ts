@@ -1,5 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
+import { Color, getRGB } from '@/presentations/Colors'
 
 @Component
 export default class FAB extends Vue {
@@ -7,10 +8,16 @@ export default class FAB extends Vue {
   position!: string
 
   @Prop({ default: 'white' })
-  color!: string
+  color!: Color
+
+  get rootStyle() {
+    return {
+      'background-color': `rgb(${getRGB(this.color)})`,
+    }
+  }
 
   get rootClass() {
-    return [`-${this.position}`, `-${this.color}`]
+    return [`-${this.position}`]
   }
 
   onClick() {

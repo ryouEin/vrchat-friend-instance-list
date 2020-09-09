@@ -1,5 +1,5 @@
-import { sortUsers } from '@/shame/sortUsers'
 import { Friend } from '@/types'
+import { sortUsers } from '@/presentations/views/Home/localComponents/OnlineFriendsList/sortUsers'
 
 describe('sortUsers', () => {
   const dummyData: Friend = {

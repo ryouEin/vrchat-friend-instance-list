@@ -1,12 +1,11 @@
 import { World } from '@/types'
 import * as ApiResponse from '@/types/ApiResponse'
-import { calcWorldHardCapacity } from '@/shame/calcWorldHardCapacity'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { getWorld } from '@/domains/WorldsStore/WorldsService'
+import { calcWorldHardCapacity, getWorld } from '@/domains/Worlds/WorldsService'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 
@@ -19,7 +18,16 @@ const makeWorldFromApiResponse: (
   }
 }
 
-// TODO: InstancesStoreでインジェクションするために定義したがこんな名前でいいのか？
+// TODO:
+//  以下の内容に関して、再考
+//  「前提」
+//  ・InstancesStoreは「get world()」に依存している
+//  ・なので、InstancesStoreのテストでインジェクションする必要があった
+//  ・ただ、WorldsStore全体をinterface定義するのは大仰に感じた
+//  ・なので、「get world()」のみを切り出してinterface化した
+//  「再考するべき点」
+//  ・前述の「get world()」のみinterface化した行為は正しいのか
+//  ・正しいとして、こんなinterfaceの命名でいいのか
 export interface ICanGetWorldById {
   world: (id: string) => World | undefined
 }

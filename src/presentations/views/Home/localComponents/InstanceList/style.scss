@@ -27,6 +27,44 @@
   }
 }
 
+.filterArea {
+  padding-bottom: 10px;
+  margin-bottom: 50px;
+  border-bottom: 1px solid rgb(var(--grayColor));
+}
+
+.toggleButtonGroup {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+
+  .toggleButtonGroup_toggle {
+    margin-right: 10px;
+  }
+
+  .toggleButtonGroup_label {
+    font-size: 18px;
+    line-height: 1.2;
+    color: rgb(var(--weakFrontColor));
+  }
+}
+
 .item {
   padding-bottom: 30px;
+}
+
+.toTop {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  width: 100px;
+  margin-left: -50px;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgba(var(--grayColor), 0.8);
+  border-radius: 10px 10px 0 0;
+
+  &:hover {
+    filter: $hoverFilter;
+  }
 }

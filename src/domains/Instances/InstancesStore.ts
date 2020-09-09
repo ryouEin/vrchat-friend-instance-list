@@ -11,7 +11,7 @@ import {
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
-import { ICanGetWorldById } from '@/domains/WorldsStore/WorldsStore'
+import { ICanGetWorldById } from '@/domains/Worlds/WorldsStore'
 
 type State = {
   instances: Instance[]

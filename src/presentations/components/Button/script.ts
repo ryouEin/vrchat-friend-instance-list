@@ -1,25 +1,39 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
+import { Color, getRGB } from '@/presentations/Colors'
 
 @Component
 export default class Button extends Vue {
-  @Prop({ default: 'default' })
-  readonly color!: string
-
   @Prop({ type: Boolean, default: false })
   readonly primary!: boolean
 
   @Prop({ default: null })
   readonly full!: string | null
 
+  @Prop({ type: String, default: 'secondary' })
+  readonly color!: Color
+
+  @Prop({ type: String, default: 'default' })
+  readonly size!: 'default' | 'large'
+
   get isFull() {
     return this.full !== null
   }
 
   get rootClass() {
+    const tmp: (string | { [key: string]: boolean })[] = [
+      {
+        '-full': this.isFull,
+      },
+    ]
+    if (this.size !== 'default') tmp.push(`-${this.size}`)
+
+    return tmp
+  }
+
+  get rootStyle() {
     return {
-      '-primary': this.primary,
-      '-full': this.isFull,
+      'background-color': `rgb(${getRGB(this.color)})`,
     }
   }
 

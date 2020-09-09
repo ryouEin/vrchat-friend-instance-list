@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ 'is-pc': isPC }">
+  <div id="app" :class="{ 'is-pc': isPC }" :style="rootStyle">
     <template v-if="initialized">
       <div class="navBar">
         <div class="appTitle u-interactive" @click="scrollTopInstanceList">
@@ -16,18 +16,6 @@
         <router-view />
       </div>
     </template>
-    <g-Dialog v-if="showAuthErrorDialog" title="認証エラー">
-      <template v-slot:content>
-        VRChat公式サイトのセッションが切れました。<br />
-        公式サイトでログインし直したあと、再読込して下さい。<br />
-        <a href="https://www.vrchat.com/login" target="_blank"
-          >公式サイトログインページ</a
-        >
-      </template>
-      <template v-slot:buttonArea>
-        <g-Button primary @click="reload">再読込</g-Button>
-      </template>
-    </g-Dialog>
   </div>
 </template>
 

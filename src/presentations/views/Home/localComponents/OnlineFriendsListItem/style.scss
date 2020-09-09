@@ -7,7 +7,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $paleGrayColor;
+    background-color: rgb(var(--weakBackColor));
   }
 }
 
@@ -47,27 +47,23 @@
     font-size: 10px;
     font-weight: bold;
     line-height: 17px;
-    color: $whiteColor;
+    color: rgb(var(--whiteColor));
     white-space: nowrap;
-    background-color: $orangeColor;
+    background-color: rgb(var(--orangeColor));
   }
 
   .displayName {
     font-size: 14px;
     font-weight: bold;
     line-height: 1.2;
-
-    .c-userListItem.-active & {
-      color: $mainColor;
-    }
   }
 
   .status {
     font-size: 12px;
-    color: $grayColor;
+    color: rgb(var(--grayColor));
 
     &.-canJoin {
-      color: $blueColor;
+      color: rgb(var(--blueColor));
     }
   }
 }

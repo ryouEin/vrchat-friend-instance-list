@@ -1,5 +1,5 @@
 <template>
-  <div class="c-userListItem" @click="onClick">
+  <div v-if="isVisible" class="c-userListItem" @click="onClick">
     <div class="figure">
       <img
         class="userImage"
@@ -17,7 +17,6 @@
         </div>
         <div class="displayName">{{ friend.displayName }}</div>
       </div>
-      <!-- TODO: ステータスを動的に表示させる -->
       <div class="status" :class="statusCssClass">{{ status }}</div>
     </div>
   </div>

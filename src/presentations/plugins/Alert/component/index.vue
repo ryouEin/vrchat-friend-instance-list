@@ -7,7 +7,13 @@
       <template v-else>{{ content }}</template>
     </template>
     <template v-slot:buttonArea>
-      <g-Button @click="close">閉じる</g-Button>
+      <template v-for="customButtonOption in customButtonOptions">
+        <!-- eslint-disable-next-line -->
+        <g-Button class="u-ml20 u-mr20" :color="customButtonOption.color" @click="customButtonOption.onClick">{{ customButtonOption.text }}</g-Button>
+      </template>
+      <g-Button v-if="showCloseButton" class="u-ml20 u-mr20" @click="close"
+        >閉じる</g-Button
+      >
     </template>
   </g-Dialog>
 </template>

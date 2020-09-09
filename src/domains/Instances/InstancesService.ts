@@ -1,7 +1,52 @@
-import { Friend, Instance, InstanceLocation } from '@/types'
+import { Friend, Instance, InstanceLocation, InstancePermission } from '@/types'
 import uniqBy from 'lodash/uniqBy'
-import { parseLocation } from '@/shame/parseLocation'
-import { getOwnerIdFromLocation } from '@/shame/getOwnerIdFromLocation'
+
+const parseLocation = (location: InstanceLocation) => {
+  const [worldId, instanceId] = location.split(':')
+  return {
+    worldId,
+    instanceId,
+  }
+}
+
+export const getInstancePermissionFromLocation: (
+  location: InstanceLocation
+) => InstancePermission = location => {
+  const { worldId, instanceId } = parseLocation(location)
+
+  if (worldId === 'private') {
+    return InstancePermission.Private
+  }
+
+  if (instanceId === undefined) {
+    throw new Error(`unknown location: ${location}`)
+  }
+
+  if (instanceId.includes('hidden')) {
+    return InstancePermission.FriendPlus
+  }
+
+  if (instanceId.includes('friends')) {
+    return InstancePermission.Friends
+  }
+
+  if (instanceId.includes('public') || !instanceId.includes('~')) {
+    return InstancePermission.Public
+  }
+
+  throw new Error(`unknown location: ${location}`)
+}
+
+export function getOwnerIdFromLocation(
+  location: InstanceLocation
+): string | undefined {
+  const regExResult = /\(.*?\)/.exec(location)
+  if (regExResult === null) {
+    return undefined
+  }
+
+  return regExResult[0].replace('(', '').replace(')', '')
+}
 
 export const getLocationsFromFriends: (
   friends: Friend[]
@@ -25,6 +70,7 @@ export const makeInstancesFromLocations: (
     return {
       worldId,
       location,
+      permission: getInstancePermissionFromLocation(location),
       ownerId: getOwnerIdFromLocation(location),
       isWatching: false,
       notifyUserNum: 1,

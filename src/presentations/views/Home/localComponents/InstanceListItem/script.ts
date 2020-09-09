@@ -1,9 +1,7 @@
 import { Component, Prop, Watch } from 'vue-property-decorator'
 import Vue from 'vue'
 import UserList from './localComponents/UserList/index.vue'
-import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import { Friend, Instance, InstancePermission, World } from '@/types'
-import { parseLocation } from '@/shame/parseLocation'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
 import { worldsStore } from '@/domains/DomainStoreFactory'
 import { UserListItemPropFriend } from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/UserListItem/script'
@@ -15,6 +13,8 @@ import { UserListItemPropFriend } from '@/presentations/views/Home/localComponen
   },
 })
 export default class InstanceListItem extends Vue {
+  isLoading = false
+
   @Prop({ required: true })
   private instance!: Instance
 
@@ -26,7 +26,7 @@ export default class InstanceListItem extends Vue {
   }
 
   get worldId(): string {
-    return parseLocation(this.location).worldId
+    return this.instance.worldId
   }
 
   get world(): World | undefined {
@@ -47,7 +47,7 @@ export default class InstanceListItem extends Vue {
   }
 
   get instancePermission(): InstancePermission {
-    return getInstancePermissionFromLocation(this.location)
+    return this.instance.permission
   }
 
   get showWorldInfo(): boolean {
@@ -70,8 +70,11 @@ export default class InstanceListItem extends Vue {
   }
 
   async init() {
+    this.isLoading = true
     if (this.showWorldInfo && this.world === undefined) {
-      await worldsStore.fetchWorldAction(this.worldId)
+      await worldsStore.fetchWorldAction(this.worldId).finally(() => {
+        this.isLoading = false
+      })
     }
   }
 

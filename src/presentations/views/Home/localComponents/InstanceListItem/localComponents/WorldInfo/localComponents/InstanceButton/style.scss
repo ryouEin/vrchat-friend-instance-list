@@ -9,20 +9,20 @@
   font-size: 18px;
   font-weight: bold;
   line-height: 1.2;
-  color: $blackColor;
+  color: rgb(var(--frontColor));
   text-align: center;
   text-decoration: none;
   letter-spacing: 0.05em;
   cursor: pointer;
-  background-color: $whiteColor;
+  background-color: rgb(var(--backColor));
   transition: filter $mainAnimationDuration;
 
   &:hover {
-    filter: brightness(140%);
+    filter: $hoverFilter;
   }
 
   &.-disabled {
-    color: $paleGrayColor;
+    color: rgb(var(--weakBackColor));
     pointer-events: none;
     cursor: auto;
   }

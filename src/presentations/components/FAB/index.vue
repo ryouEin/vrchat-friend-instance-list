@@ -1,5 +1,5 @@
 <template>
-  <div class="c-fab" :class="rootClass" @click="onClick">
+  <div class="c-fab" :class="rootClass" :style="rootStyle" @click="onClick">
     <slot />
   </div>
 </template>

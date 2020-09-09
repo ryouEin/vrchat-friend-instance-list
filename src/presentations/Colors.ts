@@ -17,6 +17,11 @@ export type Color =
   | 'back'
   | 'weakBack'
   | 'main'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'danger'
+  | 'warning'
 
 export type Theme = 'light' | 'dark'
 
@@ -115,6 +120,16 @@ export const getRGB: (color: Color) => string = color => {
       return getBackColor(theme)
     case 'weakBack':
       return getWeakBackColor(theme)
+    case 'primary':
+      return greenColor
+    case 'secondary':
+      return grayColor
+    case 'success':
+      return blueColor
+    case 'danger':
+      return redColor
+    case 'warning':
+      return yellowColor
   }
 
   throw new Error('unknown color.')

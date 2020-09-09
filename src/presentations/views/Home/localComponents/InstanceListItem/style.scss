@@ -12,7 +12,12 @@
 }
 
 .instanceInfo {
-  background-color: rgb(var(--blackColor));
+  background-color: rgb(var(--grayColor));
+
+  &.-private,
+  &.-error {
+    background-color: rgb(var(--blackColor));
+  }
 
   @include mqPc {
     flex: 0 0 25%;

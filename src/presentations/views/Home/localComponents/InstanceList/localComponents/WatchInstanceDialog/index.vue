@@ -17,7 +17,7 @@
     </template>
     <template v-slot:buttonArea>
       <g-Button class="u-mr20" @click="hideDialog">閉じる</g-Button>
-      <g-Button primary @click="onClickWatchStart">監視開始</g-Button>
+      <g-Button color="primary" @click="onClickWatchStart">監視開始</g-Button>
     </template>
   </g-Dialog>
 </template>

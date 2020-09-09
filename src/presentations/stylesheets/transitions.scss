@@ -7,3 +7,13 @@
 .t-fade-leave-to {
   opacity: 0;
 }
+
+.t-up-enter-active,
+.t-up-leave-active {
+  transition: transform $mainAnimationDuration;
+}
+
+.t-up-enter,
+.t-up-leave-to {
+  transform: translateY(100%);
+}

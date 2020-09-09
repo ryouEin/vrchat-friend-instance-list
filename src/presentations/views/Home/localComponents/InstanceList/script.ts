@@ -12,6 +12,8 @@ import { friendsStore } from '@/domains/DomainStoreFactory'
   },
 })
 export default class InstanceList extends Vue {
+  isVisibleToTop = false
+
   @Prop()
   private instances!: Instance[]
 
@@ -23,5 +25,34 @@ export default class InstanceList extends Vue {
         friends: friendsStore.friendsByLocation(instance.location),
       }
     })
+  }
+
+  get scrollerElement() {
+    const scroller = this.$refs.scroller as Vue
+    return scroller.$el as HTMLElement
+  }
+
+  toTop() {
+    this.scrollerElement.scrollTo({
+      top: 0,
+    })
+  }
+
+  updateToTop() {
+    const scrollTop = this.scrollerElement.scrollTop
+
+    if (scrollTop > 100) {
+      this.isVisibleToTop = true
+    } else {
+      this.isVisibleToTop = false
+    }
+  }
+
+  mounted() {
+    this.scrollerElement.addEventListener('scroll', this.updateToTop)
+  }
+
+  beforeDestroy() {
+    this.scrollerElement.removeEventListener('scroll', this.updateToTop)
   }
 }

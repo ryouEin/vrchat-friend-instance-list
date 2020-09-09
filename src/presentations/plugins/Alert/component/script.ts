@@ -1,5 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
+import { Color } from '@/presentations/Colors'
 
 export interface AlertProps {
   title?: string
@@ -12,6 +13,7 @@ export interface AlertProps {
 
 export type CustomButtonOption = {
   text: string
+  color: Color
   onClick: () => void
 }
 

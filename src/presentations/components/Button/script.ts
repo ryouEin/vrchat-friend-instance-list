@@ -13,14 +13,22 @@ export default class Button extends Vue {
   @Prop({ type: String, default: 'secondary' })
   readonly color!: Color
 
+  @Prop({ type: String, default: 'default' })
+  readonly size!: 'default' | 'large'
+
   get isFull() {
     return this.full !== null
   }
 
   get rootClass() {
-    return {
-      '-full': this.isFull,
-    }
+    const tmp: (string | { [key: string]: boolean })[] = [
+      {
+        '-full': this.isFull,
+      },
+    ]
+    if (this.size !== 'default') tmp.push(`-${this.size}`)
+
+    return tmp
   }
 
   get rootStyle() {

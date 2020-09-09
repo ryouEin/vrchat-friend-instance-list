@@ -9,9 +9,9 @@
     <template v-slot:buttonArea>
       <template v-for="customButtonOption in customButtonOptions">
         <!-- eslint-disable-next-line -->
-        <g-Button class="u-ml10" @click="customButtonOption.onClick">{{ customButtonOption.text }}</g-Button>
+        <g-Button class="u-ml20 u-mr20" :color="customButtonOption.color" @click="customButtonOption.onClick">{{ customButtonOption.text }}</g-Button>
       </template>
-      <g-Button v-if="showCloseButton" class="u-ml10" @click="close"
+      <g-Button v-if="showCloseButton" class="u-ml20 u-mr20" @click="close"
         >閉じる</g-Button
       >
     </template>

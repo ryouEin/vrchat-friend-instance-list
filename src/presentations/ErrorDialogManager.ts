@@ -12,6 +12,7 @@ export const showAuthorizationErrorDialog = () => {
     customButtonOptions: [
       {
         text: '再読込',
+        color: 'primary',
         onClick: () => {
           location.reload()
         },

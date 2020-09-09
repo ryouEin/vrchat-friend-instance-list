@@ -1,9 +1,12 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { settingStore } from '@/domains/DomainStoreFactory'
-import { Color } from '@/presentations/Colors'
+import SettingDialog from '@/presentations/App/localComponents/Menu/localComponents/SettingDialog/index.vue'
 
-@Component({})
+@Component({
+  components: {
+    SettingDialog,
+  },
+})
 export default class Menu extends Vue {
   isVisibleSettingDialog = false
   isVisibleAboutCapacityDialog = false
@@ -11,30 +14,6 @@ export default class Menu extends Vue {
 
   @Prop()
   value!: boolean
-
-  get setting() {
-    return settingStore.setting
-  }
-
-  async onChangeEnableNotificationSound(isEnabled: boolean) {
-    if (isEnabled) {
-      await settingStore.enableNotificationSoundAction()
-    } else {
-      await settingStore.disableNotificationSoundAction()
-    }
-  }
-
-  async onChangeDarkMode(isEnabled: boolean) {
-    if (isEnabled) {
-      await settingStore.enableDarkModeAction()
-    } else {
-      await settingStore.enableLightModeAction()
-    }
-  }
-
-  async onChangeMainColor(color: Color) {
-    await settingStore.updateMainColorAction(color)
-  }
 
   showSettingDialog() {
     this.isVisibleSettingDialog = true

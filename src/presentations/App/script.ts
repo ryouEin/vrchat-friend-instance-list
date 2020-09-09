@@ -15,7 +15,7 @@ import {
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
-import { getRGB, Theme } from '@/presentations/Colors'
+import { getRGB } from '@/presentations/Colors'
 
 @Component({
   components: {

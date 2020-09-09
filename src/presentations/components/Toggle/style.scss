@@ -17,6 +17,7 @@
     display: block;
     width: $tmpWidth;
     height: $tmpHeight;
+    background-color: rgb(var(--backColor));
     border: $tmpBorderWidth solid #e5e5e5;
     border-radius: 9999px;
     transition: background-color $mainAnimationDuration, border-color $mainAnimationDuration;

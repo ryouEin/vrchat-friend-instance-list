@@ -11,7 +11,11 @@
   cursor: pointer;
   border-radius: 9999px;
   box-shadow: rgba(var(--blackColor), 0.2) 0 0 5px 1px;
-  transition: background-color $mainAnimationDuration;
+  transition: filter $mainAnimationDuration;
+
+  &:hover {
+    filter: $hoverFilter;
+  }
 
   &.-left {
     left: 10px;

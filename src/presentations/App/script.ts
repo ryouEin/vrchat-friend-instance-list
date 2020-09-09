@@ -28,16 +28,25 @@ export default class App extends Vue {
   isVisibleMenu = false
   isPC = false
 
-  rootStyle = {
-    '--blackColor': getRGB('black'),
-    '--greenColor': getRGB('green'),
-    '--blueColor': getRGB('blue'),
-    '--redColor': getRGB('red'),
-    '--yellowColor': getRGB('yellow'),
-    '--orangeColor': getRGB('orange'),
-    '--grayColor': getRGB('gray'),
-    '--paleGrayColor': getRGB('paleGray'),
-    '--whiteColor': getRGB('white'),
+  get rootStyle() {
+    return {
+      '--blackColor': getRGB('black'),
+      '--paleBlackColor': getRGB('paleBlack'),
+      '--trueBlackColor': getRGB('trueBlack'),
+      '--greenColor': getRGB('green'),
+      '--blueColor': getRGB('blue'),
+      '--redColor': getRGB('red'),
+      '--yellowColor': getRGB('yellow'),
+      '--orangeColor': getRGB('orange'),
+      '--grayColor': getRGB('gray'),
+      '--paleGrayColor': getRGB('paleGray'),
+      '--whiteColor': getRGB('white'),
+      '--frontColor': getRGB('front'),
+      '--weakFrontColor': getRGB('weakFront'),
+      '--backColor': getRGB('back'),
+      '--weakBackColor': getRGB('weakBack'),
+      '--mainColor': getRGB('main'),
+    }
   }
 
   reload() {

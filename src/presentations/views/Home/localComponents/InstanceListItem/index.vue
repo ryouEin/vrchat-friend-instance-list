@@ -3,15 +3,15 @@
     <div v-if="world !== undefined" class="instanceInfo">
       <WorldInfo :instance="instance" :world="world" />
     </div>
-    <div v-else-if="isPrivate" class="instanceInfo">
-      <div class="privateTitle">Private</div>
+    <div v-else-if="isPrivate" class="instanceInfo -private">
+      <div class="textOnlyTitle">Private</div>
     </div>
     <div v-else-if="isLoading" class="instanceInfo">
       <div class="loading">
         <g-Spinner color="white" />
       </div>
     </div>
-    <div v-else class="instanceInfo">
+    <div v-else class="instanceInfo -error">
       <div class="textOnlyTitle">Error</div>
     </div>
 

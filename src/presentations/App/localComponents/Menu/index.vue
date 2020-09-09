@@ -3,45 +3,20 @@
     <div class="overlay" @click="hideMenu" />
     <div class="list">
       <div class="item" @click="showSettingDialog">
-        <g-Icon :size="24">settings</g-Icon>
+        <g-Icon color="front" :size="24">settings</g-Icon>
         <div class="text">設定</div>
       </div>
       <div class="item" @click="showAboutCapacityDialog">
-        <g-Icon :size="24">help</g-Icon>
+        <g-Icon color="front" :size="24">help</g-Icon>
         <div class="text">インスタンスの最大人数に関して</div>
       </div>
       <div class="item" @click="showAuthorDialog">
-        <g-Icon :size="24">account_circle</g-Icon>
+        <g-Icon color="front" :size="24">account_circle</g-Icon>
         <div class="text">製作者</div>
       </div>
     </div>
     <div class="dialogs">
-      <!-- TODO: 各ダイアログのコンポーネント化 -->
-      <g-Dialog v-if="isVisibleSettingDialog" title="設定">
-        <template v-slot:content>
-          <div class="settingList">
-            <div class="settingList_item">
-              <div class="settingItem">
-                <div class="settingItem_left">
-                  <div class="settingItem_title">通知音</div>
-                  <div class="settingItem_note">
-                    OSの通知音と重複する場合はOFFにしてください
-                  </div>
-                </div>
-                <div class="settingItem_input">
-                  <g-Toggle
-                    :value="setting.enableNotificationSound"
-                    @input="onChangeEnableNotificationSound"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </template>
-        <template v-slot:buttonArea>
-          <g-Button @click="hideSettingDialog">閉じる</g-Button>
-        </template>
-      </g-Dialog>
+      <SettingDialog v-if="isVisibleSettingDialog" @close="hideSettingDialog" />
 
       <g-Dialog
         v-if="isVisibleAboutCapacityDialog"

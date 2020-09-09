@@ -20,11 +20,13 @@
     position: absolute;
     top: 50%;
     left: -1px;
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
     margin-top: -12px;
     background-color: rgb(var(--redColor));
+    border: 1px solid rgb(var(--whiteColor));
     border-radius: 9999px;
+    box-shadow: rgb(var(--redColor)) 0 0 0 1px;
   }
 }
 
@@ -33,10 +35,10 @@
   top: $navHeight - 5px;
   right: 0;
   width: 250px;
-  color: rgb(var(--mainTextColor));
-  background-color: rgb(var(--whiteColor));
+  color: rgb(var(--frontColor));
+  background-color: rgb(var(--backColor));
   border-radius: 3px;
-  box-shadow: rgba(var(--blackColor), 0.15) 0 0 3px 1px;
+  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
 
   &::after {
     position: absolute;
@@ -46,7 +48,7 @@
     width: 0;
     height: 0;
     content: '';
-    border-color: transparent transparent rgb(var(--whiteColor)) transparent;
+    border-color: transparent transparent rgb(var(--backColor)) transparent;
     border-style: solid;
     border-width: 0 6px 6px 6px;
   }

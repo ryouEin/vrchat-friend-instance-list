@@ -19,12 +19,12 @@
       font-size: 16px;
       font-weight: bold;
       content: 'Online Friends';
-      background-color: rgb(var(--paleGrayColor));
+      background-color: rgb(var(--weakBackColor));
     }
   }
 }
 
 .item {
   box-sizing: border-box;
-  border-bottom: 1px solid rgb(var(--paleGrayColor));
+  border-bottom: 1px solid rgb(var(--weakBackColor));
 }

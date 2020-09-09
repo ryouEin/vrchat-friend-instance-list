@@ -11,7 +11,7 @@
   transition: filter $mainAnimationDuration;
 
   &:hover {
-    filter: brightness(120%);
+    filter: $hoverFilter;
   }
 
   &.-primary {

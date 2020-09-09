@@ -1,5 +1,5 @@
 <template>
-  <span class="c-button" :class="rootClass" @click="onClick"
+  <span class="c-button" :class="rootClass" :style="rootStyle" @click="onClick"
     ><slot></slot
   ></span>
 </template>

@@ -75,3 +75,57 @@ describe('disableNotificationSoundAction', () => {
     expect(mockSettingRepository.setting?.enableNotificationSound).toBe(false)
   })
 })
+
+describe('enableDarkModeAction', () => {
+  it('themeがdarkになり、リポジトリにもその内容が保存される', async () => {
+    const repositorySetting: Setting = {
+      enableNotificationSound: true,
+      theme: 'light',
+      mainColor: 'blue',
+    }
+    const mockSettingRepository = new MockSettingRepository(repositorySetting)
+    const settingStore = new SettingStore(mockSettingRepository)
+
+    await settingStore.initAction()
+    await settingStore.enableDarkModeAction()
+
+    expect(settingStore.setting.theme).toBe('dark')
+    expect(mockSettingRepository.setting?.theme).toBe('dark')
+  })
+})
+
+describe('enableLightModeAction', () => {
+  it('themeがlightになり、リポジトリにもその内容が保存される', async () => {
+    const repositorySetting: Setting = {
+      enableNotificationSound: true,
+      theme: 'dark',
+      mainColor: 'blue',
+    }
+    const mockSettingRepository = new MockSettingRepository(repositorySetting)
+    const settingStore = new SettingStore(mockSettingRepository)
+
+    await settingStore.initAction()
+    await settingStore.enableLightModeAction()
+
+    expect(settingStore.setting.theme).toBe('light')
+    expect(mockSettingRepository.setting?.theme).toBe('light')
+  })
+})
+
+describe('updateMainColorAction', () => {
+  it('mainColorが指定された色になり、リポジトリにもその内容が保存される', async () => {
+    const repositorySetting: Setting = {
+      enableNotificationSound: true,
+      theme: 'dark',
+      mainColor: 'blue',
+    }
+    const mockSettingRepository = new MockSettingRepository(repositorySetting)
+    const settingStore = new SettingStore(mockSettingRepository)
+
+    await settingStore.initAction()
+    await settingStore.updateMainColorAction('red')
+
+    expect(settingStore.setting.mainColor).toBe('red')
+    expect(mockSettingRepository.setting?.mainColor).toBe('red')
+  })
+})

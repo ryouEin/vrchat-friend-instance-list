@@ -39,6 +39,8 @@ export class FriendsStore {
     })
   }
 
+  // WARN: this.friendsは呼び出すたびに演算処理がなされるため、ループでこのgetterを
+  //  呼ぶとめちゃくちゃ重くなる点注意
   get friendsByLocation() {
     return (location: InstanceLocation) => {
       return this.friends.filter(friend => friend.location === location)

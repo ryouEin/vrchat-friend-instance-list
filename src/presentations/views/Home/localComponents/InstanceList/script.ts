@@ -20,12 +20,16 @@ export default class InstanceList extends Vue {
   private instances!: Instance[]
 
   get items(): { id: string; instance: Instance; friends: Friend[] }[] {
+    const friends = friendsStore.friends
+
     return this.instances
       .map(instance => {
         return {
           id: instance.location,
           instance,
-          friends: friendsStore.friendsByLocation(instance.location),
+          friends: friends.filter(
+            friend => friend.location === instance.location
+          ),
         }
       })
       .filter(instance => {

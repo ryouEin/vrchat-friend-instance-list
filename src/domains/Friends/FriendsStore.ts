@@ -1,18 +1,21 @@
 import Vue from 'vue'
 import { Friend, InstanceLocation } from '@/types'
-import {
-  convertApiResponseForPresentation,
-  markNewFriends,
-} from '@/domains/Friends/FriendsService'
+import { markNewFriends } from '@/domains/Friends/FriendsService'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
-import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
+import { UserApiResponse } from '@/types/ApiResponse'
+import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
+
+// TODO SOON: 命名に関して再考
+//  Presentationカテゴリを作ったほうがいいかも
+//  各ストアgetで返す型は全部Presentationカテゴリに入れる（getで返すのは基本Presentationレイヤのためなので）
+export type FriendWithNew = UserApiResponse & { isNew: boolean }
 
 type State = {
-  friends: Friend[]
+  friends: FriendWithNew[]
 }
 @MakeReferenceToWindowObjectInDevelopment('friendsStore')
 export class FriendsStore {
@@ -22,11 +25,18 @@ export class FriendsStore {
 
   constructor(
     private readonly _friendsRepository: IFriendsRepository,
-    private readonly _favoritesRepository: IFavoritesRepository
+    private readonly _favoritesStore: ICanGetFavoriteByUserId
   ) {}
 
-  get friends() {
-    return this._state.friends
+  get friends(): Friend[] {
+    return this._state.friends.map(friend => {
+      const favorite = this._favoritesStore.favoriteByUserId(friend.id)
+
+      return {
+        ...friend,
+        favorite,
+      }
+    })
   }
 
   get friendsByLocation() {
@@ -36,20 +46,13 @@ export class FriendsStore {
   }
 
   @LogBeforeAfter('_state')
-  private setFriendsMutation(friends: Friend[]) {
+  private setFriendsMutation(friends: FriendWithNew[]) {
     this._state.friends = friends
   }
 
   async fetchFriendsAction() {
-    const [friends, favorites] = await Promise.all([
-      this._friendsRepository.fetchAllFriends(),
-      this._favoritesRepository.fetchFavoritesAboutFriends(),
-    ])
+    const friends = await this._friendsRepository.fetchAllFriends()
 
-    const presentationFriends = convertApiResponseForPresentation(
-      friends,
-      favorites
-    )
-    this.setFriendsMutation(markNewFriends(this.friends, presentationFriends))
+    this.setFriendsMutation(markNewFriends(this.friends, friends))
   }
 }

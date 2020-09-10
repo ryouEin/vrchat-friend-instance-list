@@ -1,8 +1,9 @@
 import * as ApiResponse from '@/types/ApiResponse'
-import { FavoriteApiResponse } from '@/types/ApiResponse'
+import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
 import { Friend } from '@/types'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
+import { FriendWithNew } from '@/domains/Friends/FriendsStore'
 
 export const convertApiResponseForPresentation: (
   friends: ApiResponse.UserApiResponse[],
@@ -21,11 +22,13 @@ export const convertApiResponseForPresentation: (
 }
 
 export const markNewFriends: (
-  oldFriends: Friend[],
-  newFriends: Friend[]
-) => Friend[] = (oldFriends, newFriends) => {
+  oldFriends: UserApiResponse[],
+  newFriends: UserApiResponse[]
+) => FriendWithNew[] = (oldFriends, newFriends) => {
   // oldFriendsが0名の時にNewタグをつけると、全員についてしまうのでそういうときはつけない
-  if (oldFriends.length <= 0) return newFriends
+  if (oldFriends.length <= 0) {
+    return newFriends.map(friend => ({ ...friend, isNew: false }))
+  }
 
   const friendMarkedNotNew = intersectionBy(newFriends, oldFriends, 'id').map(
     friend => {

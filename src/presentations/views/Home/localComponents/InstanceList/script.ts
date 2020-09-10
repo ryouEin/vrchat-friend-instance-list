@@ -31,7 +31,10 @@ export default class InstanceList extends Vue {
       .filter(instance => {
         if (!this.showOnlyFavoriteFriends) return true
 
-        return instance.friends.find(friend => friend.isFavorited) !== undefined
+        return (
+          instance.friends.find(friend => friend.favorite !== undefined) !==
+          undefined
+        )
       })
   }
 

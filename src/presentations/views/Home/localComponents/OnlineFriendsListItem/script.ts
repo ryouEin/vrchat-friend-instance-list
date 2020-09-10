@@ -17,6 +17,10 @@ export default class OnlineFriendsListItem extends Vue {
   @Prop()
   private friend!: Friend
 
+  get isFavorited() {
+    return this.friend.favorite !== undefined
+  }
+
   get instance() {
     return instancesStore.instanceByLocation(this.friend.location)
   }

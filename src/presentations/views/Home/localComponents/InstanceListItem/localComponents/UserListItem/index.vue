@@ -6,7 +6,7 @@
       :key="friend.currentAvatarThumbnailImageUrl"
     />
     <div v-if="friend.isOwner" class="owner">Owner</div>
-    <div v-if="friend.isFavorited" class="favorite">
+    <div v-if="isFavorited" class="favorite">
       <g-FavoriteMark />
     </div>
     <div class="userDetail">

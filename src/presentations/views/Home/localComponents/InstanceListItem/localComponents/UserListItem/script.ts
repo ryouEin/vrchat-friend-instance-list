@@ -2,11 +2,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Friend } from '@/types'
 
-export type UserListItemPropFriend =
-  | Friend
-  | {
-      isOwner: boolean
-    }
+export type UserListItemPropFriend = Friend & { isOwner: boolean }
 
 @Component({
   components: {},
@@ -14,4 +10,8 @@ export type UserListItemPropFriend =
 export default class UserListItem extends Vue {
   @Prop()
   private friend!: UserListItemPropFriend
+
+  get isFavorited() {
+    return this.friend.favorite !== undefined
+  }
 }

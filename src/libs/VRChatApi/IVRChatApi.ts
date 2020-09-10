@@ -4,9 +4,7 @@ import {
   UserApiResponse,
   WorldApiResponse,
 } from '@/types/ApiResponse'
-import { InstanceLocation } from '@/types'
-
-export type FavoriteType = 'world' | 'friend' | 'avatar'
+import { FavoriteType, InstanceLocation } from '@/types'
 
 export type SortOptions =
   | 'popularity'

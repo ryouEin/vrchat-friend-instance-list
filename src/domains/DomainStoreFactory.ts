@@ -16,6 +16,7 @@ import {
   VRChatApiUnauthorizedError,
 } from '@/libs/VRChatApi/VRChatApi'
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
+import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
 
 const network = new Network()
 const vrchatApi = new VRChatApi(network, error => {
@@ -32,7 +33,8 @@ const vrchatApi = new VRChatApi(network, error => {
 
 export const friendsStore = (() => {
   const friendsRepository = new VRChatApiFriendsRepository(vrchatApi)
-  return new FriendsStore(friendsRepository)
+  const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
+  return new FriendsStore(friendsRepository, favoritesRepository)
 })()
 
 export const notificationsStore = (() => {

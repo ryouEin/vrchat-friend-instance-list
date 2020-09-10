@@ -9,6 +9,7 @@ import {
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
+import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 
 type State = {
   friends: Friend[]
@@ -19,7 +20,10 @@ export class FriendsStore {
     friends: [],
   })
 
-  constructor(private readonly _friendsRepository: IFriendsRepository) {}
+  constructor(
+    private readonly _friendsRepository: IFriendsRepository,
+    private readonly _favoritesRepository: IFavoritesRepository
+  ) {}
 
   get friends() {
     return this._state.friends
@@ -39,7 +43,7 @@ export class FriendsStore {
   async fetchFriendsAction() {
     const [friends, favorites] = await Promise.all([
       this._friendsRepository.fetchAllFriends(),
-      this._friendsRepository.fetchFavoritesAboutFriends(),
+      this._favoritesRepository.fetchFavoritesAboutFriends(),
     ])
 
     const presentationFriends = convertApiResponseForPresentation(

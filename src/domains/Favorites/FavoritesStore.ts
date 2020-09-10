@@ -3,7 +3,7 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { Favorite } from '@/types'
+import { Favorite, FavoriteTag, FavoriteType } from '@/types'
 import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 
 // TODO:
@@ -42,13 +42,40 @@ export class FavoritesStore implements ICanGetFavoriteByUserId {
   }
 
   @LogBeforeAfter('_state')
-  setFavoritesMutation(favorites: Favorite[]) {
+  private setFavoritesMutation(favorites: Favorite[]) {
     this._state.favorites = favorites
+  }
+
+  @LogBeforeAfter('_state')
+  private addFavoritesMutation(favorite: Favorite) {
+    this._state.favorites.push(favorite)
+  }
+
+  @LogBeforeAfter('_state')
+  private deleteFavoritesMutation(id: string) {
+    this._state.favorites = this._state.favorites.filter(
+      favorite => favorite.id !== id
+    )
   }
 
   async fetchFavoritesAction() {
     const favorites = await this._favoritesRepository.fetchFavoritesAboutFriends()
 
     this.setFavoritesMutation(favorites)
+  }
+
+  async addFavoriteAction(userId: string, tag: FavoriteTag) {
+    const favorite = await this._favoritesRepository.addFavoriteAboutFriend(
+      userId,
+      tag
+    )
+
+    this.addFavoritesMutation(favorite)
+  }
+
+  async deleteFavoriteAction(id: string) {
+    await this._favoritesRepository.deleteFavoritesAboutFriends(id)
+
+    this.deleteFavoritesMutation(id)
   }
 }

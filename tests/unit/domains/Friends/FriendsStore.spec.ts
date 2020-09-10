@@ -1,5 +1,5 @@
 import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
-import { Favorite, Friend } from '@/types'
+import { Favorite, FavoriteTag, Friend } from '@/types'
 import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
@@ -38,6 +38,9 @@ class MockFavoriteStore implements ICanGetFavoriteByUserId {
   }
 }
 
+// TODO SOON: push前に修正すること
+// eslint-disable-next-line
+// @ts-ignore
 class MockFavoritesRepository implements IFavoritesRepository {
   constructor(public favorites: FavoriteApiResponse[]) {}
 

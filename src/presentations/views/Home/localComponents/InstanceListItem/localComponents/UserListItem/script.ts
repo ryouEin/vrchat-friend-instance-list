@@ -7,6 +7,8 @@ export type UserListItemPropFriend = Friend & { isOwner: boolean }
 
 @Component
 export default class UserListItem extends Vue {
+  isLoadingFavorite = false
+
   menuPosition = {
     vertical: 'bottom',
     horizontal: 'left',
@@ -54,14 +56,18 @@ export default class UserListItem extends Vue {
   }
 
   async favorite(favoriteTag: FavoriteTag) {
+    this.isLoadingFavorite = true
     await favoritesStore.addFavoriteAction(this.friend.id, favoriteTag)
+    this.isLoadingFavorite = false
   }
 
   async unfavorite() {
     if (this.friend.favorite === undefined) {
       throw new Error('cant delete favorite for not favorite user')
     }
+    this.isLoadingFavorite = true
     await favoritesStore.deleteFavoriteAction(this.friend.favorite.id)
+    this.isLoadingFavorite = false
   }
 
   updateDropdownMenuPosition() {

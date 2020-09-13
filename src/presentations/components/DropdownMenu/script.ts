@@ -54,8 +54,8 @@ export default class DropdownMenu extends Vue {
     this.isVisibleMenu = false
   }
 
-  async onClickItem(index: number) {
-    await this.items[index].onClick()
+  onClickItem(index: number) {
+    this.items[index].onClick()
 
     this.hideMenu()
   }

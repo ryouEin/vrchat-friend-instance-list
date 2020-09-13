@@ -1,0 +1,43 @@
+.c-dropdownMenu {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.activator {
+
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 150px;
+  background: rgb(var(--backColor));
+  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
+}
+
+.items {
+
+}
+
+.item {
+  padding: 10px;
+
+  &:not(.-disabled) {
+    cursor: pointer;
+  }
+
+  &.-disabled {
+    color: rgb(var(--weakFrontColor));
+  }
+
+  &:hover {
+    background-color: rgb(var(--weakBackColor));
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgb(var(--weakBackColor));
+  }
+}

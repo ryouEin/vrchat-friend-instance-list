@@ -16,11 +16,13 @@ import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import { getRGB } from '@/presentations/Colors'
+import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 
 @Component({
   components: {
     NotificationButton,
     Menu,
+    Toasts,
   },
 })
 export default class App extends Vue {

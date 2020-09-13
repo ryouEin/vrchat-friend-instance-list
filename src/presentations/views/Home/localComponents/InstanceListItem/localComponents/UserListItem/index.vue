@@ -11,8 +11,12 @@
     </div>
     <div class="userDetail">
       <div class="displayName">{{ friend.displayName }}</div>
-      <div class="menuButton">
-        <g-DropdownMenu :items="dropdownMenuItems">
+      <div class="menuButton" ref="menuButton">
+        <g-DropdownMenu
+          :items="dropdownMenuItems"
+          :positionVertical="menuPosition.vertical"
+          :positionHorizontal="menuPosition.horizontal"
+        >
           <g-Icon :size="20" color="white">more_vert</g-Icon>
         </g-DropdownMenu>
       </div>

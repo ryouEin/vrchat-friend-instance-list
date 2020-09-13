@@ -29,3 +29,39 @@
   opacity: 0;
   transform: scale(0);
 }
+
+.t-scalingFromLeftBottom-enter-active,
+.t-scalingFromLeftBottom-leave-active {
+  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
+  transform-origin: left bottom;
+}
+
+.t-scalingFromLeftBottom-enter,
+.t-scalingFromLeftBottom-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.t-scalingFromRightTop-enter-active,
+.t-scalingFromRightTop-leave-active {
+  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
+  transform-origin: right top;
+}
+
+.t-scalingFromRightTop-enter,
+.t-scalingFromRightTop-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.t-scalingFromRightBottom-enter-active,
+.t-scalingFromRightBottom-leave-active {
+  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
+  transform-origin: right bottom;
+}
+
+.t-scalingFromRightBottom-enter,
+.t-scalingFromRightBottom-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}

@@ -7,6 +7,11 @@ export type UserListItemPropFriend = Friend & { isOwner: boolean }
 
 @Component
 export default class UserListItem extends Vue {
+  menuPosition = {
+    vertical: 'bottom',
+    horizontal: 'left',
+  }
+
   @Prop()
   private friend!: UserListItemPropFriend
 
@@ -57,5 +62,27 @@ export default class UserListItem extends Vue {
       throw new Error('cant delete favorite for not favorite user')
     }
     await favoritesStore.deleteFavoriteAction(this.friend.favorite.id)
+  }
+
+  updateDropdownMenuPosition() {
+    const scrollWidth = document.body.scrollWidth
+    const menuButtonElement = this.$refs.menuButton as HTMLElement
+    const menuButtonLeft = menuButtonElement.getBoundingClientRect().left
+    const margin = scrollWidth - menuButtonLeft
+
+    if (margin > 200) {
+      this.menuPosition.horizontal = 'left'
+    } else {
+      this.menuPosition.horizontal = 'right'
+    }
+  }
+
+  mounted() {
+    window.addEventListener('resize', this.updateDropdownMenuPosition)
+    this.updateDropdownMenuPosition()
+  }
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.updateDropdownMenuPosition)
   }
 }

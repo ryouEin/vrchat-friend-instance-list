@@ -1,8 +1,8 @@
 <template>
   <div class="c-dropdownMenu" v-click-outside="hideMenu">
     <div class="activator" @click="showMenu"><slot /></div>
-    <transition name="t-scalingFromLeftTop">
-      <div v-if="isVisibleMenu" class="menu">
+    <transition :name="transitionName">
+      <div v-if="isVisibleMenu" class="menu" :style="menuStyle">
         <div class="items">
           <template v-for="(item, index) in items">
             <div class="item" :key="index" @click="onClickItem(index)">

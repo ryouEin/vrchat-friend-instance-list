@@ -1,11 +1,17 @@
 .c-dropdownMenu {
   position: relative;
   display: inline-block;
+  text-align: left;
   vertical-align: top;
 }
 
 .activator {
+  cursor: pointer;
+  transition: filter $mainAnimationDuration;
 
+  &:hover {
+    filter: $hoverFilter;
+  }
 }
 
 .menu {
@@ -24,6 +30,9 @@
 
 .item {
   padding: 10px;
+  font-size: 14px;
+  line-height: $mainLineHeight;
+  color: rgb(var(--frontColor));
 
   &:not(.-disabled) {
     cursor: pointer;

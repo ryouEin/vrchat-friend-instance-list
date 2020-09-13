@@ -1,18 +1,12 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { FavoriteTag, Friend } from '@/types'
-import { Network } from '@/libs/Network/Network'
-import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
 import { favoritesStore } from '@/domains/DomainStoreFactory'
 
 export type UserListItemPropFriend = Friend & { isOwner: boolean }
 
-@Component({
-  components: {},
-})
+@Component
 export default class UserListItem extends Vue {
-  favoriteGroup: FavoriteTag = 'group_0'
-
   @Prop()
   private friend!: UserListItemPropFriend
 
@@ -20,8 +14,42 @@ export default class UserListItem extends Vue {
     return this.friend.favorite !== undefined
   }
 
-  async favorite() {
-    await favoritesStore.addFavoriteAction(this.friend.id, this.favoriteGroup)
+  get dropdownMenuItems() {
+    if (this.isFavorited) {
+      return [
+        {
+          label: 'Unfavorite',
+          onClick: async () => {
+            await this.unfavorite()
+          },
+        },
+      ]
+    }
+
+    return [
+      {
+        label: 'Favorite Group 0',
+        onClick: async () => {
+          await this.favorite('group_0')
+        },
+      },
+      {
+        label: 'Favorite Group 1',
+        onClick: async () => {
+          await this.favorite('group_1')
+        },
+      },
+      {
+        label: 'Favorite Group 2',
+        onClick: async () => {
+          await this.favorite('group_2')
+        },
+      },
+    ]
+  }
+
+  async favorite(favoriteTag: FavoriteTag) {
+    await favoritesStore.addFavoriteAction(this.friend.id, favoriteTag)
   }
 
   async unfavorite() {

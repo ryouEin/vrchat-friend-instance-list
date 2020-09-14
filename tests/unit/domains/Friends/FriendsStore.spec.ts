@@ -53,7 +53,6 @@ describe('fetchFriends', () => {
       dummyData.map(item => ({
         ...item,
         isNew: false,
-        isFavorited: false,
       }))
     )
   })
@@ -61,19 +60,22 @@ describe('fetchFriends', () => {
   it('Favorite登録されているユーザーはisFavoritedがtrueになる', async () => {
     const dummyData: UserApiResponse[] = generateDummyFriends(310)
     const mockFriendsRepository = new MockFriendsRepository(dummyData)
+    const favoriteId10: Favorite = {
+      id: 'dummy',
+      favoriteId: '10',
+      tags: [],
+      type: 'friend',
+    }
+    const favoriteId123: Favorite = {
+      id: 'dummy',
+      favoriteId: '123',
+      tags: [],
+      type: 'friend',
+    }
+
     const mockFavoriteStore = new MockFavoriteStore([
-      {
-        id: 'dummy',
-        favoriteId: '10',
-        tags: [],
-        type: 'friend',
-      },
-      {
-        id: 'dummy',
-        favoriteId: '123',
-        tags: [],
-        type: 'friend',
-      },
+      favoriteId10,
+      favoriteId123,
     ])
     const friendsStore = new FriendsStore(
       mockFriendsRepository,
@@ -84,10 +86,17 @@ describe('fetchFriends', () => {
 
     expect(friendsStore.friends).toEqual(
       dummyData.map<Friend>(item => {
+        const favorite = (() => {
+          if (item.id === '10') return favoriteId10
+          if (item.id === '123') return favoriteId123
+
+          return undefined
+        })()
+
         return {
           ...item,
           isNew: false,
-          isFavorited: item.id === '10' || item.id === '123',
+          favorite,
         }
       })
     )
@@ -115,7 +124,6 @@ describe('fetchFriends', () => {
         return {
           ...item,
           isNew: Number(item.id) >= 200,
-          isFavorited: false,
         }
       })
     )

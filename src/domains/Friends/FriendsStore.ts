@@ -9,9 +9,7 @@ import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import { UserApiResponse } from '@/types/ApiResponse'
 import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
 
-// TODO SOON: 命名に関して再考
-//  Presentationカテゴリを作ったほうがいいかも
-//  各ストアgetで返す型は全部Presentationカテゴリに入れる（getで返すのは基本Presentationレイヤのためなので）
+// TODO: 命名に関して再考。流石にFriendWithNewはやばそう
 export type FriendWithNew = UserApiResponse & { isNew: boolean }
 
 type State = {

@@ -54,15 +54,31 @@ export class Network implements INetwork {
     return response.data
   }
 
-  // TODO SOON: 各メソッドのAxiosRequestConfigオブジェクトの生成処理は共通化できそう
+  // TODO: いい引数名が思い浮かばなかった…そのうち再考
+  private buildRequestConfig(arg: {
+    url: string
+    method: 'get' | 'post' | 'put' | 'delete'
+    options?: NetworkOptions
+    data?: Params
+  }) {
+    return {
+      url: arg.url,
+      method: arg.method,
+      params: arg.options?.params ?? {},
+      headers: arg.options?.headers,
+      adapter: arg.options?.throttle ? this._throttleAdapter : undefined,
+      data: arg.data,
+    }
+  }
+
   async get(url: string, options: NetworkOptions = {}): Promise<unknown> {
-    return await this.exec({
-      url,
-      method: 'get',
-      params: options.params ?? {},
-      headers: options.headers,
-      adapter: options.throttle ? this._throttleAdapter : undefined,
-    })
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'get',
+        options,
+      })
+    )
   }
 
   async post(
@@ -70,14 +86,14 @@ export class Network implements INetwork {
     data: Params,
     options: NetworkOptions = {}
   ): Promise<unknown> {
-    return await this.exec({
-      url,
-      method: 'post',
-      data,
-      params: options.params ?? {},
-      headers: options.headers,
-      adapter: options.throttle ? this._throttleAdapter : undefined,
-    })
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'post',
+        options,
+        data,
+      })
+    )
   }
 
   async put(
@@ -85,23 +101,23 @@ export class Network implements INetwork {
     data: Params,
     options: NetworkOptions = {}
   ): Promise<unknown> {
-    return await this.exec({
-      url,
-      method: 'put',
-      data,
-      params: options.params ?? {},
-      headers: options.headers,
-      adapter: options.throttle ? this._throttleAdapter : undefined,
-    })
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'put',
+        options,
+        data,
+      })
+    )
   }
 
   async delete(url: string, options: NetworkOptions = {}): Promise<unknown> {
-    return await this.exec({
-      url,
-      method: 'delete',
-      params: options.params ?? {},
-      headers: options.headers,
-      adapter: options.throttle ? this._throttleAdapter : undefined,
-    })
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'delete',
+        options,
+      })
+    )
   }
 }

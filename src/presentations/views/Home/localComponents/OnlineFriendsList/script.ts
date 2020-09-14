@@ -2,7 +2,7 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import OnlineFriendsListItem from '@/presentations/views/Home/localComponents/OnlineFriendsListItem/index.vue'
 import { Friend } from '@/types'
-import { sortUsers } from '@/presentations/views/Home/localComponents/OnlineFriendsList/sortUsers'
+import { sortUsers } from '@/shame/sortUsers'
 
 @Component({
   components: {

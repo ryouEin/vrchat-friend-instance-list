@@ -1,6 +1,6 @@
 <template>
   <div class="c-userList">
-    <div class="item" v-for="friend in friends" :key="friend.id">
+    <div class="item" v-for="friend in sortedFriends" :key="friend.id">
       <UserListItem :friend="friend" />
     </div>
   </div>

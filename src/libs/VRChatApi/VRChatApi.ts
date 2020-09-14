@@ -27,6 +27,12 @@ export class VRChatApiUnauthorizedError extends VRChatApiError {
   }
 }
 
+export class VRChatApiFavoriteLimitReachedError extends VRChatApiError {
+  constructor() {
+    super(400, 'favorite limit per group reached')
+  }
+}
+
 export class VRChatApi implements IVRChatApi {
   constructor(
     private readonly _network: INetwork,
@@ -72,6 +78,13 @@ export class VRChatApi implements IVRChatApi {
         tags: params.tags,
       })
       .catch(error => this.commonErrorHandle(error))
+      .catch(error => {
+        if (error instanceof VRChatApiError && error.details.status === 400) {
+          throw new VRChatApiFavoriteLimitReachedError()
+        } else {
+          throw error
+        }
+      })
 
     return response as FavoriteApiResponse
   }

@@ -2,6 +2,9 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { FavoriteTag, Friend } from '@/types'
 import { favoritesStore } from '@/domains/DomainStoreFactory'
+import { toastsStore } from '@/presentations/ui_store/UiStoreFactory'
+import { VRChatApiFavoriteLimitReachedError } from '@/libs/VRChatApi/VRChatApi'
+import { MAX_FAVORITE_PER_GROUP } from '@/config/settings'
 
 export type UserListItemPropFriend = Friend & { isOwner: boolean }
 
@@ -33,32 +36,55 @@ export default class UserListItem extends Vue {
       ]
     }
 
-    return [
+    const items: { label: string; tag: FavoriteTag }[] = [
       {
-        label: 'Favorite Group 0',
-        onClick: async () => {
-          await this.favorite('group_0')
-        },
+        label: 'Group 0',
+        tag: 'group_0',
       },
       {
-        label: 'Favorite Group 1',
-        onClick: async () => {
-          await this.favorite('group_1')
-        },
+        label: 'Group 1',
+        tag: 'group_1',
       },
       {
-        label: 'Favorite Group 2',
-        onClick: async () => {
-          await this.favorite('group_2')
-        },
+        label: 'Group 2',
+        tag: 'group_2',
       },
     ]
+
+    return items.map(item => {
+      const currentNum = favoritesStore.favorites.filter(favorite =>
+        favorite.tags.includes(item.tag)
+      ).length
+
+      return {
+        label: `Favorite ${item.label} (${currentNum}/${MAX_FAVORITE_PER_GROUP})`,
+        onClick: async () => {
+          await this.favorite(item.tag)
+        },
+        isDisabled: currentNum >= MAX_FAVORITE_PER_GROUP,
+      }
+    })
   }
 
   async favorite(favoriteTag: FavoriteTag) {
     this.isLoadingFavorite = true
-    await favoritesStore.addFavoriteAction(this.friend.id, favoriteTag)
-    this.isLoadingFavorite = false
+    await favoritesStore
+      .addFavoriteAction(this.friend.id, favoriteTag)
+      .catch(error => {
+        let content = ''
+        if (error instanceof VRChatApiFavoriteLimitReachedError) {
+          content = `グループの登録数上限に達したため、${this.friend.displayName}のFavoriteが失敗しました`
+        } else {
+          content = `${this.friend.displayName}のFavoriteが失敗しました`
+        }
+        toastsStore.showAction({
+          type: 'error',
+          content,
+        })
+      })
+      .finally(() => {
+        this.isLoadingFavorite = false
+      })
   }
 
   async unfavorite() {
@@ -66,8 +92,17 @@ export default class UserListItem extends Vue {
       throw new Error('cant delete favorite for not favorite user')
     }
     this.isLoadingFavorite = true
-    await favoritesStore.deleteFavoriteAction(this.friend.favorite.id)
-    this.isLoadingFavorite = false
+    await favoritesStore
+      .deleteFavoriteAction(this.friend.favorite.id)
+      .catch(error => {
+        toastsStore.showAction({
+          type: 'error',
+          content: `${this.friend.displayName}のUnfavoriteが失敗しました`,
+        })
+      })
+      .finally(() => {
+        this.isLoadingFavorite = false
+      })
   }
 
   updateDropdownMenuPosition() {

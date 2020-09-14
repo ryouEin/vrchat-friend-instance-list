@@ -5,7 +5,12 @@
       <div v-if="isVisibleMenu" class="menu" :style="menuStyle">
         <div class="items">
           <template v-for="(item, index) in items">
-            <div class="item" :key="index" @click="onClickItem(index)">
+            <div
+              class="item"
+              :class="{ '-disabled': item.isDisabled }"
+              :key="index"
+              @click="onClickItem(index)"
+            >
               {{ item.label }}
             </div>
           </template>

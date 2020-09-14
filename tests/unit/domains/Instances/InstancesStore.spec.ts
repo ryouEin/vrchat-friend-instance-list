@@ -11,7 +11,6 @@ const dummyFriendData: Friend = {
   displayName: '0',
   currentAvatarImageUrl: '',
   currentAvatarThumbnailImageUrl: '',
-  isFavorited: false,
   isNew: false,
 }
 const dummyFriends = [

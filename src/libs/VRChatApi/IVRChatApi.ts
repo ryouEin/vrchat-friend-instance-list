@@ -4,9 +4,7 @@ import {
   UserApiResponse,
   WorldApiResponse,
 } from '@/types/ApiResponse'
-import { InstanceLocation } from '@/types'
-
-export type FavoriteType = 'world' | 'friend' | 'avatar'
+import { FavoriteTag, FavoriteType, InstanceLocation } from '@/types'
 
 export type SortOptions =
   | 'popularity'
@@ -23,9 +21,19 @@ export type GetFriendsParams = {
   offset: number
 }
 
+export type AddFavoriteParams = {
+  type: FavoriteType
+  tags: FavoriteTag[]
+  favoriteId: string
+}
+
 export type ListFavoritesParams = {
   type: FavoriteType
   n: number
+}
+
+export type DeleteFavoriteParams = {
+  id: string
 }
 
 export type GetWorldParams = {
@@ -49,7 +57,11 @@ export type InviteMeParams = {
 export interface IVRChatApi {
   getFriends(params: GetFriendsParams): Promise<UserApiResponse[]>
 
+  addFavorite(params: AddFavoriteParams): Promise<FavoriteApiResponse>
+
   listFavorites(params: ListFavoritesParams): Promise<FavoriteApiResponse[]>
+
+  deleteFavorite(params: DeleteFavoriteParams): Promise<void>
 
   getWorld(params: GetWorldParams): Promise<WorldApiResponse>
 

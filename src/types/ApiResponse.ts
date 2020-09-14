@@ -1,4 +1,4 @@
-import { InstanceLocation } from '@/types/index'
+import { FavoriteTag, FavoriteType, InstanceLocation } from '@/types/index'
 
 export type UserApiResponse = {
   id: string
@@ -24,7 +24,10 @@ export type InstanceApiResponse = {
 }
 
 export type FavoriteApiResponse = {
+  id: string
   favoriteId: string
+  tags: FavoriteTag[]
+  type: FavoriteType
 }
 
 export type NewsApiResponse = {

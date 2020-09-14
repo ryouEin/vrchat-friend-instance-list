@@ -16,6 +16,7 @@
         <router-view />
       </div>
     </template>
+    <Toasts />
   </div>
 </template>
 

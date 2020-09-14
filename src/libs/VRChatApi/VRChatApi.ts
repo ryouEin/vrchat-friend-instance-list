@@ -1,4 +1,6 @@
 import {
+  AddFavoriteParams,
+  DeleteFavoriteParams,
   GetFriendsParams,
   GetInstanceParams,
   GetWorldParams,
@@ -22,6 +24,12 @@ export class VRChatApiError extends NetworkError {}
 export class VRChatApiUnauthorizedError extends VRChatApiError {
   constructor() {
     super(401, 'unauthorized from vrchat api')
+  }
+}
+
+export class VRChatApiFavoriteLimitReachedError extends VRChatApiError {
+  constructor() {
+    super(400, 'favorite limit per group reached')
   }
 }
 
@@ -62,6 +70,25 @@ export class VRChatApi implements IVRChatApi {
     return response as UserApiResponse[]
   }
 
+  async addFavorite(params: AddFavoriteParams): Promise<FavoriteApiResponse> {
+    const response = await this._network
+      .post(VrcApiUrl.getAddFavoriteUrl(), {
+        type: params.type,
+        favoriteId: params.favoriteId,
+        tags: params.tags,
+      })
+      .catch(error => this.commonErrorHandle(error))
+      .catch(error => {
+        if (error instanceof VRChatApiError && error.details.status === 400) {
+          throw new VRChatApiFavoriteLimitReachedError()
+        } else {
+          throw error
+        }
+      })
+
+    return response as FavoriteApiResponse
+  }
+
   async listFavorites(
     params: ListFavoritesParams
   ): Promise<FavoriteApiResponse[]> {
@@ -73,6 +100,12 @@ export class VRChatApi implements IVRChatApi {
 
     // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return response as FavoriteApiResponse[]
+  }
+
+  async deleteFavorite(params: DeleteFavoriteParams): Promise<void> {
+    await this._network
+      .delete(VrcApiUrl.getDeleteFavoriteUrl(params.id))
+      .catch(error => this.commonErrorHandle(error))
   }
 
   async getWorld(params: GetWorldParams): Promise<WorldApiResponse> {

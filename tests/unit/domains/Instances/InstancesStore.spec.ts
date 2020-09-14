@@ -1,8 +1,8 @@
-import { Friend, Instance, World } from '@/types'
+import { Friend, Instance, InstancePermission, World } from '@/types'
 import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
 import { InstanceApiResponse } from '@/types/ApiResponse'
-import { ICanGetWorldById } from '@/domains/WorldsStore/WorldsStore'
+import { ICanGetWorldById } from '@/domains/Worlds/WorldsStore'
 
 const dummyFriendData: Friend = {
   location: '',
@@ -11,7 +11,6 @@ const dummyFriendData: Friend = {
   displayName: '0',
   currentAvatarImageUrl: '',
   currentAvatarThumbnailImageUrl: '',
-  isFavorited: false,
   isNew: false,
 }
 const dummyFriends = [
@@ -65,18 +64,21 @@ describe('update', () => {
         worldId: 'wrld_1',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
       },
       {
         location: 'wrld_2:1',
         worldId: 'wrld_2',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
       },
       {
         location: 'wrld_3:18',
         worldId: 'wrld_3',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
       },
     ]
 
@@ -114,18 +116,21 @@ describe('updateInstanceInfo', () => {
         isWatching: false,
         notifyUserNum: 1,
         userNum: 10,
+        permission: InstancePermission.Public,
       },
       {
         location: 'wrld_2:1',
         worldId: 'wrld_2',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
       },
       {
         location: 'wrld_3:18',
         worldId: 'wrld_3',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
       },
     ]
 
@@ -161,6 +166,7 @@ describe('updateInstanceInfo', () => {
         worldId: 'wrld_1',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
         userNum: 10,
       },
       {
@@ -168,12 +174,14 @@ describe('updateInstanceInfo', () => {
         worldId: 'wrld_2',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
       },
       {
         location: 'wrld_3:18',
         worldId: 'wrld_3',
         isWatching: false,
         notifyUserNum: 1,
+        permission: InstancePermission.Public,
       },
     ]
 
@@ -209,6 +217,7 @@ describe('watchInstance', () => {
       location: 'wrld_1:1',
       worldId: 'wrld_1',
       isWatching: true,
+      permission: InstancePermission.Public,
       notifyUserNum: 10,
       onFindVacancy,
     }
@@ -251,6 +260,7 @@ describe('unwatchInstance', () => {
       worldId: 'wrld_1',
       isWatching: false,
       notifyUserNum: 10,
+      permission: InstancePermission.Public,
       onFindVacancy,
     }
 

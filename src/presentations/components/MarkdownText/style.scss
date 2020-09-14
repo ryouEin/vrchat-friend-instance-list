@@ -254,7 +254,7 @@
 }
 
 .c-markdownText a {
-  color: $linkColor;
+  color: rgb(var(--linkColor));
   text-decoration: none;
 }
 

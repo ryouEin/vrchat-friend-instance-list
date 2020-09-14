@@ -2,10 +2,10 @@
   width: 22px;
   height: 22px;
   line-height: 22px;
-  color: $yellowColor;
+  color: rgb(var(--yellowColor));
   text-align: center;
-  background-color: $whiteColor;
-  border: 2px solid $yellowColor;
+  background-color: rgb(var(--whiteColor));
+  border: 2px solid rgb(var(--yellowColor));
   border-radius: 9999px;
 
   i {

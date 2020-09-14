@@ -1,12 +1,11 @@
 import * as ApiResponse from '@/types/ApiResponse'
-import { FavoriteApiResponse } from '@/types/ApiResponse'
+import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
 import { Friend } from '@/types'
 import intersectionBy from 'lodash/intersectionBy'
 import differenceBy from 'lodash/differenceBy'
+import { FriendWithNew } from '@/domains/Friends/FriendsStore'
 
-// TODO: ここでisNewを設定していることの是非を再考
-// TODO: 関数名を再考
-export const makePresentationFriends: (
+export const convertApiResponseForPresentation: (
   friends: ApiResponse.UserApiResponse[],
   favorites: FavoriteApiResponse[]
 ) => Friend[] = (friends, favorites) => {
@@ -22,13 +21,14 @@ export const makePresentationFriends: (
   })
 }
 
-// TODO: 引数名、変数名が混同しそう。命名を再考
 export const markNewFriends: (
-  oldFriends: Friend[],
-  newFriends: Friend[]
-) => Friend[] = (oldFriends, newFriends) => {
+  oldFriends: UserApiResponse[],
+  newFriends: UserApiResponse[]
+) => FriendWithNew[] = (oldFriends, newFriends) => {
   // oldFriendsが0名の時にNewタグをつけると、全員についてしまうのでそういうときはつけない
-  if (oldFriends.length <= 0) return newFriends
+  if (oldFriends.length <= 0) {
+    return newFriends.map(friend => ({ ...friend, isNew: false }))
+  }
 
   const friendMarkedNotNew = intersectionBy(newFriends, oldFriends, 'id').map(
     friend => {

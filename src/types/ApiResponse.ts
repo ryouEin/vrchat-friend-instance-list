@@ -1,6 +1,6 @@
-import { InstanceLocation } from '@/types/index'
+import { FavoriteTag, FavoriteType, InstanceLocation } from '@/types/index'
 
-export interface UserApiResponse {
+export type UserApiResponse = {
   id: string
   username: string
   displayName: string
@@ -9,7 +9,7 @@ export interface UserApiResponse {
   location: InstanceLocation
 }
 
-export interface WorldApiResponse {
+export type WorldApiResponse = {
   id: string
   name: string
   imageUrl: string
@@ -17,17 +17,20 @@ export interface WorldApiResponse {
   capacity: number
 }
 
-export interface InstanceApiResponse {
+export type InstanceApiResponse = {
   location: InstanceLocation
   n_users: number
   capacity: number
 }
 
-export interface FavoriteApiResponse {
+export type FavoriteApiResponse = {
+  id: string
   favoriteId: string
+  tags: FavoriteTag[]
+  type: FavoriteType
 }
 
-export interface NewsApiResponse {
+export type NewsApiResponse = {
   contents: {
     title: string
     content: string

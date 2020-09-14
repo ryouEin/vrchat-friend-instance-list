@@ -10,7 +10,7 @@
   .time {
     font-size: 12px;
     line-height: 1;
-    color: $grayColor;
+    color: rgb(var(--grayColor));
     text-align: right;
   }
 
@@ -18,7 +18,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $paleGrayColor;
+      background-color: rgb(var(--weakBackColor));
     }
   }
 }

@@ -1,0 +1,25 @@
+.c-toasts {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: $zIndexToast;
+}
+
+.toasts {
+
+}
+
+.toast {
+  padding-bottom: 10px;
+  transition: all $mainAnimationDuration;
+}
+
+.toast-enter,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.toast-leave-active {
+  position: absolute;
+}

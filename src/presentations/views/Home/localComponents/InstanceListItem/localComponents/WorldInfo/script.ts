@@ -1,6 +1,5 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { getInstancePermissionFromLocation } from '@/shame/getInstancePermissionFromLocation'
 import Permission from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/Permission/index.vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/WatchInstanceButton/index.vue'
@@ -39,7 +38,7 @@ export default class WorldInfo extends Vue {
   }
 
   get instancePermission(): InstancePermission {
-    return getInstancePermissionFromLocation(this.location)
+    return this.instance.permission
   }
 
   get isFull() {

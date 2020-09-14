@@ -1,23 +1,7 @@
 .c-spinner {
   display: inline-block;
-  color: $mainColor;
+  color: rgb(var(--mainColor));
   vertical-align: middle;
-
-  &.-white {
-    color: $whiteColor;
-  }
-
-  &.-black {
-    color: $blackColor;
-  }
-
-  &.-blue {
-    color: $blueColor;
-  }
-
-  &.-green {
-    color: $greenColor;
-  }
 }
 
 .svg {

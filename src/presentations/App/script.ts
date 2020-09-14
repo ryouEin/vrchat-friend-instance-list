@@ -1,6 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import NetworkNewsRepository from '@/infras/News/NetworkNewsRepository'
+import MicroCmsApiNewsRepository from '@/infras/News/MicroCmsApiNewsRepository'
 import { KeyValueStorageNewsLastCheckRepository } from '@/infras/News/KeyValueStorageNewsLastCheckRepository'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
 import { News } from '@/types'
@@ -14,18 +14,42 @@ import {
 } from '@/domains/DomainStoreFactory'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
+import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
+import { getRGB } from '@/presentations/Colors'
+import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 
 @Component({
   components: {
     NotificationButton,
     Menu,
+    Toasts,
   },
 })
 export default class App extends Vue {
   initialized = false
-  showAuthErrorDialog = false
   isVisibleMenu = false
   isPC = false
+
+  get rootStyle() {
+    return {
+      '--blackColor': getRGB('black'),
+      '--paleBlackColor': getRGB('paleBlack'),
+      '--trueBlackColor': getRGB('trueBlack'),
+      '--greenColor': getRGB('green'),
+      '--blueColor': getRGB('blue'),
+      '--redColor': getRGB('red'),
+      '--yellowColor': getRGB('yellow'),
+      '--orangeColor': getRGB('orange'),
+      '--grayColor': getRGB('gray'),
+      '--paleGrayColor': getRGB('paleGray'),
+      '--whiteColor': getRGB('white'),
+      '--frontColor': getRGB('front'),
+      '--weakFrontColor': getRGB('weakFront'),
+      '--backColor': getRGB('back'),
+      '--weakBackColor': getRGB('weakBack'),
+      '--mainColor': getRGB('main'),
+    }
+  }
 
   reload() {
     location.reload()
@@ -33,10 +57,6 @@ export default class App extends Vue {
 
   showMenu() {
     this.isVisibleMenu = true
-  }
-
-  hideMenu() {
-    this.isVisibleMenu = false
   }
 
   showNewsDialogs(newsArray: News[]) {
@@ -57,9 +77,10 @@ export default class App extends Vue {
 
   async checkNews() {
     // TODO: Presentation層でInfraのインスタンス生成してるのは微妙では？
-    const newsApi = new NetworkNewsRepository(new Network())
+    const newsApi = new MicroCmsApi(new Network())
+    const newsRepository = new MicroCmsApiNewsRepository(newsApi)
     const newsStorage = new KeyValueStorageNewsLastCheckRepository()
-    const newsArray = await fetchUnreadNews(newsApi, newsStorage)
+    const newsArray = await fetchUnreadNews(newsRepository, newsStorage)
 
     this.showNewsDialogs(newsArray)
   }
@@ -88,19 +109,9 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
-  // TODO: エラーの判別がaxiosに依存してしまっている
-  // TODO: 現状401になるのはVRChatAPIだけだから問題にならないが
-  //  将来他の401出すAPI混ざってきたら困る
-  // TODO: anyを使ってしまっている
-  // eslint-disable-next-line
-  errorHandler(error: any) {
-    const status = error.response?.status
-
-    if (status === 401) {
-      this.showAuthErrorDialog = true
-    } else {
-      throw error
-    }
+  // どこでも拾われなかった例外を処理する関数
+  errorHandler(error: unknown) {
+    throw error
   }
 
   setupErrorHandlers() {

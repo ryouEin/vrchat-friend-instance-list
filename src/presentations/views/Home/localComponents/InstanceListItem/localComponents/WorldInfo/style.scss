@@ -29,8 +29,8 @@
   right: 0;
   padding: 0 10px;
   font-size: 15px;
-  color: $whiteColor;
-  background-color: rgba($blackColor, 0.8);
+  color: rgb(var(--whiteColor));
+  background-color: rgba(var(--blackColor), 0.8);
 
   .current {
     font-size: 20px;
@@ -42,7 +42,7 @@
   }
 
   &.-full {
-    background-color: rgba($redColor, 0.8);
+    background-color: rgba(var(--redColor), 0.8);
   }
 }
 
@@ -55,10 +55,10 @@
   overflow: hidden;
   font-size: 26px;
   font-weight: bold;
-  color: $whiteColor;
+  color: rgb(var(--whiteColor));
   text-overflow: ellipsis;
   white-space: nowrap;
-  background-color: rgba($blackColor, 0.9);
+  background-color: rgba(var(--blackColor), 0.9);
 }
 
 .instanceButtonArea {
@@ -77,9 +77,9 @@
   max-width: 300px;
   height: 50px;
   overflow: hidden;
-  background-color: $grayColor;
+  background-color: rgb(var(--grayColor));
   border-radius: 5px;
-  box-shadow: rgba($blackColor, 0.2) 0 0 5px 1px;
+  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
 
   .instanceButtonGroup_item {
     flex: 1 1 100%;

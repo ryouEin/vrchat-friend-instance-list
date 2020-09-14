@@ -1,5 +1,4 @@
 import { Instance } from '@/types'
-import { parseLocation } from '@/shame/parseLocation'
 import Vue from 'vue'
 import {
   LogBeforeAfter,
@@ -26,8 +25,7 @@ export class InstanceWatchDialogStore {
       return undefined
     }
 
-    const { worldId } = parseLocation(instance.location)
-    return worldsStore.world(worldId)
+    return worldsStore.world(instance.worldId)
   }
 
   get isVisible() {

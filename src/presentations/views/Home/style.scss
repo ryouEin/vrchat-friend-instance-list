@@ -32,7 +32,7 @@ $tmpSideWidth: 250px;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba($blackColor, 0.8);
+  background-color: rgba(var(--trueBlackColor), 0.8);
   transition: opacity $mainAnimationDuration;
 
   .side:not(.-visible) & {
@@ -48,7 +48,7 @@ $tmpSideWidth: 250px;
 .content {
   position: relative;
   height: 100%;
-  background-color: $whiteColor;
+  background-color: rgb(var(--backColor));
   transition: transform $mainAnimationDuration;
 
   @include mqSp {

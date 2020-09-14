@@ -1,0 +1,51 @@
+.c-dropdownMenu {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+  vertical-align: top;
+}
+
+.activator {
+  cursor: pointer;
+  transition: filter $mainAnimationDuration;
+
+  &:hover {
+    filter: $hoverFilter;
+  }
+}
+
+.menu {
+  position: absolute;
+  z-index: 1;
+  width: 180px;
+  background: rgb(var(--backColor));
+  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
+}
+
+.items {
+
+}
+
+.item {
+  padding: 10px;
+  font-size: 14px;
+  line-height: $mainLineHeight;
+  color: rgb(var(--frontColor));
+
+  &:not(.-disabled) {
+    cursor: pointer;
+  }
+
+  &.-disabled {
+    color: rgb(var(--grayColor));
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: rgb(var(--weakBackColor));
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgb(var(--weakBackColor));
+  }
+}

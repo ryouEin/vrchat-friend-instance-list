@@ -6,6 +6,7 @@ import {
 } from '@/libs/Decorators'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
+import { Color, Theme } from '@/presentations/Colors'
 
 type State = {
   setting: Setting
@@ -28,6 +29,16 @@ export class SettingStore {
   }
 
   @LogBeforeAfter('_state')
+  private updateThemeMutation(theme: Theme) {
+    this._state.setting.theme = theme
+  }
+
+  @LogBeforeAfter('_state')
+  private updateMainColorMutation(color: Color) {
+    this._state.setting.mainColor = color
+  }
+
+  @LogBeforeAfter('_state')
   private updateSettingMutation(setting: Setting) {
     this._state.setting = setting
   }
@@ -44,9 +55,38 @@ export class SettingStore {
     await this._settingRepository.updateSetting(this.setting)
   }
 
+  async enableDarkModeAction() {
+    this.updateThemeMutation('dark')
+
+    await this._settingRepository.updateSetting(this.setting)
+  }
+
+  async enableLightModeAction() {
+    this.updateThemeMutation('light')
+
+    await this._settingRepository.updateSetting(this.setting)
+  }
+
+  async updateMainColorAction(color: Color) {
+    this.updateMainColorMutation(color)
+
+    await this._settingRepository.updateSetting(this.setting)
+  }
+
   async initAction() {
-    const setting = await this._settingRepository.getSetting()
-    if (setting !== undefined) {
+    const repositorySetting = await this._settingRepository.getSetting()
+
+    if (repositorySetting !== undefined) {
+      /*
+      Settingの項目を追加した際に、ユーザーの古いストレージのデータを
+      そのまま反映してしまうと追加した項目の設定が消えてしまうので、
+      マージをする
+       */
+      const setting = {
+        ...this.setting,
+        ...repositorySetting,
+      }
+
       await this.updateSettingMutation(setting)
     }
   }

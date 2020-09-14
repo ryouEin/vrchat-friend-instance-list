@@ -4,7 +4,7 @@
       <g-Icon :size="20" color="green">visibility</g-Icon>
     </InstanceButton>
     <InstanceButton v-else @click="showDialog">
-      <g-Icon :size="20" color="black">visibility</g-Icon>
+      <g-Icon :size="20" color="front">visibility</g-Icon>
     </InstanceButton>
   </div>
 </template>

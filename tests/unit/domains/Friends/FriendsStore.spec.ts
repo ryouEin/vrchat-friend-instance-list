@@ -1,8 +1,7 @@
-import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
-import { Favorite, FavoriteTag, Friend } from '@/types'
+import { UserApiResponse } from '@/types/ApiResponse'
+import { Favorite, Friend } from '@/types'
 import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
-import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
 
 const generateDummyFriends = (count: number) => {
@@ -35,17 +34,6 @@ class MockFavoriteStore implements ICanGetFavoriteByUserId {
 
   favoriteByUserId(userId: string): Favorite | undefined {
     return this.favorites.find(favorite => favorite.favoriteId === userId)
-  }
-}
-
-// TODO SOON: push前に修正すること
-// eslint-disable-next-line
-// @ts-ignore
-class MockFavoritesRepository implements IFavoritesRepository {
-  constructor(public favorites: FavoriteApiResponse[]) {}
-
-  async fetchFavoritesAboutFriends(): Promise<FavoriteApiResponse[]> {
-    return this.favorites
   }
 }
 

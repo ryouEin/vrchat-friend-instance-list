@@ -1,6 +1,6 @@
 import axios, { AxiosAdapter, AxiosInstance, AxiosRequestConfig } from 'axios'
 import { throttleAdapterEnhancer } from 'axios-extensions'
-import { INetwork, NetworkOptions } from '@/libs/Network/INetwork'
+import { INetwork, NetworkOptions, Params } from '@/libs/Network/INetwork'
 import { BaseError } from '@/libs/BaseError'
 
 export class NetworkError extends BaseError<{ status?: number }> {
@@ -49,31 +49,75 @@ export class Network implements INetwork {
     )
   }
 
-  async get(url: string, options: NetworkOptions = {}): Promise<unknown> {
-    const config: AxiosRequestConfig = {
-      params: options.params ?? {},
-      headers: options.headers,
-      adapter: options.throttle ? this._throttleAdapter : undefined,
-    }
-
-    const response = await this._client.get(url, config)
-
+  private async exec(config: AxiosRequestConfig): Promise<unknown> {
+    const response = await this._client(config)
     return response.data
+  }
+
+  // TODO: いい引数名が思い浮かばなかった…そのうち再考
+  private buildRequestConfig(arg: {
+    url: string
+    method: 'get' | 'post' | 'put' | 'delete'
+    options?: NetworkOptions
+    data?: Params
+  }) {
+    return {
+      url: arg.url,
+      method: arg.method,
+      params: arg.options?.params ?? {},
+      headers: arg.options?.headers,
+      adapter: arg.options?.throttle ? this._throttleAdapter : undefined,
+      data: arg.data,
+    }
+  }
+
+  async get(url: string, options: NetworkOptions = {}): Promise<unknown> {
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'get',
+        options,
+      })
+    )
   }
 
   async post(
     url: string,
-    data: { [key: string]: string },
+    data: Params,
     options: NetworkOptions = {}
   ): Promise<unknown> {
-    const config: AxiosRequestConfig = {
-      params: options.params ?? {},
-      headers: options.headers,
-      adapter: options.throttle ? this._throttleAdapter : undefined,
-    }
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'post',
+        options,
+        data,
+      })
+    )
+  }
 
-    const response = await this._client.post(url, config)
+  async put(
+    url: string,
+    data: Params,
+    options: NetworkOptions = {}
+  ): Promise<unknown> {
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'put',
+        options,
+        data,
+      })
+    )
+  }
 
-    return response.data
+  async delete(url: string, options: NetworkOptions = {}): Promise<unknown> {
+    return await this.exec(
+      this.buildRequestConfig({
+        url,
+        method: 'delete',
+        options,
+      })
+    )
   }
 }

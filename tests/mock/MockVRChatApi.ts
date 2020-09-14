@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {
+  AddFavoriteParams,
+  DeleteFavoriteParams,
   GetFriendsParams,
   GetInstanceParams,
   GetWorldParams,
@@ -29,10 +31,29 @@ export class MockVRChatApi implements IVRChatApi {
     return this.friends.slice(params.offset, params.offset + params.n)
   }
 
+  async addFavorite(params: AddFavoriteParams): Promise<FavoriteApiResponse> {
+    const favorite = {
+      id: 'dummy',
+      favoriteId: params.favoriteId,
+      type: params.type,
+      tags: [],
+    }
+
+    this.favorites.push(favorite)
+
+    return favorite
+  }
+
   async listFavorites(
     params: ListFavoritesParams
   ): Promise<FavoriteApiResponse[]> {
     return this.favorites
+  }
+
+  async deleteFavorite(params: DeleteFavoriteParams): Promise<void> {
+    this.favorites = this.favorites.filter(
+      favorite => favorite.id !== params.id
+    )
   }
 
   async getWorld(params: GetWorldParams): Promise<WorldApiResponse> {

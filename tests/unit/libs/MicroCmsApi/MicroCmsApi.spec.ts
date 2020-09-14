@@ -1,4 +1,4 @@
-import { INetwork, NetworkOptions } from '@/libs/Network/INetwork'
+import { INetwork, NetworkOptions, Params } from '@/libs/Network/INetwork'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 
 class MockNetwork implements INetwork {
@@ -15,6 +15,18 @@ class MockNetwork implements INetwork {
     data: { [p: string]: string },
     options?: NetworkOptions
   ): Promise<unknown> {
+    return
+  }
+
+  async put(
+    url: string,
+    data: Params,
+    options?: NetworkOptions
+  ): Promise<unknown> {
+    return
+  }
+
+  async delete(url: string, options?: NetworkOptions): Promise<unknown> {
     return
   }
 }

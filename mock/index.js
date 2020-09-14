@@ -3,6 +3,8 @@ const { PORT } = require('./config')
 const {
   getFriends,
   listFavorites,
+  addFavorite,
+  deleteFavorite,
   getWorld,
   listWorlds,
   getInstanceInfo,
@@ -41,7 +43,7 @@ const sleep = ms => {
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'X-API-KEY')
+  res.header('Access-Control-Allow-Headers', 'X-API-KEY, Content-Type')
   next()
 })
 
@@ -58,6 +60,11 @@ app.use((req, res, next) => {
   next()
 })
 
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Methods', 'PUT, DELETE')
+  res.send('OPTIONS SUCCESS')
+})
+
 app.get(
   '/api/1/auth/user/friends',
   errorResponseMiddleware('getFriends'),
@@ -67,6 +74,16 @@ app.get(
   '/api/1/favorites',
   errorResponseMiddleware('listFavorites'),
   listFavorites
+)
+app.post(
+  '/api/1/favorites',
+  errorResponseMiddleware('addFavorite'),
+  addFavorite
+)
+app.delete(
+  '/api/1/favorites/:id',
+  errorResponseMiddleware('deleteFavorite'),
+  deleteFavorite
 )
 app.get('/api/1/worlds/:id', errorResponseMiddleware('getWorld'), getWorld)
 app.get('/api/1/worlds', errorResponseMiddleware('listWorlds'), listWorlds)

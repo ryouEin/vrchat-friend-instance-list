@@ -5,16 +5,26 @@
       :items="sortedFriends"
       :item-size="itemHeight"
       key-field="id"
-      v-slot="{ item }"
       :buffer="1500"
+      ref="scroller"
     >
-      <div class="item">
-        <OnlineFriendsListItem
-          :friend="item"
-          :style="{ height: `${itemHeight}px` }"
-        />
-      </div>
+      <template v-slot="{ item }">
+        <div class="item">
+          <OnlineFriendsListItem
+            :friend="item"
+            :style="{ height: `${itemHeight}px` }"
+          />
+        </div>
+      </template>
+      <template #after>
+        <div class="lastSpacer" />
+      </template>
     </RecycleScroller>
+    <transition name="t-up">
+      <div v-if="isVisibleToTop" class="toTop" @click="toTop">
+        <g-Icon size="35" color="back">keyboard_arrow_up</g-Icon>
+      </div>
+    </transition>
   </div>
 </template>
 

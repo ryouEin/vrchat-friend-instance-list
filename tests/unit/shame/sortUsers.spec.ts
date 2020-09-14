@@ -1,5 +1,5 @@
-import { Friend } from '@/types'
-import { sortUsers } from '@/presentations/views/Home/localComponents/OnlineFriendsList/sortUsers'
+import { Favorite, Friend } from '@/types'
+import { sortUsers } from '@/shame/sortUsers'
 
 describe('sortUsers', () => {
   const dummyData: Friend = {
@@ -10,7 +10,13 @@ describe('sortUsers', () => {
     currentAvatarThumbnailImageUrl: 'sample',
     location: 'sample',
     isNew: false,
-    isFavorited: false,
+  }
+
+  const dummyFavorite: Favorite = {
+    id: 'dummy',
+    favoriteId: 'dummy',
+    tags: [],
+    type: 'friend',
   }
 
   it('isFavorited, isNew, その他の順番でソートされている', () => {
@@ -19,25 +25,23 @@ describe('sortUsers', () => {
         ...dummyData,
         displayName: 'user01',
         isNew: false,
-        isFavorited: false,
       },
       {
         ...dummyData,
         displayName: 'user02',
         isNew: false,
-        isFavorited: true,
+        favorite: { ...dummyFavorite },
       },
       {
         ...dummyData,
         displayName: 'user03',
         isNew: true,
-        isFavorited: true,
+        favorite: { ...dummyFavorite },
       },
       {
         ...dummyData,
         displayName: 'user04',
         isNew: true,
-        isFavorited: false,
       },
     ])
     expect(result).toEqual([
@@ -45,25 +49,23 @@ describe('sortUsers', () => {
         ...dummyData,
         displayName: 'user03',
         isNew: true,
-        isFavorited: true,
+        favorite: { ...dummyFavorite },
       },
       {
         ...dummyData,
         displayName: 'user02',
         isNew: false,
-        isFavorited: true,
+        favorite: { ...dummyFavorite },
       },
       {
         ...dummyData,
         displayName: 'user04',
         isNew: true,
-        isFavorited: false,
       },
       {
         ...dummyData,
         displayName: 'user01',
         isNew: false,
-        isFavorited: false,
       },
     ])
   })

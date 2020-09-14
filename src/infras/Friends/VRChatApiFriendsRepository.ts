@@ -1,5 +1,5 @@
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
-import { FavoriteApiResponse, UserApiResponse } from '@/types/ApiResponse'
+import { UserApiResponse } from '@/types/ApiResponse'
 import uniqBy from 'lodash/uniqBy'
 import { IVRChatApi } from '@/libs/VRChatApi/IVRChatApi'
 
@@ -40,12 +40,5 @@ export class VRChatApiFriendsRepository implements IFriendsRepository {
     friends = uniqBy(friends, 'id')
 
     return friends
-  }
-
-  async fetchFavoritesAboutFriends(): Promise<FavoriteApiResponse[]> {
-    return await this._vrchatApi.listFavorites({
-      type: 'friend',
-      n: 100,
-    })
   }
 }

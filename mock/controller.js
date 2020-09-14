@@ -2,6 +2,7 @@ const path = require('path')
 const { getRandomInteger } = require('./util')
 const worlds = require('./data/worlds')
 const friends = require('./data/friends')
+const favorites = require('./data/favorites')
 const { dummyErrorResponseList } = require('./dummyErrorResponseList')
 
 const locations = (() => {
@@ -34,15 +35,25 @@ module.exports = {
     res.json(onlineFriends.slice(offset, offset + n))
   },
   listFavorites(req, res) {
-    const favoriteFriends = friends.slice(0, 5)
+    res.json(favorites)
+  },
+  addFavorite(req, res) {
+    const timeString = String(new Date().getTime())
+    const newFavorite = {
+      id: `fvrt_${timeString}`,
+      favoriteId: req.body.favoriteId,
+      type: req.body.type,
+      tags: req.body.tags,
+    }
+    favorites.push(newFavorite)
 
-    res.json(
-      favoriteFriends.map(friend => {
-        return {
-          favoriteId: friend.id,
-        }
-      })
-    )
+    res.json(newFavorite)
+  },
+  deleteFavorite(req, res) {
+    const index = favorites.findIndex(favorite => favorite.id === req.body.id)
+    favorites.splice(index, 1)
+
+    res.json()
   },
   getWorld(req, res) {
     const id = req.params.id

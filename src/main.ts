@@ -12,6 +12,7 @@ import MarkdownText from '@/presentations/components/MarkdownText/index.vue'
 import Select from '@/presentations/components/Select/index.vue'
 import Spinner from '@/presentations/components/Spinner/index.vue'
 import Toggle from '@/presentations/components/Toggle/index.vue'
+import DropdownMenu from '@/presentations/components/DropdownMenu/index.vue'
 import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { VueHammer } from 'vue2-hammer'
@@ -34,6 +35,7 @@ Vue.component('g-MarkdownText', MarkdownText)
 Vue.component('g-Select', Select)
 Vue.component('g-Spinner', Spinner)
 Vue.component('g-Toggle', Toggle)
+Vue.component('g-DropdownMenu', DropdownMenu)
 
 export const vm = new Vue({
   router,

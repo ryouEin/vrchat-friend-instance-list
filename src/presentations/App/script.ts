@@ -17,12 +17,15 @@ import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import { getRGB } from '@/presentations/Colors'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
+import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
+import { fullLoaderStore } from '@/presentations/ui_store/UiStoreFactory'
 
 @Component({
   components: {
     NotificationButton,
     Menu,
     Toasts,
+    FullLoader,
   },
 })
 export default class App extends Vue {
@@ -127,10 +130,10 @@ export default class App extends Vue {
 
     this.judgeDevice()
 
-    this.$fullLoader.show()
+    fullLoaderStore.showAction()
     await settingStore.initAction()
     await worldsStore.initAction().finally(() => {
-      this.$fullLoader.hide()
+      fullLoaderStore.hideAction()
     })
 
     this.initialized = true

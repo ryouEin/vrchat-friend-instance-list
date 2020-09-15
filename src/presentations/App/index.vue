@@ -17,6 +17,7 @@
       </div>
     </template>
     <Toasts />
+    <FullLoader />
   </div>
 </template>
 

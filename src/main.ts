@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './presentations/App/index.vue'
 import router from './router'
 import AlertPlugin from './presentations/plugins/Alert'
-import FullLoaderPlugin from './presentations/plugins/FullLoader'
 import Button from '@/presentations/components/Button/index.vue'
 import Dialog from '@/presentations/components/Dialog/index.vue'
 import FAB from '@/presentations/components/FAB/index.vue'
@@ -22,7 +21,6 @@ Vue.config.productionTip = false
 
 // プラグイン登録
 Vue.use(AlertPlugin)
-Vue.use(FullLoaderPlugin)
 Vue.use(VueVirtualScroller)
 Vue.use(VueHammer)
 

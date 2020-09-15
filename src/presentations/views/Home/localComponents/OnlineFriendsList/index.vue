@@ -20,11 +20,9 @@
         <div class="lastSpacer" />
       </template>
     </RecycleScroller>
-    <transition name="t-up">
-      <div v-if="isVisibleToTop" class="toTop" @click="toTop">
-        <g-Icon size="35" color="back">keyboard_arrow_up</g-Icon>
-      </div>
-    </transition>
+    <div v-if="isInitialized" class="toTop">
+      <g-ToTopButton :scrollerElement="scrollerElement" />
+    </div>
   </div>
 </template>
 

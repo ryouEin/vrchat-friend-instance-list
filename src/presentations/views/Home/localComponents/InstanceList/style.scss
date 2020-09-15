@@ -57,14 +57,5 @@
   position: fixed;
   bottom: 0;
   left: 50%;
-  width: 100px;
-  margin-left: -50px;
-  text-align: center;
-  cursor: pointer;
-  background-color: rgba(var(--grayColor), 0.8);
-  border-radius: 10px 10px 0 0;
-
-  &:hover {
-    filter: $hoverFilter;
-  }
+  transform: translateX(-50%);
 }

@@ -37,11 +37,9 @@
       </template>
     </DynamicScroller>
     <WatchInstanceDialog />
-    <transition name="t-up">
-      <div v-show="isVisibleToTop" class="toTop" @click="toTop">
-        <g-Icon size="35">keyboard_arrow_up</g-Icon>
-      </div>
-    </transition>
+    <div v-if="isInitialized" class="toTop">
+      <g-ToTopButton :scrollerElement="scrollerElement" />
+    </div>
   </div>
 </template>
 

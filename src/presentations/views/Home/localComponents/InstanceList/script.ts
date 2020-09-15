@@ -12,7 +12,7 @@ import { friendsStore } from '@/domains/DomainStoreFactory'
   },
 })
 export default class InstanceList extends Vue {
-  isVisibleToTop = false
+  isInitialized = false
 
   showOnlyFavoriteFriends = false
 
@@ -47,27 +47,7 @@ export default class InstanceList extends Vue {
     return scroller.$el as HTMLElement
   }
 
-  toTop() {
-    this.scrollerElement.scrollTo({
-      top: 0,
-    })
-  }
-
-  updateToTop() {
-    const scrollTop = this.scrollerElement.scrollTop
-
-    if (scrollTop > 100) {
-      this.isVisibleToTop = true
-    } else {
-      this.isVisibleToTop = false
-    }
-  }
-
   mounted() {
-    this.scrollerElement.addEventListener('scroll', this.updateToTop)
-  }
-
-  beforeDestroy() {
-    this.scrollerElement.removeEventListener('scroll', this.updateToTop)
+    this.isInitialized = true
   }
 }

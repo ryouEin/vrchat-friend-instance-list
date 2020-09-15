@@ -3,7 +3,7 @@
   width: 100%;
   color: rgb(var(--whiteColor));
   border-radius: 5px;
-  box-shadow: rgba(var(--frontColor), 0.15) 0 0 5px 0;
+  box-shadow: $mainBoxShadow;
 }
 
 .icon {

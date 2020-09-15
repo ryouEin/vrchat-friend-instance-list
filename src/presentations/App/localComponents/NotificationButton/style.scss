@@ -38,7 +38,7 @@
   color: rgb(var(--frontColor));
   background-color: rgb(var(--backColor));
   border-radius: 3px;
-  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
+  box-shadow: $mainBoxShadow;
 
   &::after {
     position: absolute;

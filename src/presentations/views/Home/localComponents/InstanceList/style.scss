@@ -5,7 +5,7 @@
 .scroller {
   box-sizing: border-box;
   height: 100%;
-  padding: 30px 30px 0;
+  padding-top: 30px;
 
   // hammer.jsの横スワイプを検知するために必要
   touch-action: pan-y;
@@ -29,7 +29,7 @@
 
 .filterArea {
   padding-bottom: 10px;
-  margin-bottom: 50px;
+  margin: 0 30px 50px;
   border-bottom: 1px solid rgb(var(--grayColor));
 }
 
@@ -50,7 +50,7 @@
 }
 
 .item {
-  padding-bottom: 30px;
+  padding: 0 30px 30px;
 }
 
 .toTop {

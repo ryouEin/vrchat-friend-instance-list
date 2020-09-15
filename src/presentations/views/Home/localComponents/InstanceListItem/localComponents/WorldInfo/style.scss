@@ -79,7 +79,7 @@
   overflow: hidden;
   background-color: rgb(var(--grayColor));
   border-radius: 5px;
-  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
+  box-shadow: $mainBoxShadow;
 
   .instanceButtonGroup_item {
     flex: 1 1 100%;

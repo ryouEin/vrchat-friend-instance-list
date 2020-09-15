@@ -21,3 +21,8 @@ $navHeight: 50px;
 
 // hover effect
 $hoverFilter: brightness(115%);
+
+// box shadow
+$mainBoxShadow: rgba(var(--trueBlackColor), 0.2) 0 0 5px 0;
+$weakBoxShadow: rgba(var(--trueBlackColor), 0.1) 0 0 3px 0;
+$strongBoxShadow: rgba(var(--trueBlackColor), 0.2) 0 0 7px 1px;

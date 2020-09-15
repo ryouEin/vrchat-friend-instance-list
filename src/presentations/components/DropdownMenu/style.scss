@@ -19,7 +19,7 @@
   z-index: 1;
   width: 180px;
   background: rgb(var(--backColor));
-  box-shadow: rgba(var(--frontColor), 0.1) 0 0 5px 0;
+  box-shadow: $mainBoxShadow;
 }
 
 .items {

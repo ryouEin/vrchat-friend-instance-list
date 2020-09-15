@@ -25,9 +25,9 @@ export type Color =
 
 export type Theme = 'light' | 'dark'
 
-const blackColor = '21, 32, 43'
+const blackColor = '25, 25, 25'
 
-const paleBlackColor = '37, 51, 65'
+const paleBlackColor = '38, 38, 38'
 
 const trueBlackColor = '0, 0, 0'
 
@@ -41,9 +41,9 @@ const yellowColor = '255, 173, 30'
 
 const orangeColor = '244, 93, 34'
 
-const grayColor = '136, 153, 166'
+const grayColor = '150, 150, 150'
 
-const paleGrayColor = '236, 240, 241'
+const paleGrayColor = '240, 240, 240'
 
 const whiteColor = '255, 255, 255'
 

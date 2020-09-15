@@ -3,6 +3,7 @@ import { InstanceWatchDialogStore } from '@/presentations/ui_store/InstanceWatch
 import { JoinDialogStore } from '@/presentations/ui_store/JoinDialogStore'
 import { ToastsStore } from '@/presentations/ui_store/ToastsStore'
 import { FullLoaderStore } from '@/presentations/ui_store/FullLoaderStore'
+import { AlertStore } from '@/presentations/ui_store/AlertStore'
 
 export const instanceModalStore = (() => {
   return new InstanceModalStore()
@@ -22,4 +23,8 @@ export const toastsStore = (() => {
 
 export const fullLoaderStore = (() => {
   return new FullLoaderStore()
+})()
+
+export const alertStore = (() => {
+  return new AlertStore()
 })()

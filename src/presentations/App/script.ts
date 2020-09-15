@@ -18,7 +18,11 @@ import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import { getRGB } from '@/presentations/Colors'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
-import { fullLoaderStore } from '@/presentations/ui_store/UiStoreFactory'
+import {
+  alertStore,
+  fullLoaderStore,
+} from '@/presentations/ui_store/UiStoreFactory'
+import Alert from '@/presentations/App/localComponents/Alert/index.vue'
 
 @Component({
   components: {
@@ -26,6 +30,7 @@ import { fullLoaderStore } from '@/presentations/ui_store/UiStoreFactory'
     Menu,
     Toasts,
     FullLoader,
+    Alert,
   },
 })
 export default class App extends Vue {
@@ -62,13 +67,13 @@ export default class App extends Vue {
     this.isVisibleMenu = true
   }
 
-  showNewsDialogs(newsArray: News[]) {
+  async showNewsDialogs(newsArray: News[]) {
     const remainingNewsArray = [...newsArray]
     const displayNews = remainingNewsArray.pop()
 
     if (displayNews === undefined) return
 
-    this.$alert({
+    await alertStore.showAction({
       title: displayNews.title,
       content: displayNews.content,
       isMarkdown: true,

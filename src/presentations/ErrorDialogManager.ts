@@ -1,7 +1,7 @@
-import { vm } from '@/main'
+import { alertStore } from '@/presentations/ui_store/UiStoreFactory'
 
 export const showAuthorizationErrorDialog = () => {
-  vm.$alert({
+  alertStore.showAction({
     title: '認証エラー',
     content: `VRChat公式サイトのセッションが切れました。  
 公式サイトでログインし直したあと、再読込して下さい。

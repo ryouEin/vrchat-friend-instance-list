@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './presentations/App/index.vue'
 import router from './router'
-import AlertPlugin from './presentations/plugins/Alert'
 import Button from '@/presentations/components/Button/index.vue'
 import Dialog from '@/presentations/components/Dialog/index.vue'
 import FAB from '@/presentations/components/FAB/index.vue'
@@ -20,7 +19,6 @@ import { VueHammer } from 'vue2-hammer'
 Vue.config.productionTip = false
 
 // プラグイン登録
-Vue.use(AlertPlugin)
 Vue.use(VueVirtualScroller)
 Vue.use(VueHammer)
 
@@ -37,7 +35,7 @@ Vue.component('g-Toggle', Toggle)
 Vue.component('g-DropdownMenu', DropdownMenu)
 Vue.component('g-ToTopButton', ToTopButton)
 
-export const vm = new Vue({
+new Vue({
   router,
   render: h => h(App),
 }).$mount('#app')

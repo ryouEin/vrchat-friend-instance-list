@@ -18,6 +18,7 @@
     </template>
     <Toasts />
     <FullLoader />
+    <Alert />
   </div>
 </template>
 

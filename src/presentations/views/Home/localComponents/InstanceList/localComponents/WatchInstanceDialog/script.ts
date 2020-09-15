@@ -1,6 +1,7 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import {
+  alertStore,
   instanceModalStore,
   instanceWatchDialogStore,
 } from '@/presentations/ui_store/UiStoreFactory'
@@ -64,7 +65,7 @@ export default class WatchInstanceDialog extends Vue {
   async startWatch() {
     const permission = Notification.permission
     if (permission === 'default') {
-      this.$alert({
+      alertStore.showAction({
         title: '通知の許可が必要です',
         content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
 
@@ -75,7 +76,7 @@ export default class WatchInstanceDialog extends Vue {
         },
       })
     } else if (permission === 'denied') {
-      this.$alert({
+      alertStore.showAction({
         title: '通知の許可が必要です',
         content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
 

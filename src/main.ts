@@ -15,12 +15,18 @@ import ToTopButton from '@/presentations/components/ToTopButton/index.vue'
 import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { VueHammer } from 'vue2-hammer'
+import VueCompositionAPI from '@vue/composition-api'
+import { createDomainStore } from '@/domains/DomainStoreFactory'
 
 Vue.config.productionTip = false
 
 // プラグイン登録
 Vue.use(VueVirtualScroller)
 Vue.use(VueHammer)
+Vue.use(VueCompositionAPI)
+
+// ストア初期化
+Vue.prototype.$domainStore = createDomainStore()
 
 // グローバルコンポーネント登録
 Vue.component('g-Button', Button)

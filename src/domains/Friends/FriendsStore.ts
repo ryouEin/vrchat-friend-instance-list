@@ -1,58 +1,61 @@
-import Vue from 'vue'
-import { Friend, InstanceLocation } from '@/types'
-import { markNewFriends } from '@/domains/Friends/FriendsService'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
-import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
+import { computed, ComputedRef, reactive } from '@vue/composition-api'
 import { UserApiResponse } from '@/types/ApiResponse'
+import { Friend, InstanceLocation } from '@/types'
 import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
+import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
+import { markNewFriends } from '@/domains/Friends/FriendsService'
 
 // TODO: 命名に関して再考。流石にFriendWithNewはやばそう
 export type FriendWithNew = UserApiResponse & { isNew: boolean }
 
+export interface IFriendsStore {
+  friends: ComputedRef<Friend[]>
+  friendsByLocation: ComputedRef<(location: InstanceLocation) => Friend[]>
+  fetchFriendsAction(): Promise<void>
+}
 type State = {
   friends: FriendWithNew[]
 }
-@MakeReferenceToWindowObjectInDevelopment('friendsStore')
-export class FriendsStore {
-  private _state = Vue.observable<State>({
+export const createFriendsStore: (
+  friendsRepository: IFriendsRepository,
+  favoritesStore: ICanGetFavoriteByUserId
+) => IFriendsStore = (friendsRepository, favoritesStore) => {
+  const state = reactive<State>({
     friends: [],
   })
 
-  constructor(
-    private readonly _friendsRepository: IFriendsRepository,
-    private readonly _favoritesStore: ICanGetFavoriteByUserId
-  ) {}
-
-  get friends(): Friend[] {
-    return this._state.friends.map(friend => {
-      const favorite = this._favoritesStore.favoriteByUserId(friend.id)
+  const friends = computed<Friend[]>(() => {
+    return state.friends.map(friend => {
+      const favorite = favoritesStore.favoriteByUserId(friend.id)
 
       return {
         ...friend,
         favorite,
       }
     })
-  }
+  })
 
-  // WARN: this.friendsは呼び出すたびに演算処理がなされるため、ループでこのgetterを
-  //  呼ぶとめちゃくちゃ重くなる点注意
-  get friendsByLocation() {
-    return (location: InstanceLocation) => {
-      return this.friends.filter(friend => friend.location === location)
+  const friendsByLocation = computed<(location: InstanceLocation) => Friend[]>(
+    () => {
+      return (location: InstanceLocation) => {
+        return friends.value.filter(friend => friend.location === location)
+      }
     }
+  )
+
+  const setFriendsMutation = (friends: Friend[]) => {
+    state.friends = friends
   }
 
-  @LogBeforeAfter('_state')
-  private setFriendsMutation(friends: FriendWithNew[]) {
-    this._state.friends = friends
+  const fetchFriendsAction = async () => {
+    const newFriends = await friendsRepository.fetchAllFriends()
+
+    setFriendsMutation(markNewFriends(friends.value, newFriends))
   }
 
-  async fetchFriendsAction() {
-    const friends = await this._friendsRepository.fetchAllFriends()
-
-    this.setFriendsMutation(markNewFriends(this.friends, friends))
+  return {
+    friends,
+    friendsByLocation,
+    fetchFriendsAction,
   }
 }

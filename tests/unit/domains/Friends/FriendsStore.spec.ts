@@ -1,8 +1,13 @@
 import { UserApiResponse } from '@/types/ApiResponse'
 import { Favorite, Friend } from '@/types'
-import { FriendsStore } from '@/domains/Friends/FriendsStore'
+import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
+import VueCompositionApi from '@vue/composition-api'
+import { createLocalVue } from '@vue/test-utils'
+
+const localVue = createLocalVue()
+localVue.use(VueCompositionApi)
 
 const generateDummyFriends = (count: number) => {
   const dummyFriends: UserApiResponse[] = []
@@ -42,14 +47,14 @@ describe('fetchFriends', () => {
     const dummyData: UserApiResponse[] = generateDummyFriends(310)
     const mockFriendsRepository = new MockFriendsRepository(dummyData)
     const mockFavoriteStore = new MockFavoriteStore([])
-    const friendsStore = new FriendsStore(
+    const friendsStore = createFriendsStore(
       mockFriendsRepository,
       mockFavoriteStore
     )
 
     await friendsStore.fetchFriendsAction()
 
-    expect(friendsStore.friends).toEqual(
+    expect(friendsStore.friends.value).toEqual(
       dummyData.map(item => ({
         ...item,
         isNew: false,
@@ -77,14 +82,14 @@ describe('fetchFriends', () => {
       favoriteId10,
       favoriteId123,
     ])
-    const friendsStore = new FriendsStore(
+    const friendsStore = createFriendsStore(
       mockFriendsRepository,
       mockFavoriteStore
     )
 
     await friendsStore.fetchFriendsAction()
 
-    expect(friendsStore.friends).toEqual(
+    expect(friendsStore.friends.value).toEqual(
       dummyData.map<Friend>(item => {
         const favorite = (() => {
           if (item.id === '10') return favoriteId10
@@ -108,7 +113,7 @@ describe('fetchFriends', () => {
       dummyData.slice(0, 200)
     )
     const mockFavoriteStore = new MockFavoriteStore([])
-    const friendsStore = new FriendsStore(
+    const friendsStore = createFriendsStore(
       mockFriendsRepository,
       mockFavoriteStore
     )
@@ -119,7 +124,7 @@ describe('fetchFriends', () => {
 
     await friendsStore.fetchFriendsAction()
 
-    expect(friendsStore.friends).toEqual(
+    expect(friendsStore.friends.value).toEqual(
       dummyData.slice(100, 400).map<Friend>(item => {
         return {
           ...item,

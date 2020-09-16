@@ -1,4 +1,3 @@
-import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRepository'
 import { Network } from '@/libs/Network/Network'
 import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstancesRepository'
@@ -18,6 +17,7 @@ import {
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
 import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
+import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 
 const network = new Network()
 const vrchatApi = new VRChatApi(network, error => {
@@ -35,11 +35,6 @@ const vrchatApi = new VRChatApi(network, error => {
 export const favoritesStore = (() => {
   const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
   return new FavoritesStore(favoritesRepository)
-})()
-
-export const friendsStore = (() => {
-  const friendsRepository = new VRChatApiFriendsRepository(vrchatApi)
-  return new FriendsStore(friendsRepository, favoritesStore)
 })()
 
 export const notificationsStore = (() => {
@@ -64,3 +59,14 @@ export const instancesStore = (() => {
   const instancesRepository = new VRChatApiInstancesRepository(vrchatApi)
   return new InstancesStore(instancesRepository, worldsStore)
 })()
+
+export const createDomainStore = () => {
+  return {
+    friendsStore: (() => {
+      const friendsRepository = new VRChatApiFriendsRepository(vrchatApi)
+      return createFriendsStore(friendsRepository, favoritesStore)
+    })(),
+  }
+}
+
+export type DomainStore = ReturnType<typeof createDomainStore>

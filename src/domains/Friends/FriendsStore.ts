@@ -26,7 +26,7 @@ export const createFriendsStore: (
 
   const friends = computed<Friend[]>(() => {
     return state.friends.map(friend => {
-      const favorite = favoritesStore.favoriteByUserId(friend.id)
+      const favorite = favoritesStore.favoriteByUserId.value(friend.id)
 
       return {
         ...friend,

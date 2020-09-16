@@ -1,6 +1,11 @@
 import { MockFavoritesRepository } from '../../../mock/MockFavoritesRepository'
-import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { Favorite } from '@/types'
+import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
+import VueCompositionApi from '@vue/composition-api'
+import { createLocalVue } from '@vue/test-utils'
+
+const localVue = createLocalVue()
+localVue.use(VueCompositionApi)
 
 describe('fetchFavoritesAction', () => {
   it('取得したデータがfavoritesに格納される', async () => {
@@ -19,11 +24,11 @@ describe('fetchFavoritesAction', () => {
       },
     ]
     const mockFavoritesRepository = new MockFavoritesRepository(dummyFavorites)
-    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
+    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.fetchFavoritesAction()
 
-    expect(favoriteStore.favorites).toEqual(dummyFavorites)
+    expect(favoriteStore.favorites.value).toEqual(dummyFavorites)
   })
 
   it('以前のデータは破棄される（マージはされない）', async () => {
@@ -42,11 +47,11 @@ describe('fetchFavoritesAction', () => {
       },
     ]
     const mockFavoritesRepository = new MockFavoritesRepository(dummyFavorites1)
-    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
+    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.fetchFavoritesAction()
 
-    expect(favoriteStore.favorites).toEqual(dummyFavorites1)
+    expect(favoriteStore.favorites.value).toEqual(dummyFavorites1)
 
     const dummyFavorites2: Favorite[] = [
       {
@@ -60,19 +65,19 @@ describe('fetchFavoritesAction', () => {
 
     await favoriteStore.fetchFavoritesAction()
 
-    expect(favoriteStore.favorites).toEqual(dummyFavorites2)
+    expect(favoriteStore.favorites.value).toEqual(dummyFavorites2)
   })
 })
 
 describe('addFavoriteAction', () => {
   it('指定したユーザーがfavoritesに追加される', async () => {
     const mockFavoritesRepository = new MockFavoritesRepository([])
-    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
+    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.addFavoriteAction('usr_3', 'group_2')
 
     expect(
-      favoriteStore.favorites.find(favorite => {
+      favoriteStore.favorites.value.find(favorite => {
         return (
           favorite.favoriteId === 'usr_3' && favorite.tags.includes('group_2')
         )
@@ -98,14 +103,14 @@ describe('deleteFavoriteAction', () => {
       },
     ]
     const mockFavoritesRepository = new MockFavoritesRepository(dummyFavorites)
-    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
+    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.fetchFavoritesAction()
 
-    const targetFavorite = favoriteStore.favoriteByUserId('usr_1')
+    const targetFavorite = favoriteStore.favoriteByUserId.value('usr_1')
     await favoriteStore.deleteFavoriteAction(targetFavorite!.id)
 
-    expect(favoriteStore.favorites).toEqual([
+    expect(favoriteStore.favorites.value).toEqual([
       {
         id: 'fvrt_2',
         favoriteId: 'usr_2',

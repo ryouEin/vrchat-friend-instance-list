@@ -4,7 +4,7 @@ import OnlineFriendsList from '@/presentations/views/Home/localComponents/Online
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
-import { favoritesStore, instancesStore } from '@/domains/DomainStoreFactory'
+import { instancesStore } from '@/domains/DomainStoreFactory'
 import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/index.vue'
 
 @Component({
@@ -51,7 +51,7 @@ export default class Home extends Vue {
   async fetchData() {
     await Promise.all([
       this.$domainStore.friendsStore.fetchFriendsAction(),
-      favoritesStore.fetchFavoritesAction(),
+      this.$domainStore.favoritesStore.fetchFavoritesAction(),
     ])
     await instancesStore.updateAction(
       this.$domainStore.friendsStore.friends.value

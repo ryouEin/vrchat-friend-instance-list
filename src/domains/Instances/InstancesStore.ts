@@ -120,7 +120,7 @@ export const createInstancesStore = (
       throw new Error('userNum is undefined.')
     }
 
-    const world = worldStore.world(instance.worldId)
+    const world = worldStore.world.value(instance.worldId)
     if (world === undefined) {
       throw new Error('world is undefined.')
     }

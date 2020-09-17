@@ -36,7 +36,9 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   get world() {
-    const world = instanceWatchDialogStore.world
+    const world = this.$domainStore.worldsStore.world.value(
+      this.instance.location
+    )
     if (world === undefined) {
       throw new Error('world is null.')
     }

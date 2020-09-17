@@ -4,7 +4,6 @@ import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { worldsStore } from '@/domains/DomainStoreFactory'
 
 type State = {
   instance: Instance | null
@@ -17,15 +16,6 @@ export class InstanceWatchDialogStore {
 
   get instance() {
     return this._state.instance
-  }
-
-  get world() {
-    const instance = this.instance
-    if (instance === null) {
-      return undefined
-    }
-
-    return worldsStore.world(instance.worldId)
   }
 
   get isVisible() {

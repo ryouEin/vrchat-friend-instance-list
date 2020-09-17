@@ -7,7 +7,6 @@ import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
-import { worldsStore } from '@/domains/DomainStoreFactory'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
@@ -132,7 +131,7 @@ export default class App extends Vue {
 
     fullLoaderStore.showAction()
     await this.$domainStore.settingStore.initAction()
-    await worldsStore.initAction().finally(() => {
+    await this.$domainStore.worldsStore.initAction().finally(() => {
       fullLoaderStore.hideAction()
     })
 

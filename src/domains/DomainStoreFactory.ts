@@ -8,7 +8,6 @@ import LocalStorage from '@/libs/Storage/LocalStorage'
 import { createSettingStore } from '@/domains/Setting/SettingStore'
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
-import { WorldsStore } from '@/domains/Worlds/WorldsStore'
 import { BrowserNotification } from '@/libs/Notification/BrowserNotification'
 import {
   VRChatApi,
@@ -18,6 +17,7 @@ import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager
 import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
 import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
+import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
 
 const network = new Network()
 const vrchatApi = new VRChatApi(network, error => {
@@ -32,12 +32,6 @@ const vrchatApi = new VRChatApi(network, error => {
   }
 })
 
-export const worldsStore = (() => {
-  const cacheWorldsRepository = new CacheWorldsRepository(new LocalStorage())
-  const networkWorldsRepository = new VRChatApiWorldsRepository(vrchatApi)
-  return new WorldsStore(networkWorldsRepository, cacheWorldsRepository)
-})()
-
 export const createDomainStore = () => {
   const favoritesStore = (() => {
     const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
@@ -47,6 +41,12 @@ export const createDomainStore = () => {
   const friendsStore = (() => {
     const friendsRepository = new VRChatApiFriendsRepository(vrchatApi)
     return createFriendsStore(friendsRepository, favoritesStore)
+  })()
+
+  const worldsStore = (() => {
+    const cacheWorldsRepository = new CacheWorldsRepository(new LocalStorage())
+    const networkWorldsRepository = new VRChatApiWorldsRepository(vrchatApi)
+    return createWorldsStore(networkWorldsRepository, cacheWorldsRepository)
   })()
 
   const instancesStore = (() => {
@@ -72,6 +72,7 @@ export const createDomainStore = () => {
     instancesStore,
     settingStore,
     notificationsStore,
+    worldsStore,
   }
 }
 

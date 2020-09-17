@@ -2,7 +2,6 @@ import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Friend, InstancePermission } from '@/types'
 import { instanceModalStore } from '@/presentations/ui_store/UiStoreFactory'
-import { instancesStore } from '@/domains/DomainStoreFactory'
 
 const Status = {
   Private: 'private',
@@ -22,7 +21,9 @@ export default class OnlineFriendsListItem extends Vue {
   }
 
   get instance() {
-    return instancesStore.instanceByLocation(this.friend.location)
+    return this.$domainStore.instancesStore.instanceByLocation.value(
+      this.friend.location
+    )
   }
 
   // フレンド情報をストアに格納したあと、そのデータをつかってインスタンス情報を

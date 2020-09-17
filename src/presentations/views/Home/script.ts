@@ -4,7 +4,6 @@ import OnlineFriendsList from '@/presentations/views/Home/localComponents/Online
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
-import { instancesStore } from '@/domains/DomainStoreFactory'
 import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/index.vue'
 
 @Component({
@@ -25,7 +24,7 @@ export default class Home extends Vue {
   }
 
   get instances(): Instance[] {
-    return instancesStore.instances
+    return this.$domainStore.instancesStore.instances.value
   }
 
   get showOnlineFriendsListLoading() {
@@ -53,7 +52,7 @@ export default class Home extends Vue {
       this.$domainStore.friendsStore.fetchFriendsAction(),
       this.$domainStore.favoritesStore.fetchFavoritesAction(),
     ])
-    await instancesStore.updateAction(
+    await this.$domainStore.instancesStore.updateAction(
       this.$domainStore.friendsStore.friends.value
     )
   }

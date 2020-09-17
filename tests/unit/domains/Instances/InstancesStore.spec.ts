@@ -1,8 +1,13 @@
 import { Friend, Instance, InstancePermission, World } from '@/types'
-import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
 import { InstanceApiResponse } from '@/types/ApiResponse'
 import { ICanGetWorldById } from '@/domains/Worlds/WorldsStore'
+import { createInstancesStore } from '@/domains/Instances/InstancesStore'
+import VueCompositionApi from '@vue/composition-api'
+import { createLocalVue } from '@vue/test-utils'
+
+const localVue = createLocalVue()
+localVue.use(VueCompositionApi)
 
 const dummyFriendData: Friend = {
   location: '',
@@ -52,7 +57,7 @@ describe('update', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
-    const instancesStore = new InstancesStore(
+    const instancesStore = createInstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -82,7 +87,7 @@ describe('update', () => {
       },
     ]
 
-    expect(instancesStore.instances).toEqual(expectInstances)
+    expect(instancesStore.instances.value).toEqual(expectInstances)
   })
 })
 
@@ -101,7 +106,7 @@ describe('updateInstanceInfo', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
-    const instancesStore = new InstancesStore(
+    const instancesStore = createInstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -134,7 +139,7 @@ describe('updateInstanceInfo', () => {
       },
     ]
 
-    expect(instancesStore.instances).toEqual(expectInstances)
+    expect(instancesStore.instances.value).toEqual(expectInstances)
   })
 
   it('updateが実行された際も、以前のuserNumは保持される', async () => {
@@ -151,7 +156,7 @@ describe('updateInstanceInfo', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
-    const instancesStore = new InstancesStore(
+    const instancesStore = createInstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -185,7 +190,7 @@ describe('updateInstanceInfo', () => {
       },
     ]
 
-    expect(instancesStore.instances).toEqual(expectInstances)
+    expect(instancesStore.instances.value).toEqual(expectInstances)
   })
 })
 
@@ -200,7 +205,7 @@ describe('watchInstance', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
-    const instancesStore = new InstancesStore(
+    const instancesStore = createInstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -222,7 +227,7 @@ describe('watchInstance', () => {
       onFindVacancy,
     }
 
-    expect(instancesStore.instanceByLocation(location)).toEqual(
+    expect(instancesStore.instanceByLocation.value(location)).toEqual(
       expectedInstance
     )
   })
@@ -239,7 +244,7 @@ describe('unwatchInstance', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = new MockCanGetWorldById()
-    const instancesStore = new InstancesStore(
+    const instancesStore = createInstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -264,14 +269,14 @@ describe('unwatchInstance', () => {
       onFindVacancy,
     }
 
-    expect(instancesStore.instanceByLocation(location)).toEqual(
+    expect(instancesStore.instanceByLocation.value(location)).toEqual(
       expectedInstance
     )
   })
 })
 
 describe('checkWatchingInstanceVacancy', () => {
-  let instancesStore: InstancesStore
+  let instancesStore: any
   let mockCanGetWorldById: MockCanGetWorldById
   const location = 'wrld_1:1'
 
@@ -288,7 +293,7 @@ describe('checkWatchingInstanceVacancy', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     mockCanGetWorldById = new MockCanGetWorldById()
-    instancesStore = new InstancesStore(
+    instancesStore = createInstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -319,7 +324,7 @@ describe('checkWatchingInstanceVacancy', () => {
     ]
     await instancesStore.checkWatchingInstanceVacancyAction(location)
 
-    const instance = instancesStore.instanceByLocation(location)
+    const instance = instancesStore.instanceByLocation.value(location)
     if (instance === undefined) {
       throw new Error('instance is undefined.')
     }
@@ -341,7 +346,7 @@ describe('checkWatchingInstanceVacancy', () => {
     ]
     await instancesStore.checkWatchingInstanceVacancyAction(location)
 
-    const instance = instancesStore.instanceByLocation(location)
+    const instance = instancesStore.instanceByLocation.value(location)
     if (instance === undefined) {
       throw new Error('instance is undefined.')
     }

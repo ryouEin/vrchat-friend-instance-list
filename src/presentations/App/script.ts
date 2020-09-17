@@ -7,11 +7,7 @@ import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
-import {
-  instancesStore,
-  settingStore,
-  worldsStore,
-} from '@/domains/DomainStoreFactory'
+import { settingStore, worldsStore } from '@/domains/DomainStoreFactory'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
@@ -95,7 +91,7 @@ export default class App extends Vue {
 
   startCheckWatchingInstances() {
     setInterval(async () => {
-      await instancesStore.checkWatchingInstancesAction()
+      await this.$domainStore.instancesStore.checkWatchingInstancesAction()
     }, INSTANCE_WATCH_INTERVAL)
   }
 

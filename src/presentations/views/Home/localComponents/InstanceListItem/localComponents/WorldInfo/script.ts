@@ -4,7 +4,6 @@ import Permission from '@/presentations/views/Home/localComponents/InstanceListI
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/WatchInstanceButton/index.vue'
 import { Instance, InstancePermission, World } from '@/types'
-import { instancesStore } from '@/domains/DomainStoreFactory'
 import { joinDialogStore } from '@/presentations/ui_store/UiStoreFactory'
 
 @Component({
@@ -68,11 +67,13 @@ export default class WorldInfo extends Vue {
 
     this.fetchUserNumButtonDisabled = true
     this.isFetchingUserNum = true
-    await instancesStore.updateInstanceInfoAction(this.location).finally(() => {
-      this.isFetchingUserNum = false
-      setTimeout(() => {
-        this.fetchUserNumButtonDisabled = false
-      }, 10 * 1000)
-    })
+    await this.$domainStore.instancesStore
+      .updateInstanceInfoAction(this.location)
+      .finally(() => {
+        this.isFetchingUserNum = false
+        setTimeout(() => {
+          this.fetchUserNumButtonDisabled = false
+        }, 10 * 1000)
+      })
   }
 }

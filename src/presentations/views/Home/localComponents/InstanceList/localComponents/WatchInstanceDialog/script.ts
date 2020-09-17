@@ -5,10 +5,7 @@ import {
   instanceModalStore,
   instanceWatchDialogStore,
 } from '@/presentations/ui_store/UiStoreFactory'
-import {
-  instancesStore,
-  notificationsStore,
-} from '@/domains/DomainStoreFactory'
+import { notificationsStore } from '@/domains/DomainStoreFactory'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -87,7 +84,7 @@ export default class WatchInstanceDialog extends Vue {
 
     const worldName = this.world.name
     const location = this.instance.location
-    await instancesStore.watchInstanceAction({
+    await this.$domainStore.instancesStore.watchInstanceAction({
       location: this.location,
       notifyUserNum: this.notifyUserNum,
       onFindVacancy: async () => {

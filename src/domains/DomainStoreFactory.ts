@@ -5,7 +5,7 @@ import { createInstancesStore } from '@/domains/Instances/InstancesStore'
 import { createNotificationsStore } from '@/domains/Notifications/NotificationsStore'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
-import { SettingStore } from '@/domains/Setting/SettingStore'
+import { createSettingStore } from '@/domains/Setting/SettingStore'
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
 import { WorldsStore } from '@/domains/Worlds/WorldsStore'
@@ -32,13 +32,6 @@ const vrchatApi = new VRChatApi(network, error => {
   }
 })
 
-export const settingStore = (() => {
-  const settingRepository = new KeyValueStorageSettingRepository(
-    new LocalStorage()
-  )
-  return new SettingStore(settingRepository)
-})()
-
 export const worldsStore = (() => {
   const cacheWorldsRepository = new CacheWorldsRepository(new LocalStorage())
   const networkWorldsRepository = new VRChatApiWorldsRepository(vrchatApi)
@@ -61,8 +54,15 @@ export const createDomainStore = () => {
     return createInstancesStore(instancesRepository, worldsStore)
   })()
 
+  const settingStore = (() => {
+    const settingRepository = new KeyValueStorageSettingRepository(
+      new LocalStorage()
+    )
+    return createSettingStore(settingRepository)
+  })()
+
   const notificationsStore = (() => {
-    const browserNotification = new BrowserNotification()
+    const browserNotification = new BrowserNotification(settingStore)
     return createNotificationsStore(browserNotification)
   })()
 
@@ -70,6 +70,7 @@ export const createDomainStore = () => {
     friendsStore,
     favoritesStore,
     instancesStore,
+    settingStore,
     notificationsStore,
   }
 }

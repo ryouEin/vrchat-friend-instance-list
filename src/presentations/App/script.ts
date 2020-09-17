@@ -7,11 +7,10 @@ import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
-import { settingStore, worldsStore } from '@/domains/DomainStoreFactory'
+import { worldsStore } from '@/domains/DomainStoreFactory'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
 import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
-import { getRGB } from '@/presentations/Colors'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
 import {
@@ -36,22 +35,22 @@ export default class App extends Vue {
 
   get rootStyle() {
     return {
-      '--blackColor': getRGB('black'),
-      '--paleBlackColor': getRGB('paleBlack'),
-      '--trueBlackColor': getRGB('trueBlack'),
-      '--greenColor': getRGB('green'),
-      '--blueColor': getRGB('blue'),
-      '--redColor': getRGB('red'),
-      '--yellowColor': getRGB('yellow'),
-      '--orangeColor': getRGB('orange'),
-      '--grayColor': getRGB('gray'),
-      '--paleGrayColor': getRGB('paleGray'),
-      '--whiteColor': getRGB('white'),
-      '--frontColor': getRGB('front'),
-      '--weakFrontColor': getRGB('weakFront'),
-      '--backColor': getRGB('back'),
-      '--weakBackColor': getRGB('weakBack'),
-      '--mainColor': getRGB('main'),
+      '--blackColor': this.$colorManager.getRGB('black'),
+      '--paleBlackColor': this.$colorManager.getRGB('paleBlack'),
+      '--trueBlackColor': this.$colorManager.getRGB('trueBlack'),
+      '--greenColor': this.$colorManager.getRGB('green'),
+      '--blueColor': this.$colorManager.getRGB('blue'),
+      '--redColor': this.$colorManager.getRGB('red'),
+      '--yellowColor': this.$colorManager.getRGB('yellow'),
+      '--orangeColor': this.$colorManager.getRGB('orange'),
+      '--grayColor': this.$colorManager.getRGB('gray'),
+      '--paleGrayColor': this.$colorManager.getRGB('paleGray'),
+      '--whiteColor': this.$colorManager.getRGB('white'),
+      '--frontColor': this.$colorManager.getRGB('front'),
+      '--weakFrontColor': this.$colorManager.getRGB('weakFront'),
+      '--backColor': this.$colorManager.getRGB('back'),
+      '--weakBackColor': this.$colorManager.getRGB('weakBack'),
+      '--mainColor': this.$colorManager.getRGB('main'),
     }
   }
 
@@ -132,7 +131,7 @@ export default class App extends Vue {
     this.judgeDevice()
 
     fullLoaderStore.showAction()
-    await settingStore.initAction()
+    await this.$domainStore.settingStore.initAction()
     await worldsStore.initAction().finally(() => {
       fullLoaderStore.hideAction()
     })

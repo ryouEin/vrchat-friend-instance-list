@@ -1,9 +1,9 @@
 import { Setting } from '@/types'
-import { createSettingStore } from '@/domains/Setting/SettingStore'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
 import VueCompositionApi from '@vue/composition-api'
 import { createLocalVue } from '@vue/test-utils'
+import { SettingStore } from '@/domains/Setting/SettingStore'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)
@@ -23,7 +23,7 @@ class MockSettingRepository implements ISettingRepository {
 describe('initAction', () => {
   it('リポジトリに設定がない場合は、初期設定が使用される', async () => {
     const mockSettingRepository = new MockSettingRepository()
-    const settingStore = createSettingStore(mockSettingRepository)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
 
@@ -37,7 +37,7 @@ describe('initAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = createSettingStore(mockSettingRepository)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
 
@@ -53,7 +53,7 @@ describe('enableNotificationSoundAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = createSettingStore(mockSettingRepository)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.enableNotificationSoundAction()
@@ -71,7 +71,7 @@ describe('disableNotificationSoundAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = createSettingStore(mockSettingRepository)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.disableNotificationSoundAction()
@@ -89,7 +89,7 @@ describe('enableDarkModeAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = createSettingStore(mockSettingRepository)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.enableDarkModeAction()
@@ -107,7 +107,7 @@ describe('enableLightModeAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = createSettingStore(mockSettingRepository)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.enableLightModeAction()
@@ -125,7 +125,7 @@ describe('updateMainColorAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = createSettingStore(mockSettingRepository)
+    const settingStore = new SettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.updateMainColorAction('red')

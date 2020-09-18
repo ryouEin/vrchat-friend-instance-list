@@ -3,7 +3,6 @@ import { Network } from '@/libs/Network/Network'
 import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstancesRepository'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
-import { createSettingStore } from '@/domains/Setting/SettingStore'
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
 import { BrowserNotifier } from '@/libs/Notifier/BrowserNotifier'
@@ -21,6 +20,7 @@ import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { NotificationsStore } from '@/domains/Notifications/NotificationsStore'
+import { SettingStore } from '@/domains/Setting/SettingStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -69,7 +69,7 @@ export const createGlobalStore = () => {
     const settingRepository = new KeyValueStorageSettingRepository(
       new LocalStorage()
     )
-    return createSettingStore(settingRepository)
+    return new SettingStore(settingRepository)
   })()
 
   const notificationsStore = (() => {

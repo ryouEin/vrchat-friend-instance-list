@@ -18,9 +18,9 @@ import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavori
 import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
-import { createToastsStore } from '@/presentations/store/ToastsStore'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
+import { ToastsStore } from '@/presentations/store/ToastsStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -28,7 +28,7 @@ export const createGlobalStore = () => {
   })()
 
   const toastsStore = (() => {
-    return createToastsStore()
+    return new ToastsStore()
   })()
 
   const alertStore = (() => {

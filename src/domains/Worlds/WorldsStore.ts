@@ -4,6 +4,10 @@ import { World } from '@/types'
 import { calcWorldHardCapacity, getWorld } from '@/domains/Worlds/WorldsService'
 import * as ApiResponse from '@/types/ApiResponse'
 import { computed, ComputedRef, reactive } from '@vue/composition-api'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 const makeWorldFromApiResponse: (
   world: ApiResponse.WorldApiResponse
@@ -31,55 +35,53 @@ export interface ICanGetWorldById {
 type State = {
   worlds: World[]
 }
-export const createWorldsStore = (
-  networkWorldsRepository: INetworkWorldsRepository,
-  cacheWorldsRepository: ICacheWorldsRepository
-) => {
-  const state = reactive<State>({
+@MakeReferenceToWindowObjectInDevelopment('worldsStore')
+export class WorldsStore implements ICanGetWorldById {
+  constructor(
+    private readonly _networkWorldsRepository: INetworkWorldsRepository,
+    private readonly _cacheWorldsRepository: ICacheWorldsRepository
+  ) {}
+
+  private readonly _state = reactive<State>({
     worlds: [],
   })
 
-  const worlds = computed(() => {
-    return state.worlds
+  readonly worlds = computed(() => {
+    return this._state.worlds
   })
 
-  const world = computed(() => {
+  readonly world = computed(() => {
     return (id: string) => {
-      return state.worlds.find(world => world.id === id)
+      return this._state.worlds.find(world => world.id === id)
     }
   })
 
-  const setWorldsMutation = (worlds: ApiResponse.WorldApiResponse[]) => {
-    state.worlds = worlds.map(world => makeWorldFromApiResponse(world))
+  @LogBeforeAfter('_state')
+  private setWorldsMutation(worlds: ApiResponse.WorldApiResponse[]) {
+    this._state.worlds = worlds.map(world => makeWorldFromApiResponse(world))
   }
 
-  const addWorldMutation = (world: ApiResponse.WorldApiResponse) => {
-    state.worlds.push(makeWorldFromApiResponse(world))
+  @LogBeforeAfter('_state')
+  private addWorldMutation(world: ApiResponse.WorldApiResponse) {
+    this._state.worlds.push(makeWorldFromApiResponse(world))
   }
 
-  const fetchWorldAction = async (id: string) => {
+  async fetchWorldAction(id: string) {
     const world = await getWorld(
       id,
-      cacheWorldsRepository,
-      networkWorldsRepository
+      this._cacheWorldsRepository,
+      this._networkWorldsRepository
     )
 
-    addWorldMutation(world)
+    this.addWorldMutation(world)
   }
 
-  const initAction = async () => {
-    const popularWorlds = await networkWorldsRepository.fetchPopularWorlds()
-    await cacheWorldsRepository.addWorlds(popularWorlds)
+  async initAction() {
+    const popularWorlds = await this._networkWorldsRepository.fetchPopularWorlds()
+    await this._cacheWorldsRepository.addWorlds(popularWorlds)
 
-    const worlds = await cacheWorldsRepository.getWorlds()
+    const worlds = await this._cacheWorldsRepository.getWorlds()
 
-    setWorldsMutation(worlds)
-  }
-
-  return {
-    worlds,
-    world,
-    fetchWorldAction,
-    initAction,
+    this.setWorldsMutation(worlds)
   }
 }

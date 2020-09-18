@@ -12,7 +12,6 @@ import {
 } from '@/libs/VRChatApi/VRChatApi'
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
-import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { ToastsStore } from '@/presentations/store/ToastsStore'
@@ -21,6 +20,7 @@ import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { NotificationsStore } from '@/domains/Notifications/NotificationsStore'
 import { SettingStore } from '@/domains/Setting/SettingStore'
+import { WorldsStore } from '@/domains/Worlds/WorldsStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -57,7 +57,7 @@ export const createGlobalStore = () => {
   const worldsStore = (() => {
     const cacheWorldsRepository = new CacheWorldsRepository(new LocalStorage())
     const networkWorldsRepository = new VRChatApiWorldsRepository(vrchatApi)
-    return createWorldsStore(networkWorldsRepository, cacheWorldsRepository)
+    return new WorldsStore(networkWorldsRepository, cacheWorldsRepository)
   })()
 
   const instancesStore = (() => {

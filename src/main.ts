@@ -18,7 +18,6 @@ import { VueHammer } from 'vue2-hammer'
 import VueCompositionAPI from '@vue/composition-api'
 import { createGlobalStore } from '@/GlobalStoreFactory'
 import { ColorManager } from '@/presentations/Colors'
-import { makeGlobalStoreReferenceToWindowObject } from '@/libs/makeStoreReferenceToWindowObject'
 
 Vue.config.productionTip = false
 
@@ -30,10 +29,6 @@ Vue.use(VueCompositionAPI)
 // ストア初期化
 const store = createGlobalStore()
 Vue.prototype.$store = store
-// TODO SOON: ここの処理今回のissue解決時には必要なくなるはずなので削除すること
-if (process.env.NODE_ENV === 'development') {
-  makeGlobalStoreReferenceToWindowObject(store)
-}
 
 // TODO: カラーマネージャまでグローバルに通すのは行儀が悪い気がする
 //  他にいい方法が思い浮かばなかったのでこうしてるが、改善方法さがして修正すること

@@ -19,7 +19,7 @@ export class ToastsStore {
   })
 
   @LogBeforeAfter('_state')
-  addToastMutation(toast: ToastProps) {
+  private addToastMutation(toast: ToastProps) {
     this._state.toasts.push({
       ...toast,
       isVisible: true,
@@ -27,7 +27,7 @@ export class ToastsStore {
   }
 
   @LogBeforeAfter('_state')
-  removeToastMutation(index: number) {
+  private removeToastMutation(index: number) {
     this._state.toasts = this._state.toasts.map((toast, currentIndex) => {
       if (currentIndex === index) {
         return {

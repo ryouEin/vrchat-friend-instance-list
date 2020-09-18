@@ -18,12 +18,12 @@ export class FullLoaderStore {
   })
 
   @LogBeforeAfter('_state')
-  incrementCounterMutation() {
+  private incrementCounterMutation() {
     this._state.counter++
   }
 
   @LogBeforeAfter('_state')
-  decrementCounterMutation() {
+  private decrementCounterMutation() {
     this._state.counter--
   }
 

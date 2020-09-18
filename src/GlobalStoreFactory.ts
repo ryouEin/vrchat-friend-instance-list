@@ -1,13 +1,12 @@
 import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRepository'
 import { Network } from '@/libs/Network/Network'
 import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstancesRepository'
-import { createNotificationsStore } from '@/domains/Notifications/NotificationsStore'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
 import { createSettingStore } from '@/domains/Setting/SettingStore'
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
-import { BrowserNotification } from '@/libs/Notification/BrowserNotification'
+import { BrowserNotifier } from '@/libs/Notifier/BrowserNotifier'
 import {
   VRChatApi,
   VRChatApiUnauthorizedError,
@@ -21,6 +20,7 @@ import { ToastsStore } from '@/presentations/store/ToastsStore'
 import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { FriendsStore } from '@/domains/Friends/FriendsStore'
 import { InstancesStore } from '@/domains/Instances/InstancesStore'
+import { NotificationsStore } from '@/domains/Notifications/NotificationsStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -73,8 +73,8 @@ export const createGlobalStore = () => {
   })()
 
   const notificationsStore = (() => {
-    const browserNotification = new BrowserNotification(settingStore)
-    return createNotificationsStore(browserNotification)
+    const browserNotification = new BrowserNotifier(settingStore)
+    return new NotificationsStore(browserNotification)
   })()
 
   return {

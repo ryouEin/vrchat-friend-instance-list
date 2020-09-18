@@ -1,31 +1,34 @@
 import { Notification } from '@/types'
-import { INotification } from '@/libs/Notification/INotification'
+import { INotifier } from '@/libs/Notifier/INotifier'
 import { computed, reactive } from '@vue/composition-api'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   notifications: Notification[]
 }
-export const createNotificationsStore = (notification: INotification) => {
-  const state = reactive<State>({
+@MakeReferenceToWindowObjectInDevelopment('notificationsStore')
+export class NotificationsStore {
+  constructor(private readonly _notifier: INotifier) {}
+
+  private readonly _state = reactive<State>({
     notifications: [],
   })
 
-  const notifications = computed<Notification[]>(() => {
-    return state.notifications
+  readonly notifications = computed<Notification[]>(() => {
+    return this._state.notifications
   })
 
-  const addNotificationMutation = (notification: Notification) => {
-    state.notifications.push(notification)
+  @LogBeforeAfter('_state')
+  private addNotificationMutation(notification: Notification) {
+    this._state.notifications.push(notification)
   }
 
-  const pushNotificationAction = async (targetNotification: Notification) => {
-    notification.notify(targetNotification.text)
+  async pushNotificationAction(targetNotification: Notification) {
+    this._notifier.notify(targetNotification.text)
 
-    addNotificationMutation(targetNotification)
-  }
-
-  return {
-    notifications,
-    pushNotificationAction,
+    this.addNotificationMutation(targetNotification)
   }
 }

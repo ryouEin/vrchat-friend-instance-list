@@ -1,17 +1,21 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Inject } from 'vue-property-decorator'
 import Vue from 'vue'
-import { joinDialogStore } from '@/presentations/ui_store/UiStoreFactory'
 import { Network } from '@/libs/Network/Network'
 import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
+import { JOIN_DIALOG_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
+import { JoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
 
 @Component
 export default class JoinDialog extends Vue {
+  @Inject(JOIN_DIALOG_STORE_INJECT_KEY)
+  joinDialogStore!: JoinDialogStore
+
   get isVisible() {
-    return joinDialogStore.isVisible
+    return this.joinDialogStore.isVisible.value
   }
 
   get location() {
-    return joinDialogStore.location
+    return this.joinDialogStore.location.value
   }
 
   join() {
@@ -33,6 +37,6 @@ export default class JoinDialog extends Vue {
   }
 
   async hideDialog() {
-    await joinDialogStore.hideAction()
+    await this.joinDialogStore.hideAction()
   }
 }

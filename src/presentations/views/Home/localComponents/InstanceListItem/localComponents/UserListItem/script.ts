@@ -1,8 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { FavoriteTag, Friend } from '@/types'
-import { favoritesStore } from '@/domains/DomainStoreFactory'
-import { toastsStore } from '@/presentations/ui_store/UiStoreFactory'
 import { VRChatApiFavoriteLimitReachedError } from '@/libs/VRChatApi/VRChatApi'
 import { MAX_FAVORITE_PER_GROUP } from '@/config/settings'
 
@@ -52,8 +50,8 @@ export default class UserListItem extends Vue {
     ]
 
     return items.map(item => {
-      const currentNum = favoritesStore.favorites.filter(favorite =>
-        favorite.tags.includes(item.tag)
+      const currentNum = this.$store.favoritesStore.favorites.value.filter(
+        favorite => favorite.tags.includes(item.tag)
       ).length
 
       return {
@@ -68,7 +66,7 @@ export default class UserListItem extends Vue {
 
   async favorite(favoriteTag: FavoriteTag) {
     this.isLoadingFavorite = true
-    await favoritesStore
+    await this.$store.favoritesStore
       .addFavoriteAction(this.friend.id, favoriteTag)
       .catch(error => {
         let content = ''
@@ -77,7 +75,7 @@ export default class UserListItem extends Vue {
         } else {
           content = `${this.friend.displayName}のFavoriteが失敗しました`
         }
-        toastsStore.showAction({
+        this.$store.toastsStore.showAction({
           type: 'error',
           content,
         })
@@ -92,10 +90,10 @@ export default class UserListItem extends Vue {
       throw new Error('cant delete favorite for not favorite user')
     }
     this.isLoadingFavorite = true
-    await favoritesStore
+    await this.$store.favoritesStore
       .deleteFavoriteAction(this.friend.favorite.id)
-      .catch(error => {
-        toastsStore.showAction({
+      .catch(() => {
+        this.$store.toastsStore.showAction({
           type: 'error',
           content: `${this.friend.displayName}のUnfavoriteが失敗しました`,
         })

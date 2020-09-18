@@ -1,13 +1,9 @@
-import { World } from '@/types'
-import * as ApiResponse from '@/types/ApiResponse'
-import Vue from 'vue'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
-import { calcWorldHardCapacity, getWorld } from '@/domains/Worlds/WorldsService'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
+import { World } from '@/types'
+import { calcWorldHardCapacity, getWorld } from '@/domains/Worlds/WorldsService'
+import * as ApiResponse from '@/types/ApiResponse'
+import { computed, ComputedRef, reactive } from '@vue/composition-api'
 
 const makeWorldFromApiResponse: (
   world: ApiResponse.WorldApiResponse
@@ -29,59 +25,61 @@ const makeWorldFromApiResponse: (
 //  ・前述の「get world()」のみinterface化した行為は正しいのか
 //  ・正しいとして、こんなinterfaceの命名でいいのか
 export interface ICanGetWorldById {
-  world: (id: string) => World | undefined
+  world: ComputedRef<(id: string) => World | undefined>
 }
 
 type State = {
   worlds: World[]
 }
-@MakeReferenceToWindowObjectInDevelopment('worldsStore')
-export class WorldsStore implements ICanGetWorldById {
-  private _state = Vue.observable<State>({
+export const createWorldsStore = (
+  networkWorldsRepository: INetworkWorldsRepository,
+  cacheWorldsRepository: ICacheWorldsRepository
+) => {
+  const state = reactive<State>({
     worlds: [],
   })
 
-  constructor(
-    private readonly _networkWorldsRepository: INetworkWorldsRepository,
-    private readonly _cacheWorldsRepository: ICacheWorldsRepository
-  ) {}
+  const worlds = computed(() => {
+    return state.worlds
+  })
 
-  get worlds() {
-    return this._state.worlds
-  }
-
-  get world() {
+  const world = computed(() => {
     return (id: string) => {
-      return this.worlds.find(world => world.id === id)
+      return state.worlds.find(world => world.id === id)
     }
+  })
+
+  const setWorldsMutation = (worlds: ApiResponse.WorldApiResponse[]) => {
+    state.worlds = worlds.map(world => makeWorldFromApiResponse(world))
   }
 
-  @LogBeforeAfter('_state')
-  private setWorldsMutation(worlds: ApiResponse.WorldApiResponse[]) {
-    this._state.worlds = worlds.map(world => makeWorldFromApiResponse(world))
+  const addWorldMutation = (world: ApiResponse.WorldApiResponse) => {
+    state.worlds.push(makeWorldFromApiResponse(world))
   }
 
-  @LogBeforeAfter('_state')
-  private addWorldMutation(world: ApiResponse.WorldApiResponse) {
-    this._state.worlds.push(makeWorldFromApiResponse(world))
-  }
-
-  async fetchWorldAction(id: string) {
+  const fetchWorldAction = async (id: string) => {
     const world = await getWorld(
       id,
-      this._cacheWorldsRepository,
-      this._networkWorldsRepository
+      cacheWorldsRepository,
+      networkWorldsRepository
     )
 
-    this.addWorldMutation(world)
+    addWorldMutation(world)
   }
 
-  async initAction() {
-    const popularWorlds = await this._networkWorldsRepository.fetchPopularWorlds()
-    await this._cacheWorldsRepository.addWorlds(popularWorlds)
+  const initAction = async () => {
+    const popularWorlds = await networkWorldsRepository.fetchPopularWorlds()
+    await cacheWorldsRepository.addWorlds(popularWorlds)
 
-    const worlds = await this._cacheWorldsRepository.getWorlds()
+    const worlds = await cacheWorldsRepository.getWorlds()
 
-    this.setWorldsMutation(worlds)
+    setWorldsMutation(worlds)
+  }
+
+  return {
+    worlds,
+    world,
+    fetchWorldAction,
+    initAction,
   }
 }

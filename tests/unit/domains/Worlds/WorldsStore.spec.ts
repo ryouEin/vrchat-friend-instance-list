@@ -1,7 +1,12 @@
 import { WorldApiResponse } from '@/types/ApiResponse'
-import { WorldsStore } from '@/domains/Worlds/WorldsStore'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
+import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
+import { createLocalVue } from '@vue/test-utils'
+import VueCompositionApi from '@vue/composition-api'
+
+const localVue = createLocalVue()
+localVue.use(VueCompositionApi)
 
 class MockNetworkRepository implements INetworkWorldsRepository {
   constructor(
@@ -59,13 +64,13 @@ describe('initAction', () => {
         capacity: 20,
       },
     ])
-    const worldsStore = new WorldsStore(
+    const worldsStore = createWorldsStore(
       mockNetworkRepository,
       mockCacheWorldsRepository
     )
     await worldsStore.initAction()
 
-    expect(worldsStore.worlds).toEqual([
+    expect(worldsStore.worlds.value).toEqual([
       {
         id: 'wrld_1',
         name: 'world 1',
@@ -99,7 +104,7 @@ describe('fetchWorld', () => {
 
     const mockNetworkRepository = new MockNetworkRepository([dummyPopularWorld])
     const mockCacheWorldsRepository = new MockCacheWorldsRepository()
-    const worldsStore = new WorldsStore(
+    const worldsStore = createWorldsStore(
       mockNetworkRepository,
       mockCacheWorldsRepository
     )
@@ -111,6 +116,6 @@ describe('fetchWorld', () => {
       },
     ]
 
-    expect(worldsStore.worlds).toEqual(expectWorlds)
+    expect(worldsStore.worlds.value).toEqual(expectWorlds)
   })
 })

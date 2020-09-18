@@ -1,8 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import Toast from '@/presentations/App/localComponents/Toasts/localComponent/index.vue'
-import { ToastProps } from '@/presentations/App/localComponents/Toasts/localComponent/script'
-import { toastsStore } from '@/presentations/ui_store/UiStoreFactory'
 
 const TOAST_WIDTH = 300
 
@@ -13,7 +11,7 @@ const TOAST_WIDTH = 300
 })
 export default class Toasts extends Vue {
   get toasts() {
-    return toastsStore.toasts
+    return this.$store.toastsStore.toasts.value
   }
 
   get rootStyle() {
@@ -30,6 +28,6 @@ export default class Toasts extends Vue {
   }
 
   async onClose(index: number) {
-    await toastsStore.hideAction(index)
+    await this.$store.toastsStore.hideAction(index)
   }
 }

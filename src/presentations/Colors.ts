@@ -1,4 +1,4 @@
-import { settingStore } from '@/domains/DomainStoreFactory'
+import { SettingStore } from '@/domains/Setting/SettingStore'
 
 export type Color =
   | 'black'
@@ -83,54 +83,58 @@ const getWeakBackColor = (theme: Theme) => {
   }
 }
 
-export const getRGB: (color: Color) => string = color => {
-  const theme = settingStore.setting.theme
-  const mainColor = settingStore.setting.mainColor
+export class ColorManager {
+  constructor(private readonly _settingStore: SettingStore) {}
 
-  switch (color) {
-    case 'black':
-      return blackColor
-    case 'paleBlack':
-      return paleBlackColor
-    case 'trueBlack':
-      return trueBlackColor
-    case 'green':
-      return greenColor
-    case 'blue':
-      return blueColor
-    case 'red':
-      return redColor
-    case 'yellow':
-      return yellowColor
-    case 'orange':
-      return orangeColor
-    case 'gray':
-      return grayColor
-    case 'paleGray':
-      return paleGrayColor
-    case 'white':
-      return whiteColor
-    case 'main':
-      return getRGB(mainColor)
-    case 'front':
-      return getFrontColor(theme)
-    case 'weakFront':
-      return getWeakFrontColor(theme)
-    case 'back':
-      return getBackColor(theme)
-    case 'weakBack':
-      return getWeakBackColor(theme)
-    case 'primary':
-      return greenColor
-    case 'secondary':
-      return grayColor
-    case 'success':
-      return blueColor
-    case 'danger':
-      return redColor
-    case 'warning':
-      return yellowColor
+  getRGB(color: Color): string {
+    const theme = this._settingStore.setting.value.theme
+    const mainColor = this._settingStore.setting.value.mainColor
+
+    switch (color) {
+      case 'black':
+        return blackColor
+      case 'paleBlack':
+        return paleBlackColor
+      case 'trueBlack':
+        return trueBlackColor
+      case 'green':
+        return greenColor
+      case 'blue':
+        return blueColor
+      case 'red':
+        return redColor
+      case 'yellow':
+        return yellowColor
+      case 'orange':
+        return orangeColor
+      case 'gray':
+        return grayColor
+      case 'paleGray':
+        return paleGrayColor
+      case 'white':
+        return whiteColor
+      case 'main':
+        return this.getRGB(mainColor)
+      case 'front':
+        return getFrontColor(theme)
+      case 'weakFront':
+        return getWeakFrontColor(theme)
+      case 'back':
+        return getBackColor(theme)
+      case 'weakBack':
+        return getWeakBackColor(theme)
+      case 'primary':
+        return greenColor
+      case 'secondary':
+        return grayColor
+      case 'success':
+        return blueColor
+      case 'danger':
+        return redColor
+      case 'warning':
+        return yellowColor
+    }
+
+    throw new Error('unknown color.')
   }
-
-  throw new Error('unknown color.')
 }

@@ -1,15 +1,18 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Provide } from 'vue-property-decorator'
 import Vue from 'vue'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
-import {
-  favoritesStore,
-  friendsStore,
-  instancesStore,
-} from '@/domains/DomainStoreFactory'
 import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/index.vue'
+import { createInstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
+import {
+  INSTANCE_MODAL_STORE_INJECT_KEY,
+  INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY,
+  JOIN_DIALOG_STORE_INJECT_KEY,
+} from '@/presentations/views/Home/store/InjectKey'
+import { createJoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
+import { createInstanceWatchDialogStore } from '@/presentations/views/Home/store/InstanceWatchDialogStore'
 
 @Component({
   components: {
@@ -20,16 +23,25 @@ import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/in
   },
 })
 export default class Home extends Vue {
+  @Provide(INSTANCE_MODAL_STORE_INJECT_KEY)
+  instanceModalStore = createInstanceModalStore()
+
+  @Provide(JOIN_DIALOG_STORE_INJECT_KEY)
+  joinDialogStore = createJoinDialogStore()
+
+  @Provide(INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY)
+  instanceWatchDialogStore = createInstanceWatchDialogStore()
+
   isInitialLoading = false
   isLaterLoading = false
   isVisibleSideMenu = false
 
   get friends(): Friend[] {
-    return friendsStore.friends
+    return this.$store.friendsStore.friends.value
   }
 
   get instances(): Instance[] {
-    return instancesStore.instances
+    return this.$store.instancesStore.instances.value
   }
 
   get showOnlineFriendsListLoading() {
@@ -54,10 +66,12 @@ export default class Home extends Vue {
 
   async fetchData() {
     await Promise.all([
-      friendsStore.fetchFriendsAction(),
-      favoritesStore.fetchFavoritesAction(),
+      this.$store.friendsStore.fetchFriendsAction(),
+      this.$store.favoritesStore.fetchFavoritesAction(),
     ])
-    await instancesStore.updateAction(friendsStore.friends)
+    await this.$store.instancesStore.updateAction(
+      this.$store.friendsStore.friends.value
+    )
   }
 
   async reload() {

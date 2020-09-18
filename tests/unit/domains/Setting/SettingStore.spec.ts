@@ -1,7 +1,12 @@
 import { Setting } from '@/types'
-import { SettingStore } from '@/domains/Setting/SettingStore'
+import { createSettingStore } from '@/domains/Setting/SettingStore'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
+import VueCompositionApi from '@vue/composition-api'
+import { createLocalVue } from '@vue/test-utils'
+
+const localVue = createLocalVue()
+localVue.use(VueCompositionApi)
 
 class MockSettingRepository implements ISettingRepository {
   constructor(public setting: Setting | undefined = undefined) {}
@@ -18,11 +23,11 @@ class MockSettingRepository implements ISettingRepository {
 describe('initAction', () => {
   it('リポジトリに設定がない場合は、初期設定が使用される', async () => {
     const mockSettingRepository = new MockSettingRepository()
-    const settingStore = new SettingStore(mockSettingRepository)
+    const settingStore = createSettingStore(mockSettingRepository)
 
     await settingStore.initAction()
 
-    expect(settingStore.setting).toBe(DEFAULT_SETTING)
+    expect(settingStore.setting.value).toBe(DEFAULT_SETTING)
   })
 
   it('リポジトリに設定がある場合は、リポジトリの内容が適用される', async () => {
@@ -32,11 +37,11 @@ describe('initAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = new SettingStore(mockSettingRepository)
+    const settingStore = createSettingStore(mockSettingRepository)
 
     await settingStore.initAction()
 
-    expect(settingStore.setting).toEqual(repositorySetting)
+    expect(settingStore.setting.value).toEqual(repositorySetting)
   })
 })
 
@@ -48,12 +53,12 @@ describe('enableNotificationSoundAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = new SettingStore(mockSettingRepository)
+    const settingStore = createSettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.enableNotificationSoundAction()
 
-    expect(settingStore.setting.enableNotificationSound).toBe(true)
+    expect(settingStore.setting.value.enableNotificationSound).toBe(true)
     expect(mockSettingRepository.setting?.enableNotificationSound).toBe(true)
   })
 })
@@ -66,12 +71,12 @@ describe('disableNotificationSoundAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = new SettingStore(mockSettingRepository)
+    const settingStore = createSettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.disableNotificationSoundAction()
 
-    expect(settingStore.setting.enableNotificationSound).toBe(false)
+    expect(settingStore.setting.value.enableNotificationSound).toBe(false)
     expect(mockSettingRepository.setting?.enableNotificationSound).toBe(false)
   })
 })
@@ -84,12 +89,12 @@ describe('enableDarkModeAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = new SettingStore(mockSettingRepository)
+    const settingStore = createSettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.enableDarkModeAction()
 
-    expect(settingStore.setting.theme).toBe('dark')
+    expect(settingStore.setting.value.theme).toBe('dark')
     expect(mockSettingRepository.setting?.theme).toBe('dark')
   })
 })
@@ -102,12 +107,12 @@ describe('enableLightModeAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = new SettingStore(mockSettingRepository)
+    const settingStore = createSettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.enableLightModeAction()
 
-    expect(settingStore.setting.theme).toBe('light')
+    expect(settingStore.setting.value.theme).toBe('light')
     expect(mockSettingRepository.setting?.theme).toBe('light')
   })
 })
@@ -120,12 +125,12 @@ describe('updateMainColorAction', () => {
       mainColor: 'blue',
     }
     const mockSettingRepository = new MockSettingRepository(repositorySetting)
-    const settingStore = new SettingStore(mockSettingRepository)
+    const settingStore = createSettingStore(mockSettingRepository)
 
     await settingStore.initAction()
     await settingStore.updateMainColorAction('red')
 
-    expect(settingStore.setting.mainColor).toBe('red')
+    expect(settingStore.setting.value.mainColor).toBe('red')
     expect(mockSettingRepository.setting?.mainColor).toBe('red')
   })
 })

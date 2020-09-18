@@ -15,12 +15,29 @@ import ToTopButton from '@/presentations/components/ToTopButton/index.vue'
 import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { VueHammer } from 'vue2-hammer'
+import VueCompositionAPI from '@vue/composition-api'
+import { createGlobalStore } from '@/GlobalStoreFactory'
+import { ColorManager } from '@/presentations/Colors'
+import { makeGlobalStoreReferenceToWindowObject } from '@/libs/makeStoreReferenceToWindowObject'
 
 Vue.config.productionTip = false
 
 // プラグイン登録
 Vue.use(VueVirtualScroller)
 Vue.use(VueHammer)
+Vue.use(VueCompositionAPI)
+
+// ストア初期化
+const store = createGlobalStore()
+Vue.prototype.$store = store
+if (process.env.NODE_ENV === 'development') {
+  makeGlobalStoreReferenceToWindowObject(store)
+}
+
+// TODO: カラーマネージャまでグローバルに通すのは行儀が悪い気がする
+//  他にいい方法が思い浮かばなかったのでこうしてるが、改善方法さがして修正すること
+// カラーマネージャ
+Vue.prototype.$colorManager = new ColorManager(store.settingStore)
 
 // グローバルコンポーネント登録
 Vue.component('g-Button', Button)

@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Color, getRGB } from '@/presentations/Colors'
+import { Color } from '@/presentations/Colors'
 
 export type ToastType = 'info' | 'warn' | 'error'
 
@@ -27,7 +27,7 @@ export default class Toast extends Vue implements ToastProps {
       }
       return 'gray'
     })()
-    const backgroundRGB = getRGB(backgroundColor)
+    const backgroundRGB = this.$colorManager.getRGB(backgroundColor)
 
     return {
       'background-color': `rgb(${backgroundRGB})`,

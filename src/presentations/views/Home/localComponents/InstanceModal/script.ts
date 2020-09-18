@@ -1,8 +1,8 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Inject } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
-import { instanceModalStore } from '@/presentations/ui_store/UiStoreFactory'
-import { friendsStore, instancesStore } from '@/domains/DomainStoreFactory'
+import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
+import { INSTANCE_MODAL_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
 
 @Component({
   components: {
@@ -10,17 +10,20 @@ import { friendsStore, instancesStore } from '@/domains/DomainStoreFactory'
   },
 })
 export default class InstanceModal extends Vue {
+  @Inject(INSTANCE_MODAL_STORE_INJECT_KEY)
+  instanceModalStore!: InstanceModalStore
+
   get isVisible() {
-    return instanceModalStore.isVisible
+    return this.instanceModalStore.isVisible.value
   }
 
   get instance() {
-    const location = instanceModalStore.location
+    const location = this.instanceModalStore.location.value
     if (location === null) {
       throw new Error('location is null')
     }
 
-    return instancesStore.instanceByLocation(location)
+    return this.$store.instancesStore.instanceByLocation.value(location)
   }
 
   get friends() {
@@ -29,10 +32,10 @@ export default class InstanceModal extends Vue {
       throw new Error('instance is undefined.')
     }
 
-    return friendsStore.friendsByLocation(instance.location)
+    return this.$store.friendsStore.friendsByLocation.value(instance.location)
   }
 
   async hide() {
-    await instanceModalStore.hideAction()
+    await this.instanceModalStore.hideAction()
   }
 }

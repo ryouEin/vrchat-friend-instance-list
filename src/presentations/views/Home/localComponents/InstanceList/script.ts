@@ -3,7 +3,6 @@ import Vue from 'vue'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
 import { Friend, Instance } from '@/types'
 import WatchInstanceDialog from '@/presentations/views/Home/localComponents/InstanceList/localComponents/WatchInstanceDialog/index.vue'
-import { friendsStore } from '@/domains/DomainStoreFactory'
 
 @Component({
   components: {
@@ -20,15 +19,13 @@ export default class InstanceList extends Vue {
   private instances!: Instance[]
 
   get items(): { id: string; instance: Instance; friends: Friend[] }[] {
-    const friends = friendsStore.friends
-
     return this.instances
       .map(instance => {
         return {
           id: instance.location,
           instance,
-          friends: friends.filter(
-            friend => friend.location === instance.location
+          friends: this.$store.friendsStore.friendsByLocation.value(
+            instance.location
           ),
         }
       })

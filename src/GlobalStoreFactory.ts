@@ -15,12 +15,12 @@ import {
 } from '@/libs/VRChatApi/VRChatApi'
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
-import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { ToastsStore } from '@/presentations/store/ToastsStore'
 import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
+import { FriendsStore } from '@/domains/Friends/FriendsStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -51,7 +51,7 @@ export const createGlobalStore = () => {
 
   const friendsStore = (() => {
     const friendsRepository = new VRChatApiFriendsRepository(vrchatApi)
-    return createFriendsStore(friendsRepository, favoritesStore)
+    return new FriendsStore(friendsRepository, favoritesStore)
   })()
 
   const worldsStore = (() => {

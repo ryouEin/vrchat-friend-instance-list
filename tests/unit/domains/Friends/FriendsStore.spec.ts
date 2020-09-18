@@ -1,9 +1,9 @@
 import { UserApiResponse } from '@/types/ApiResponse'
 import { Favorite, Friend } from '@/types'
-import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import VueCompositionApi, { computed, reactive } from '@vue/composition-api'
 import { createLocalVue } from '@vue/test-utils'
+import { FriendsStore } from '@/domains/Friends/FriendsStore'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)
@@ -56,7 +56,7 @@ describe('fetchFriends', () => {
     const dummyData: UserApiResponse[] = generateDummyFriends(310)
     const mockFriendsRepository = new MockFriendsRepository(dummyData)
     const mockFavoriteStore = createMockFavoritesStore([])
-    const friendsStore = createFriendsStore(
+    const friendsStore = new FriendsStore(
       mockFriendsRepository,
       mockFavoriteStore
     )
@@ -91,7 +91,7 @@ describe('fetchFriends', () => {
       favoriteId10,
       favoriteId123,
     ])
-    const friendsStore = createFriendsStore(
+    const friendsStore = new FriendsStore(
       mockFriendsRepository,
       mockFavoriteStore
     )
@@ -122,7 +122,7 @@ describe('fetchFriends', () => {
       dummyData.slice(0, 200)
     )
     const mockFavoriteStore = createMockFavoritesStore([])
-    const friendsStore = createFriendsStore(
+    const friendsStore = new FriendsStore(
       mockFriendsRepository,
       mockFavoriteStore
     )

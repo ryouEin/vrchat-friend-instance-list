@@ -58,18 +58,12 @@ export default class App extends Vue {
   }
 
   async showNewsDialogs(newsArray: News[]) {
-    const remainingNewsArray = [...newsArray]
-    const displayNews = remainingNewsArray.pop()
-
-    if (displayNews === undefined) return
-
-    await this.$store.alertStore.showAction({
-      title: displayNews.title,
-      content: displayNews.content,
-      isMarkdown: true,
-      onClose: () => {
-        this.showNewsDialogs(remainingNewsArray)
-      },
+    ;[...newsArray].reverse().forEach(news => {
+      this.$store.alertStore.showAction({
+        title: news.title,
+        content: news.content,
+        isMarkdown: true,
+      })
     })
   }
 

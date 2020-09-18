@@ -20,7 +20,7 @@ import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
 import { createFullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { createToastsStore } from '@/presentations/store/ToastsStore'
-import { createAlertStore } from '@/presentations/store/AlertStore'
+import { AlertStore } from '@/presentations/store/AlertStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -32,7 +32,7 @@ export const createGlobalStore = () => {
   })()
 
   const alertStore = (() => {
-    return createAlertStore()
+    return new AlertStore()
   })()
 
   const network = new Network()

@@ -30,6 +30,7 @@ Vue.use(VueCompositionAPI)
 // ストア初期化
 const store = createGlobalStore()
 Vue.prototype.$store = store
+// TODO SOON: ここの処理今回のissue解決時には必要なくなるはずなので削除すること
 if (process.env.NODE_ENV === 'development') {
   makeGlobalStoreReferenceToWindowObject(store)
 }

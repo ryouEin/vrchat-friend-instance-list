@@ -1,10 +1,11 @@
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import Permission from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/Permission/index.vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
 import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/WatchInstanceButton/index.vue'
 import { Instance, InstancePermission, World } from '@/types'
-import { joinDialogStore } from '@/presentations/ui_store/UiStoreFactory'
+import { JOIN_DIALOG_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
+import { JoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
 
 @Component({
   components: {
@@ -14,6 +15,9 @@ import { joinDialogStore } from '@/presentations/ui_store/UiStoreFactory'
   },
 })
 export default class WorldInfo extends Vue {
+  @Inject(JOIN_DIALOG_STORE_INJECT_KEY)
+  joinDialogStore!: JoinDialogStore
+
   @Prop({ required: true })
   private instance!: Instance
 
@@ -59,7 +63,7 @@ export default class WorldInfo extends Vue {
   }
 
   async onClickJoinButton() {
-    await joinDialogStore.showAction(this.location)
+    await this.joinDialogStore.showAction(this.location)
   }
 
   async updateUserNum() {

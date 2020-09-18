@@ -1,7 +1,8 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Inject } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
-import { instanceModalStore } from '@/presentations/ui_store/UiStoreFactory'
+import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
+import { INSTANCE_MODAL_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
 
 @Component({
   components: {
@@ -9,12 +10,15 @@ import { instanceModalStore } from '@/presentations/ui_store/UiStoreFactory'
   },
 })
 export default class InstanceModal extends Vue {
+  @Inject(INSTANCE_MODAL_STORE_INJECT_KEY)
+  instanceModalStore!: InstanceModalStore
+
   get isVisible() {
-    return instanceModalStore.isVisible
+    return this.instanceModalStore.isVisible
   }
 
   get instance() {
-    const location = instanceModalStore.location
+    const location = this.instanceModalStore.location
     if (location === null) {
       throw new Error('location is null')
     }
@@ -34,6 +38,6 @@ export default class InstanceModal extends Vue {
   }
 
   async hide() {
-    await instanceModalStore.hideAction()
+    await this.instanceModalStore.hideAction()
   }
 }

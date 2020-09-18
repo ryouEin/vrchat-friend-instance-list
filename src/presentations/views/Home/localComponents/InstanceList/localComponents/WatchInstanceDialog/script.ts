@@ -1,10 +1,12 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Inject } from 'vue-property-decorator'
 import Vue from 'vue'
+import { alertStore } from '@/presentations/ui_store/UiStoreFactory'
+import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
 import {
-  alertStore,
-  instanceModalStore,
-  instanceWatchDialogStore,
-} from '@/presentations/ui_store/UiStoreFactory'
+  INSTANCE_MODAL_STORE_INJECT_KEY,
+  INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY,
+} from '@/presentations/views/Home/store/InjectKey'
+import { InstanceWatchDialogStore } from '@/presentations/views/Home/store/InstanceWatchDialogStore'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -20,14 +22,20 @@ const generateSelectItems = (count: number) => {
 
 @Component
 export default class WatchInstanceDialog extends Vue {
+  @Inject(INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY)
+  instanceWatchDialogStore!: InstanceWatchDialogStore
+
+  @Inject(INSTANCE_MODAL_STORE_INJECT_KEY)
+  instanceModalStore!: InstanceModalStore
+
   notifyUserNum = 1
 
   get isVisible() {
-    return instanceWatchDialogStore.isVisible
+    return this.instanceWatchDialogStore.isVisible
   }
 
   get instance() {
-    const instance = instanceWatchDialogStore.instance
+    const instance = this.instanceWatchDialogStore.instance
     if (instance === null) {
       throw new Error('instance is null.')
     }
@@ -93,7 +101,7 @@ export default class WatchInstanceDialog extends Vue {
           text: `${worldName}に空きができました。`,
           date: Date.now(),
           onClick: async () => {
-            await instanceModalStore.showAction(location)
+            await this.instanceModalStore.showAction(location)
           },
         })
       },
@@ -101,7 +109,7 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   async hideDialog() {
-    await instanceWatchDialogStore.hideAction()
+    await this.instanceWatchDialogStore.hideAction()
   }
 
   async onClickWatchStart() {

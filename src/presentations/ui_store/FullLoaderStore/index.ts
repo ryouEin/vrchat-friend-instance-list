@@ -7,7 +7,7 @@ import {
 type State = {
   counter: number
 }
-@MakeReferenceToWindowObjectInDevelopment('instanceModalStore')
+@MakeReferenceToWindowObjectInDevelopment('fullLoaderStore')
 export class FullLoaderStore {
   private _state = Vue.observable<State>({
     counter: 0,

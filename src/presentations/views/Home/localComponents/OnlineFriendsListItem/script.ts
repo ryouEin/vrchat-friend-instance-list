@@ -1,7 +1,8 @@
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Friend, InstancePermission } from '@/types'
-import { instanceModalStore } from '@/presentations/ui_store/UiStoreFactory'
+import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
+import { INSTANCE_MODAL_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
 
 const Status = {
   Private: 'private',
@@ -13,6 +14,9 @@ type Status = typeof Status[keyof typeof Status]
   components: {},
 })
 export default class OnlineFriendsListItem extends Vue {
+  @Inject(INSTANCE_MODAL_STORE_INJECT_KEY)
+  instanceModalStore!: InstanceModalStore
+
   @Prop()
   private friend!: Friend
 
@@ -58,6 +62,6 @@ export default class OnlineFriendsListItem extends Vue {
   }
 
   async onClick() {
-    await instanceModalStore.showAction(this.friend.location)
+    await this.instanceModalStore.showAction(this.friend.location)
   }
 }

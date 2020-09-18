@@ -18,17 +18,32 @@ import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavori
 import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
-
-const network = new Network()
-const vrchatApi = new VRChatApi(network, error => {
-  if (error instanceof VRChatApiUnauthorizedError) {
-    showAuthorizationErrorDialog()
-  } else {
-    throw error
-  }
-})
+import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
+import { ToastsStore } from '@/presentations/store/ToastsStore'
+import { AlertStore } from '@/presentations/store/AlertStore'
 
 export const createGlobalStore = () => {
+  const fullLoaderStore = (() => {
+    return new FullLoaderStore()
+  })()
+
+  const toastsStore = (() => {
+    return new ToastsStore()
+  })()
+
+  const alertStore = (() => {
+    return new AlertStore()
+  })()
+
+  const network = new Network()
+  const vrchatApi = new VRChatApi(network, error => {
+    if (error instanceof VRChatApiUnauthorizedError) {
+      showAuthorizationErrorDialog(alertStore)
+    } else {
+      throw error
+    }
+  })
+
   const favoritesStore = (() => {
     const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
     return createFavoritesStore(favoritesRepository)
@@ -69,6 +84,9 @@ export const createGlobalStore = () => {
     settingStore,
     notificationsStore,
     worldsStore,
+    fullLoaderStore,
+    toastsStore,
+    alertStore,
   }
 }
 

@@ -12,10 +12,6 @@ import { Network } from '@/libs/Network/Network'
 import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
-import {
-  alertStore,
-  fullLoaderStore,
-} from '@/presentations/ui_store/UiStoreFactory'
 import Alert from '@/presentations/App/localComponents/Alert/index.vue'
 
 @Component({
@@ -67,7 +63,7 @@ export default class App extends Vue {
 
     if (displayNews === undefined) return
 
-    await alertStore.showAction({
+    await this.$store.alertStore.showAction({
       title: displayNews.title,
       content: displayNews.content,
       isMarkdown: true,
@@ -129,10 +125,10 @@ export default class App extends Vue {
 
     this.judgeDevice()
 
-    fullLoaderStore.showAction()
+    this.$store.fullLoaderStore.showAction()
     await this.$store.settingStore.initAction()
     await this.$store.worldsStore.initAction().finally(() => {
-      fullLoaderStore.hideAction()
+      this.$store.fullLoaderStore.hideAction()
     })
 
     this.initialized = true

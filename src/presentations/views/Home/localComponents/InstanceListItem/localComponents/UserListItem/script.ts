@@ -1,7 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { FavoriteTag, Friend } from '@/types'
-import { toastsStore } from '@/presentations/ui_store/UiStoreFactory'
 import { VRChatApiFavoriteLimitReachedError } from '@/libs/VRChatApi/VRChatApi'
 import { MAX_FAVORITE_PER_GROUP } from '@/config/settings'
 
@@ -76,7 +75,7 @@ export default class UserListItem extends Vue {
         } else {
           content = `${this.friend.displayName}のFavoriteが失敗しました`
         }
-        toastsStore.showAction({
+        this.$store.toastsStore.showAction({
           type: 'error',
           content,
         })
@@ -93,8 +92,8 @@ export default class UserListItem extends Vue {
     this.isLoadingFavorite = true
     await this.$store.favoritesStore
       .deleteFavoriteAction(this.friend.favorite.id)
-      .catch(error => {
-        toastsStore.showAction({
+      .catch(() => {
+        this.$store.toastsStore.showAction({
           type: 'error',
           content: `${this.friend.displayName}のUnfavoriteが失敗しました`,
         })

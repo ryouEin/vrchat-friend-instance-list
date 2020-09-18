@@ -1,6 +1,5 @@
 import { Component, Inject } from 'vue-property-decorator'
 import Vue from 'vue'
-import { alertStore } from '@/presentations/ui_store/UiStoreFactory'
 import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
 import {
   INSTANCE_MODAL_STORE_INJECT_KEY,
@@ -44,7 +43,7 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   get world() {
-    const world = this.$store.worldsStore.world.value(this.instance.location)
+    const world = this.$store.worldsStore.world.value(this.instance.worldId)
     if (world === undefined) {
       throw new Error('world is null.')
     }
@@ -69,7 +68,7 @@ export default class WatchInstanceDialog extends Vue {
   async startWatch() {
     const permission = Notification.permission
     if (permission === 'default') {
-      alertStore.showAction({
+      this.$store.alertStore.showAction({
         title: '通知の許可が必要です',
         content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
 
@@ -80,7 +79,7 @@ export default class WatchInstanceDialog extends Vue {
         },
       })
     } else if (permission === 'denied') {
-      alertStore.showAction({
+      this.$store.alertStore.showAction({
         title: '通知の許可が必要です',
         content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
 

@@ -30,6 +30,17 @@ Vue.use(VueCompositionAPI)
 const store = createGlobalStore()
 Vue.prototype.$store = store
 
+// TODO SOON: 流石にここに型定義書くのはやんちゃなのでどっか他のところ考える
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    $store: any
+  }
+}
+if (process.env.NODE_ENV !== 'development') {
+  window.$store = store
+}
+
 // TODO: カラーマネージャまでグローバルに通すのは行儀が悪い気がする
 //  他にいい方法が思い浮かばなかったのでこうしてるが、改善方法さがして修正すること
 // カラーマネージャ

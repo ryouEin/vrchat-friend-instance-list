@@ -23,12 +23,12 @@ export class InstanceModalStore {
   })
 
   @LogBeforeAfter('_state')
-  setLocationMutation(location: InstanceLocation) {
+  private setLocationMutation(location: InstanceLocation) {
     this._state.location = location
   }
 
   @LogBeforeAfter('_state')
-  clearLocationMutation() {
+  private clearLocationMutation() {
     this._state.location = null
   }
 

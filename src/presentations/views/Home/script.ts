@@ -5,7 +5,6 @@ import InstanceList from '@/presentations/views/Home/localComponents/InstanceLis
 import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
 import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/index.vue'
-import { createInstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
 import {
   INSTANCE_MODAL_STORE_INJECT_KEY,
   INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY,
@@ -13,6 +12,7 @@ import {
 } from '@/presentations/views/Home/store/InjectKey'
 import { createJoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
 import { createInstanceWatchDialogStore } from '@/presentations/views/Home/store/InstanceWatchDialogStore'
+import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
 
 @Component({
   components: {
@@ -24,7 +24,7 @@ import { createInstanceWatchDialogStore } from '@/presentations/views/Home/store
 })
 export default class Home extends Vue {
   @Provide(INSTANCE_MODAL_STORE_INJECT_KEY)
-  instanceModalStore = createInstanceModalStore()
+  instanceModalStore = new InstanceModalStore()
 
   @Provide(JOIN_DIALOG_STORE_INJECT_KEY)
   joinDialogStore = createJoinDialogStore()

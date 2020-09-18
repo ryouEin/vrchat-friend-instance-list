@@ -1,7 +1,6 @@
 import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRepository'
 import { Network } from '@/libs/Network/Network'
 import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstancesRepository'
-import { createInstancesStore } from '@/domains/Instances/InstancesStore'
 import { createNotificationsStore } from '@/domains/Notifications/NotificationsStore'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
@@ -21,6 +20,7 @@ import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { ToastsStore } from '@/presentations/store/ToastsStore'
 import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { FriendsStore } from '@/domains/Friends/FriendsStore'
+import { InstancesStore } from '@/domains/Instances/InstancesStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -62,7 +62,7 @@ export const createGlobalStore = () => {
 
   const instancesStore = (() => {
     const instancesRepository = new VRChatApiInstancesRepository(vrchatApi)
-    return createInstancesStore(instancesRepository, worldsStore)
+    return new InstancesStore(instancesRepository, worldsStore)
   })()
 
   const settingStore = (() => {

@@ -8,42 +8,51 @@ import {
   makeInstancesFromLocations,
 } from '@/domains/Instances/InstancesService'
 import { InstanceApiResponse } from '@/types/ApiResponse'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   instances: Instance[]
 }
-export const createInstancesStore = (
-  instancesRepository: IInstancesRepository,
-  worldStore: ICanGetWorldById
-) => {
-  const state = reactive<State>({
+@MakeReferenceToWindowObjectInDevelopment('instancesStore')
+export class InstancesStore {
+  constructor(
+    private readonly _instancesRepository: IInstancesRepository,
+    private readonly _worldStore: ICanGetWorldById
+  ) {}
+
+  private readonly _state = reactive<State>({
     instances: [],
   })
 
-  const instances = computed<Instance[]>(() => {
-    return state.instances
+  readonly instances = computed<Instance[]>(() => {
+    return this._state.instances
   })
 
-  const instanceByLocation = computed<
+  readonly instanceByLocation = computed<
     (location: InstanceLocation) => Instance | undefined
   >(() => {
     return (location: InstanceLocation) => {
-      return state.instances.find(instance => instance.location === location)
+      return this._state.instances.find(
+        instance => instance.location === location
+      )
     }
   })
 
-  const updateInstancesWithLocationsMutation = (
-    locations: InstanceLocation[]
-  ) => {
+  @LogBeforeAfter('_state')
+  private updateInstancesWithLocationsMutation(locations: InstanceLocation[]) {
     const newInstances = makeInstancesFromLocations(locations)
-    state.instances = applyOldInstanceStatesToNewInstances(
+    this._state.instances = applyOldInstanceStatesToNewInstances(
       newInstances,
-      state.instances
+      this._state.instances
     )
   }
 
-  const setInstanceInfoMutation = (instanceInfo: InstanceApiResponse) => {
-    state.instances = state.instances.map(instance => {
+  @LogBeforeAfter('_state')
+  private setInstanceInfoMutation(instanceInfo: InstanceApiResponse) {
+    this._state.instances = this._state.instances.map(instance => {
       if (instanceInfo.location === instance.location) {
         const userNum = instanceInfo.n_users
 
@@ -57,7 +66,8 @@ export const createInstancesStore = (
     })
   }
 
-  const startWatchingMutation = ({
+  @LogBeforeAfter('_state')
+  private startWatchingMutation({
     location,
     notifyUserNum,
     onFindVacancy,
@@ -65,8 +75,8 @@ export const createInstancesStore = (
     location: InstanceLocation
     notifyUserNum: number
     onFindVacancy: () => void
-  }) => {
-    state.instances = state.instances.map(instance => {
+  }) {
+    this._state.instances = this._state.instances.map(instance => {
       if (instance.location === location) {
         return {
           ...instance,
@@ -80,8 +90,9 @@ export const createInstancesStore = (
     })
   }
 
-  const endWatchingMutation = (location: InstanceLocation) => {
-    state.instances = state.instances.map(instance => {
+  @LogBeforeAfter('_state')
+  private endWatchingMutation(location: InstanceLocation) {
+    this._state.instances = this._state.instances.map(instance => {
       if (instance.location === location) {
         return {
           ...instance,
@@ -94,20 +105,18 @@ export const createInstancesStore = (
   }
 
   // TODO: Friendsの更新がある度にこれを呼び出す必要があるのが違和感
-  const updateAction = async (friends: Friend[]) => {
+  async updateAction(friends: Friend[]) {
     const locations = getLocationsFromFriends(friends)
-    updateInstancesWithLocationsMutation(locations)
+    this.updateInstancesWithLocationsMutation(locations)
   }
 
-  const updateInstanceInfoAction = async (location: InstanceLocation) => {
-    const instanceInfo = await instancesRepository.fetchInstance(location)
-    setInstanceInfoMutation(instanceInfo)
+  async updateInstanceInfoAction(location: InstanceLocation) {
+    const instanceInfo = await this._instancesRepository.fetchInstance(location)
+    this.setInstanceInfoMutation(instanceInfo)
   }
 
-  const checkWatchingInstanceVacancyAction = async (
-    location: InstanceLocation
-  ) => {
-    const instance = instanceByLocation.value(location)
+  async checkWatchingInstanceVacancyAction(location: InstanceLocation) {
+    const instance = this.instanceByLocation.value(location)
 
     // TODO: こんな適当な例外の投げ方で良いのか再考
     if (instance === undefined) {
@@ -120,7 +129,7 @@ export const createInstancesStore = (
       throw new Error('userNum is undefined.')
     }
 
-    const world = worldStore.world.value(instance.worldId)
+    const world = this._worldStore.world.value(instance.worldId)
     if (world === undefined) {
       throw new Error('world is undefined.')
     }
@@ -134,11 +143,11 @@ export const createInstancesStore = (
         onFindVacancy()
       }
 
-      endWatchingMutation(instance.location)
+      this.endWatchingMutation(instance.location)
     }
   }
 
-  const watchInstanceAction = async ({
+  async watchInstanceAction({
     location,
     notifyUserNum,
     onFindVacancy,
@@ -146,38 +155,27 @@ export const createInstancesStore = (
     location: InstanceLocation
     notifyUserNum: number
     onFindVacancy: () => void
-  }) => {
-    startWatchingMutation({
+  }) {
+    this.startWatchingMutation({
       location,
       notifyUserNum,
       onFindVacancy,
     })
   }
 
-  const unwatchInstanceAction = async (location: InstanceLocation) => {
-    endWatchingMutation(location)
+  async unwatchInstanceAction(location: InstanceLocation) {
+    this.endWatchingMutation(location)
   }
 
-  const checkWatchingInstancesAction = async () => {
-    const watchingInstances = instances.value.filter(
+  async checkWatchingInstancesAction() {
+    const watchingInstances = this.instances.value.filter(
       instance => instance.isWatching
     )
     const promises = watchingInstances.map(async instance => {
-      await updateInstanceInfoAction(instance.location)
-      await checkWatchingInstanceVacancyAction(instance.location)
+      await this.updateInstanceInfoAction(instance.location)
+      await this.checkWatchingInstanceVacancyAction(instance.location)
     })
 
     return Promise.all(promises)
-  }
-
-  return {
-    instances,
-    instanceByLocation,
-    updateAction,
-    updateInstanceInfoAction,
-    checkWatchingInstanceVacancyAction,
-    watchInstanceAction,
-    unwatchInstanceAction,
-    checkWatchingInstancesAction,
   }
 }

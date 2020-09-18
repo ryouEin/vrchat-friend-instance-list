@@ -1,6 +1,10 @@
 import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 import { computed, ComputedRef, reactive } from '@vue/composition-api'
 import { Favorite, FavoriteTag } from '@/types'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 // TODO:
 //  以下の内容に関して、再考
@@ -19,66 +23,66 @@ export interface ICanGetFavoriteByUserId {
 type State = {
   favorites: Favorite[]
 }
-export const createFavoritesStore = (
-  favoritesRepository: IFavoritesRepository
-) => {
-  const state = reactive<State>({
+@MakeReferenceToWindowObjectInDevelopment('favoritesStore')
+export class FavoritesStore implements ICanGetFavoriteByUserId {
+  constructor(private readonly _favoritesRepository: IFavoritesRepository) {}
+
+  private readonly _state = reactive<State>({
     favorites: [],
   })
 
-  const favorites = computed<Favorite[]>(() => {
-    return state.favorites
+  readonly favorites = computed<Favorite[]>(() => {
+    return this._state.favorites
   })
 
   // TODO: computedが関数を返す場合、使用側でvalueを書かないといけないのが非常に違和感
   //  具体的には favoriteByUserId.value('usr_123') みたいにしないといけない
   //  改善方法がないか考える
-  const favoriteByUserId = computed<(userId: string) => Favorite | undefined>(
-    () => {
-      return (userId: string) => {
-        return favorites.value.find(favorite => favorite.favoriteId === userId)
-      }
+  readonly favoriteByUserId = computed<
+    (userId: string) => Favorite | undefined
+  >(() => {
+    return (userId: string) => {
+      return this._state.favorites.find(
+        favorite => favorite.favoriteId === userId
+      )
     }
-  )
+  })
 
-  const setFavoritesMutation = (favorites: Favorite[]) => {
-    state.favorites = favorites
+  @LogBeforeAfter('_state')
+  private setFavoritesMutation(favorites: Favorite[]) {
+    this._state.favorites = favorites
   }
 
-  const addFavoritesMutation = (favorite: Favorite) => {
-    state.favorites.push(favorite)
+  @LogBeforeAfter('_state')
+  private addFavoritesMutation(favorite: Favorite) {
+    this._state.favorites.push(favorite)
   }
 
-  const deleteFavoritesMutation = (id: string) => {
-    state.favorites = state.favorites.filter(favorite => favorite.id !== id)
+  @LogBeforeAfter('_state')
+  private deleteFavoritesMutation(id: string) {
+    this._state.favorites = this._state.favorites.filter(
+      favorite => favorite.id !== id
+    )
   }
 
-  const fetchFavoritesAction = async () => {
-    const favorites = await favoritesRepository.fetchFavoritesAboutFriends()
+  async fetchFavoritesAction() {
+    const favorites = await this._favoritesRepository.fetchFavoritesAboutFriends()
 
-    setFavoritesMutation(favorites)
+    this.setFavoritesMutation(favorites)
   }
 
-  const addFavoriteAction = async (userId: string, tag: FavoriteTag) => {
-    const favorite = await favoritesRepository.addFavoriteAboutFriend(
+  async addFavoriteAction(userId: string, tag: FavoriteTag) {
+    const favorite = await this._favoritesRepository.addFavoriteAboutFriend(
       userId,
       tag
     )
 
-    addFavoritesMutation(favorite)
+    this.addFavoritesMutation(favorite)
   }
 
-  const deleteFavoriteAction = async (id: string) => {
-    await favoritesRepository.deleteFavoritesAboutFriends(id)
+  async deleteFavoriteAction(id: string) {
+    await this._favoritesRepository.deleteFavoritesAboutFriends(id)
 
-    deleteFavoritesMutation(id)
-  }
-
-  return {
-    favorites,
-    favoriteByUserId,
-    fetchFavoritesAction,
-    addFavoriteAction,
-    deleteFavoriteAction,
+    this.deleteFavoritesMutation(id)
   }
 }

@@ -1,8 +1,8 @@
-import { INotification } from '@/libs/Notification/INotification'
+import { INotifier } from '@/libs/Notifier/INotifier'
 import { playNotificationSound } from '@/libs/Sound'
 import { SettingStore } from '@/domains/Setting/SettingStore'
 
-export class BrowserNotification implements INotification {
+export class BrowserNotifier implements INotifier {
   constructor(private readonly _settingStore: SettingStore) {}
 
   notify(message: string): void {

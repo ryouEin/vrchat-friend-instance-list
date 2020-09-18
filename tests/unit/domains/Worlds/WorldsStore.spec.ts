@@ -1,9 +1,9 @@
 import { WorldApiResponse } from '@/types/ApiResponse'
 import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
-import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
 import { createLocalVue } from '@vue/test-utils'
 import VueCompositionApi from '@vue/composition-api'
+import { WorldsStore } from '@/domains/Worlds/WorldsStore'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)
@@ -64,7 +64,7 @@ describe('initAction', () => {
         capacity: 20,
       },
     ])
-    const worldsStore = createWorldsStore(
+    const worldsStore = new WorldsStore(
       mockNetworkRepository,
       mockCacheWorldsRepository
     )
@@ -104,7 +104,7 @@ describe('fetchWorld', () => {
 
     const mockNetworkRepository = new MockNetworkRepository([dummyPopularWorld])
     const mockCacheWorldsRepository = new MockCacheWorldsRepository()
-    const worldsStore = createWorldsStore(
+    const worldsStore = new WorldsStore(
       mockNetworkRepository,
       mockCacheWorldsRepository
     )

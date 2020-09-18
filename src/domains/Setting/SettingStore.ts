@@ -3,92 +3,91 @@ import { computed, reactive } from '@vue/composition-api'
 import { Setting } from '@/types'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { Color, Theme } from '@/presentations/Colors'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   setting: Setting
 }
-export const createSettingStore = (settingRepository: ISettingRepository) => {
-  const state = reactive<State>({
+@MakeReferenceToWindowObjectInDevelopment('settingStore')
+export class SettingStore {
+  constructor(private readonly _settingRepository: ISettingRepository) {}
+
+  private readonly _state = reactive<State>({
     setting: DEFAULT_SETTING,
   })
 
-  const setting = computed<Setting>(() => {
-    return state.setting
+  readonly setting = computed<Setting>(() => {
+    return this._state.setting
   })
 
-  const updateEnableNotificationSoundMutation = (isEnabled: boolean) => {
-    state.setting.enableNotificationSound = isEnabled
+  @LogBeforeAfter('_state')
+  private updateEnableNotificationSoundMutation(isEnabled: boolean) {
+    this._state.setting.enableNotificationSound = isEnabled
   }
 
-  const updateThemeMutation = (theme: Theme) => {
-    state.setting.theme = theme
+  @LogBeforeAfter('_state')
+  private updateThemeMutation(theme: Theme) {
+    this._state.setting.theme = theme
   }
 
-  const updateMainColorMutation = (color: Color) => {
-    state.setting.mainColor = color
+  @LogBeforeAfter('_state')
+  private updateMainColorMutation(color: Color) {
+    this._state.setting.mainColor = color
   }
 
-  const updateSettingMutation = (setting: Setting) => {
-    state.setting = setting
+  @LogBeforeAfter('_state')
+  private updateSettingMutation(setting: Setting) {
+    this._state.setting = setting
   }
 
-  const enableNotificationSoundAction = async () => {
-    updateEnableNotificationSoundMutation(true)
+  async enableNotificationSoundAction() {
+    this.updateEnableNotificationSoundMutation(true)
 
-    await settingRepository.updateSetting(state.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
-  const disableNotificationSoundAction = async () => {
-    updateEnableNotificationSoundMutation(false)
+  async disableNotificationSoundAction() {
+    this.updateEnableNotificationSoundMutation(false)
 
-    await settingRepository.updateSetting(state.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
-  const enableDarkModeAction = async () => {
-    updateThemeMutation('dark')
+  async enableDarkModeAction() {
+    this.updateThemeMutation('dark')
 
-    await settingRepository.updateSetting(state.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
-  const enableLightModeAction = async () => {
-    updateThemeMutation('light')
+  async enableLightModeAction() {
+    this.updateThemeMutation('light')
 
-    await settingRepository.updateSetting(state.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
-  const updateMainColorAction = async (color: Color) => {
-    updateMainColorMutation(color)
+  async updateMainColorAction(color: Color) {
+    this.updateMainColorMutation(color)
 
-    await settingRepository.updateSetting(state.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
-  const initAction = async () => {
-    const repositorySetting = await settingRepository.getSetting()
+  async initAction() {
+    const repositorySetting = await this._settingRepository.getSetting()
 
     if (repositorySetting !== undefined) {
       /*
-        Settingの項目を追加した際に、ユーザーの古いストレージのデータを
-        そのまま反映してしまうと追加した項目の設定が消えてしまうので、
-        マージをする
-         */
+          Settingの項目を追加した際に、ユーザーの古いストレージのデータを
+          そのまま反映してしまうと追加した項目の設定が消えてしまうので、
+          マージをする
+           */
       const setting = {
-        ...state.setting,
+        ...this._state.setting,
         ...repositorySetting,
       }
 
-      updateSettingMutation(setting)
+      this.updateSettingMutation(setting)
     }
   }
-
-  return {
-    setting,
-    enableNotificationSoundAction,
-    disableNotificationSoundAction,
-    enableDarkModeAction,
-    enableLightModeAction,
-    updateMainColorAction,
-    initAction,
-  }
 }
-
-export type SettingStore = ReturnType<typeof createSettingStore>

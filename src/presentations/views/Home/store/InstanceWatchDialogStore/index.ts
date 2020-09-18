@@ -1,46 +1,42 @@
 import { Instance } from '@/types'
 import { computed, reactive } from '@vue/composition-api'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   instance: Instance | null
 }
-export const createInstanceWatchDialogStore = () => {
-  const state = reactive<State>({
+@MakeReferenceToWindowObjectInDevelopment('instanceWatchDialogStore')
+export class InstanceWatchDialogStore {
+  private readonly _state = reactive<State>({
     instance: null,
   })
 
-  const instance = computed(() => {
-    return state.instance
+  readonly instance = computed(() => {
+    return this._state.instance
   })
 
-  const isVisible = computed(() => {
-    return state.instance !== null
+  readonly isVisible = computed(() => {
+    return this._state.instance !== null
   })
 
-  const setInstanceMutation = (instance: Instance) => {
-    state.instance = instance
+  @LogBeforeAfter('_state')
+  private setInstanceMutation(instance: Instance) {
+    this._state.instance = instance
   }
 
-  const clearInstanceMutation = () => {
-    state.instance = null
+  @LogBeforeAfter('_state')
+  private clearInstanceMutation() {
+    this._state.instance = null
   }
 
-  const showAction = async (instance: Instance) => {
-    setInstanceMutation(instance)
+  async showAction(instance: Instance) {
+    this.setInstanceMutation(instance)
   }
 
-  const hideAction = async () => {
-    clearInstanceMutation()
-  }
-
-  return {
-    instance,
-    isVisible,
-    showAction,
-    hideAction,
+  async hideAction() {
+    this.clearInstanceMutation()
   }
 }
-
-export type InstanceWatchDialogStore = ReturnType<
-  typeof createInstanceWatchDialogStore
->

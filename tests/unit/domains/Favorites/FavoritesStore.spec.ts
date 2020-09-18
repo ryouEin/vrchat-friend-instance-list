@@ -1,8 +1,8 @@
 import { MockFavoritesRepository } from '../../../mock/MockFavoritesRepository'
 import { Favorite } from '@/types'
-import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import VueCompositionApi from '@vue/composition-api'
 import { createLocalVue } from '@vue/test-utils'
+import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)
@@ -24,7 +24,7 @@ describe('fetchFavoritesAction', () => {
       },
     ]
     const mockFavoritesRepository = new MockFavoritesRepository(dummyFavorites)
-    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
+    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.fetchFavoritesAction()
 
@@ -47,7 +47,7 @@ describe('fetchFavoritesAction', () => {
       },
     ]
     const mockFavoritesRepository = new MockFavoritesRepository(dummyFavorites1)
-    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
+    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.fetchFavoritesAction()
 
@@ -72,7 +72,7 @@ describe('fetchFavoritesAction', () => {
 describe('addFavoriteAction', () => {
   it('指定したユーザーがfavoritesに追加される', async () => {
     const mockFavoritesRepository = new MockFavoritesRepository([])
-    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
+    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.addFavoriteAction('usr_3', 'group_2')
 
@@ -103,7 +103,7 @@ describe('deleteFavoriteAction', () => {
       },
     ]
     const mockFavoritesRepository = new MockFavoritesRepository(dummyFavorites)
-    const favoriteStore = createFavoritesStore(mockFavoritesRepository)
+    const favoriteStore = new FavoritesStore(mockFavoritesRepository)
 
     await favoriteStore.fetchFavoritesAction()
 

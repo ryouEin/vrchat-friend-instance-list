@@ -1,10 +1,10 @@
 import { Friend, Instance, InstancePermission, World } from '@/types'
 import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
 import { InstanceApiResponse } from '@/types/ApiResponse'
-import { createInstancesStore } from '@/domains/Instances/InstancesStore'
 import VueCompositionApi, { computed, reactive } from '@vue/composition-api'
 import { createLocalVue } from '@vue/test-utils'
 import { ICanGetWorldById } from '@/domains/Worlds/WorldsStore'
+import { InstancesStore } from '@/domains/Instances/InstancesStore'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)
@@ -75,7 +75,7 @@ describe('update', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = createMockCanGetWorldById()
-    const instancesStore = createInstancesStore(
+    const instancesStore = new InstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -124,7 +124,7 @@ describe('updateInstanceInfo', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = createMockCanGetWorldById()
-    const instancesStore = createInstancesStore(
+    const instancesStore = new InstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -174,7 +174,7 @@ describe('updateInstanceInfo', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = createMockCanGetWorldById()
-    const instancesStore = createInstancesStore(
+    const instancesStore = new InstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -223,7 +223,7 @@ describe('watchInstance', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = createMockCanGetWorldById()
-    const instancesStore = createInstancesStore(
+    const instancesStore = new InstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -262,7 +262,7 @@ describe('unwatchInstance', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     const mockCanGetWorldById = createMockCanGetWorldById()
-    const instancesStore = createInstancesStore(
+    const instancesStore = new InstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )
@@ -311,7 +311,7 @@ describe('checkWatchingInstanceVacancy', () => {
     }
     const mockInstancesRepository = new MockInstancesRepository()
     mockCanGetWorldById = createMockCanGetWorldById()
-    instancesStore = createInstancesStore(
+    instancesStore = new InstancesStore(
       mockInstancesRepository,
       mockCanGetWorldById
     )

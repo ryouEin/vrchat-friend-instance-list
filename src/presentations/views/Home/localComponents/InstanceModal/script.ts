@@ -14,11 +14,11 @@ export default class InstanceModal extends Vue {
   instanceModalStore!: InstanceModalStore
 
   get isVisible() {
-    return this.instanceModalStore.isVisible
+    return this.instanceModalStore.isVisible.value
   }
 
   get instance() {
-    const location = this.instanceModalStore.location
+    const location = this.instanceModalStore.location.value
     if (location === null) {
       throw new Error('location is null')
     }

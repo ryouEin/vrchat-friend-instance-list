@@ -11,11 +11,11 @@ export default class JoinDialog extends Vue {
   joinDialogStore!: JoinDialogStore
 
   get isVisible() {
-    return this.joinDialogStore.isVisible
+    return this.joinDialogStore.isVisible.value
   }
 
   get location() {
-    return this.joinDialogStore.location
+    return this.joinDialogStore.location.value
   }
 
   join() {

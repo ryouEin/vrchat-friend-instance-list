@@ -1,42 +1,44 @@
-import Vue from 'vue'
+import { computed, reactive } from '@vue/composition-api'
 import { InstanceLocation } from '@/types'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
 
 type State = {
   location: InstanceLocation | null
 }
-@MakeReferenceToWindowObjectInDevelopment('instanceModalStore')
-export class InstanceModalStore {
-  private _state = Vue.observable<State>({
+export const createInstanceModalStore = () => {
+  const state = reactive<State>({
     location: null,
   })
 
-  get location() {
-    return this._state.location
+  const location = computed(() => {
+    return state.location
+  })
+
+  const isVisible = computed(() => {
+    return state.location !== null
+  })
+
+  const setLocationMutation = (location: InstanceLocation) => {
+    state.location = location
   }
 
-  get isVisible() {
-    return this._state.location !== null
+  const clearLocationMutation = () => {
+    state.location = null
   }
 
-  @LogBeforeAfter('_state')
-  private setLocationMutation(location: InstanceLocation) {
-    this._state.location = location
+  const showAction = async (location: InstanceLocation) => {
+    setLocationMutation(location)
   }
 
-  @LogBeforeAfter('_state')
-  private clearLocationMutation() {
-    this._state.location = null
+  const hideAction = async () => {
+    clearLocationMutation()
   }
 
-  async showAction(location: InstanceLocation) {
-    this.setLocationMutation(location)
-  }
-
-  async hideAction() {
-    this.clearLocationMutation()
+  return {
+    location,
+    isVisible,
+    showAction,
+    hideAction,
   }
 }
+
+export type InstanceModalStore = ReturnType<typeof createInstanceModalStore>

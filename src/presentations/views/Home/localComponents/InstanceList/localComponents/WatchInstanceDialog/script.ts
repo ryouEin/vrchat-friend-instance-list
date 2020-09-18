@@ -31,11 +31,11 @@ export default class WatchInstanceDialog extends Vue {
   notifyUserNum = 1
 
   get isVisible() {
-    return this.instanceWatchDialogStore.isVisible
+    return this.instanceWatchDialogStore.isVisible.value
   }
 
   get instance() {
-    const instance = this.instanceWatchDialogStore.instance
+    const instance = this.instanceWatchDialogStore.instance.value
     if (instance === null) {
       throw new Error('instance is null.')
     }

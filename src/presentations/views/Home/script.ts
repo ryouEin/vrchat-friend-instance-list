@@ -10,9 +10,9 @@ import {
   INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY,
   JOIN_DIALOG_STORE_INJECT_KEY,
 } from '@/presentations/views/Home/store/InjectKey'
-import { createJoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
 import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
 import { InstanceWatchDialogStore } from '@/presentations/views/Home/store/InstanceWatchDialogStore'
+import { JoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
 
 @Component({
   components: {
@@ -27,7 +27,7 @@ export default class Home extends Vue {
   instanceModalStore = new InstanceModalStore()
 
   @Provide(JOIN_DIALOG_STORE_INJECT_KEY)
-  joinDialogStore = createJoinDialogStore()
+  joinDialogStore = new JoinDialogStore()
 
   @Provide(INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY)
   instanceWatchDialogStore = new InstanceWatchDialogStore()

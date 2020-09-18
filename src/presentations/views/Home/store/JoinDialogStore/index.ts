@@ -1,44 +1,42 @@
 import { InstanceLocation } from '@/types'
 import { computed, reactive } from '@vue/composition-api'
+import {
+  LogBeforeAfter,
+  MakeReferenceToWindowObjectInDevelopment,
+} from '@/libs/Decorators'
 
 type State = {
   location: InstanceLocation | null
 }
-export const createJoinDialogStore = () => {
-  const state = reactive<State>({
+@MakeReferenceToWindowObjectInDevelopment('joinDialogStore')
+export class JoinDialogStore {
+  private readonly _state = reactive<State>({
     location: null,
   })
 
-  const location = computed(() => {
-    return state.location
+  readonly location = computed(() => {
+    return this._state.location
   })
 
-  const isVisible = computed(() => {
-    return state.location !== null
+  readonly isVisible = computed(() => {
+    return this._state.location !== null
   })
 
-  const setLocationMutation = (location: InstanceLocation) => {
-    state.location = location
+  @LogBeforeAfter('_state')
+  private setLocationMutation(location: InstanceLocation) {
+    this._state.location = location
   }
 
-  const clearLocationMutation = () => {
-    state.location = null
+  @LogBeforeAfter('_state')
+  private clearLocationMutation() {
+    this._state.location = null
   }
 
-  const showAction = async (location: InstanceLocation) => {
-    setLocationMutation(location)
+  async showAction(location: InstanceLocation) {
+    this.setLocationMutation(location)
   }
 
-  const hideAction = async () => {
-    clearLocationMutation()
-  }
-
-  return {
-    location,
-    isVisible,
-    showAction,
-    hideAction,
+  async hideAction() {
+    this.clearLocationMutation()
   }
 }
-
-export type JoinDialogStore = ReturnType<typeof createJoinDialogStore>

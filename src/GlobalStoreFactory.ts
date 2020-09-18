@@ -16,11 +16,11 @@ import {
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
 import { createFriendsStore } from '@/domains/Friends/FriendsStore'
-import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { ToastsStore } from '@/presentations/store/ToastsStore'
+import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -46,7 +46,7 @@ export const createGlobalStore = () => {
 
   const favoritesStore = (() => {
     const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
-    return createFavoritesStore(favoritesRepository)
+    return new FavoritesStore(favoritesRepository)
   })()
 
   const friendsStore = (() => {

@@ -30,7 +30,7 @@ export default class InstanceListItem extends Vue {
 
   get world(): World | undefined {
     if (this.showWorldInfo) {
-      return this.$domainStore.worldsStore.world.value(this.worldId)
+      return this.$store.worldsStore.world.value(this.worldId)
     }
 
     return undefined
@@ -71,7 +71,7 @@ export default class InstanceListItem extends Vue {
   async init() {
     this.isLoading = true
     if (this.showWorldInfo && this.world === undefined) {
-      await this.$domainStore.worldsStore
+      await this.$store.worldsStore
         .fetchWorldAction(this.worldId)
         .finally(() => {
           this.isLoading = false

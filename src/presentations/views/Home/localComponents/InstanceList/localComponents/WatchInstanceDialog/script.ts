@@ -44,9 +44,7 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   get world() {
-    const world = this.$domainStore.worldsStore.world.value(
-      this.instance.location
-    )
+    const world = this.$store.worldsStore.world.value(this.instance.location)
     if (world === undefined) {
       throw new Error('world is null.')
     }
@@ -93,11 +91,11 @@ export default class WatchInstanceDialog extends Vue {
 
     const worldName = this.world.name
     const location = this.instance.location
-    await this.$domainStore.instancesStore.watchInstanceAction({
+    await this.$store.instancesStore.watchInstanceAction({
       location: this.location,
       notifyUserNum: this.notifyUserNum,
       onFindVacancy: async () => {
-        await this.$domainStore.notificationsStore.pushNotificationAction({
+        await this.$store.notificationsStore.pushNotificationAction({
           text: `${worldName}に空きができました。`,
           date: Date.now(),
           onClick: async () => {

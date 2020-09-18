@@ -89,7 +89,7 @@ export default class App extends Vue {
 
   startCheckWatchingInstances() {
     setInterval(async () => {
-      await this.$domainStore.instancesStore.checkWatchingInstancesAction()
+      await this.$store.instancesStore.checkWatchingInstancesAction()
     }, INSTANCE_WATCH_INTERVAL)
   }
 
@@ -130,8 +130,8 @@ export default class App extends Vue {
     this.judgeDevice()
 
     fullLoaderStore.showAction()
-    await this.$domainStore.settingStore.initAction()
-    await this.$domainStore.worldsStore.initAction().finally(() => {
+    await this.$store.settingStore.initAction()
+    await this.$store.worldsStore.initAction().finally(() => {
       fullLoaderStore.hideAction()
     })
 

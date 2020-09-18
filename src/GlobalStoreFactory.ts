@@ -21,10 +21,6 @@ import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
 
 const network = new Network()
 const vrchatApi = new VRChatApi(network, error => {
-  // TODO
-  //  ここは一応ドメイン層だけど、UI層の処理が入り込んでくることに違和感
-  //  ただ他に共通エラーダイアログを表示するいい方法が思い浮かばないので一旦ここで
-  //  （ファクトリなので、ドメイン層ではないという感じも
   if (error instanceof VRChatApiUnauthorizedError) {
     showAuthorizationErrorDialog()
   } else {
@@ -32,7 +28,7 @@ const vrchatApi = new VRChatApi(network, error => {
   }
 })
 
-export const createDomainStore = () => {
+export const createGlobalStore = () => {
   const favoritesStore = (() => {
     const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
     return createFavoritesStore(favoritesRepository)
@@ -76,4 +72,4 @@ export const createDomainStore = () => {
   }
 }
 
-export type DomainStore = ReturnType<typeof createDomainStore>
+export type GlobalStore = ReturnType<typeof createGlobalStore>

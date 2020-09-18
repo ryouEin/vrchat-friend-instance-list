@@ -23,7 +23,7 @@ export default class InstanceModal extends Vue {
       throw new Error('location is null')
     }
 
-    return this.$domainStore.instancesStore.instanceByLocation.value(location)
+    return this.$store.instancesStore.instanceByLocation.value(location)
   }
 
   get friends() {
@@ -32,9 +32,7 @@ export default class InstanceModal extends Vue {
       throw new Error('instance is undefined.')
     }
 
-    return this.$domainStore.friendsStore.friendsByLocation.value(
-      instance.location
-    )
+    return this.$store.friendsStore.friendsByLocation.value(instance.location)
   }
 
   async hide() {

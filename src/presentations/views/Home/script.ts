@@ -37,11 +37,11 @@ export default class Home extends Vue {
   isVisibleSideMenu = false
 
   get friends(): Friend[] {
-    return this.$domainStore.friendsStore.friends.value
+    return this.$store.friendsStore.friends.value
   }
 
   get instances(): Instance[] {
-    return this.$domainStore.instancesStore.instances.value
+    return this.$store.instancesStore.instances.value
   }
 
   get showOnlineFriendsListLoading() {
@@ -66,11 +66,11 @@ export default class Home extends Vue {
 
   async fetchData() {
     await Promise.all([
-      this.$domainStore.friendsStore.fetchFriendsAction(),
-      this.$domainStore.favoritesStore.fetchFavoritesAction(),
+      this.$store.friendsStore.fetchFriendsAction(),
+      this.$store.favoritesStore.fetchFavoritesAction(),
     ])
-    await this.$domainStore.instancesStore.updateAction(
-      this.$domainStore.friendsStore.friends.value
+    await this.$store.instancesStore.updateAction(
+      this.$store.friendsStore.friends.value
     )
   }
 

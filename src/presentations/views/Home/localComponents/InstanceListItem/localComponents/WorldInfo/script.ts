@@ -71,7 +71,7 @@ export default class WorldInfo extends Vue {
 
     this.fetchUserNumButtonDisabled = true
     this.isFetchingUserNum = true
-    await this.$domainStore.instancesStore
+    await this.$store.instancesStore
       .updateInstanceInfoAction(this.location)
       .finally(() => {
         this.isFetchingUserNum = false

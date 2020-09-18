@@ -26,7 +26,7 @@ export default class WatchInstanceButton extends Vue {
   }
 
   async endWatch() {
-    await this.$domainStore.instancesStore.unwatchInstanceAction(this.location)
+    await this.$store.instancesStore.unwatchInstanceAction(this.location)
   }
 
   async showDialog() {

@@ -16,7 +16,7 @@ import VueVirtualScroller from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import { VueHammer } from 'vue2-hammer'
 import VueCompositionAPI from '@vue/composition-api'
-import { createDomainStore } from '@/domains/DomainStoreFactory'
+import { createGlobalStore } from '@/GlobalStoreFactory'
 import { ColorManager } from '@/presentations/Colors'
 
 Vue.config.productionTip = false
@@ -27,13 +27,13 @@ Vue.use(VueHammer)
 Vue.use(VueCompositionAPI)
 
 // ストア初期化
-const domainStore = createDomainStore()
-Vue.prototype.$domainStore = domainStore
+const store = createGlobalStore()
+Vue.prototype.$store = store
 
 // TODO: カラーマネージャまでグローバルに通すのは行儀が悪い気がする
 //  他にいい方法が思い浮かばなかったのでこうしてるが、改善方法さがして修正すること
 // カラーマネージャ
-Vue.prototype.$colorManager = new ColorManager(domainStore.settingStore)
+Vue.prototype.$colorManager = new ColorManager(store.settingStore)
 
 // グローバルコンポーネント登録
 Vue.component('g-Button', Button)

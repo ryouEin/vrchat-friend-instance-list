@@ -25,7 +25,7 @@ export default class OnlineFriendsListItem extends Vue {
   }
 
   get instance() {
-    return this.$domainStore.instancesStore.instanceByLocation.value(
+    return this.$store.instancesStore.instanceByLocation.value(
       this.friend.location
     )
   }

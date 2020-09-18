@@ -24,7 +24,7 @@ export default class InstanceList extends Vue {
         return {
           id: instance.location,
           instance,
-          friends: this.$domainStore.friendsStore.friendsByLocation.value(
+          friends: this.$store.friendsStore.friendsByLocation.value(
             instance.location
           ),
         }

@@ -24,9 +24,7 @@ export default class NotificationButton extends Vue {
   }
 
   get notifications() {
-    return [
-      ...this.$domainStore.notificationsStore.notifications.value,
-    ].reverse()
+    return [...this.$store.notificationsStore.notifications.value].reverse()
   }
 
   showMenu() {

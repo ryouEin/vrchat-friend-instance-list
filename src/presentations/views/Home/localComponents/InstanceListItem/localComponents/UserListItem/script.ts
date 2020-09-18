@@ -51,7 +51,7 @@ export default class UserListItem extends Vue {
     ]
 
     return items.map(item => {
-      const currentNum = this.$domainStore.favoritesStore.favorites.value.filter(
+      const currentNum = this.$store.favoritesStore.favorites.value.filter(
         favorite => favorite.tags.includes(item.tag)
       ).length
 
@@ -67,7 +67,7 @@ export default class UserListItem extends Vue {
 
   async favorite(favoriteTag: FavoriteTag) {
     this.isLoadingFavorite = true
-    await this.$domainStore.favoritesStore
+    await this.$store.favoritesStore
       .addFavoriteAction(this.friend.id, favoriteTag)
       .catch(error => {
         let content = ''
@@ -91,7 +91,7 @@ export default class UserListItem extends Vue {
       throw new Error('cant delete favorite for not favorite user')
     }
     this.isLoadingFavorite = true
-    await this.$domainStore.favoritesStore
+    await this.$store.favoritesStore
       .deleteFavoriteAction(this.friend.favorite.id)
       .catch(error => {
         toastsStore.showAction({

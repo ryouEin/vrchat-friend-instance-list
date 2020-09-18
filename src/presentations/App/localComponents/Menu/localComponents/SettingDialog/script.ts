@@ -8,27 +8,27 @@ export default class SettingDialog extends Vue {
   value!: boolean
 
   get setting() {
-    return this.$domainStore.settingStore.setting.value
+    return this.$store.settingStore.setting.value
   }
 
   async onChangeEnableNotificationSound(isEnabled: boolean) {
     if (isEnabled) {
-      await this.$domainStore.settingStore.enableNotificationSoundAction()
+      await this.$store.settingStore.enableNotificationSoundAction()
     } else {
-      await this.$domainStore.settingStore.disableNotificationSoundAction()
+      await this.$store.settingStore.disableNotificationSoundAction()
     }
   }
 
   async onChangeDarkMode(isEnabled: boolean) {
     if (isEnabled) {
-      await this.$domainStore.settingStore.enableDarkModeAction()
+      await this.$store.settingStore.enableDarkModeAction()
     } else {
-      await this.$domainStore.settingStore.enableLightModeAction()
+      await this.$store.settingStore.enableLightModeAction()
     }
   }
 
   async onChangeMainColor(color: Color) {
-    await this.$domainStore.settingStore.updateMainColorAction(color)
+    await this.$store.settingStore.updateMainColorAction(color)
   }
 
   hideSettingDialog() {

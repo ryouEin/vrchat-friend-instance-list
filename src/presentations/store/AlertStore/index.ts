@@ -1,44 +1,46 @@
-import Vue from 'vue'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
 import { AlertProps } from '@/presentations/App/localComponents/Alert/script'
+import { computed, reactive } from '@vue/composition-api'
 
 type State = {
   alerts: AlertProps[]
 }
-@MakeReferenceToWindowObjectInDevelopment('alertStore')
-export class AlertStore {
-  private _state = Vue.observable<State>({
+export const createAlertStore = () => {
+  const state = reactive<State>({
     alerts: [],
   })
 
-  get alerts() {
-    return this._state.alerts
+  const alerts = computed<AlertProps[]>(() => {
+    return state.alerts
+  })
+
+  const alert = computed<AlertProps | undefined>(() => {
+    if (state.alerts.length <= 0) return undefined
+
+    return state.alerts[0]
+  })
+
+  const pushAlertMutation = (alert: AlertProps) => {
+    state.alerts.push(alert)
   }
 
-  get alert(): AlertProps | undefined {
-    if (this.alerts.length <= 0) return undefined
-
-    return this.alerts[0]
+  const shiftAlertMutation = () => {
+    state.alerts.shift()
   }
 
-  @LogBeforeAfter('_state')
-  private pushAlertMutation(alert: AlertProps) {
-    this._state.alerts.push(alert)
+  const showAction = async (alert: AlertProps) => {
+    pushAlertMutation(alert)
   }
 
-  @LogBeforeAfter('_state')
-  private shiftAlertMutation() {
-    this._state.alerts.shift()
+  const hideAction = async () => {
+    shiftAlertMutation()
   }
 
-  async showAction(alert: AlertProps) {
-    this.pushAlertMutation(alert)
-  }
-
-  async hideAction() {
-    this.shiftAlertMutation()
+  return {
+    alerts,
+    alert,
+    showAction,
+    hideAction,
   }
 }
+
+export type AlertStore = ReturnType<typeof createAlertStore>

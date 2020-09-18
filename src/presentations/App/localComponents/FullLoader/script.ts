@@ -6,6 +6,6 @@ import Vue from 'vue'
 })
 export default class FullLoader extends Vue {
   get isVisible() {
-    return this.$store.fullLoaderStore.isVisible
+    return this.$store.fullLoaderStore.isVisible.value
   }
 }

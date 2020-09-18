@@ -18,21 +18,21 @@ import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavori
 import { createFriendsStore } from '@/domains/Friends/FriendsStore'
 import { createFavoritesStore } from '@/domains/Favorites/FavoritesStore'
 import { createWorldsStore } from '@/domains/Worlds/WorldsStore'
-import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
-import { ToastsStore } from '@/presentations/store/ToastsStore'
-import { AlertStore } from '@/presentations/store/AlertStore'
+import { createFullLoaderStore } from '@/presentations/store/FullLoaderStore'
+import { createToastsStore } from '@/presentations/store/ToastsStore'
+import { createAlertStore } from '@/presentations/store/AlertStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
-    return new FullLoaderStore()
+    return createFullLoaderStore()
   })()
 
   const toastsStore = (() => {
-    return new ToastsStore()
+    return createToastsStore()
   })()
 
   const alertStore = (() => {
-    return new AlertStore()
+    return createAlertStore()
   })()
 
   const network = new Network()

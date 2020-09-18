@@ -1,34 +1,27 @@
-import Vue from 'vue'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
+import { computed, reactive } from '@vue/composition-api'
 import { ToastProps } from '@/presentations/App/localComponents/Toasts/localComponent/script'
 
 type State = {
   toasts: (ToastProps & { isVisible: boolean })[]
 }
-@MakeReferenceToWindowObjectInDevelopment('toastsStore')
-export class ToastsStore {
-  private _state = Vue.observable<State>({
+export const createToastsStore = () => {
+  const state = reactive<State>({
     toasts: [],
   })
 
-  get toasts() {
-    return this._state.toasts
-  }
+  const toasts = computed(() => {
+    return state.toasts
+  })
 
-  @LogBeforeAfter('_state')
-  private addToastMutation(toast: ToastProps) {
-    this._state.toasts.push({
+  const addToastMutation = (toast: ToastProps) => {
+    state.toasts.push({
       ...toast,
       isVisible: true,
     })
   }
 
-  @LogBeforeAfter('_state')
-  private removeToastMutation(index: number) {
-    this._state.toasts = this._state.toasts.map((toast, currentIndex) => {
+  const removeToastMutation = (index: number) => {
+    state.toasts = state.toasts.map((toast, currentIndex) => {
       if (currentIndex === index) {
         return {
           ...toast,
@@ -40,11 +33,19 @@ export class ToastsStore {
     })
   }
 
-  async showAction(toast: ToastProps) {
-    this.addToastMutation(toast)
+  const showAction = async (toast: ToastProps) => {
+    addToastMutation(toast)
   }
 
-  async hideAction(index: number) {
-    this.removeToastMutation(index)
+  const hideAction = async (index: number) => {
+    removeToastMutation(index)
+  }
+
+  return {
+    toasts,
+    showAction,
+    hideAction,
   }
 }
+
+export type ToastsStore = ReturnType<typeof createToastsStore>

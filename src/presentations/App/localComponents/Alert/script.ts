@@ -22,7 +22,7 @@ export type CustomButtonOption = {
 })
 export default class Alert extends Vue {
   get props(): AlertProps | undefined {
-    return this.$store.alertStore.alert
+    return this.$store.alertStore.alert.value
   }
 
   get showCloseButton() {

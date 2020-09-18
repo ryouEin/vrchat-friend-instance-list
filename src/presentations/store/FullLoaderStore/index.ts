@@ -1,37 +1,38 @@
-import Vue from 'vue'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
+import { computed, reactive } from '@vue/composition-api'
 
 type State = {
   counter: number
 }
-@MakeReferenceToWindowObjectInDevelopment('fullLoaderStore')
-export class FullLoaderStore {
-  private _state = Vue.observable<State>({
+export const createFullLoaderStore = () => {
+  const state = reactive<State>({
     counter: 0,
   })
 
-  get isVisible() {
-    return this._state.counter > 0
+  const isVisible = computed<boolean>(() => {
+    return state.counter > 0
+  })
+
+  const incrementCounterMutation = () => {
+    state.counter++
   }
 
-  @LogBeforeAfter('_state')
-  private incrementCounterMutation() {
-    this._state.counter++
+  const decrementCounterMutation = () => {
+    state.counter--
   }
 
-  @LogBeforeAfter('_state')
-  private decrementCounterMutation() {
-    this._state.counter--
+  const showAction = async () => {
+    incrementCounterMutation()
   }
 
-  async showAction() {
-    this.incrementCounterMutation()
+  const hideAction = async () => {
+    decrementCounterMutation()
   }
 
-  async hideAction() {
-    this.decrementCounterMutation()
+  return {
+    isVisible,
+    showAction,
+    hideAction,
   }
 }
+
+export type FullLoaderStore = ReturnType<typeof createFullLoaderStore>

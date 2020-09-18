@@ -11,7 +11,7 @@ const TOAST_WIDTH = 300
 })
 export default class Toasts extends Vue {
   get toasts() {
-    return this.$store.toastsStore.toasts
+    return this.$store.toastsStore.toasts.value
   }
 
   get rootStyle() {

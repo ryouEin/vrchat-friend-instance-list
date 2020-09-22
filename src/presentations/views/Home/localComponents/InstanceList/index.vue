@@ -25,7 +25,7 @@
           <DynamicScrollerItem
             :item="item"
             :active="active"
-            :size-dependencies="[item.friends.length]"
+            :size-dependencies="[item]"
             :data-index="index"
           >
             <div class="item">

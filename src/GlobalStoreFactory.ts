@@ -39,9 +39,9 @@ export const createGlobalStore = () => {
   const vrchatApi = new VRChatApi(network, error => {
     if (error instanceof VRChatApiUnauthorizedError) {
       showAuthorizationErrorDialog(alertStore)
-    } else {
-      throw error
     }
+
+    throw error
   })
 
   const favoritesStore = (() => {

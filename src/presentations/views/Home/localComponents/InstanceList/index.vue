@@ -19,6 +19,12 @@
                 Favoriteユーザのみ表示
               </div>
             </div>
+            <div class="sortGroup">
+              <div class="sortGroup_title">ソート</div>
+              <div class="sortGroup_select">
+                <g-Select :items="orderSelectItems" v-model="order" />
+              </div>
+            </div>
           </div>
         </template>
         <template v-slot="{ item, index, active }">

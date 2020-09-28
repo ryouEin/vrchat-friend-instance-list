@@ -10,7 +10,7 @@
   height: 75px;
   cursor: pointer;
   border-radius: 9999px;
-  box-shadow: rgba(var(--blackColor), 0.2) 0 0 5px 1px;
+  box-shadow: $strongBoxShadow;
   transition: filter $mainAnimationDuration;
 
   &:hover {

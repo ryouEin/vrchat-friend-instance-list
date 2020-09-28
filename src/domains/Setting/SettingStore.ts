@@ -1,27 +1,27 @@
-import Vue from 'vue'
+import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
+import { computed, reactive } from '@vue/composition-api'
 import { Setting } from '@/types'
+import { DEFAULT_SETTING } from '@/config/settings'
+import { Color, Theme } from '@/presentations/Colors'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { DEFAULT_SETTING } from '@/config/settings'
-import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
-import { Color, Theme } from '@/presentations/Colors'
 
 type State = {
   setting: Setting
 }
 @MakeReferenceToWindowObjectInDevelopment('settingStore')
 export class SettingStore {
-  private _state = Vue.observable<State>({
+  constructor(private readonly _settingRepository: ISettingRepository) {}
+
+  private readonly _state = reactive<State>({
     setting: DEFAULT_SETTING,
   })
 
-  constructor(private readonly _settingRepository: ISettingRepository) {}
-
-  get setting() {
+  readonly setting = computed<Setting>(() => {
     return this._state.setting
-  }
+  })
 
   @LogBeforeAfter('_state')
   private updateEnableNotificationSoundMutation(isEnabled: boolean) {
@@ -46,31 +46,31 @@ export class SettingStore {
   async enableNotificationSoundAction() {
     this.updateEnableNotificationSoundMutation(true)
 
-    await this._settingRepository.updateSetting(this.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
   async disableNotificationSoundAction() {
     this.updateEnableNotificationSoundMutation(false)
 
-    await this._settingRepository.updateSetting(this.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
   async enableDarkModeAction() {
     this.updateThemeMutation('dark')
 
-    await this._settingRepository.updateSetting(this.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
   async enableLightModeAction() {
     this.updateThemeMutation('light')
 
-    await this._settingRepository.updateSetting(this.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
   async updateMainColorAction(color: Color) {
     this.updateMainColorMutation(color)
 
-    await this._settingRepository.updateSetting(this.setting)
+    await this._settingRepository.updateSetting(this._state.setting)
   }
 
   async initAction() {
@@ -78,16 +78,16 @@ export class SettingStore {
 
     if (repositorySetting !== undefined) {
       /*
-      Settingの項目を追加した際に、ユーザーの古いストレージのデータを
-      そのまま反映してしまうと追加した項目の設定が消えてしまうので、
-      マージをする
-       */
+          Settingの項目を追加した際に、ユーザーの古いストレージのデータを
+          そのまま反映してしまうと追加した項目の設定が消えてしまうので、
+          マージをする
+           */
       const setting = {
-        ...this.setting,
+        ...this._state.setting,
         ...repositorySetting,
       }
 
-      await this.updateSettingMutation(setting)
+      this.updateSettingMutation(setting)
     }
   }
 }

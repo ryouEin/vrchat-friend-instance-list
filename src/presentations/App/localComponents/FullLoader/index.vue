@@ -1,7 +1,7 @@
 <template>
   <transition name="t-fade">
-    <div v-if="visible" class="c-fullLoader">
-      <g-Spinner />
+    <div v-if="isVisible" class="c-fullLoader">
+      <g-Spinner color="white" />
     </div>
   </transition>
 </template>

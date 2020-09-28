@@ -3,7 +3,6 @@ import Vue from 'vue'
 import UserList from './localComponents/UserList/index.vue'
 import { Friend, Instance, InstancePermission, World } from '@/types'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
-import { worldsStore } from '@/domains/DomainStoreFactory'
 import { UserListItemPropFriend } from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/UserListItem/script'
 
 @Component({
@@ -31,7 +30,7 @@ export default class InstanceListItem extends Vue {
 
   get world(): World | undefined {
     if (this.showWorldInfo) {
-      return worldsStore.world(this.worldId)
+      return this.$store.worldsStore.world.value(this.worldId)
     }
 
     return undefined
@@ -72,9 +71,11 @@ export default class InstanceListItem extends Vue {
   async init() {
     this.isLoading = true
     if (this.showWorldInfo && this.world === undefined) {
-      await worldsStore.fetchWorldAction(this.worldId).finally(() => {
-        this.isLoading = false
-      })
+      await this.$store.worldsStore
+        .fetchWorldAction(this.worldId)
+        .finally(() => {
+          this.isLoading = false
+        })
     }
   }
 

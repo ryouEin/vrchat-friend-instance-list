@@ -1,6 +1,5 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { settingStore } from '@/domains/DomainStoreFactory'
 import { Color } from '@/presentations/Colors'
 
 @Component({})
@@ -9,27 +8,27 @@ export default class SettingDialog extends Vue {
   value!: boolean
 
   get setting() {
-    return settingStore.setting
+    return this.$store.settingStore.setting.value
   }
 
   async onChangeEnableNotificationSound(isEnabled: boolean) {
     if (isEnabled) {
-      await settingStore.enableNotificationSoundAction()
+      await this.$store.settingStore.enableNotificationSoundAction()
     } else {
-      await settingStore.disableNotificationSoundAction()
+      await this.$store.settingStore.disableNotificationSoundAction()
     }
   }
 
   async onChangeDarkMode(isEnabled: boolean) {
     if (isEnabled) {
-      await settingStore.enableDarkModeAction()
+      await this.$store.settingStore.enableDarkModeAction()
     } else {
-      await settingStore.enableLightModeAction()
+      await this.$store.settingStore.enableLightModeAction()
     }
   }
 
   async onChangeMainColor(color: Color) {
-    await settingStore.updateMainColorAction(color)
+    await this.$store.settingStore.updateMainColorAction(color)
   }
 
   hideSettingDialog() {

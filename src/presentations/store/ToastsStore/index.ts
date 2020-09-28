@@ -1,22 +1,22 @@
-import Vue from 'vue'
+import { computed, reactive } from '@vue/composition-api'
+import { ToastProps } from '@/presentations/App/localComponents/Toasts/localComponent/script'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { ToastProps } from '@/presentations/App/localComponents/Toasts/localComponent/script'
 
 type State = {
   toasts: (ToastProps & { isVisible: boolean })[]
 }
 @MakeReferenceToWindowObjectInDevelopment('toastsStore')
 export class ToastsStore {
-  private _state = Vue.observable<State>({
+  private readonly _state = reactive<State>({
     toasts: [],
   })
 
-  get toasts() {
+  readonly toasts = computed(() => {
     return this._state.toasts
-  }
+  })
 
   @LogBeforeAfter('_state')
   private addToastMutation(toast: ToastProps) {

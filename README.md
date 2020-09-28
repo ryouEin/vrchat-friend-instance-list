@@ -9,6 +9,22 @@
 1. Releasesに作成したxpiファイルをアップロード
 1. `npm run ff_addon_lint:checkUpdateLinkValidity` で、update_linkが有効であることを確認する
 
+## Storeに関して
+
+Storeは以下のメリットを考えCompositionAPIで作成している
+
++ DI可能
++ 算出プロパティが機能する（キャッシュが効く
+
+アプリ全体で使用するStoreは `GlobalStoreFactory` にて実体を生成すること。  
+`this.$store.exampleStore` みたいな感じに使えるようになる。
+
+特定画面でしか使用しないStoreはスコープを抑えるために、その画面で実体を生成し `provide` すること。  
+使用する際は必要なコンポーネントで `inject` して使用する。
+
+あと特定画面でしか使用しないStoreは必ず各画面のルートコンポーネントで `provide` している
+（これはなんとなくでしかないが、スコープを縮めたいからと言って色々な箇所で `provide` しているとコードの予測が付きづらくなる気がしたので。好みのレベルな気もする。）
+
 ## カスタムエラー型
 
 以下のような形で使用できる `BaseError` クラスを用意しているので、カスタムエラー型が必要な場合はこれを使うこと

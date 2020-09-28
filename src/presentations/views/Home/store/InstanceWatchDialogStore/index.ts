@@ -1,36 +1,26 @@
 import { Instance } from '@/types'
-import Vue from 'vue'
+import { computed, reactive } from '@vue/composition-api'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { worldsStore } from '@/domains/DomainStoreFactory'
 
 type State = {
   instance: Instance | null
 }
 @MakeReferenceToWindowObjectInDevelopment('instanceWatchDialogStore')
 export class InstanceWatchDialogStore {
-  private _state = Vue.observable<State>({
+  private readonly _state = reactive<State>({
     instance: null,
   })
 
-  get instance() {
+  readonly instance = computed(() => {
     return this._state.instance
-  }
+  })
 
-  get world() {
-    const instance = this.instance
-    if (instance === null) {
-      return undefined
-    }
-
-    return worldsStore.world(instance.worldId)
-  }
-
-  get isVisible() {
+  readonly isVisible = computed(() => {
     return this._state.instance !== null
-  }
+  })
 
   @LogBeforeAfter('_state')
   private setInstanceMutation(instance: Instance) {
@@ -38,7 +28,7 @@ export class InstanceWatchDialogStore {
   }
 
   @LogBeforeAfter('_state')
-  clearInstanceMutation() {
+  private clearInstanceMutation() {
     this._state.instance = null
   }
 

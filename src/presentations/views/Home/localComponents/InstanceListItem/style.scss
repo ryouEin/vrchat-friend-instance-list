@@ -1,5 +1,6 @@
 .c-instanceListItem {
   background-color: rgb(var(--backColor));
+  box-shadow: $weakBoxShadow;
 
   @include mqPc {
     display: flex;

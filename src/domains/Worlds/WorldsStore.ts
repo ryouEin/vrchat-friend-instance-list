@@ -1,13 +1,13 @@
+import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
+import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 import { World } from '@/types'
+import { calcWorldHardCapacity, getWorld } from '@/domains/Worlds/WorldsService'
 import * as ApiResponse from '@/types/ApiResponse'
-import Vue from 'vue'
+import { computed, ComputedRef, reactive } from '@vue/composition-api'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { calcWorldHardCapacity, getWorld } from '@/domains/Worlds/WorldsService'
-import { INetworkWorldsRepository } from '@/infras/Worlds/INetworkWorldsRepository'
-import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
 
 const makeWorldFromApiResponse: (
   world: ApiResponse.WorldApiResponse
@@ -29,7 +29,7 @@ const makeWorldFromApiResponse: (
 //  ・前述の「get world()」のみinterface化した行為は正しいのか
 //  ・正しいとして、こんなinterfaceの命名でいいのか
 export interface ICanGetWorldById {
-  world: (id: string) => World | undefined
+  world: ComputedRef<(id: string) => World | undefined>
 }
 
 type State = {
@@ -37,24 +37,24 @@ type State = {
 }
 @MakeReferenceToWindowObjectInDevelopment('worldsStore')
 export class WorldsStore implements ICanGetWorldById {
-  private _state = Vue.observable<State>({
-    worlds: [],
-  })
-
   constructor(
     private readonly _networkWorldsRepository: INetworkWorldsRepository,
     private readonly _cacheWorldsRepository: ICacheWorldsRepository
   ) {}
 
-  get worlds() {
-    return this._state.worlds
-  }
+  private readonly _state = reactive<State>({
+    worlds: [],
+  })
 
-  get world() {
+  readonly worlds = computed(() => {
+    return this._state.worlds
+  })
+
+  readonly world = computed(() => {
     return (id: string) => {
-      return this.worlds.find(world => world.id === id)
+      return this._state.worlds.find(world => world.id === id)
     }
-  }
+  })
 
   @LogBeforeAfter('_state')
   private setWorldsMutation(worlds: ApiResponse.WorldApiResponse[]) {

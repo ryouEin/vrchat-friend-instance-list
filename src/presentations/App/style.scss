@@ -15,7 +15,7 @@
     padding: 0 0 0 10px;
     color: rgb(var(--whiteColor));
     background-color: rgb(var(--mainColor));
-    box-shadow: rgba(var(--blackColor), 0.2) 0 0 5px 0;
+    box-shadow: $mainBoxShadow;
 
     .appTitle {
       flex: 0 0;

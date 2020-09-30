@@ -10,7 +10,7 @@ import { sortUsers } from '@/shame/sortUsers'
   },
 })
 export default class OnlineFriendsList extends Vue {
-  isVisibleToTop = false
+  isInitialized = false
 
   @Prop()
   private friends!: Friend[]
@@ -28,21 +28,7 @@ export default class OnlineFriendsList extends Vue {
     return scroller.$el as HTMLElement
   }
 
-  toTop() {
-    this.scrollerElement.scrollTo({ top: 0 })
-  }
-
-  updateToTop() {
-    const scrollTop = this.scrollerElement.scrollTop
-
-    this.isVisibleToTop = scrollTop > 100
-  }
-
   mounted() {
-    this.scrollerElement.addEventListener('scroll', this.updateToTop)
-  }
-
-  beforeDestroy() {
-    this.scrollerElement.removeEventListener('scroll', this.updateToTop)
+    this.isInitialized = true
   }
 }

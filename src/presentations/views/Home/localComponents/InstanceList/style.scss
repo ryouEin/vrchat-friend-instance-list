@@ -5,7 +5,7 @@
 .scroller {
   box-sizing: border-box;
   height: 100%;
-  padding: 30px 30px 0;
+  padding-top: 30px;
 
   // hammer.jsの横スワイプを検知するために必要
   touch-action: pan-y;
@@ -28,9 +28,16 @@
 }
 
 .filterArea {
-  padding-bottom: 10px;
-  margin-bottom: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 30px 35px;
   border-bottom: 1px solid rgb(var(--grayColor));
+
+  > * {
+    padding-bottom: 10px;
+  }
 }
 
 .toggleButtonGroup {
@@ -49,22 +56,27 @@
   }
 }
 
+.sortGroup {
+  display: flex;
+  align-items: center;
+
+  .sortGroup_title {
+    margin-right: 10px;
+    font-size: 20px;
+  }
+
+  .sortGroup_select {
+
+  }
+}
+
 .item {
-  padding-bottom: 30px;
+  padding: 15px 30px 15px;
 }
 
 .toTop {
   position: fixed;
   bottom: 0;
   left: 50%;
-  width: 100px;
-  margin-left: -50px;
-  text-align: center;
-  cursor: pointer;
-  background-color: rgba(var(--grayColor), 0.8);
-  border-radius: 10px 10px 0 0;
-
-  &:hover {
-    filter: $hoverFilter;
-  }
+  transform: translateX(-50%);
 }

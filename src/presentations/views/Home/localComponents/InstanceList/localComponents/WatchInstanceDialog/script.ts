@@ -1,13 +1,11 @@
-import { Component } from 'vue-property-decorator'
+import { Component, Inject } from 'vue-property-decorator'
 import Vue from 'vue'
+import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
 import {
-  instanceModalStore,
-  instanceWatchDialogStore,
-} from '@/presentations/ui_store/UiStoreFactory'
-import {
-  instancesStore,
-  notificationsStore,
-} from '@/domains/DomainStoreFactory'
+  INSTANCE_MODAL_STORE_INJECT_KEY,
+  INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY,
+} from '@/presentations/views/Home/store/InjectKey'
+import { InstanceWatchDialogStore } from '@/presentations/views/Home/store/InstanceWatchDialogStore'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -23,14 +21,20 @@ const generateSelectItems = (count: number) => {
 
 @Component
 export default class WatchInstanceDialog extends Vue {
+  @Inject(INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY)
+  instanceWatchDialogStore!: InstanceWatchDialogStore
+
+  @Inject(INSTANCE_MODAL_STORE_INJECT_KEY)
+  instanceModalStore!: InstanceModalStore
+
   notifyUserNum = 1
 
   get isVisible() {
-    return instanceWatchDialogStore.isVisible
+    return this.instanceWatchDialogStore.isVisible.value
   }
 
   get instance() {
-    const instance = instanceWatchDialogStore.instance
+    const instance = this.instanceWatchDialogStore.instance.value
     if (instance === null) {
       throw new Error('instance is null.')
     }
@@ -39,7 +43,7 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   get world() {
-    const world = instanceWatchDialogStore.world
+    const world = this.$store.worldsStore.world.value(this.instance.worldId)
     if (world === undefined) {
       throw new Error('world is null.')
     }
@@ -64,7 +68,7 @@ export default class WatchInstanceDialog extends Vue {
   async startWatch() {
     const permission = Notification.permission
     if (permission === 'default') {
-      this.$alert({
+      this.$store.alertStore.showAction({
         title: '通知の許可が必要です',
         content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
 
@@ -75,7 +79,7 @@ export default class WatchInstanceDialog extends Vue {
         },
       })
     } else if (permission === 'denied') {
-      this.$alert({
+      this.$store.alertStore.showAction({
         title: '通知の許可が必要です',
         content: `デスクトップに通知を届けるには、通知の許可をして頂く必要があります。
 
@@ -86,15 +90,15 @@ export default class WatchInstanceDialog extends Vue {
 
     const worldName = this.world.name
     const location = this.instance.location
-    await instancesStore.watchInstanceAction({
+    await this.$store.instancesStore.watchInstanceAction({
       location: this.location,
       notifyUserNum: this.notifyUserNum,
       onFindVacancy: async () => {
-        await notificationsStore.pushNotificationAction({
+        await this.$store.notificationsStore.pushNotificationAction({
           text: `${worldName}に空きができました。`,
           date: Date.now(),
           onClick: async () => {
-            await instanceModalStore.showAction(location)
+            await this.instanceModalStore.showAction(location)
           },
         })
       },
@@ -102,7 +106,7 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   async hideDialog() {
-    await instanceWatchDialogStore.hideAction()
+    await this.instanceWatchDialogStore.hideAction()
   }
 
   async onClickWatchStart() {

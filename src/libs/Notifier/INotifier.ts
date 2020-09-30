@@ -1,3 +1,3 @@
-export interface INotification {
+export interface INotifier {
   notify(message: string): void
 }

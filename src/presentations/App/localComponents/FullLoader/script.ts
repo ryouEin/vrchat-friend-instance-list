@@ -5,13 +5,7 @@ import Vue from 'vue'
   components: {},
 })
 export default class FullLoader extends Vue {
-  visible = false
-
-  show() {
-    this.visible = true
-  }
-
-  hide() {
-    this.visible = false
+  get isVisible() {
+    return this.$store.fullLoaderStore.isVisible.value
   }
 }

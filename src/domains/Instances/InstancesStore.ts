@@ -1,54 +1,58 @@
+import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
+import { ICanGetWorldById } from '@/domains/Worlds/WorldsStore'
+import { computed, reactive } from '@vue/composition-api'
 import { Friend, Instance, InstanceLocation } from '@/types'
 import {
   applyOldInstanceStatesToNewInstances,
   getLocationsFromFriends,
   makeInstancesFromLocations,
-} from './InstancesService'
+} from '@/domains/Instances/InstancesService'
 import { InstanceApiResponse } from '@/types/ApiResponse'
-import Vue from 'vue'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { IInstancesRepository } from '@/infras/Instances/IInstancesRepository'
-import { ICanGetWorldById } from '@/domains/Worlds/WorldsStore'
 
 type State = {
   instances: Instance[]
 }
 @MakeReferenceToWindowObjectInDevelopment('instancesStore')
 export class InstancesStore {
-  private _state = Vue.observable<State>({
-    instances: [],
-  })
-
   constructor(
     private readonly _instancesRepository: IInstancesRepository,
     private readonly _worldStore: ICanGetWorldById
   ) {}
 
-  get instances() {
-    return this._state.instances
-  }
+  private readonly _state = reactive<State>({
+    instances: [],
+  })
 
-  get instanceByLocation() {
+  readonly instances = computed<Instance[]>(() => {
+    return this._state.instances
+  })
+
+  readonly instanceByLocation = computed<
+    (location: InstanceLocation) => Instance | undefined
+  >(() => {
     return (location: InstanceLocation) => {
-      return this.instances.find(instance => instance.location === location)
+      return this._state.instances.find(
+        instance => instance.location === location
+      )
     }
-  }
+  })
 
   @LogBeforeAfter('_state')
   private updateInstancesWithLocationsMutation(locations: InstanceLocation[]) {
     const newInstances = makeInstancesFromLocations(locations)
     this._state.instances = applyOldInstanceStatesToNewInstances(
       newInstances,
-      this.instances
+      this._state.instances
     )
   }
 
   @LogBeforeAfter('_state')
   private setInstanceInfoMutation(instanceInfo: InstanceApiResponse) {
-    this._state.instances = this.instances.map(instance => {
+    this._state.instances = this._state.instances.map(instance => {
       if (instanceInfo.location === instance.location) {
         const userNum = instanceInfo.n_users
 
@@ -72,7 +76,7 @@ export class InstancesStore {
     notifyUserNum: number
     onFindVacancy: () => void
   }) {
-    this._state.instances = this.instances.map(instance => {
+    this._state.instances = this._state.instances.map(instance => {
       if (instance.location === location) {
         return {
           ...instance,
@@ -88,7 +92,7 @@ export class InstancesStore {
 
   @LogBeforeAfter('_state')
   private endWatchingMutation(location: InstanceLocation) {
-    this._state.instances = this.instances.map(instance => {
+    this._state.instances = this._state.instances.map(instance => {
       if (instance.location === location) {
         return {
           ...instance,
@@ -112,7 +116,7 @@ export class InstancesStore {
   }
 
   async checkWatchingInstanceVacancyAction(location: InstanceLocation) {
-    const instance = this.instanceByLocation(location)
+    const instance = this.instanceByLocation.value(location)
 
     // TODO: こんな適当な例外の投げ方で良いのか再考
     if (instance === undefined) {
@@ -125,7 +129,7 @@ export class InstancesStore {
       throw new Error('userNum is undefined.')
     }
 
-    const world = this._worldStore.world(instance.worldId)
+    const world = this._worldStore.world.value(instance.worldId)
     if (world === undefined) {
       throw new Error('world is undefined.')
     }
@@ -164,7 +168,7 @@ export class InstancesStore {
   }
 
   async checkWatchingInstancesAction() {
-    const watchingInstances = this.instances.filter(
+    const watchingInstances = this.instances.value.filter(
       instance => instance.isWatching
     )
     const promises = watchingInstances.map(async instance => {

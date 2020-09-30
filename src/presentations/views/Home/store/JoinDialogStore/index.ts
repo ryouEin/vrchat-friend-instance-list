@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { InstanceLocation } from '@/types'
+import { computed, reactive } from '@vue/composition-api'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
@@ -8,19 +8,19 @@ import {
 type State = {
   location: InstanceLocation | null
 }
-@MakeReferenceToWindowObjectInDevelopment('instanceModalStore')
-export class InstanceModalStore {
-  private _state = Vue.observable<State>({
+@MakeReferenceToWindowObjectInDevelopment('joinDialogStore')
+export class JoinDialogStore {
+  private readonly _state = reactive<State>({
     location: null,
   })
 
-  get location() {
+  readonly location = computed(() => {
     return this._state.location
-  }
+  })
 
-  get isVisible() {
+  readonly isVisible = computed(() => {
     return this._state.location !== null
-  }
+  })
 
   @LogBeforeAfter('_state')
   private setLocationMutation(location: InstanceLocation) {

@@ -1,9 +1,9 @@
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
 import { Instance } from '@/types'
-import { instancesStore } from '@/domains/DomainStoreFactory'
-import { instanceWatchDialogStore } from '@/presentations/ui_store/UiStoreFactory'
+import { INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
+import { InstanceWatchDialogStore } from '@/presentations/views/Home/store/InstanceWatchDialogStore'
 
 @Component({
   components: {
@@ -11,6 +11,9 @@ import { instanceWatchDialogStore } from '@/presentations/ui_store/UiStoreFactor
   },
 })
 export default class WatchInstanceButton extends Vue {
+  @Inject(INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY)
+  instanceWatchDialogStore!: InstanceWatchDialogStore
+
   @Prop({ required: true })
   instance!: Instance
 
@@ -23,10 +26,10 @@ export default class WatchInstanceButton extends Vue {
   }
 
   async endWatch() {
-    await instancesStore.unwatchInstanceAction(this.location)
+    await this.$store.instancesStore.unwatchInstanceAction(this.location)
   }
 
   async showDialog() {
-    await instanceWatchDialogStore.showAction(this.instance)
+    await this.instanceWatchDialogStore.showAction(this.instance)
   }
 }

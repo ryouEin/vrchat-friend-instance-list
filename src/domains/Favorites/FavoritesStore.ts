@@ -1,10 +1,10 @@
-import Vue from 'vue'
+import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
+import { computed, ComputedRef, reactive } from '@vue/composition-api'
+import { Favorite, FavoriteTag } from '@/types'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { Favorite, FavoriteTag, FavoriteType } from '@/types'
-import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 
 // TODO:
 //  以下の内容に関して、再考
@@ -17,7 +17,7 @@ import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 //  ・前述の「get favoriteByUserId()」のみinterface化した行為は正しいのか
 //  ・正しいとして、こんなinterfaceの命名でいいのか
 export interface ICanGetFavoriteByUserId {
-  favoriteByUserId: (userId: string) => Favorite | undefined
+  favoriteByUserId: ComputedRef<(userId: string) => Favorite | undefined>
 }
 
 type State = {
@@ -25,21 +25,28 @@ type State = {
 }
 @MakeReferenceToWindowObjectInDevelopment('favoritesStore')
 export class FavoritesStore implements ICanGetFavoriteByUserId {
-  private _state = Vue.observable<State>({
+  constructor(private readonly _favoritesRepository: IFavoritesRepository) {}
+
+  private readonly _state = reactive<State>({
     favorites: [],
   })
 
-  constructor(private readonly _favoritesRepository: IFavoritesRepository) {}
-
-  get favorites() {
+  readonly favorites = computed<Favorite[]>(() => {
     return this._state.favorites
-  }
+  })
 
-  get favoriteByUserId() {
+  // TODO: computedが関数を返す場合、使用側でvalueを書かないといけないのが非常に違和感
+  //  具体的には favoriteByUserId.value('usr_123') みたいにしないといけない
+  //  改善方法がないか考える
+  readonly favoriteByUserId = computed<
+    (userId: string) => Favorite | undefined
+  >(() => {
     return (userId: string) => {
-      return this.favorites.find(favorite => favorite.favoriteId === userId)
+      return this._state.favorites.find(
+        favorite => favorite.favoriteId === userId
+      )
     }
-  }
+  })
 
   @LogBeforeAfter('_state')
   private setFavoritesMutation(favorites: Favorite[]) {

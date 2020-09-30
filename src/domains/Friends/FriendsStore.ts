@@ -1,13 +1,13 @@
-import Vue from 'vue'
+import { computed, reactive } from '@vue/composition-api'
+import { UserApiResponse } from '@/types/ApiResponse'
 import { Friend, InstanceLocation } from '@/types'
+import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
+import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import { markNewFriends } from '@/domains/Friends/FriendsService'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
-import { UserApiResponse } from '@/types/ApiResponse'
-import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
 
 // TODO: 命名に関して再考。流石にFriendWithNewはやばそう
 export type FriendWithNew = UserApiResponse & { isNew: boolean }
@@ -17,42 +17,42 @@ type State = {
 }
 @MakeReferenceToWindowObjectInDevelopment('friendsStore')
 export class FriendsStore {
-  private _state = Vue.observable<State>({
-    friends: [],
-  })
-
   constructor(
     private readonly _friendsRepository: IFriendsRepository,
     private readonly _favoritesStore: ICanGetFavoriteByUserId
   ) {}
 
-  get friends(): Friend[] {
+  private readonly _state = reactive<State>({
+    friends: [],
+  })
+
+  readonly friends = computed<Friend[]>(() => {
     return this._state.friends.map(friend => {
-      const favorite = this._favoritesStore.favoriteByUserId(friend.id)
+      const favorite = this._favoritesStore.favoriteByUserId.value(friend.id)
 
       return {
         ...friend,
         favorite,
       }
     })
-  }
+  })
 
-  // WARN: this.friendsは呼び出すたびに演算処理がなされるため、ループでこのgetterを
-  //  呼ぶとめちゃくちゃ重くなる点注意
-  get friendsByLocation() {
+  readonly friendsByLocation = computed<
+    (location: InstanceLocation) => Friend[]
+  >(() => {
     return (location: InstanceLocation) => {
-      return this.friends.filter(friend => friend.location === location)
+      return this.friends.value.filter(friend => friend.location === location)
     }
-  }
+  })
 
   @LogBeforeAfter('_state')
-  private setFriendsMutation(friends: FriendWithNew[]) {
+  private setFriendsMutation(friends: Friend[]) {
     this._state.friends = friends
   }
 
   async fetchFriendsAction() {
-    const friends = await this._friendsRepository.fetchAllFriends()
+    const newFriends = await this._friendsRepository.fetchAllFriends()
 
-    this.setFriendsMutation(markNewFriends(this.friends, friends))
+    this.setFriendsMutation(markNewFriends(this._state.friends, newFriends))
   }
 }

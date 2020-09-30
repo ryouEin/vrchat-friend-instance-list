@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Color, getRGB } from '@/presentations/Colors'
+import { Color } from '@/presentations/Colors'
 
 @Component
 export default class Spinner extends Vue {
@@ -15,7 +15,7 @@ export default class Spinner extends Vue {
       width: `${this.size}px`,
       height: `${this.size}px`,
       'line-height': `${this.size}px`,
-      color: `rgb(${getRGB(this.color)})`,
+      color: `rgb(${this.$colorManager.getRGB(this.color)})`,
     }
   }
 }

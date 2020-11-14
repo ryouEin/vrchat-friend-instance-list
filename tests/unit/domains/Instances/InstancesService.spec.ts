@@ -17,11 +17,25 @@ describe('getInstancePermissionFromLocation', () => {
     expect(result).toBe(InstancePermission.FriendPlus)
   })
 
-  it('「wrld_123:45~friends(usr_678)~nonce(90)」がFriend+と判定される', () => {
+  it('「wrld_123:45~friends(usr_678)~nonce(90)」がFriendsと判定される', () => {
     const result = getInstancePermissionFromLocation(
       'wrld_123:45~friends(usr_678)~nonce(90)'
     )
     expect(result).toBe(InstancePermission.Friends)
+  })
+
+  it('「wrld_123:45~private(usr_678)~canRequestInvite~nonce(90)」がInvite+と判定される', () => {
+    const result = getInstancePermissionFromLocation(
+      'wrld_123:45~private(usr_678)~canRequestInvite~nonce(90)'
+    )
+    expect(result).toBe(InstancePermission.InvitePlus)
+  })
+
+  it('「wrld_123:45~private(usr_678)~nonce(90)」がInviteと判定される', () => {
+    const result = getInstancePermissionFromLocation(
+      'wrld_123:45~private(usr_678)~nonce(90)'
+    )
+    expect(result).toBe(InstancePermission.Invite)
   })
 
   it('「wrld_123:45~public(usr_678)」がPublicと判定される', () => {

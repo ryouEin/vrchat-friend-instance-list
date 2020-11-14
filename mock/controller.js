@@ -11,6 +11,10 @@ const locations = (() => {
     'private',
     ...worlds.map(world => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
     ...worlds.map(world => `${world.id}:123~friends(usr_0)~nonce(hogehoge)`),
+    ...worlds.map(
+      world => `${world.id}:123~private(usr_678)~canRequestInvite~nonce(90)`
+    ),
+    ...worlds.map(world => `${world.id}:123~private(usr_678)~nonce(90)`),
     ...worlds.map(world => `${world.id}:123`),
   ]
 })()

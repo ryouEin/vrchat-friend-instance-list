@@ -33,6 +33,8 @@ export const InstancePermission = {
   Public: 'public',
   Friends: 'friends',
   FriendPlus: 'friend+',
+  Invite: 'invite',
+  InvitePlus: 'invite+',
   Unknown: 'unknown',
 } as const
 export type InstancePermission = typeof InstancePermission[keyof typeof InstancePermission]

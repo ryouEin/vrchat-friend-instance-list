@@ -35,7 +35,11 @@
 
 .toTop {
   position: fixed;
-  bottom: 0;
+  top: $navHeight + 55px;
   left: 125px;
   transform: translateX(-50%);
+
+  @include mqSp {
+    top: 10px;
+  }
 }

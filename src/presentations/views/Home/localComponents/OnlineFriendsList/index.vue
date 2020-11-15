@@ -19,11 +19,11 @@
         </template>
         <template #after>
           <div class="lastSpacer" />
+          <div v-if="isInitialized" class="toTop">
+            <g-ToTopButton :scrollerElement="scrollerElement" />
+          </div>
         </template>
       </RecycleScroller>
-      <div v-if="isInitialized" class="toTop">
-        <g-ToTopButton :scrollerElement="scrollerElement" />
-      </div>
     </div>
   </transition>
 </template>

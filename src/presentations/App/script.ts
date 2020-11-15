@@ -13,6 +13,8 @@ import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
 import Alert from '@/presentations/App/localComponents/Alert/index.vue'
+import { errorTracker } from '@/libs/errorTracker'
+import { SEND_ERROR_LOG } from '@/config/env'
 
 @Component({
   components: {
@@ -103,6 +105,7 @@ export default class App extends Vue {
 
   // どこでも拾われなかった例外を処理する関数
   errorHandler(error: unknown) {
+    if (SEND_ERROR_LOG) errorTracker.sendErrorLog(error)
     throw error
   }
 

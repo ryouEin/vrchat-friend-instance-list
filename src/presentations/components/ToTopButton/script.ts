@@ -8,7 +8,7 @@ export default class ToTopButton extends Vue {
   @Prop({ required: true })
   private scrollerElement!: HTMLElement
 
-  @Prop({ type: Number, default: 300 })
+  @Prop({ type: Number, default: 1000 })
   private showDistance!: number
 
   toTop() {

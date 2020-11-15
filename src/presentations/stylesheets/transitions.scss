@@ -18,6 +18,17 @@
   transform: translateY(100%);
 }
 
+.t-fadeDown-enter-active,
+.t-fadeDown-leave-active {
+  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
+}
+
+.t-fadeDown-enter,
+.t-fadeDown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 .t-scalingFromLeftTop-enter-active,
 .t-scalingFromLeftTop-leave-active {
   transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;

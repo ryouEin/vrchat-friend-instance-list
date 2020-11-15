@@ -30,6 +30,12 @@ export const getInstancePermissionFromLocation: (
     return InstancePermission.Friends
   }
 
+  if (instanceId.includes('private')) {
+    return instanceId.includes('canRequestInvite')
+      ? InstancePermission.InvitePlus
+      : InstancePermission.Invite
+  }
+
   if (instanceId.includes('public') || !instanceId.includes('~')) {
     return InstancePermission.Public
   }

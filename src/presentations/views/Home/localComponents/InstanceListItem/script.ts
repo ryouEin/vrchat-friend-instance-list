@@ -53,7 +53,9 @@ export default class InstanceListItem extends Vue {
     return (
       this.instancePermission === InstancePermission.Friends ||
       this.instancePermission === InstancePermission.FriendPlus ||
-      this.instancePermission === InstancePermission.Public
+      this.instancePermission === InstancePermission.Public ||
+      this.instancePermission === InstancePermission.InvitePlus ||
+      this.instancePermission === InstancePermission.Invite
     )
   }
 

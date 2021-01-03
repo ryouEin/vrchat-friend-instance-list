@@ -1,10 +1,6 @@
 <template>
-  <div class="c-home" v-hammer:swipe.right="showInstanceList">
-    <div
-      class="side"
-      :class="{ '-visible': isVisibleSideMenu }"
-      v-hammer:swipe.left="hideInstanceList"
-    >
+  <div class="c-home">
+    <div class="side" :class="{ '-visible': isVisibleSideMenu }">
       <div class="overlay" @click="hideInstanceList" />
       <div class="content">
         <div v-if="showOnlineFriendsListLoading" class="u-alignCenter u-pt20">

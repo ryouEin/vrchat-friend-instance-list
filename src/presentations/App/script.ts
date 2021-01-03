@@ -105,6 +105,9 @@ export default class App extends Vue {
 
   // どこでも拾われなかった例外を処理する関数
   errorHandler(error: unknown) {
+    if (!(error instanceof Error)) {
+      throw new Error('none error object past to errorHandler')
+    }
     if (SEND_ERROR_LOG) errorTracker.sendErrorLog(error)
     throw error
   }
@@ -113,8 +116,22 @@ export default class App extends Vue {
     // 全てのエラーをキャプチャするには以下の3パターン登録する必要がある
     // https://qiita.com/clomie/items/73fa1e9f61e5b88826bc
     Vue.config.errorHandler = this.errorHandler
-    window.addEventListener('error', this.errorHandler)
-    window.addEventListener('unhandledrejection', this.errorHandler)
+    window.addEventListener('error', event => {
+      const error: Error = ((event: ErrorEvent) => {
+        if (event.error instanceof Error) {
+          return event.error
+        }
+        if (event.message) {
+          return new Error(event.message)
+        }
+
+        return new Error('onerror with no message')
+      })(event)
+      this.errorHandler(error)
+    })
+    window.addEventListener('unhandledrejection', event => {
+      this.errorHandler(event.reason)
+    })
   }
 
   async created() {

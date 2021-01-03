@@ -2,6 +2,8 @@ import * as Sentry from '@sentry/browser'
 import { Integrations } from '@sentry/tracing'
 
 class ErrorTracker {
+  private ignoreMessages: string[] = []
+
   constructor() {
     Sentry.init({
       dsn:
@@ -11,9 +13,23 @@ class ErrorTracker {
     })
   }
 
-  sendErrorLog(error: any) {
+  setIgnoreMessage(message: string) {
+    this.ignoreMessages.push(message)
+  }
+
+  sendErrorLog(error: Error) {
+    if (this.ignoreMessages.includes(error.message)) return
+
     Sentry.captureException(error)
   }
 }
 
-export const errorTracker = new ErrorTracker()
+const errorTracker = new ErrorTracker()
+
+// 特に問題のあるエラーではない。ノイズになるので除外
+// https://github.com/ryouEin/vrchat-friend-instance-list/issues/110
+errorTracker.setIgnoreMessage(
+  'ResizeObserver loop completed with undelivered notifications.'
+)
+
+export { errorTracker }

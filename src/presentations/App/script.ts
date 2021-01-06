@@ -107,17 +107,6 @@ export default class App extends Vue {
       throw new Error('none error object past to errorHandler')
     }
 
-    const ignoreErrorMessages = [
-      // このエラーは動作に支障がないエラーで、エラー通知されるとノイズになるので無視する
-      'ResizeObserver loop completed with undelivered notifications.',
-    ]
-    if (ignoreErrorMessages.includes(error.message)) {
-      console.log('--- error ignored ---')
-      console.log(error.message)
-      console.log('---------------------')
-      return
-    }
-
     throw error
   }
 

@@ -17,23 +17,12 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import VueCompositionAPI from '@vue/composition-api'
 import { createGlobalStore } from '@/GlobalStoreFactory'
 import { ColorManager } from '@/presentations/Colors'
-import * as Sentry from '@sentry/browser'
-import { Integrations } from '@sentry/tracing'
 import { SEND_ERROR_LOG } from '@/config/env'
+import { initializeSentry } from '@/initializeSentry'
 
 Vue.config.productionTip = false
 
-if (SEND_ERROR_LOG) {
-  const initSentry = () => {
-    Sentry.init({
-      dsn:
-        'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
-      integrations: [new Integrations.BrowserTracing()],
-      tracesSampleRate: 1.0,
-    })
-  }
-  initSentry()
-}
+if (SEND_ERROR_LOG) initializeSentry()
 
 // プラグイン登録
 Vue.use(VueVirtualScroller)

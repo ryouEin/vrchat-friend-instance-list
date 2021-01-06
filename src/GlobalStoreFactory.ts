@@ -39,6 +39,7 @@ export const createGlobalStore = () => {
   const vrchatApi = new VRChatApi(network, error => {
     if (error instanceof VRChatApiUnauthorizedError) {
       showAuthorizationErrorDialog(alertStore)
+      return
     }
 
     throw error

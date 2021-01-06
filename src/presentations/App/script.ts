@@ -13,8 +13,6 @@ import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
 import Alert from '@/presentations/App/localComponents/Alert/index.vue'
-import { errorTracker } from '@/libs/errorTracker'
-import { SEND_ERROR_LOG } from '@/config/env'
 
 @Component({
   components: {
@@ -108,7 +106,18 @@ export default class App extends Vue {
     if (!(error instanceof Error)) {
       throw new Error('none error object past to errorHandler')
     }
-    if (SEND_ERROR_LOG) errorTracker.sendErrorLog(error)
+
+    const ignoreErrorMessages = [
+      // このエラーは動作に支障がないエラーで、エラー通知されるとノイズになるので無視する
+      'ResizeObserver loop completed with undelivered notifications.',
+    ]
+    if (ignoreErrorMessages.includes(error.message)) {
+      console.log('--- error ignored ---')
+      console.log(error.message)
+      console.log('---------------------')
+      return
+    }
+
     throw error
   }
 

@@ -61,6 +61,10 @@
         {
           "version": "3.8.3",
           "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.8.3/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "3.8.4",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/3.8.4/vrchat_friend_instance_list.xpi"
         }
       ]
     }

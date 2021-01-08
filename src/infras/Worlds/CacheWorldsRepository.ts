@@ -2,32 +2,65 @@ import unionBy from 'lodash/unionBy'
 import { WorldApiResponse } from '@/types/ApiResponse'
 import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
 import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
+import { VersionedKVS } from '@/libs/Storage/VersionedKVS'
 
-const WORLD_STORAGE_KEY = 'worldData'
+type WorldCache = {
+  updatedAt: number
+  data: WorldApiResponse
+}
+type Options = {
+  cacheVersion: string
+  storageKey: string
+  maxAgeMSec: number
+  maxNum: number
+}
 
 export class CacheWorldsRepository implements ICacheWorldsRepository {
-  constructor(private _storage: IKeyValueStorage) {}
+  versionedKVS: VersionedKVS<WorldCache[]>
+
+  constructor(private storage: IKeyValueStorage, private options: Options) {
+    this.versionedKVS = new VersionedKVS<WorldCache[]>(storage, {
+      storageKey: options.storageKey,
+      version: options.cacheVersion,
+      initialData: () => [],
+    })
+  }
 
   async getWorlds(): Promise<WorldApiResponse[]> {
-    const worldsJson = this._storage.getItem(WORLD_STORAGE_KEY)
-    if (worldsJson === undefined) return []
+    const worldData = this.versionedKVS.get()
 
-    return JSON.parse(worldsJson)
+    const cacheIsExpiredIfUpdatedBefore = Date.now() - this.options.maxAgeMSec
+    const newWorlds = worldData.filter(world => {
+      return world.updatedAt > cacheIsExpiredIfUpdatedBefore
+    })
+    this.versionedKVS.set(newWorlds)
+
+    return newWorlds.map(world => {
+      return {
+        ...world.data,
+      }
+    })
   }
 
   async addWorld(world: WorldApiResponse) {
-    this.addWorlds([world])
+    await this.addWorlds([world])
   }
 
   async addWorlds(worlds: WorldApiResponse[]) {
-    const MAX_WORLD_NUM = 1000
-    const storageWorlds = await this.getWorlds()
-    const unionWorlds = unionBy(worlds, storageWorlds, 'id')
+    const currentTimeStamp = Date.now()
+    const addCacheWorlds: WorldCache[] = worlds.map(world => {
+      return {
+        updatedAt: currentTimeStamp,
+        data: { ...world },
+      }
+    })
+    const cacheWorlds = this.versionedKVS.get()
+    const unionWorlds = unionBy(addCacheWorlds, cacheWorlds, 'data.id')
+    unionWorlds.sort((a, b) => {
+      return a.updatedAt > b.updatedAt ? -1 : 1
+    })
 
-    this._storage.setItem(
-      WORLD_STORAGE_KEY,
-      // LocalStorageの容量を越さないために、データの数はMAX_WORLD_NUMに収める
-      JSON.stringify(unionWorlds.slice(0, MAX_WORLD_NUM))
-    )
+    // LocalStorageの容量を越さないために、データの数はmaxNumに収める
+    this.versionedKVS.set(unionWorlds.slice(0, this.options.maxNum))
   }
 }

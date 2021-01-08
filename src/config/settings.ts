@@ -3,6 +3,13 @@ import { Setting } from '@/types'
 
 export const INSTANCE_WATCH_INTERVAL = 60 * 1000
 
+export const WORLD_CACHE = {
+  CACHE_VERSION: '2',
+  STORAGE_KEY: 'worldData',
+  MAX_AGE_MILLI_SEC: 1000 * 60 * 60 * 24 * 7, // 1週間
+  MAX_NUM: 1000,
+}
+
 export const MAX_FAVORITE_PER_GROUP = 32
 
 export const DEFAULT_SETTING: Setting = {

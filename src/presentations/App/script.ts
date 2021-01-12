@@ -138,7 +138,7 @@ export default class App extends Vue {
     this.judgeDevice()
 
     this.$store.fullLoaderStore.showAction()
-    await this.$store.settingStore.initAction()
+    await Promise.all([this.$store.settingStore.initAction()])
     await this.$store.worldsStore.initAction().finally(() => {
       this.$store.fullLoaderStore.hideAction()
     })

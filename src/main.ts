@@ -20,37 +20,41 @@ import { ColorManager } from '@/presentations/Colors'
 import { SEND_ERROR_LOG } from '@/config/env'
 import { initializeSentry } from '@/initializeSentry'
 
-Vue.config.productionTip = false
+const main = async () => {
+  Vue.config.productionTip = false
 
-if (SEND_ERROR_LOG) initializeSentry()
+  if (SEND_ERROR_LOG) await initializeSentry()
 
-// プラグイン登録
-Vue.use(VueVirtualScroller)
-Vue.use(VueCompositionAPI)
+  // プラグイン登録
+  Vue.use(VueVirtualScroller)
+  Vue.use(VueCompositionAPI)
 
-// ストア初期化
-const store = createGlobalStore()
-Vue.prototype.$store = store
+  // ストア初期化
+  const store = createGlobalStore()
+  Vue.prototype.$store = store
 
-// TODO: カラーマネージャまでグローバルに通すのは行儀が悪い気がする
-//  他にいい方法が思い浮かばなかったのでこうしてるが、改善方法さがして修正すること
-// カラーマネージャ
-Vue.prototype.$colorManager = new ColorManager(store.settingStore)
+  // TODO: カラーマネージャまでグローバルに通すのは行儀が悪い気がする
+  //  他にいい方法が思い浮かばなかったのでこうしてるが、改善方法さがして修正すること
+  // カラーマネージャ
+  Vue.prototype.$colorManager = new ColorManager(store.settingStore)
 
-// グローバルコンポーネント登録
-Vue.component('g-Button', Button)
-Vue.component('g-Dialog', Dialog)
-Vue.component('g-FAB', FAB)
-Vue.component('g-FavoriteMark', FavoriteMark)
-Vue.component('g-Icon', Icon)
-Vue.component('g-MarkdownText', MarkdownText)
-Vue.component('g-Select', Select)
-Vue.component('g-Spinner', Spinner)
-Vue.component('g-Toggle', Toggle)
-Vue.component('g-DropdownMenu', DropdownMenu)
-Vue.component('g-ToTopButton', ToTopButton)
+  // グローバルコンポーネント登録
+  Vue.component('g-Button', Button)
+  Vue.component('g-Dialog', Dialog)
+  Vue.component('g-FAB', FAB)
+  Vue.component('g-FavoriteMark', FavoriteMark)
+  Vue.component('g-Icon', Icon)
+  Vue.component('g-MarkdownText', MarkdownText)
+  Vue.component('g-Select', Select)
+  Vue.component('g-Spinner', Spinner)
+  Vue.component('g-Toggle', Toggle)
+  Vue.component('g-DropdownMenu', DropdownMenu)
+  Vue.component('g-ToTopButton', ToTopButton)
 
-new Vue({
-  router,
-  render: h => h(App),
-}).$mount('#app')
+  new Vue({
+    router,
+    render: h => h(App),
+  }).$mount('#app')
+}
+
+main()

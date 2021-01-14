@@ -3,7 +3,6 @@ import { Network } from '@/libs/Network/Network'
 import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstancesRepository'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
-import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
 import { BrowserNotifier } from '@/libs/Notifier/BrowserNotifier'
 import {
@@ -21,6 +20,7 @@ import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { NotificationsStore } from '@/domains/Notifications/NotificationsStore'
 import { SettingStore } from '@/domains/Setting/SettingStore'
 import { WorldsStore } from '@/domains/Worlds/WorldsStore'
+import { cacheWorldsRepository } from '@/singletonFactory'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -56,7 +56,6 @@ export const createGlobalStore = () => {
   })()
 
   const worldsStore = (() => {
-    const cacheWorldsRepository = new CacheWorldsRepository(new LocalStorage())
     const networkWorldsRepository = new VRChatApiWorldsRepository(vrchatApi)
     return new WorldsStore(networkWorldsRepository, cacheWorldsRepository)
   })()

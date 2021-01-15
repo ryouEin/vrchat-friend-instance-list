@@ -3,6 +3,8 @@
 ## Firefoxアドオンのアップデートワークフロー
 
 1. `master` ブランチへバージョンアップのプルリクを取り込む
+1. `npm run build` でビルド
+1. `npx sentry-cli --auth-token [token] releases --org [SentryのORG名] files [リリース名] upload ./dist` で、Sentryにリリース登録
 1. Mozillaのアドオン開発者センターにて、xpiファイルを作成
 1. Releasesに作成したxpiファイルをアップロード
 1. `npm run ff_addon_lint:checkUpdateLinkValidity` で、update_linkが有効であることを確認する

@@ -1,6 +1,6 @@
-import * as Sentry from '@sentry/browser'
-import { Integrations } from '@sentry/tracing'
-import { BrowserOptions, Event } from '@sentry/browser'
+import { VueConstructor } from 'vue'
+import * as Sentry from '@sentry/vue'
+import { Event } from '@sentry/browser'
 import axios from 'axios'
 
 const isResizeObserverLoopCompletedWithUndeliveredNotificationsError = (
@@ -26,27 +26,29 @@ const fetchAppVersion = async () => {
   return response.data.version
 }
 
-export const initializeSentry = async () => {
-  const options: BrowserOptions = {
-    dsn:
-      'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
-    integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 1.0,
-    beforeSend(event: Event): PromiseLike<Event | null> | Event | null {
-      if (
-        isResizeObserverLoopCompletedWithUndeliveredNotificationsError(event)
-      ) {
-        return null
-      }
-
-      return event
-    },
-  }
+export const initializeSentry = async (Vue: VueConstructor) => {
+  let release: string | undefined = undefined
 
   try {
     // これはアプリに絶対必要な処理じゃないため、例外を吐いても握りつぶす
-    options.release = await fetchAppVersion()
+    release = await fetchAppVersion()
   } finally {
-    Sentry.init(options)
+    Sentry.init({
+      Vue,
+      dsn:
+        'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
+      beforeSend(event) {
+        // 「ResizeObserver loop completed with undelivered notifications」
+        // このエラーは動作に支障がないものなので無視する
+        if (
+          isResizeObserverLoopCompletedWithUndeliveredNotificationsError(event)
+        ) {
+          return null
+        }
+
+        return event
+      },
+      release,
+    })
   }
 }

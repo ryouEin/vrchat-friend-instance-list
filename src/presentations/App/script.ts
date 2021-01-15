@@ -101,40 +101,7 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
-  // どこでも拾われなかった例外を処理する関数
-  errorHandler(error: unknown) {
-    if (!(error instanceof Error)) {
-      throw new Error('none error object past to errorHandler')
-    }
-
-    throw error
-  }
-
-  setupErrorHandlers() {
-    // 全てのエラーをキャプチャするには以下の3パターン登録する必要がある
-    // https://qiita.com/clomie/items/73fa1e9f61e5b88826bc
-    Vue.config.errorHandler = this.errorHandler
-    window.addEventListener('error', event => {
-      const error: Error = ((event: ErrorEvent) => {
-        if (event.error instanceof Error) {
-          return event.error
-        }
-        if (event.message) {
-          return new Error(event.message)
-        }
-
-        return new Error('onerror with no message')
-      })(event)
-      this.errorHandler(error)
-    })
-    window.addEventListener('unhandledrejection', event => {
-      this.errorHandler(event.reason)
-    })
-  }
-
   async created() {
-    this.setupErrorHandlers()
-
     this.judgeDevice()
 
     this.$store.fullLoaderStore.showAction()

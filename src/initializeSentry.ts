@@ -1,6 +1,6 @@
-import * as Sentry from '@sentry/browser'
-import { Integrations } from '@sentry/tracing'
-import { BrowserOptions, Event } from '@sentry/browser'
+import { VueConstructor } from 'vue'
+import * as Sentry from '@sentry/vue'
+import { Event } from '@sentry/browser'
 import axios from 'axios'
 
 const isResizeObserverLoopCompletedWithUndeliveredNotificationsError = (
@@ -21,32 +21,63 @@ const isResizeObserverLoopCompletedWithUndeliveredNotificationsError = (
   return false
 }
 
+const fixStackTraceFileName = () => {
+  const normalizeUrl = (url: string) => {
+    return url.replace(/(moz|chrome)-extension:\/\/[^/]+\//, '~/')
+  }
+
+  Sentry.configureScope(scope => {
+    scope.addEventProcessor(async event => {
+      if (
+        event.exception !== undefined &&
+        event.exception.values !== undefined &&
+        event.exception.values[0].stacktrace !== undefined &&
+        event.exception.values[0].stacktrace.frames !== undefined
+      ) {
+        event.exception.values[0].stacktrace.frames = event.exception.values[0].stacktrace.frames.map(
+          frame => {
+            if (frame.filename !== undefined) {
+              frame.filename = normalizeUrl(frame.filename)
+            }
+            return frame
+          }
+        )
+      }
+
+      return event
+    })
+  })
+}
+
 const fetchAppVersion = async () => {
   const response = await axios.get('../manifest.json')
   return response.data.version
 }
 
-export const initializeSentry = async () => {
-  const options: BrowserOptions = {
-    dsn:
-      'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
-    integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 1.0,
-    beforeSend(event: Event): PromiseLike<Event | null> | Event | null {
-      if (
-        isResizeObserverLoopCompletedWithUndeliveredNotificationsError(event)
-      ) {
-        return null
-      }
-
-      return event
-    },
-  }
+export const initializeSentry = async (Vue: VueConstructor) => {
+  let release: string | undefined = undefined
 
   try {
     // これはアプリに絶対必要な処理じゃないため、例外を吐いても握りつぶす
-    options.release = await fetchAppVersion()
+    release = 'vrchat-friend-instance-list@' + (await fetchAppVersion())
   } finally {
-    Sentry.init(options)
+    Sentry.init({
+      Vue,
+      dsn:
+        'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
+      beforeSend(event) {
+        // 「ResizeObserver loop completed with undelivered notifications」
+        // このエラーは動作に支障がないものなので無視する
+        if (
+          isResizeObserverLoopCompletedWithUndeliveredNotificationsError(event)
+        ) {
+          return null
+        }
+
+        return event
+      },
+      release,
+    })
+    fixStackTraceFileName()
   }
 }

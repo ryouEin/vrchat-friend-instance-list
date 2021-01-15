@@ -59,7 +59,7 @@ export const initializeSentry = async (Vue: VueConstructor) => {
 
   try {
     // これはアプリに絶対必要な処理じゃないため、例外を吐いても握りつぶす
-    release = await fetchAppVersion()
+    release = 'vrchat-friend-instance-list@' + (await fetchAppVersion())
   } finally {
     Sentry.init({
       Vue,

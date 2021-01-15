@@ -21,6 +21,34 @@ const isResizeObserverLoopCompletedWithUndeliveredNotificationsError = (
   return false
 }
 
+const fixStackTraceFileName = () => {
+  const normalizeUrl = (url: string) => {
+    return url.replace(/(moz|chrome)-extension:\/\/[^/]+\//, '~/')
+  }
+
+  Sentry.configureScope(scope => {
+    scope.addEventProcessor(async event => {
+      if (
+        event.exception !== undefined &&
+        event.exception.values !== undefined &&
+        event.exception.values[0].stacktrace !== undefined &&
+        event.exception.values[0].stacktrace.frames !== undefined
+      ) {
+        event.exception.values[0].stacktrace.frames = event.exception.values[0].stacktrace.frames.map(
+          frame => {
+            if (frame.filename !== undefined) {
+              frame.filename = normalizeUrl(frame.filename)
+            }
+            return frame
+          }
+        )
+      }
+
+      return event
+    })
+  })
+}
+
 const fetchAppVersion = async () => {
   const response = await axios.get('../manifest.json')
   return response.data.version
@@ -50,5 +78,6 @@ export const initializeSentry = async (Vue: VueConstructor) => {
       },
       release,
     })
+    fixStackTraceFileName()
   }
 }

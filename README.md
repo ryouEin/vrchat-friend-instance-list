@@ -1,5 +1,7 @@
 # vrchat-friend-instance-list
 
+[Firefoxアドオン最新版ダウンロード](https://github.com/ryouEin/vrchat-friend-instance-list/releases/latest/download/vrchat_friend_instance_list.xpi)
+
 ## プロジェクトClone後まずやること
 
 ### `.sentryclirc` の作成

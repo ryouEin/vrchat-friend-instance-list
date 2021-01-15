@@ -2,9 +2,20 @@
 
 [Firefoxアドオン最新版ダウンロード](https://github.com/ryouEin/vrchat-friend-instance-list/releases/latest/download/vrchat_friend_instance_list.xpi)
 
+## プロジェクトClone後まずやること
+
+### `.sentryclirc` の作成
+
+`.sentryclirc.sample` をコピーして、中身を埋める。Sentryのrelease登録するのに必須。
+
 ## Firefoxアドオンのアップデートワークフロー
 
 1. `master` ブランチへバージョンアップのプルリクを取り込む
+1. `npm run build` でビルド
+1. Sentryへのrelease登録
+    1. `npx sentry-cli releases new "vrchat-friend-instance-list@[バージョン]"`
+    1. `npx sentry-cli releases files "vrchat-friend-instance-list@[バージョン]" upload-sourcemaps "./dist"`
+    1. `npx sentry-cli releases finalize "vrchat-friend-instance-list@[バージョン]"`
 1. Mozillaのアドオン開発者センターにて、xpiファイルを作成
 1. Releasesに作成したxpiファイルをアップロード
 1. `npm run ff_addon_lint:checkUpdateLinkValidity` で、update_linkが有効であることを確認する

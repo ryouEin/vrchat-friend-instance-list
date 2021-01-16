@@ -1,5 +1,5 @@
 import { VueConstructor } from 'vue'
-import * as Sentry from '@sentry/vue'
+import * as Sentry from '@sentry/browser'
 import { Event } from '@sentry/browser'
 import axios from 'axios'
 
@@ -62,7 +62,6 @@ export const initializeSentry = async (Vue: VueConstructor) => {
     release = 'vrchat-friend-instance-list@' + (await fetchAppVersion())
   } finally {
     Sentry.init({
-      Vue,
       dsn:
         'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
       beforeSend(event) {

@@ -64,6 +64,12 @@ export const initializeSentry = async (Vue: VueConstructor) => {
     Sentry.init({
       dsn:
         'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
+      integrations: function(integrations) {
+        // Sentryへのエラー通知は自前でやるのでGlobalHandlersは邪魔
+        return integrations.filter(function(integration) {
+          return integration.name !== 'GlobalHandlers'
+        })
+      },
       beforeSend(event) {
         // 「ResizeObserver loop completed with undelivered notifications」
         // このエラーは動作に支障がないものなので無視する

@@ -13,6 +13,9 @@ import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
 import Alert from '@/presentations/App/localComponents/Alert/index.vue'
+import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
+import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
+import * as Sentry from '@sentry/browser'
 
 @Component({
   components: {
@@ -101,7 +104,48 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
+  // TODO: エラー関係の処理どっかに切り出したほうがいいのでは？
+  // どこでも拾われなかった例外を処理する関数
+  errorHandler(error: unknown) {
+    if (!(error instanceof Error)) {
+      throw new Error('none error object past to errorHandler')
+    }
+
+    if (error instanceof VRChatApiUnauthorizedError) {
+      showAuthorizationErrorDialog(this.$store.alertStore)
+    } else {
+      // TODO SOON: Loggerとかクラス作って、そこにログの処理をまとめる
+      Sentry.captureException(error)
+    }
+
+    throw error
+  }
+
+  setupErrorHandlers() {
+    // 全てのエラーをキャプチャするには以下の3パターン登録する必要がある
+    // https://qiita.com/clomie/items/73fa1e9f61e5b88826bc
+    Vue.config.errorHandler = this.errorHandler
+    window.addEventListener('error', event => {
+      const error: Error = ((event: ErrorEvent) => {
+        if (event.error instanceof Error) {
+          return event.error
+        }
+        if (event.message) {
+          return new Error(event.message)
+        }
+
+        return new Error('onerror with no message')
+      })(event)
+      this.errorHandler(error)
+    })
+    window.addEventListener('unhandledrejection', event => {
+      this.errorHandler(event.reason)
+    })
+  }
+
   async created() {
+    this.setupErrorHandlers()
+
     this.judgeDevice()
 
     this.$store.fullLoaderStore.showAction()

@@ -1,4 +1,3 @@
-import { VueConstructor } from 'vue'
 import * as Sentry from '@sentry/browser'
 import { Event } from '@sentry/browser'
 import axios from 'axios'
@@ -54,7 +53,7 @@ const fetchAppVersion = async () => {
   return response.data.version
 }
 
-export const initializeSentry = async (Vue: VueConstructor) => {
+export const initializeSentry = async () => {
   let release: string | undefined = undefined
 
   try {

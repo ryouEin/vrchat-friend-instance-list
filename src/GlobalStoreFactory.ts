@@ -5,11 +5,7 @@ import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStora
 import LocalStorage from '@/libs/Storage/LocalStorage'
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
 import { BrowserNotifier } from '@/libs/Notifier/BrowserNotifier'
-import {
-  VRChatApi,
-  VRChatApiUnauthorizedError,
-} from '@/libs/VRChatApi/VRChatApi'
-import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
+import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
 import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
@@ -36,14 +32,7 @@ export const createGlobalStore = () => {
   })()
 
   const network = new Network()
-  const vrchatApi = new VRChatApi(network, error => {
-    if (error instanceof VRChatApiUnauthorizedError) {
-      showAuthorizationErrorDialog(alertStore)
-      return
-    }
-
-    throw error
-  })
+  const vrchatApi = new VRChatApi(network)
 
   const favoritesStore = (() => {
     const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)

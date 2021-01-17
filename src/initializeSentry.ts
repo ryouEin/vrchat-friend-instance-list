@@ -1,24 +1,5 @@
 import * as Sentry from '@sentry/browser'
-import { Event } from '@sentry/browser'
 import axios from 'axios'
-
-const isResizeObserverLoopCompletedWithUndeliveredNotificationsError = (
-  event: Event
-) => {
-  if (event.exception === undefined) return false
-  if (event.exception.values === undefined) return false
-
-  const expectedErrorMessage =
-    'ResizeObserver loop completed with undelivered notifications.'
-  const eventHasExpectedErrorMessage =
-    event.exception.values.find(item => item.value === expectedErrorMessage) !==
-    undefined
-  if (eventHasExpectedErrorMessage) {
-    return true
-  }
-
-  return false
-}
 
 const fixStackTraceFileName = () => {
   const normalizeUrl = (url: string) => {
@@ -69,15 +50,13 @@ export const initializeSentry = async () => {
           return integration.name !== 'GlobalHandlers'
         })
       },
-      beforeSend(event) {
-        // 「ResizeObserver loop completed with undelivered notifications」
+      ignoreErrors: [
         // このエラーは動作に支障がないものなので無視する
-        if (
-          isResizeObserverLoopCompletedWithUndeliveredNotificationsError(event)
-        ) {
-          return null
-        }
-
+        'ResizeObserver loop completed with undelivered notifications.',
+        'ResizeObserver loop limit exceeded',
+      ],
+      // 本番環境では必要ないが、デバッグする際に頻繁に使うので書いてる
+      beforeSend(event) {
         return event
       },
       release,

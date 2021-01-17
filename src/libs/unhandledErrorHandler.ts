@@ -52,6 +52,8 @@ class UnhandledErrorHandler {
 
   reportError(error: Error) {
     Sentry.captureException(error)
+
+    throw error
   }
 }
 

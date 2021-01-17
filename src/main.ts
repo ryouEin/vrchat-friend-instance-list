@@ -23,7 +23,7 @@ import { initializeSentry } from '@/initializeSentry'
 const main = async () => {
   Vue.config.productionTip = false
 
-  if (SEND_ERROR_LOG) await initializeSentry(Vue)
+  if (SEND_ERROR_LOG) await initializeSentry()
 
   // プラグイン登録
   Vue.use(VueVirtualScroller)

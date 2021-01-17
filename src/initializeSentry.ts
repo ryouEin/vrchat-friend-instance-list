@@ -1,25 +1,5 @@
-import { VueConstructor } from 'vue'
-import * as Sentry from '@sentry/vue'
-import { Event } from '@sentry/browser'
+import * as Sentry from '@sentry/browser'
 import axios from 'axios'
-
-const isResizeObserverLoopCompletedWithUndeliveredNotificationsError = (
-  event: Event
-) => {
-  if (event.exception === undefined) return false
-  if (event.exception.values === undefined) return false
-
-  const expectedErrorMessage =
-    'ResizeObserver loop completed with undelivered notifications.'
-  const eventHasExpectedErrorMessage =
-    event.exception.values.find(item => item.value === expectedErrorMessage) !==
-    undefined
-  if (eventHasExpectedErrorMessage) {
-    return true
-  }
-
-  return false
-}
 
 const fixStackTraceFileName = () => {
   const normalizeUrl = (url: string) => {
@@ -54,7 +34,7 @@ const fetchAppVersion = async () => {
   return response.data.version
 }
 
-export const initializeSentry = async (Vue: VueConstructor) => {
+export const initializeSentry = async () => {
   let release: string | undefined = undefined
 
   try {
@@ -62,18 +42,21 @@ export const initializeSentry = async (Vue: VueConstructor) => {
     release = 'vrchat-friend-instance-list@' + (await fetchAppVersion())
   } finally {
     Sentry.init({
-      Vue,
       dsn:
         'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
-      beforeSend(event) {
-        // 「ResizeObserver loop completed with undelivered notifications」
+      integrations: function(integrations) {
+        // Sentryへのエラー通知は自前でやるのでGlobalHandlersは邪魔
+        return integrations.filter(function(integration) {
+          return integration.name !== 'GlobalHandlers'
+        })
+      },
+      ignoreErrors: [
         // このエラーは動作に支障がないものなので無視する
-        if (
-          isResizeObserverLoopCompletedWithUndeliveredNotificationsError(event)
-        ) {
-          return null
-        }
-
+        'ResizeObserver loop completed with undelivered notifications.',
+        'ResizeObserver loop limit exceeded',
+      ],
+      // 本番環境では必要ないが、デバッグする際に頻繁に使うので書いてる
+      beforeSend(event) {
         return event
       },
       release,

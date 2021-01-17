@@ -13,6 +13,9 @@ import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
 import Alert from '@/presentations/App/localComponents/Alert/index.vue'
+import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
+import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
+import { unhandledErrorHandler } from '@/libs/unhandledErrorHandler'
 
 @Component({
   components: {
@@ -101,7 +104,21 @@ export default class App extends Vue {
     instanceListElement.scrollTo(0, 0)
   }
 
+  setupUnhandledErrorHandler() {
+    unhandledErrorHandler.setOnErrorCallback(error => {
+      if (error instanceof VRChatApiUnauthorizedError) {
+        showAuthorizationErrorDialog(this.$store.alertStore)
+
+        return null
+      }
+
+      return error
+    })
+  }
+
   async created() {
+    this.setupUnhandledErrorHandler()
+
     this.judgeDevice()
 
     this.$store.fullLoaderStore.showAction()

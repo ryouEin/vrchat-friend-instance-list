@@ -1,5 +1,5 @@
 import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRepository'
-import { MockVRChatApi } from '../../../mock/MockVRChatApi'
+import { MockVRChatApi } from '../../mock/MockVRChatApi'
 
 describe('fetchAllFriends', () => {
   const dummyFriend = {

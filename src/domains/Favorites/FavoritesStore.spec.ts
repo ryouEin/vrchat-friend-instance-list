@@ -1,4 +1,4 @@
-import { MockFavoritesRepository } from '../../../mock/MockFavoritesRepository'
+import { MockFavoritesRepository } from '../../mock/MockFavoritesRepository'
 import { Favorite } from '@/types'
 import VueCompositionApi from '@vue/composition-api'
 import { createLocalVue } from '@vue/test-utils'

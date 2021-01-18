@@ -1,21 +1,19 @@
-import { Component, Inject } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Network } from '@/libs/Network/Network'
 import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
-import { JOIN_DIALOG_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
-import { JoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
+import { InstanceLocation } from '@/types'
 
 @Component
 export default class JoinDialog extends Vue {
-  @Inject(JOIN_DIALOG_STORE_INJECT_KEY)
-  joinDialogStore!: JoinDialogStore
+  @Prop({ required: true })
+  readonly location!: InstanceLocation | null
+
+  @Prop({ required: true })
+  readonly hide!: () => void
 
   get isVisible() {
-    return this.joinDialogStore.isVisible.value
-  }
-
-  get location() {
-    return this.joinDialogStore.location.value
+    return this.location !== null
   }
 
   join() {
@@ -32,11 +30,7 @@ export default class JoinDialog extends Vue {
 
     await Promise.all([
       vrchatApi.inviteMe({ location: this.location }),
-      this.hideDialog(),
+      this.hide(),
     ])
-  }
-
-  async hideDialog() {
-    await this.joinDialogStore.hideAction()
   }
 }

@@ -4,8 +4,8 @@ import { Color } from '@/presentations/Colors'
 
 @Component({})
 export default class SettingDialog extends Vue {
-  @Prop()
-  value!: boolean
+  @Prop({ required: true })
+  readonly value!: boolean
 
   get setting() {
     return this.$store.settingStore.setting.value

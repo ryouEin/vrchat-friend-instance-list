@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../presentations/views/Home/index.vue'
+import HomeContainer from '../presentations/views/Home/container.vue'
+import InstanceModalContainer from '@/presentations/views/Home/localComponents/InstanceModal/container.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +9,15 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: HomeContainer,
+    children: [
+      {
+        path: ':location',
+        name: 'Instance',
+        component: InstanceModalContainer,
+        props: true,
+      },
+    ],
   },
 ]
 

@@ -5,10 +5,10 @@ import { Color } from '@/presentations/Colors'
 @Component
 export default class Icon extends Vue {
   @Prop({ default: 16 })
-  size!: number
+  readonly size!: number
 
-  @Prop({ default: 'black' })
-  color!: Color
+  @Prop({ default: Color.Black })
+  readonly color!: Color
 
   get rootStyle() {
     return {

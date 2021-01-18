@@ -6,10 +6,10 @@ export default class ToTopButton extends Vue {
   private isVisible = false
 
   @Prop({ required: true })
-  private scrollerElement!: HTMLElement
+  readonly scrollerElement!: HTMLElement
 
   @Prop({ type: Number, default: 1000 })
-  private showDistance!: number
+  readonly showDistance!: number
 
   toTop() {
     this.scrollerElement.scrollTo({

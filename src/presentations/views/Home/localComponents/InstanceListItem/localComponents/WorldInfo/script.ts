@@ -2,31 +2,46 @@ import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import Permission from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/Permission/index.vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
-import WatchInstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/WatchInstanceButton/index.vue'
 import { Instance, InstancePermission, World } from '@/types'
-import { JOIN_DIALOG_STORE_INJECT_KEY } from '@/presentations/views/Home/store/InjectKey'
-import { JoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
+import {
+  END_WATCH_INSTANCE,
+  EndWatchInstance,
+  SHOW_JOIN_DIALOG,
+  SHOW_WATCH_DIALOG,
+  ShowJoinDialog,
+  ShowWatchDialog,
+  UPDATE_INSTANCE,
+  UpdateInstance,
+} from '@/presentations/views/Home/injectInfo'
 
 @Component({
   components: {
     Permission,
     InstanceButton,
-    WatchInstanceButton,
   },
 })
 export default class WorldInfo extends Vue {
-  @Inject(JOIN_DIALOG_STORE_INJECT_KEY)
-  joinDialogStore!: JoinDialogStore
+  @Inject(SHOW_JOIN_DIALOG)
+  private readonly showJoinDialog!: ShowJoinDialog
+
+  @Inject(UPDATE_INSTANCE)
+  private readonly updateInstance!: UpdateInstance
+
+  @Inject(SHOW_WATCH_DIALOG)
+  private readonly showWatchDialog!: ShowWatchDialog
+
+  @Inject(END_WATCH_INSTANCE)
+  private readonly endWatchInstance!: EndWatchInstance
 
   @Prop({ required: true })
-  private instance!: Instance
+  readonly instance!: Instance
 
   @Prop({ required: true })
-  private world!: World
+  readonly world!: World
 
-  isFetchingUserNum = false
+  private isFetchingUserNum = false
 
-  fetchUserNumButtonDisabled = false
+  private fetchUserNumButtonDisabled = false
 
   get location(): string {
     return this.instance.location
@@ -62,22 +77,24 @@ export default class WorldInfo extends Vue {
     }
   }
 
-  async onClickJoinButton() {
-    await this.joinDialogStore.showAction(this.location)
+  joinButtonHandler() {
+    this.showJoinDialog(this.instance)
   }
 
-  async updateUserNum() {
+  async updateButtonHandler() {
     if (this.isFetchingUserNum) return
 
-    this.fetchUserNumButtonDisabled = true
     this.isFetchingUserNum = true
-    await this.$store.instancesStore
-      .updateInstanceInfoAction(this.location)
-      .finally(() => {
-        this.isFetchingUserNum = false
-        setTimeout(() => {
-          this.fetchUserNumButtonDisabled = false
-        }, 10 * 1000)
-      })
+    await this.updateInstance(this.instance).finally(() => {
+      this.isFetchingUserNum = false
+    })
+  }
+
+  watchButtonHandler() {
+    this.showWatchDialog(this.instance)
+  }
+
+  unwatchButtonHandler() {
+    this.endWatchInstance(this.instance)
   }
 }

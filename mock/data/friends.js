@@ -14,7 +14,7 @@ const makeUser = index => {
 }
 
 const friends = []
-for (let index = 0; index < 630; index++) {
+for (let index = 0; index < 100; index++) {
   friends.push(makeUser(index))
 }
 

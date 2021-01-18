@@ -1,92 +1,131 @@
-import { Component, Provide } from 'vue-property-decorator'
+import { Component, Prop, Provide } from 'vue-property-decorator'
 import Vue from 'vue'
 import OnlineFriendsList from '@/presentations/views/Home/localComponents/OnlineFriendsList/index.vue'
 import InstanceList from '@/presentations/views/Home/localComponents/InstanceList/index.vue'
-import { Friend, Instance } from '@/types'
 import InstanceModal from '@/presentations/views/Home/localComponents/InstanceModal/index.vue'
 import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/index.vue'
+import { Instance, InstanceLocation } from '@/types'
+import WatchInstanceDialog from '@/presentations/views/Home/localComponents/WatchInstanceDialog/index.vue'
 import {
-  INSTANCE_MODAL_STORE_INJECT_KEY,
-  INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY,
-  JOIN_DIALOG_STORE_INJECT_KEY,
-} from '@/presentations/views/Home/store/InjectKey'
-import { InstanceModalStore } from '@/presentations/views/Home/store/InstanceModalStore'
-import { InstanceWatchDialogStore } from '@/presentations/views/Home/store/InstanceWatchDialogStore'
-import { JoinDialogStore } from '@/presentations/views/Home/store/JoinDialogStore'
+  OnClickFavoriteCallback,
+  OnClickUnfavoriteCallback,
+  SHOW_FAVORITE_DIALOG,
+  SHOW_JOIN_DIALOG,
+  SHOW_UNFAVORITE_DIALOG,
+  SHOW_WATCH_DIALOG,
+  ShowFavoriteDialog,
+  ShowJoinDialog,
+  ShowUnfavoriteDialog,
+  ShowWatchDialog,
+} from '@/presentations/views/Home/injectInfo'
+import FavoriteDialog from '@/presentations/views/Home/localComponents/FavoriteDialog/index.vue'
+import UnfavoriteDialog from '@/presentations/views/Home/localComponents/UnfavoriteDialog/index.vue'
+import {
+  Friend as Friend1,
+  Friend,
+  FriendLocation,
+} from '@/presentations/types'
+import { FavoriteDialogProps } from '@/presentations/views/Home/localComponents/FavoriteDialog/script'
+import { UnfavoriteDialogProps } from '@/presentations/views/Home/localComponents/UnfavoriteDialog/script'
+
+interface ProvideMethods {
+  showJoinDialog: ShowJoinDialog
+  showWatchDialog: ShowWatchDialog
+  showFavoriteDialog: ShowFavoriteDialog
+  showUnfavoriteDialog: ShowUnfavoriteDialog
+}
 
 @Component({
   components: {
     OnlineFriendsList,
     InstanceList,
-    InstanceModal,
     JoinDialog,
+    WatchInstanceDialog,
+    FavoriteDialog,
+    UnfavoriteDialog,
   },
 })
-export default class Home extends Vue {
-  @Provide(INSTANCE_MODAL_STORE_INJECT_KEY)
-  instanceModalStore = new InstanceModalStore()
+export default class Home extends Vue implements ProvideMethods {
+  private joinDialogLocation: InstanceLocation | null = null
 
-  @Provide(JOIN_DIALOG_STORE_INJECT_KEY)
-  joinDialogStore = new JoinDialogStore()
+  private watchInstanceDialogInstance: Instance | null = null
 
-  @Provide(INSTANCE_WATCH_DIALOG_STORE_INJECT_KEY)
-  instanceWatchDialogStore = new InstanceWatchDialogStore()
+  private favoriteDialogProps: FavoriteDialogProps | null = null
+  private unfavoriteDialogProps: UnfavoriteDialogProps | null = null
 
-  isInitialLoading = false
-  isLaterLoading = false
-  isVisibleSideMenu = false
+  private isReloading = false
+  private isVisibleOnlineFriends = false
 
-  get friends(): Friend[] {
-    return this.$store.friendsStore.friends.value
+  @Prop({ required: true })
+  readonly friends!: Friend[]
+
+  @Prop({ required: true })
+  readonly friendLocations!: FriendLocation[]
+
+  @Prop({ required: true })
+  readonly onReload!: () => Promise<void>
+
+  @Provide(SHOW_JOIN_DIALOG)
+  showJoinDialog(instance: Instance) {
+    this.joinDialogLocation = instance.location
   }
 
-  get instances(): Instance[] {
-    return this.$store.instancesStore.instances.value
+  hideJoinDialog() {
+    this.joinDialogLocation = null
   }
 
-  get showOnlineFriendsListLoading() {
-    return this.isInitialLoading
+  @Provide(SHOW_WATCH_DIALOG)
+  showWatchDialog(instance: Instance) {
+    this.watchInstanceDialogInstance = instance
   }
 
-  get showInstanceListLoading() {
-    return this.isInitialLoading
+  hideWatchDialog() {
+    this.watchInstanceDialogInstance = null
+  }
+
+  @Provide(SHOW_FAVORITE_DIALOG)
+  showFavoriteDialog(friend: Friend, onClickFavorite: OnClickFavoriteCallback) {
+    this.favoriteDialogProps = {
+      friend,
+      onClickFavorite,
+      hide: () => {
+        this.favoriteDialogProps = null
+      },
+    }
+  }
+
+  @Provide(SHOW_UNFAVORITE_DIALOG)
+  showUnfavoriteDialog(
+    friend: Friend,
+    onClickUnfavorite: OnClickUnfavoriteCallback
+  ) {
+    this.unfavoriteDialogProps = {
+      friend,
+      onClickUnfavorite,
+      hide: () => {
+        this.unfavoriteDialogProps = null
+      },
+    }
   }
 
   get showFABLoading() {
-    return this.isLaterLoading
+    return this.isReloading
   }
 
-  showInstanceList() {
-    this.isVisibleSideMenu = true
+  showOnlineFriends() {
+    this.isVisibleOnlineFriends = true
   }
 
-  hideInstanceList() {
-    this.isVisibleSideMenu = false
-  }
-
-  async fetchData() {
-    await Promise.all([
-      this.$store.friendsStore.fetchFriendsAction(),
-      this.$store.favoritesStore.fetchFavoritesAction(),
-    ])
-    await this.$store.instancesStore.updateAction(
-      this.$store.friendsStore.friends.value
-    )
+  hideOnlineFriends() {
+    this.isVisibleOnlineFriends = false
   }
 
   async reload() {
-    if (this.isLaterLoading) return
+    if (this.isReloading) return
 
-    this.isLaterLoading = true
-    await this.fetchData().finally(() => {
-      this.isLaterLoading = false
-    })
-  }
-
-  async created() {
-    this.isInitialLoading = true
-    await this.fetchData().finally(() => {
-      this.isInitialLoading = false
+    this.isReloading = true
+    await this.onReload().finally(() => {
+      this.isReloading = false
     })
   }
 }

@@ -2,6 +2,8 @@ import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 import { FavoriteApiResponse } from '@/types/ApiResponse'
 import { IVRChatApi } from '@/libs/VRChatApi/IVRChatApi'
 import { FavoriteTag } from '@/types'
+import { FavoriteLimit } from '@/presentations/types'
+import { MAX_FAVORITE_PER_GROUP } from '@/config/settings'
 
 export class VRChatApiFavoritesRepository implements IFavoritesRepository {
   constructor(private readonly _vrchatApi: IVRChatApi) {}
@@ -28,5 +30,45 @@ export class VRChatApiFavoritesRepository implements IFavoritesRepository {
     return await this._vrchatApi.deleteFavorite({
       id,
     })
+  }
+
+  async fetchFriendFavoriteLimits(): Promise<FavoriteLimit[]> {
+    const limits: FavoriteLimit[] = [
+      {
+        name: 'group_0',
+        used: 0,
+        capacity: MAX_FAVORITE_PER_GROUP,
+      },
+      {
+        name: 'group_1',
+        used: 0,
+        capacity: MAX_FAVORITE_PER_GROUP,
+      },
+      {
+        name: 'group_2',
+        used: 0,
+        capacity: MAX_FAVORITE_PER_GROUP,
+      },
+    ]
+
+    const favoriteApiResponses = await this._vrchatApi.listFavorites({
+      type: 'friend',
+      n: 100,
+    })
+
+    favoriteApiResponses.forEach(favoriteApiResponse => {
+      const tag = favoriteApiResponse.tags[0]
+      const limit = limits.find(limit => limit.name === tag)
+      if (limit !== undefined) {
+        limit.used++
+      } else {
+        // TODO:
+        //  ここに到達したとしても、アプリをシャットダウンさせるほどの問題ではない
+        //  だから例外は吐きたくない
+        //  ただ、エラーの存在は知りたいため、エラー通知は投げたい
+      }
+    })
+
+    return limits
   }
 }

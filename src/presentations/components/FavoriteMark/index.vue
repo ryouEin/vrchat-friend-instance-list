@@ -1,6 +1,6 @@
 <template>
-  <div class="c-favoriteMark">
-    <i class="material-icons">star</i>
+  <div class="c-favoriteMark" :class="{ '-inactive': inactive }">
+    <i class="material-icons">{{ inactive ? 'star_outline' : 'star' }}</i>
   </div>
 </template>
 

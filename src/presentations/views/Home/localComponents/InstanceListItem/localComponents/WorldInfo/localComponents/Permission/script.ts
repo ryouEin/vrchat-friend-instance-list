@@ -4,8 +4,8 @@ import { InstancePermission } from '@/types'
 
 @Component
 export default class Permission extends Vue {
-  @Prop()
-  private permission!: InstancePermission
+  @Prop({ required: true })
+  readonly permission!: InstancePermission
 
   get cssClass() {
     return {

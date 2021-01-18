@@ -12,8 +12,8 @@ export default class Menu extends Vue {
   isVisibleAboutCapacityDialog = false
   isVisibleAuthorDialog = false
 
-  @Prop()
-  value!: boolean
+  @Prop({ required: true })
+  readonly value!: boolean
 
   showSettingDialog() {
     this.isVisibleSettingDialog = true

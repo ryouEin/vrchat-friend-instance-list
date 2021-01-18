@@ -1,27 +1,29 @@
 import { SettingStore } from '@/domains/Setting/SettingStore'
 
-export type Color =
-  | 'black'
-  | 'paleBlack'
-  | 'trueBlack'
-  | 'green'
-  | 'blue'
-  | 'red'
-  | 'yellow'
-  | 'orange'
-  | 'gray'
-  | 'paleGray'
-  | 'white'
-  | 'front'
-  | 'weakFront'
-  | 'back'
-  | 'weakBack'
-  | 'main'
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'danger'
-  | 'warning'
+export const Color = {
+  Black: 'black',
+  PaleBlack: 'paleBlack',
+  TrueBlack: 'trueBlack',
+  Green: 'green',
+  Blue: 'blue',
+  Red: 'red',
+  Yellow: 'yellow',
+  Orange: 'orange',
+  Gray: 'gray',
+  PaleGray: 'paleGray',
+  White: 'white',
+  Front: 'front',
+  WeakFront: 'weakFront',
+  Back: 'back',
+  WeakBack: 'weakBack',
+  Main: 'main',
+  Primary: 'primary',
+  Secondary: 'secondary',
+  Success: 'success',
+  Danger: 'danger',
+  Warning: 'warning',
+} as const
+export type Color = typeof Color[keyof typeof Color]
 
 export type Theme = 'light' | 'dark'
 

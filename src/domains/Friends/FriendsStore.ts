@@ -1,6 +1,6 @@
 import { computed, reactive } from '@vue/composition-api'
 import { UserApiResponse } from '@/types/ApiResponse'
-import { Friend, InstanceLocation } from '@/types'
+import { Friend } from '@/types'
 import { ICanGetFavoriteByUserId } from '@/domains/Favorites/FavoritesStore'
 import { IFriendsRepository } from '@/infras/Friends/IFriendsRepository'
 import { markNewFriends } from '@/domains/Friends/FriendsService'
@@ -35,14 +35,6 @@ export class FriendsStore {
         favorite,
       }
     })
-  })
-
-  readonly friendsByLocation = computed<
-    (location: InstanceLocation) => Friend[]
-  >(() => {
-    return (location: InstanceLocation) => {
-      return this.friends.value.filter(friend => friend.location === location)
-    }
   })
 
   @LogBeforeAfter('_state')

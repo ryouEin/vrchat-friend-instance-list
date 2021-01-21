@@ -9,6 +9,23 @@
     <div v-else class="loading">
       <g-Spinner color="front" />
     </div>
+    <JoinDialog :location="joinDialogLocation" :hide="hideJoinDialog" />
+    <WatchInstanceDialog
+      v-if="watchInstanceDialogInstance !== null"
+      :instance="watchInstanceDialogInstance"
+      :hide="hideWatchDialog"
+    />
+    <FavoriteDialog
+      v-if="favoriteDialogProps !== null"
+      :props="favoriteDialogProps"
+    />
+    <UnfavoriteDialog
+      v-if="unfavoriteDialogProps !== null"
+      :props="unfavoriteDialogProps"
+    />
+    <transition appear name="t-fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -28,6 +45,16 @@ import {
   FetchWorld,
   GET_FRIEND_LOCATION,
   GetFriendLocation,
+  OnClickFavoriteCallback,
+  OnClickUnfavoriteCallback,
+  SHOW_FAVORITE_DIALOG,
+  SHOW_JOIN_DIALOG,
+  SHOW_UNFAVORITE_DIALOG,
+  SHOW_WATCH_DIALOG,
+  ShowFavoriteDialog,
+  ShowJoinDialog,
+  ShowUnfavoriteDialog,
+  ShowWatchDialog,
   START_WATCH_INSTANCE,
   StartWatchInstance,
   UNFAVORITE_FRIEND,
@@ -35,6 +62,12 @@ import {
   UPDATE_INSTANCE,
   UpdateInstance,
 } from '@/presentations/views/Home/injectInfo'
+import { FavoriteDialogProps } from '@/presentations/views/Home/localComponents/FavoriteDialog/script'
+import { UnfavoriteDialogProps } from '@/presentations/views/Home/localComponents/UnfavoriteDialog/script'
+import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/index.vue'
+import WatchInstanceDialog from '@/presentations/views/Home/localComponents/WatchInstanceDialog/index.vue'
+import FavoriteDialog from '@/presentations/views/Home/localComponents/FavoriteDialog/index.vue'
+import UnfavoriteDialog from '@/presentations/views/Home/localComponents/UnfavoriteDialog/index.vue'
 
 interface ProvideMethods {
   updateInstance: UpdateInstance
@@ -44,14 +77,29 @@ interface ProvideMethods {
   startWatchInstance: StartWatchInstance
   endWatchInstance: EndWatchInstance
   getFriendLocation: GetFriendLocation
+  showJoinDialog: ShowJoinDialog
+  showWatchDialog: ShowWatchDialog
+  showFavoriteDialog: ShowFavoriteDialog
+  showUnfavoriteDialog: ShowUnfavoriteDialog
 }
 
 @Component({
   components: {
     Home,
+    JoinDialog,
+    WatchInstanceDialog,
+    FavoriteDialog,
+    UnfavoriteDialog,
   },
 })
 export default class HomeContainer extends Vue implements ProvideMethods {
+  private joinDialogLocation: InstanceLocation | null = null
+
+  private watchInstanceDialogInstance: Instance | null = null
+
+  private favoriteDialogProps: FavoriteDialogProps | null = null
+  private unfavoriteDialogProps: UnfavoriteDialogProps | null = null
+
   private initialized = false
 
   get friends(): Friend[] {
@@ -169,6 +217,49 @@ export default class HomeContainer extends Vue implements ProvideMethods {
     return this.friendLocations.find(
       friendLocation => friendLocation.location === location
     )
+  }
+
+  @Provide(SHOW_JOIN_DIALOG)
+  showJoinDialog(instance: Instance) {
+    this.joinDialogLocation = instance.location
+  }
+
+  hideJoinDialog() {
+    this.joinDialogLocation = null
+  }
+
+  @Provide(SHOW_WATCH_DIALOG)
+  showWatchDialog(instance: Instance) {
+    this.watchInstanceDialogInstance = instance
+  }
+
+  hideWatchDialog() {
+    this.watchInstanceDialogInstance = null
+  }
+
+  @Provide(SHOW_FAVORITE_DIALOG)
+  showFavoriteDialog(friend: Friend, onClickFavorite: OnClickFavoriteCallback) {
+    this.favoriteDialogProps = {
+      friend,
+      onClickFavorite,
+      hide: () => {
+        this.favoriteDialogProps = null
+      },
+    }
+  }
+
+  @Provide(SHOW_UNFAVORITE_DIALOG)
+  showUnfavoriteDialog(
+    friend: Friend,
+    onClickUnfavorite: OnClickUnfavoriteCallback
+  ) {
+    this.unfavoriteDialogProps = {
+      friend,
+      onClickUnfavorite,
+      hide: () => {
+        this.unfavoriteDialogProps = null
+      },
+    }
   }
 
   async created() {

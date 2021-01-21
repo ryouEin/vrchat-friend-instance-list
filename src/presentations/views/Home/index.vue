@@ -18,24 +18,6 @@
         <g-Icon v-else :size="50" color="white">refresh</g-Icon>
       </g-FAB>
     </div>
-    <JoinDialog :location="joinDialogLocation" :hide="hideJoinDialog" />
-    <WatchInstanceDialog
-      v-if="watchInstanceDialogInstance !== null"
-      :instance="watchInstanceDialogInstance"
-      :hide="hideWatchDialog"
-    />
-    <FavoriteDialog
-      v-if="favoriteDialogProps !== null"
-      :props="favoriteDialogProps"
-    />
-    <UnfavoriteDialog
-      v-if="unfavoriteDialogProps !== null"
-      :props="unfavoriteDialogProps"
-    />
-    <!-- TODO SOON: Injectの都合上、Presentationコンポーネントの中にrouter-viewがあるのが気になる -->
-    <transition appear name="t-fade">
-      <router-view></router-view>
-    </transition>
   </div>
 </template>
 

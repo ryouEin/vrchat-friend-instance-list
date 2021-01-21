@@ -1,8 +1,7 @@
-import { Component, Inject, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Instance, World } from '@/types'
+import { Instance } from '@/types'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
-import { FETCH_WORLD, FetchWorld } from '@/presentations/views/Home/injectInfo'
 import CanJoinInstanceDetail from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/InstanceDetail/CanJoinInstanceDetail.vue'
 
 @Component({

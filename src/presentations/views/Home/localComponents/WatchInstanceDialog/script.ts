@@ -1,6 +1,6 @@
 import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Instance, InstanceLocation } from '@/types'
+import { Instance } from '@/types'
 import {
   START_WATCH_INSTANCE,
   StartWatchInstance,

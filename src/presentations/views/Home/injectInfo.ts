@@ -1,5 +1,5 @@
 import { FavoriteTag, Instance, InstanceLocation, World } from '@/types'
-import { Friend, FriendLocation } from '@/presentations/types'
+import { Friend } from '@/presentations/types'
 
 export const SHOW_JOIN_DIALOG = 'showJoinDialog'
 export type ShowJoinDialog = (instance: Instance) => void
@@ -45,8 +45,3 @@ export type FavoriteFriend = (
 
 export const UNFAVORITE_FRIEND = 'unfavoriteFriend'
 export type UnfavoriteFriend = (friend: Friend) => Promise<void>
-
-export const GET_FRIEND_LOCATION = 'getFriendLocation'
-export type GetFriendLocation = (
-  location: InstanceLocation
-) => FriendLocation | undefined

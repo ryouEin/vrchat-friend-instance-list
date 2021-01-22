@@ -24,7 +24,10 @@
       :props="unfavoriteDialogProps"
     />
     <transition appear name="t-fade">
-      <router-view></router-view>
+      <router-view
+        name="InstanceModal"
+        :friendLocations="friendLocations"
+      ></router-view>
     </transition>
   </div>
 </template>
@@ -43,8 +46,6 @@ import {
   FavoriteFriend,
   FETCH_WORLD,
   FetchWorld,
-  GET_FRIEND_LOCATION,
-  GetFriendLocation,
   OnClickFavoriteCallback,
   OnClickUnfavoriteCallback,
   SHOW_FAVORITE_DIALOG,
@@ -76,7 +77,6 @@ interface ProvideMethods {
   unfavoriteFriend: UnfavoriteFriend
   startWatchInstance: StartWatchInstance
   endWatchInstance: EndWatchInstance
-  getFriendLocation: GetFriendLocation
   showJoinDialog: ShowJoinDialog
   showWatchDialog: ShowWatchDialog
   showFavoriteDialog: ShowFavoriteDialog
@@ -209,13 +209,6 @@ export default class HomeContainer extends Vue implements ProvideMethods {
     ])
     await this.$store.instancesStore.updateAction(
       this.$store.friendsStore.friends.value
-    )
-  }
-
-  @Provide(GET_FRIEND_LOCATION)
-  getFriendLocation(location: InstanceLocation) {
-    return this.friendLocations.find(
-      friendLocation => friendLocation.location === location
     )
   }
 

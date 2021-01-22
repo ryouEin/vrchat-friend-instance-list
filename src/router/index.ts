@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import HomeContainer from '../presentations/views/Home/container.vue'
-import InstanceModalContainer from '@/presentations/views/Home/localComponents/InstanceModal/container.vue'
+import InstanceModalContainer from '@/presentations/views/Home/InstanceModal/container.vue'
 
 Vue.use(VueRouter)
 
@@ -14,8 +14,9 @@ const routes: Array<RouteConfig> = [
       {
         path: ':location',
         name: 'Instance',
-        component: InstanceModalContainer,
-        props: true,
+        components: {
+          InstanceModal: InstanceModalContainer,
+        },
       },
     ],
   },

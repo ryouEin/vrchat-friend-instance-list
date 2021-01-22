@@ -4,6 +4,7 @@ import { IVRChatApi } from '@/libs/VRChatApi/IVRChatApi'
 import { FavoriteTag } from '@/types'
 import { FavoriteLimit } from '@/presentations/types'
 import { MAX_FAVORITE_PER_GROUP } from '@/config/settings'
+import { logger } from '@/singletonFactory'
 
 export class VRChatApiFavoritesRepository implements IFavoritesRepository {
   constructor(private readonly _vrchatApi: IVRChatApi) {}
@@ -62,10 +63,7 @@ export class VRChatApiFavoritesRepository implements IFavoritesRepository {
       if (limit !== undefined) {
         limit.used++
       } else {
-        // TODO:
-        //  ここに到達したとしても、アプリをシャットダウンさせるほどの問題ではない
-        //  だから例外は吐きたくない
-        //  ただ、エラーの存在は知りたいため、エラー通知は投げたい
+        logger.error(new Error(`unknown favorite tag ${tag} was found.`))
       }
     })
 

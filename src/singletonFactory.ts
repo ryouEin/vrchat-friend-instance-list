@@ -9,6 +9,8 @@ import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRep
 import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
 import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstancesRepository'
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
+import { ProductionLogger } from '@/libs/Logger/ProductionLogger'
+import { DevelopmentLogger } from '@/libs/Logger/DevelopmentLogger'
 
 const network = new Network()
 export const vrchatApi = new VRChatApi(network)
@@ -34,3 +36,11 @@ export const cacheWorldsRepository = new CacheWorldsRepository(
     maxNum: WORLD_CACHE.MAX_NUM,
   }
 )
+
+export const logger = (() => {
+  if (process.env.NOD_ENV === 'production') {
+    return new ProductionLogger()
+  }
+
+  return new DevelopmentLogger()
+})()

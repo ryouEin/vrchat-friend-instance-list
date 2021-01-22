@@ -1,4 +1,3 @@
-// TODO: cacheWorldsRepository以外のRepository等もここで生成するようにする
 import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
 import LocalStorage from '@/libs/Storage/LocalStorage'
 import { WORLD_CACHE } from '@/config/settings'
@@ -11,6 +10,8 @@ import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstan
 import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
 import { ProductionLogger } from '@/libs/Logger/ProductionLogger'
 import { DevelopmentLogger } from '@/libs/Logger/DevelopmentLogger'
+import MicroCmsApiNewsRepository from '@/infras/News/MicroCmsApiNewsRepository'
+import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 
 const network = new Network()
 export const vrchatApi = new VRChatApi(network)
@@ -25,6 +26,10 @@ export const instancesRepository = new VRChatApiInstancesRepository(vrchatApi)
 
 export const settingRepository = new KeyValueStorageSettingRepository(
   new LocalStorage()
+)
+
+export const newsRepository = new MicroCmsApiNewsRepository(
+  new MicroCmsApi(network)
 )
 
 export const cacheWorldsRepository = new CacheWorldsRepository(

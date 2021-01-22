@@ -1,6 +1,5 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import MicroCmsApiNewsRepository from '@/infras/News/MicroCmsApiNewsRepository'
 import { KeyValueStorageNewsLastCheckRepository } from '@/infras/News/KeyValueStorageNewsLastCheckRepository'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
 import { News } from '@/types'
@@ -8,14 +7,13 @@ import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
 import { fetchUnreadNews } from '@/domains/News/NewsService'
-import { Network } from '@/libs/Network/Network'
-import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
 import Alert from '@/presentations/App/localComponents/Alert/index.vue'
 import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 import { unhandledErrorHandler } from '@/libs/unhandledErrorHandler'
+import { newsRepository } from '@/singletonFactory'
 
 @Component({
   components: {
@@ -71,9 +69,6 @@ export default class App extends Vue {
   }
 
   async checkNews() {
-    // TODO: Presentation層でInfraのインスタンス生成してるのは微妙では？
-    const newsApi = new MicroCmsApi(new Network())
-    const newsRepository = new MicroCmsApiNewsRepository(newsApi)
     const newsStorage = new KeyValueStorageNewsLastCheckRepository()
     const newsArray = await fetchUnreadNews(newsRepository, newsStorage)
 

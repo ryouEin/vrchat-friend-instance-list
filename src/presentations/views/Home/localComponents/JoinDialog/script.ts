@@ -1,8 +1,7 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Network } from '@/libs/Network/Network'
-import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
 import { InstanceLocation } from '@/types'
+import { vrchatApi } from '@/singletonFactory'
 
 @Component
 export default class JoinDialog extends Vue {
@@ -25,10 +24,8 @@ export default class JoinDialog extends Vue {
       throw new Error('location is null')
     }
 
-    // TODO: プレゼンテーション層でVRChatApiのインスタンスの構築するのは微妙な気がする
-    const vrchatApi = new VRChatApi(new Network())
-
     await Promise.all([
+      // TODO: プレゼンテーション層でvrchatApiを使用するのは微妙
       vrchatApi.inviteMe({ location: this.location }),
       this.hide(),
     ])

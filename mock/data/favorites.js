@@ -7,6 +7,6 @@ module.exports = friends.slice(0, 5).map(friend => {
     id: `fvrt_${timeString}`,
     favoriteId: friend.id,
     type: 'friend',
-    tags: ['group_0'],
+    tags: [`group_${Math.random() > 0.5 ? 0 : 1}`],
   }
 })

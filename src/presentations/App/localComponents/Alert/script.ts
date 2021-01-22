@@ -1,6 +1,7 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import { Color } from '@/presentations/Colors'
+import AlertPresentation from '@/presentations/App/localComponents/Alert/presentation.vue'
 
 export interface AlertProps {
   title?: string
@@ -18,26 +19,16 @@ export type CustomButtonOption = {
 }
 
 @Component({
-  components: {},
+  components: {
+    AlertPresentation,
+  },
 })
 export default class Alert extends Vue {
   get props(): AlertProps | undefined {
     return this.$store.alertStore.alert.value
   }
 
-  get showCloseButton() {
-    return this.props?.showCloseButton ?? true
-  }
-
-  get isVisible() {
-    return this.props !== undefined
-  }
-
   async close() {
-    if (this.props?.onClose !== undefined) {
-      this.props.onClose()
-    }
-
     await this.$store.alertStore.hideAction()
   }
 }

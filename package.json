@@ -8,6 +8,7 @@
     "serve": "vue-cli-service serve",
     "dev": "npm run serve & npm run mock",
     "build": "vue-cli-service build",
+    "typecheck": "vtc --workspace ./ --srcDir ./src",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
@@ -75,7 +76,8 @@
     "stylelint-scss": "^3.17.0",
     "typescript": "~3.8.3",
     "vue-cli-plugin-style-resources-loader": "~0.1.4",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vue-type-check": "^1.1.0"
   },
   "engines": {
     "node": ">=12.0.0 <13.0.0"

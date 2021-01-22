@@ -4,10 +4,10 @@ import Vue from 'vue'
 @Component
 export default class InstanceButton extends Vue {
   @Prop({ default: 16 })
-  fontSize!: number
+  readonly fontSize!: number
 
   @Prop({ default: false })
-  disabled!: boolean
+  readonly disabled!: boolean
 
   get rootStyle() {
     return {

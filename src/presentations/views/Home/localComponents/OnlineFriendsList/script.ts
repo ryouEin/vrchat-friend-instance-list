@@ -1,8 +1,8 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import OnlineFriendsListItem from '@/presentations/views/Home/localComponents/OnlineFriendsListItem/index.vue'
-import { Friend } from '@/types'
 import { sortUsers } from '@/shame/sortUsers'
+import { Friend } from '@/presentations/types'
 
 @Component({
   components: {
@@ -10,10 +10,10 @@ import { sortUsers } from '@/shame/sortUsers'
   },
 })
 export default class OnlineFriendsList extends Vue {
-  isInitialized = false
+  @Prop({ required: true })
+  readonly friends!: Friend[]
 
-  @Prop()
-  private friends!: Friend[]
+  private isInitialized = false
 
   get sortedFriends() {
     return sortUsers(this.friends)

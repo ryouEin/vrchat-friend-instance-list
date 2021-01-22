@@ -4,7 +4,7 @@ import { Color } from '@/presentations/Colors'
 
 @Component
 export default class Spinner extends Vue {
-  @Prop({ type: String, default: 'green' })
+  @Prop({ type: String, default: Color.Main })
   readonly color!: Color
 
   @Prop({ type: Number, default: 48 })

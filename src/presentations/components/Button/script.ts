@@ -16,6 +16,9 @@ export default class Button extends Vue {
   @Prop({ type: String, default: 'default' })
   readonly size!: 'default' | 'large'
 
+  @Prop({ default: false })
+  readonly disabled!: boolean
+
   get isFull() {
     return this.full !== null
   }
@@ -24,6 +27,7 @@ export default class Button extends Vue {
     const tmp: (string | { [key: string]: boolean })[] = [
       {
         '-full': this.isFull,
+        '-disabled': this.disabled,
       },
     ]
     if (this.size !== 'default') tmp.push(`-${this.size}`)

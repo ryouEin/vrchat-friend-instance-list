@@ -50,10 +50,9 @@ describe('getInstancePermissionFromLocation', () => {
     expect(result).toBe(InstancePermission.Public)
   })
 
-  it('どの条件にも当てはまらない際に例外が投げられる', () => {
-    expect(() => {
-      getInstancePermissionFromLocation('unknown')
-    }).toThrow()
+  it('どの条件にも当てはまらない際Unknownと判定される', () => {
+    const result = getInstancePermissionFromLocation('unknown')
+    expect(result).toBe(InstancePermission.Unknown)
   })
 })
 

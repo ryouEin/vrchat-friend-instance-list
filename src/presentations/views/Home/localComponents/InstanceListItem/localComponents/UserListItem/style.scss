@@ -26,6 +26,8 @@
   position: absolute;
   top: 2px;
   right: 2px;
+  cursor: pointer;
+  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
 
   .favoriteLoadingSpinner {
     box-sizing: border-box;
@@ -51,26 +53,11 @@
   text-align: center;
   background-color: rgba(var(--blackColor), 0.8);
 
-  .c-userListItem.-active & {
-    background-color: rgba(var(--mainColor), 0.8);
-  }
-
   .displayName {
     overflow: hidden;
     font-size: 14px;
     line-height: 1.2;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .menuButton {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    line-height: 0;
-    text-align: center;
   }
 }

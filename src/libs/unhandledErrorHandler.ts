@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as Sentry from '@sentry/browser'
+import { logger } from '@/singletonFactory'
 
 type OnErrorCallback = (error: Error) => Error | null
 class UnhandledErrorHandler {
@@ -51,7 +51,7 @@ class UnhandledErrorHandler {
   }
 
   reportError(error: Error) {
-    Sentry.captureException(error)
+    logger.error(error)
 
     throw error
   }

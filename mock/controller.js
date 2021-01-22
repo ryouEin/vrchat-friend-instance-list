@@ -9,6 +9,7 @@ const locations = (() => {
   return [
     'offline',
     'private',
+    'unknown',
     ...worlds.map(world => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
     ...worlds.map(world => `${world.id}:123~friends(usr_0)~nonce(hogehoge)`),
     ...worlds.map(
@@ -16,6 +17,7 @@ const locations = (() => {
     ),
     ...worlds.map(world => `${world.id}:123~private(usr_678)~nonce(90)`),
     ...worlds.map(world => `${world.id}:123`),
+    ...worlds.map(world => `${world.id}:unknown~unknown(unknown)`),
   ]
 })()
 const getRandomLocation = () => {

@@ -1,5 +1,6 @@
 import { Friend, Instance, InstanceLocation, InstancePermission } from '@/types'
 import uniqBy from 'lodash/uniqBy'
+import { logger } from '@/singletonFactory'
 
 const parseLocation = (location: InstanceLocation) => {
   const [worldId, instanceId] = location.split(':')
@@ -19,7 +20,8 @@ export const getInstancePermissionFromLocation: (
   }
 
   if (instanceId === undefined) {
-    throw new Error(`unknown location: ${location}`)
+    logger.error(new Error(`unknown location: ${location}`))
+    return InstancePermission.Unknown
   }
 
   if (instanceId.includes('hidden')) {
@@ -40,7 +42,8 @@ export const getInstancePermissionFromLocation: (
     return InstancePermission.Public
   }
 
-  throw new Error(`unknown location: ${location}`)
+  logger.error(new Error(`unknown location: ${location}`))
+  return InstancePermission.Unknown
 }
 
 export function getOwnerIdFromLocation(

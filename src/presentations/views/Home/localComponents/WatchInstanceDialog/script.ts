@@ -75,7 +75,6 @@ export default class WatchInstanceDialog extends Vue {
   }
 
   async startWatch() {
-    // TODO SOON: ここ、通知許可周囲で絶対バグるので再考
     this.checkNotifyPermission()
     this.startWatchInstance(
       this.instance.location,

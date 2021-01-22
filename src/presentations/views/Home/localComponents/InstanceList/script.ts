@@ -1,26 +1,24 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import InstanceListItem from '@/presentations/views/Home/localComponents/InstanceListItem/index.vue'
-import { Friend, Instance } from '@/types'
-import WatchInstanceDialog from '@/presentations/views/Home/localComponents/InstanceList/localComponents/WatchInstanceDialog/index.vue'
+import { FriendLocation } from '@/presentations/types'
 
 type Order = 'default' | 'friends_desc' | 'friends_asc'
 
 @Component({
   components: {
     InstanceListItem,
-    WatchInstanceDialog,
   },
 })
 export default class InstanceList extends Vue {
-  isInitialized = false
+  private isInitialized = false
 
-  showOnlyFavoriteFriends = false
+  private showOnlyFavoriteFriends = false
 
-  order: Order = 'default'
+  private order: Order = 'default'
 
-  @Prop()
-  private instances!: Instance[]
+  @Prop({ required: true })
+  readonly friendLocations!: FriendLocation[]
 
   get orderSelectItems(): { label: string; value: Order }[] {
     return [
@@ -39,38 +37,38 @@ export default class InstanceList extends Vue {
     ]
   }
 
-  get items(): { id: string; instance: Instance; friends: Friend[] }[] {
-    return this.instances
-      .map(instance => {
+  get items() {
+    return this.friendLocations
+      .map(friendLocation => {
         return {
-          id: instance.location,
-          instance,
-          friends: this.$store.friendsStore.friendsByLocation.value(
-            instance.location
-          ),
+          id: friendLocation.location,
+          friendLocation,
         }
       })
-      .filter(instance => {
+      .filter(item => {
         if (!this.showOnlyFavoriteFriends) return true
 
         return (
-          instance.friends.find(friend => friend.favorite !== undefined) !==
-          undefined
+          item.friendLocation.friends.find(
+            friend => friend.favorite !== undefined
+          ) !== undefined
         )
       })
       .sort((a, b) => {
         const isPrivate =
-          a.instance.permission === 'private' ||
-          b.instance.permission === 'private'
+          a.friendLocation.instance === undefined ||
+          b.friendLocation.instance === undefined
         if (this.order === 'default' || isPrivate) {
           return 0
         }
 
         if (this.order === 'friends_desc') {
-          return b.friends.length - a.friends.length
+          return (
+            b.friendLocation.friends.length - a.friendLocation.friends.length
+          )
         }
 
-        return a.friends.length - b.friends.length
+        return a.friendLocation.friends.length - b.friendLocation.friends.length
       })
   }
 

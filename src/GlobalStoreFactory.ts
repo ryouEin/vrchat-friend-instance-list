@@ -1,12 +1,4 @@
-import { VRChatApiFriendsRepository } from '@/infras/Friends/VRChatApiFriendsRepository'
-import { Network } from '@/libs/Network/Network'
-import { VRChatApiInstancesRepository } from '@/infras/Instances/VRChatApiInstancesRepository'
-import { KeyValueStorageSettingRepository } from '@/infras/Setting/KeyValueStorageSettingRepository'
-import LocalStorage from '@/libs/Storage/LocalStorage'
-import { VRChatApiWorldsRepository } from '@/infras/Worlds/VRChatApiWorldsRepository'
 import { BrowserNotifier } from '@/libs/Notifier/BrowserNotifier'
-import { VRChatApi } from '@/libs/VRChatApi/VRChatApi'
-import { VRChatApiFavoritesRepository } from '@/infras/Favorites/VRChatApiFavoritesRepository'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { ToastsStore } from '@/presentations/store/ToastsStore'
@@ -16,7 +8,14 @@ import { InstancesStore } from '@/domains/Instances/InstancesStore'
 import { NotificationsStore } from '@/domains/Notifications/NotificationsStore'
 import { SettingStore } from '@/domains/Setting/SettingStore'
 import { WorldsStore } from '@/domains/Worlds/WorldsStore'
-import { cacheWorldsRepository } from '@/singletonFactory'
+import {
+  cacheWorldsRepository,
+  favoritesRepository,
+  friendsRepository,
+  instancesRepository,
+  networkWorldsRepository,
+  settingRepository,
+} from '@/singletonFactory'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -31,33 +30,23 @@ export const createGlobalStore = () => {
     return new AlertStore()
   })()
 
-  const network = new Network()
-  const vrchatApi = new VRChatApi(network)
-
   const favoritesStore = (() => {
-    const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
     return new FavoritesStore(favoritesRepository)
   })()
 
   const friendsStore = (() => {
-    const friendsRepository = new VRChatApiFriendsRepository(vrchatApi)
     return new FriendsStore(friendsRepository, favoritesStore)
   })()
 
   const worldsStore = (() => {
-    const networkWorldsRepository = new VRChatApiWorldsRepository(vrchatApi)
     return new WorldsStore(networkWorldsRepository, cacheWorldsRepository)
   })()
 
   const instancesStore = (() => {
-    const instancesRepository = new VRChatApiInstancesRepository(vrchatApi)
     return new InstancesStore(instancesRepository, worldsStore)
   })()
 
   const settingStore = (() => {
-    const settingRepository = new KeyValueStorageSettingRepository(
-      new LocalStorage()
-    )
     return new SettingStore(settingRepository)
   })()
 

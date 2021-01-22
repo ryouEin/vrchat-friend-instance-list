@@ -10,12 +10,21 @@
         ref="scroller"
       >
         <template v-slot="{ item }">
-          <div class="item">
+          <router-link
+            tag="div"
+            class="item"
+            :to="{
+              name: 'Instance',
+              params: {
+                location: item.location,
+              },
+            }"
+          >
             <OnlineFriendsListItem
               :friend="item"
               :style="{ height: `${itemHeight}px` }"
             />
-          </div>
+          </router-link>
         </template>
         <template #after>
           <div class="lastSpacer" />

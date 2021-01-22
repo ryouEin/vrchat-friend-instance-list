@@ -35,15 +35,11 @@
             :data-index="index"
           >
             <div class="item">
-              <InstanceListItem
-                :instance="item.instance"
-                :friends="item.friends"
-              />
+              <InstanceListItem :friendLocation="item.friendLocation" />
             </div>
           </DynamicScrollerItem>
         </template>
       </DynamicScroller>
-      <WatchInstanceDialog />
       <div v-if="isInitialized" class="toTop">
         <g-ToTopButton :scrollerElement="scrollerElement" />
       </div>

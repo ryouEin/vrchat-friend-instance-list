@@ -27,4 +27,9 @@
     padding: 20px 30px;
     font-size: 18px;
   }
+
+  &.-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }

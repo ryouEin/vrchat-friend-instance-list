@@ -11,7 +11,7 @@
       </div>
     </template>
     <template v-slot:buttonArea>
-      <g-Button color="gray" @click="hideDialog">閉じる</g-Button>
+      <g-Button color="gray" @click="hide">閉じる</g-Button>
     </template>
   </g-Dialog>
 </template>

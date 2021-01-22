@@ -19,16 +19,16 @@ export default class DropdownMenu extends Vue {
   isVisibleMenu = false
 
   @Prop({ type: Array, required: true })
-  private readonly items!: DropdownMenuItem[]
+  readonly items!: DropdownMenuItem[]
 
   @Prop({ type: String, default: 'left' })
-  private readonly positionHorizontal!: 'left' | 'right'
+  readonly positionHorizontal!: 'left' | 'right'
 
   @Prop({ type: String, default: 'top' })
-  private readonly positionVertical!: 'top' | 'bottom'
+  readonly positionVertical!: 'top' | 'bottom'
 
   @Prop({ type: Boolean, default: false })
-  isDisabled!: boolean
+  readonly isDisabled!: boolean
 
   get transitionName() {
     const initialToUpper = (text: string) => {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isVisible" class="c-userListItem" @click="onClick">
+  <div class="c-userListItem">
     <div class="figure">
       <img
         class="userImage"
@@ -17,7 +17,7 @@
         </div>
         <div class="displayName">{{ friend.displayName }}</div>
       </div>
-      <div class="status" :class="statusCssClass">{{ status }}</div>
+      <div class="status" :class="statusCssClass">{{ canJoinText }}</div>
     </div>
   </div>
 </template>

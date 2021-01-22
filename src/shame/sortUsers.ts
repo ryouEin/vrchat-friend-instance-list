@@ -1,7 +1,7 @@
 import { Friend } from '@/types'
 
 export const sortUsers: (users: Friend[]) => Friend[] = users => {
-  return users.sort((a, b) => {
+  return [...users].sort((a, b) => {
     const aIsFavorited = a.favorite !== undefined
     const bIsFavorited = b.favorite !== undefined
 

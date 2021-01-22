@@ -1,87 +1,24 @@
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import UserList from './localComponents/UserList/index.vue'
-import { Friend, Instance, InstancePermission, World } from '@/types'
-import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
-import { UserListItemPropFriend } from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/UserListItem/script'
+import InstanceDetail from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/InstanceDetail/index.vue'
+import { FriendLocation } from '@/presentations/types'
 
 @Component({
   components: {
     UserList,
-    WorldInfo,
+    InstanceDetail,
   },
 })
 export default class InstanceListItem extends Vue {
-  isLoading = false
-
   @Prop({ required: true })
-  private instance!: Instance
+  readonly friendLocation!: FriendLocation
 
-  @Prop({ required: true })
-  private friends!: Friend[]
-
-  get location(): string {
-    return this.instance.location
+  get instance() {
+    return this.friendLocation.instance
   }
 
-  get worldId(): string {
-    return this.instance.worldId
-  }
-
-  get world(): World | undefined {
-    if (this.showWorldInfo) {
-      return this.$store.worldsStore.world.value(this.worldId)
-    }
-
-    return undefined
-  }
-
-  get userListItemPropFriends(): UserListItemPropFriend[] {
-    return this.friends.map(friend => {
-      return {
-        ...friend,
-        isOwner: friend.id === this.instance.ownerId,
-      }
-    })
-  }
-
-  get instancePermission(): InstancePermission {
-    return this.instance.permission
-  }
-
-  get showWorldInfo(): boolean {
-    return (
-      this.instancePermission === InstancePermission.Friends ||
-      this.instancePermission === InstancePermission.FriendPlus ||
-      this.instancePermission === InstancePermission.Public ||
-      this.instancePermission === InstancePermission.InvitePlus ||
-      this.instancePermission === InstancePermission.Invite
-    )
-  }
-
-  get isPrivate(): boolean {
-    return this.instancePermission === InstancePermission.Private
-  }
-
-  // virtual-scrollerはコンポーネントを使い回すためlocationの変更を見て
-  // 初期化する必要がある
-  @Watch('instance.location')
-  async onChangeLocation() {
-    await this.init()
-  }
-
-  async init() {
-    this.isLoading = true
-    if (this.showWorldInfo && this.world === undefined) {
-      await this.$store.worldsStore
-        .fetchWorldAction(this.worldId)
-        .finally(() => {
-          this.isLoading = false
-        })
-    }
-  }
-
-  async created() {
-    await this.init()
+  get friends() {
+    return this.friendLocation.friends
   }
 }

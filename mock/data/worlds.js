@@ -12,7 +12,7 @@ const makeWorld = index => {
 }
 
 const worlds = []
-for (let index = 0; index < 100; index++) {
+for (let index = 0; index < 5; index++) {
   worlds.push(makeWorld(index))
 }
 

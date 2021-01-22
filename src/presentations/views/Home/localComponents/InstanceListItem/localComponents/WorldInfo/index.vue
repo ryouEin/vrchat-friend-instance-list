@@ -16,13 +16,13 @@
     <div class="instanceButtonArea">
       <div class="instanceButtonGroup">
         <div class="instanceButtonGroup_item">
-          <InstanceButton @click="onClickJoinButton">JOIN</InstanceButton>
+          <InstanceButton @click="joinButtonHandler">JOIN</InstanceButton>
         </div>
         <div class="instanceButtonGroup_item">
           <InstanceButton
             :fontSize="14"
             :disabled="fetchUserNumButtonDisabled"
-            @click="updateUserNum"
+            @click="updateButtonHandler"
           >
             <span v-if="!isFetchingUserNum" class="instanceButton_text"
               >ユーザー数<br />更新</span
@@ -33,7 +33,15 @@
           </InstanceButton>
         </div>
         <div class="instanceButtonGroup_item -watch">
-          <WatchInstanceButton :instance="instance" />
+          <InstanceButton
+            v-if="instance.isWatching"
+            @click="unwatchButtonHandler"
+          >
+            <g-Icon :size="20" color="green">visibility</g-Icon>
+          </InstanceButton>
+          <InstanceButton v-else @click="watchButtonHandler">
+            <g-Icon :size="20" color="front">visibility</g-Icon>
+          </InstanceButton>
         </div>
       </div>
     </div>

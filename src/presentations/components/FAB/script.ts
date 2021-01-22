@@ -5,10 +5,10 @@ import { Color } from '@/presentations/Colors'
 @Component
 export default class FAB extends Vue {
   @Prop({ default: 'right' })
-  position!: string
+  readonly position!: string
 
-  @Prop({ default: 'white' })
-  color!: Color
+  @Prop({ default: Color.White })
+  readonly color!: Color
 
   get rootStyle() {
     return {

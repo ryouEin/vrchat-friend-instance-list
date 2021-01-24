@@ -1,6 +1,6 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { UnixTime } from '@/types'
+import { MSecUnixTime } from '@/types'
 
 @Component
 export default class NotificationItem extends Vue {
@@ -8,7 +8,7 @@ export default class NotificationItem extends Vue {
   readonly text!: string
 
   @Prop({ required: true })
-  readonly date!: UnixTime
+  readonly date!: MSecUnixTime
 
   @Prop()
   readonly onClick?: Function

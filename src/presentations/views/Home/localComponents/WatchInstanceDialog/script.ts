@@ -1,10 +1,10 @@
 import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Instance } from '@/types'
 import {
   START_WATCH_INSTANCE,
   StartWatchInstance,
 } from '@/presentations/views/Home/injectInfo'
+import { Instance } from '@/presentations/types'
 
 const generateSelectItems = (count: number) => {
   const tmp = []
@@ -30,19 +30,6 @@ export default class WatchInstanceDialog extends Vue {
   readonly hide!: () => void
 
   private notifyUserNum = 1
-
-  get world() {
-    const world = this.$store.worldsStore.world.value(this.instance.worldId)
-    if (world === undefined) {
-      throw new Error('world is null.')
-    }
-
-    return world
-  }
-
-  get location() {
-    return this.instance.location
-  }
 
   get selectItems() {
     const MAX_NUM = 15
@@ -76,11 +63,7 @@ export default class WatchInstanceDialog extends Vue {
 
   async startWatch() {
     this.checkNotifyPermission()
-    this.startWatchInstance(
-      this.instance.location,
-      this.world.name,
-      this.notifyUserNum
-    )
+    this.startWatchInstance(this.instance.id, this.notifyUserNum)
     await this.hide()
   }
 }

@@ -1,5 +1,5 @@
-import { FavoriteTag, Instance, InstanceLocation, World } from '@/types'
-import { Friend } from '@/presentations/types'
+import { FavoriteTag, InstanceLocation } from '@/types'
+import { Friend, Instance, World } from '@/presentations/types'
 
 export const SHOW_JOIN_DIALOG = 'showJoinDialog'
 export type ShowJoinDialog = (instance: Instance) => void
@@ -13,7 +13,6 @@ export type ShowWatchDialog = (instance: Instance) => void
 export const START_WATCH_INSTANCE = 'startWatchInstance'
 export type StartWatchInstance = (
   location: InstanceLocation,
-  worldName: string,
   notifyUserNum: number
 ) => Promise<void>
 

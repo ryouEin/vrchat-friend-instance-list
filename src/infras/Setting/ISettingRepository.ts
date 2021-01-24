@@ -1,4 +1,4 @@
-import { Setting } from '@/types'
+import { Setting } from '@/presentations/types'
 
 export interface ISettingRepository {
   getSetting(): Promise<Setting | undefined>

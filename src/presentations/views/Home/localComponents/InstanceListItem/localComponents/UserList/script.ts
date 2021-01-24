@@ -13,6 +13,9 @@ export default class UserList extends Vue {
   @Prop({ required: true })
   readonly friends!: Friend[]
 
+  @Prop({ required: true })
+  readonly ownerId!: string | undefined
+
   get sortedFriends() {
     return sortUsers(this.friends)
   }

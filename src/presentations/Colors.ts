@@ -1,4 +1,4 @@
-import { SettingStore } from '@/domains/Setting/SettingStore'
+import { SettingStore } from '@/presentations/store/Setting/SettingStore'
 
 export const Color = {
   Black: 'black',

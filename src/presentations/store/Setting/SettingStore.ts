@@ -1,12 +1,12 @@
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
 import { computed, reactive } from '@vue/composition-api'
-import { Setting } from '@/types'
 import { DEFAULT_SETTING } from '@/config/settings'
 import { Color, Theme } from '@/presentations/Colors'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
+import { Setting } from '@/presentations/types'
 
 type State = {
   setting: Setting

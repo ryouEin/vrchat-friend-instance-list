@@ -1,30 +1,17 @@
 import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
-import { computed, ComputedRef, reactive } from '@vue/composition-api'
-import { Favorite, FavoriteTag } from '@/types'
+import { computed, reactive } from '@vue/composition-api'
+import { FavoriteTag } from '@/types'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
-
-// TODO:
-//  以下の内容に関して、再考
-//  「前提」
-//  ・FriendsStoreは「get favoriteByUserId()」に依存している
-//  ・なので、FriendsStoreはのテストでインジェクションする必要があった
-//  ・ただ、FriendsStoreは全体をinterface定義するのは大仰に感じた
-//  ・なので、「get favoriteByUserId()」のみを切り出してinterface化した
-//  「再考するべき点」
-//  ・前述の「get favoriteByUserId()」のみinterface化した行為は正しいのか
-//  ・正しいとして、こんなinterfaceの命名でいいのか
-export interface ICanGetFavoriteByUserId {
-  favoriteByUserId: ComputedRef<(userId: string) => Favorite | undefined>
-}
+import { Favorite } from '@/presentations/types'
 
 type State = {
   favorites: Favorite[]
 }
 @MakeReferenceToWindowObjectInDevelopment('favoritesStore')
-export class FavoritesStore implements ICanGetFavoriteByUserId {
+export class FavoritesStore {
   constructor(private readonly _favoritesRepository: IFavoritesRepository) {}
 
   private readonly _state = reactive<State>({

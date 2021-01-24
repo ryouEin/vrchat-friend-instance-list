@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import { GlobalStore } from '@/GlobalStoreFactory'
+import { GlobalStore } from '@/presentations/GlobalStoreFactory'
 
 declare module 'vue/types/vue' {
   interface Vue {

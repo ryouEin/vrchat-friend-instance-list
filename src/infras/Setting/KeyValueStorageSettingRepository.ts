@@ -1,6 +1,6 @@
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
-import { Setting } from '@/types'
 import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
+import { Setting } from '@/presentations/types'
 
 const SETTING_STORAGE_KEY = 'setting'
 

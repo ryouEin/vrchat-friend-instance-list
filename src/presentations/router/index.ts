@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import HomeContainer from '../presentations/views/Home/container.vue'
+import HomeContainer from '../views/Home/container.vue'
 import InstanceModalContainer from '@/presentations/views/Home/InstanceModal/container.vue'
 
 Vue.use(VueRouter)

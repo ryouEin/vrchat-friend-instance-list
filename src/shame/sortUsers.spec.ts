@@ -1,4 +1,4 @@
-import { Favorite, Friend } from '@/types'
+import { Favorite, Friend } from '@/presentations/types'
 import { sortUsers } from '@/shame/sortUsers'
 
 describe('sortUsers', () => {
@@ -10,6 +10,7 @@ describe('sortUsers', () => {
     currentAvatarThumbnailImageUrl: 'sample',
     location: 'sample',
     isNew: false,
+    canJoin: false,
   }
 
   const dummyFavorite: Favorite = {

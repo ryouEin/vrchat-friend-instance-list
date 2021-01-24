@@ -5,7 +5,7 @@
     </div>
 
     <div class="userInfo">
-      <UserList :friends="friends" />
+      <UserList :friends="friends" :ownerId="ownerId" />
     </div>
   </div>
 </template>

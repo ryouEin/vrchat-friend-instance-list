@@ -36,9 +36,8 @@
 import Vue from 'vue'
 import { Component, Provide } from 'vue-property-decorator'
 import Home from '@/presentations/views/Home/index.vue'
-import { Friend, FriendLocation } from '@/presentations/types'
-import * as GeneralType from '@/types'
-import { FavoriteTag, Instance, InstanceLocation } from '@/types'
+import { Friend, FriendLocation, Instance } from '@/presentations/types'
+import { FavoriteTag, InstanceLocation } from '@/types'
 import {
   END_WATCH_INSTANCE,
   EndWatchInstance,
@@ -69,6 +68,12 @@ import JoinDialog from '@/presentations/views/Home/localComponents/JoinDialog/in
 import WatchInstanceDialog from '@/presentations/views/Home/localComponents/WatchInstanceDialog/index.vue'
 import FavoriteDialog from '@/presentations/views/Home/localComponents/FavoriteDialog/index.vue'
 import UnfavoriteDialog from '@/presentations/views/Home/localComponents/UnfavoriteDialog/index.vue'
+import {
+  friendLocationsRepository,
+  instancesRepository,
+  worldsRepository,
+} from '@/singletonFactory'
+import * as FriendLocationsRepository from '@/infras/FriendLocations/IFriendLocationsRepository'
 
 interface ProvideMethods {
   updateInstance: UpdateInstance
@@ -102,59 +107,73 @@ export default class HomeContainer extends Vue implements ProvideMethods {
 
   private initialized = false
 
-  get friends(): Friend[] {
-    return this.$store.friendsStore.friends.value.map(friend => {
-      let canJoin = false
-      const instance = this.$store.instancesStore.instanceByLocation.value(
-        friend.location
-      )
-      if (
-        instance !== undefined &&
-        instance.permission !== GeneralType.InstancePermission.Private &&
-        instance.permission !== GeneralType.InstancePermission.Unknown
-      ) {
-        canJoin = true
-      }
+  private oldUserIds: string[] = []
 
-      return {
-        ...friend,
-        canJoin,
-        isOwner: instance !== undefined && instance.ownerId === friend.id,
-      }
-    })
-  }
-
-  get friendsByLocation() {
-    return (location: InstanceLocation) => {
-      return this.friends.filter(friend => friend.location === location)
-    }
-  }
+  private friendLocationsFromRepository:
+    | FriendLocationsRepository.FriendLocation[]
+    | null = null
 
   get friendLocations(): FriendLocation[] {
-    return this.$store.instancesStore.instances.value.map(instance => {
+    if (this.friendLocationsFromRepository === null) return []
+
+    return this.friendLocationsFromRepository.map(friendLocation => {
+      const instance =
+        friendLocation.instance === undefined
+          ? undefined
+          : {
+              ...friendLocation.instance,
+              isWatching:
+                this.$store.watchingInstancesStore.watchingInstances.value.find(
+                  watchingInstance =>
+                    watchingInstance.instanceId === friendLocation.instance?.id
+                ) !== undefined,
+              location: friendLocation.instance.id,
+              userNum: this.$store.instanceUserNumsStore.instanceUserNums.value.find(
+                instanceUserNum =>
+                  instanceUserNum.instanceId === friendLocation.instance?.id
+              )?.userNum,
+            }
       return {
-        location: instance.location,
-        instance: instance.location === 'private' ? undefined : instance,
-        friends: this.friendsByLocation(instance.location),
+        ...friendLocation,
+        instance,
+        friends: friendLocation.friends.map(friend => {
+          const favorite = this.$store.favoritesStore.favoriteByUserId.value(
+            friend.id
+          )
+
+          return {
+            ...friend,
+            favorite,
+            isNew:
+              this.oldUserIds.length <= 0
+                ? false
+                : !this.oldUserIds.includes(friend.id),
+          }
+        }),
       }
     })
+  }
+
+  get friends(): Friend[] {
+    if (this.friendLocations === null) return []
+
+    return this.friendLocations.reduce<Friend[]>((ac, current) => {
+      return ac.concat(current.friends)
+    }, [])
   }
 
   @Provide(UPDATE_INSTANCE)
   async updateInstance(instance: Instance) {
-    await this.$store.instancesStore.updateInstanceInfoAction(instance.location)
+    const response = await instancesRepository.fetchInstance(instance.id)
+    await this.$store.instanceUserNumsStore.addAction({
+      instanceId: instance.id,
+      userNum: response.n_users,
+    })
   }
 
   @Provide(FETCH_WORLD)
   async fetchWorld(worldId: string) {
-    await this.$store.worldsStore.fetchWorldAction(worldId)
-
-    const world = this.$store.worldsStore.world.value(worldId)
-    if (world === undefined) {
-      throw new Error('world is undefined')
-    }
-
-    return world
+    return await worldsRepository.fetchWorld(worldId)
   }
 
   @Provide(FAVORITE_FRIEND)
@@ -172,49 +191,36 @@ export default class HomeContainer extends Vue implements ProvideMethods {
   }
 
   @Provide(START_WATCH_INSTANCE)
-  async startWatchInstance(
-    location: InstanceLocation,
-    worldName: string,
-    notifyUserNum: number
-  ) {
-    await this.$store.instancesStore.watchInstanceAction({
-      location: location,
-      notifyUserNum: notifyUserNum,
-      onFindVacancy: async () => {
-        await this.$store.notificationsStore.pushNotificationAction({
-          text: `${worldName}に空きができました。`,
-          date: Date.now(),
-          onClick: async () => {
-            await this.$router.push({
-              name: 'Instance',
-              params: {
-                location,
-              },
-            })
-          },
-        })
-      },
+  async startWatchInstance(location: InstanceLocation, notifyUserNum: number) {
+    await this.$store.watchingInstancesStore.addAction({
+      instanceId: location,
+      notifyFreeSpaceNum: notifyUserNum,
     })
   }
 
   @Provide(END_WATCH_INSTANCE)
   async endWatchInstance(instance: Instance) {
-    await this.$store.instancesStore.unwatchInstanceAction(instance.location)
+    await this.$store.watchingInstancesStore.deleteAction(instance.id)
   }
 
   async fetchData() {
-    await Promise.all([
-      this.$store.friendsStore.fetchFriendsAction(),
+    const [friendLocations] = await Promise.all([
+      friendLocationsRepository.fetchFriendLocations(),
       this.$store.favoritesStore.fetchFavoritesAction(),
     ])
-    await this.$store.instancesStore.updateAction(
-      this.$store.friendsStore.friends.value
+    this.oldUserIds = this.friendLocations.reduce<string[]>(
+      (previous, current) => {
+        const friendIdsInInstance = current.friends.map(friend => friend.id)
+        return previous.concat(friendIdsInInstance)
+      },
+      []
     )
+    this.friendLocationsFromRepository = friendLocations
   }
 
   @Provide(SHOW_JOIN_DIALOG)
   showJoinDialog(instance: Instance) {
-    this.joinDialogLocation = instance.location
+    this.joinDialogLocation = instance.id
   }
 
   hideJoinDialog() {

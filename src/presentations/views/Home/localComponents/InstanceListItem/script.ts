@@ -21,4 +21,8 @@ export default class InstanceListItem extends Vue {
   get friends() {
     return this.friendLocation.friends
   }
+
+  get ownerId() {
+    return this.instance?.ownerId
+  }
 }

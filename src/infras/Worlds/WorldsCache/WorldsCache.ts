@@ -1,7 +1,7 @@
 import unionBy from 'lodash/unionBy'
 import { WorldApiResponse } from '@/types/ApiResponse'
 import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
-import { ICacheWorldsRepository } from '@/infras/Worlds/ICacheWorldsRepository'
+import { IWorldsCache } from '@/infras/Worlds/WorldsCache/IWorldsCache'
 import { VersionedKVS } from '@/libs/Storage/VersionedKVS'
 
 type WorldCache = {
@@ -15,7 +15,7 @@ type Options = {
   maxNum: number
 }
 
-export class CacheWorldsRepository implements ICacheWorldsRepository {
+export class WorldsCache implements IWorldsCache {
   versionedKVS: VersionedKVS<WorldCache[]>
 
   constructor(private storage: IKeyValueStorage, private options: Options) {

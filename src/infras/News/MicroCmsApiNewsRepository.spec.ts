@@ -1,43 +1,142 @@
 import MicroCmsApiNewsRepository from '@/infras/News/MicroCmsApiNewsRepository'
+import { ILastCheckNewsAt } from '@/infras/News/ILastCheckNewsAt'
+import { MSecUnixTime } from '@/types'
 import { IMicroCmsApi, ListNewsOptions } from '@/libs/MicroCmsApi/IMicroCmsApi'
 import { NewsApiResponse } from '@/types/ApiResponse'
+import { advanceTo } from 'jest-date-mock'
 
-class MockNewsApi implements IMicroCmsApi {
-  public listNewsResponse?: NewsApiResponse
+class MockLastCheckNewsAt implements ILastCheckNewsAt {
+  public lastCheckNewsAt: MSecUnixTime | undefined = undefined
 
-  async listNews(options: ListNewsOptions): Promise<NewsApiResponse> {
-    return this.listNewsResponse ?? { contents: [] }
+  setLastCheckNewsAt(unixtime: MSecUnixTime) {
+    this.lastCheckNewsAt = unixtime
+  }
+
+  getLastCheckNewsAt(): MSecUnixTime | undefined {
+    return this.lastCheckNewsAt
   }
 }
 
-describe('fetchNewsSince', () => {
-  it('お知らせがNewsの配列形式で取得出来る', async () => {
-    const mockNewsApi = new MockNewsApi()
-    // TODO: レスポンス固定だと、
-    //  ・APIからレスポンス受け取ったあとの処理が正しいことはテスト出来る
-    //  ・APIにリクエスト投げる前の処理が正しいことがテスト出来ない
-    //  という問題がある。
-    //  ただこれの対応をしようとするとモックを割とガッツリ実装しないといけなくて
-    //  工数がかかるので一旦保留
-    mockNewsApi.listNewsResponse = {
-      contents: [
-        {
-          publishedAt: '2020-08-13T15:19:23.400Z',
-          title: 'サンプルタイトル',
-          content: 'サンプルコンテンツ',
-        },
-      ],
-    }
-    const networkNewsRepository = new MicroCmsApiNewsRepository(mockNewsApi)
+class MockMicroCmsApi implements IMicroCmsApi {
+  public news: NewsApiResponse = { contents: [] }
 
-    const result = await networkNewsRepository.fetchNewsSince(219847145)
+  async listNews(options: ListNewsOptions): Promise<NewsApiResponse> {
+    return this.news
+  }
+}
+
+describe('fetchUnreadNews', () => {
+  it('ニュースを新しいものから3件取得し、現在時刻がストレージに保存される', async () => {
+    const currentDateString = '2020-08-14T15:19:23.400Z'
+    const currentDateUnixTime = new Date(currentDateString).getTime()
+    advanceTo(currentDateUnixTime)
+
+    const lastCheckNewsAt = new MockLastCheckNewsAt()
+    const microCmsApi = new MockMicroCmsApi()
+
+    const news01 = {
+      title: 'news01',
+      content: 'news01',
+      publishedAt: '2020-08-13T15:19:23.400Z',
+    }
+    const news01UnixTime = new Date(news01.publishedAt).getTime()
+    const news02 = {
+      title: 'news02',
+      content: 'news02',
+      publishedAt: '2020-08-12T15:19:23.400Z',
+    }
+    const news02UnixTime = new Date(news02.publishedAt).getTime()
+    const news03 = {
+      title: 'news03',
+      content: 'news03',
+      publishedAt: '2020-08-11T15:19:23.400Z',
+    }
+    const news03UnixTime = new Date(news03.publishedAt).getTime()
+    const news04 = {
+      title: 'news04',
+      content: 'news04',
+      publishedAt: '2020-08-10T15:19:23.400Z',
+    }
+    microCmsApi.news = {
+      contents: [news03, news02, news04, news01],
+    }
+
+    const repository = new MicroCmsApiNewsRepository(
+      lastCheckNewsAt,
+      microCmsApi
+    )
+    const result = await repository.fetchUnreadNews()
 
     expect(result).toEqual([
       {
-        title: 'サンプルタイトル',
-        content: 'サンプルコンテンツ',
-        publishedAt: 1597331963400,
+        ...news01,
+        publishedAt: news01UnixTime,
+      },
+      {
+        ...news02,
+        publishedAt: news02UnixTime,
+      },
+      {
+        ...news03,
+        publishedAt: news03UnixTime,
       },
     ])
+    expect(lastCheckNewsAt.lastCheckNewsAt).toBe(currentDateUnixTime)
+  })
+
+  it('最終ニュース確認日時以降のデータしか取得しない', async () => {
+    const currentDateString = '2020-08-15T10:19:23.400Z'
+    const currentDateUnixTime = new Date(currentDateString).getTime()
+    advanceTo(currentDateUnixTime)
+
+    const lastCheckNewsAt = new MockLastCheckNewsAt()
+    lastCheckNewsAt.lastCheckNewsAt = new Date(
+      '2020-08-12T10:19:23.400Z'
+    ).getTime()
+
+    const microCmsApi = new MockMicroCmsApi()
+    const news01 = {
+      title: 'news01',
+      content: 'news01',
+      publishedAt: '2020-08-13T15:19:23.400Z',
+    }
+    const news01UnixTime = new Date(news01.publishedAt).getTime()
+    const news02 = {
+      title: 'news02',
+      content: 'news02',
+      publishedAt: '2020-08-12T15:19:23.400Z',
+    }
+    const news02UnixTime = new Date(news02.publishedAt).getTime()
+    const news03 = {
+      title: 'news03',
+      content: 'news03',
+      publishedAt: '2020-08-11T15:19:23.400Z',
+    }
+    const news04 = {
+      title: 'news04',
+      content: 'news04',
+      publishedAt: '2020-08-10T15:19:23.400Z',
+    }
+    microCmsApi.news = {
+      contents: [news03, news02, news04, news01],
+    }
+
+    const repository = new MicroCmsApiNewsRepository(
+      lastCheckNewsAt,
+      microCmsApi
+    )
+    const result = await repository.fetchUnreadNews()
+
+    expect(result).toEqual([
+      {
+        ...news01,
+        publishedAt: news01UnixTime,
+      },
+      {
+        ...news02,
+        publishedAt: news02UnixTime,
+      },
+    ])
+    expect(lastCheckNewsAt.lastCheckNewsAt).toBe(currentDateUnixTime)
   })
 })

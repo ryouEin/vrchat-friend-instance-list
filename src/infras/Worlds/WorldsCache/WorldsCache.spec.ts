@@ -1,4 +1,4 @@
-import { CacheWorldsRepository } from '@/infras/Worlds/CacheWorldsRepository'
+import { WorldsCache } from '@/infras/Worlds/WorldsCache/WorldsCache'
 import { InMemoryKeyValueStorage } from '@/libs/Storage/InMemoryKeyValueStorage'
 import { advanceTo } from 'jest-date-mock'
 
@@ -43,7 +43,7 @@ describe('getWorlds', () => {
         data: [world01, world02],
       })
     )
-    const repository = new CacheWorldsRepository(
+    const repository = new WorldsCache(
       inMemoryKeyValueStorage,
       REPOSITORY_DEFAULT_OPTIONS
     )
@@ -62,7 +62,7 @@ describe('getWorlds', () => {
 
   it('ストレージに対応するデータが存在しない場合は空配列が返却される', async () => {
     const inMemoryKeyValueStorage = new InMemoryKeyValueStorage()
-    const repository = new CacheWorldsRepository(
+    const repository = new WorldsCache(
       inMemoryKeyValueStorage,
       REPOSITORY_DEFAULT_OPTIONS
     )
@@ -94,7 +94,7 @@ describe('getWorlds', () => {
         data: [world01, world02],
       })
     )
-    const repository = new CacheWorldsRepository(
+    const repository = new WorldsCache(
       inMemoryKeyValueStorage,
       REPOSITORY_DEFAULT_OPTIONS
     )
@@ -132,7 +132,7 @@ describe('getWorlds', () => {
         data: [shouldDeleteWorldData, shouldNotDeleteWorldData],
       })
     )
-    const repository = new CacheWorldsRepository(
+    const repository = new WorldsCache(
       inMemoryKeyValueStorage,
       REPOSITORY_DEFAULT_OPTIONS
     )
@@ -157,7 +157,7 @@ describe('addWorlds', () => {
       id: 'wrld_02',
     }
     const inMemoryKeyValueStorage = new InMemoryKeyValueStorage()
-    const repository = new CacheWorldsRepository(
+    const repository = new WorldsCache(
       inMemoryKeyValueStorage,
       REPOSITORY_DEFAULT_OPTIONS
     )
@@ -188,7 +188,7 @@ describe('addWorlds', () => {
         ],
       })
     )
-    const repository = new CacheWorldsRepository(
+    const repository = new WorldsCache(
       inMemoryKeyValueStorage,
       REPOSITORY_DEFAULT_OPTIONS
     )
@@ -242,7 +242,7 @@ describe('addWorlds', () => {
         data: [...oldData],
       })
     )
-    const repository = new CacheWorldsRepository(inMemoryKeyValueStorage, {
+    const repository = new WorldsCache(inMemoryKeyValueStorage, {
       ...REPOSITORY_DEFAULT_OPTIONS,
       maxNum: 3,
     })

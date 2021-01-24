@@ -39,36 +39,25 @@ export default class InstanceList extends Vue {
 
   get items() {
     return this.friendLocations
-      .map(friendLocation => {
-        return {
-          id: friendLocation.location,
-          friendLocation,
-        }
-      })
       .filter(item => {
         if (!this.showOnlyFavoriteFriends) return true
 
         return (
-          item.friendLocation.friends.find(
-            friend => friend.favorite !== undefined
-          ) !== undefined
+          item.friends.find(friend => friend.favorite !== undefined) !==
+          undefined
         )
       })
       .sort((a, b) => {
-        const isPrivate =
-          a.friendLocation.instance === undefined ||
-          b.friendLocation.instance === undefined
+        const isPrivate = a.instance === undefined || b.instance === undefined
         if (this.order === 'default' || isPrivate) {
           return 0
         }
 
         if (this.order === 'friends_desc') {
-          return (
-            b.friendLocation.friends.length - a.friendLocation.friends.length
-          )
+          return b.friends.length - a.friends.length
         }
 
-        return a.friendLocation.friends.length - b.friendLocation.friends.length
+        return a.friends.length - b.friends.length
       })
   }
 

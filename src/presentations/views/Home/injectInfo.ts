@@ -13,7 +13,6 @@ export type ShowWatchDialog = (instance: Instance) => void
 export const START_WATCH_INSTANCE = 'startWatchInstance'
 export type StartWatchInstance = (
   location: InstanceLocation,
-  worldName: string,
   notifyUserNum: number
 ) => Promise<void>
 

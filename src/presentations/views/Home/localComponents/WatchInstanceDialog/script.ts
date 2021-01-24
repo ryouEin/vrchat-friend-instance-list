@@ -31,19 +31,6 @@ export default class WatchInstanceDialog extends Vue {
 
   private notifyUserNum = 1
 
-  get world() {
-    const world = this.$store.worldsStore.world.value(this.instance.worldId)
-    if (world === undefined) {
-      throw new Error('world is null.')
-    }
-
-    return world
-  }
-
-  get location() {
-    return this.instance.location
-  }
-
   get selectItems() {
     const MAX_NUM = 15
 
@@ -76,11 +63,7 @@ export default class WatchInstanceDialog extends Vue {
 
   async startWatch() {
     this.checkNotifyPermission()
-    this.startWatchInstance(
-      this.instance.location,
-      this.world.name,
-      this.notifyUserNum
-    )
+    this.startWatchInstance(this.instance.id, this.notifyUserNum)
     await this.hide()
   }
 }

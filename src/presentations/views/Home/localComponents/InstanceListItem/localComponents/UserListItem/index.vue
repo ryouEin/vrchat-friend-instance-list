@@ -5,7 +5,7 @@
       :src="friend.currentAvatarThumbnailImageUrl"
       :key="friend.currentAvatarThumbnailImageUrl"
     />
-    <div v-if="friend.isOwner" class="owner">Owner</div>
+    <div v-if="isOwner" class="owner">Owner</div>
 
     <div v-if="isLoadingFavorite" class="favorite">
       <div class="favoriteLoadingSpinner">

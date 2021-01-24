@@ -43,10 +43,6 @@ export default class WorldInfo extends Vue {
 
   private fetchUserNumButtonDisabled = false
 
-  get location(): string {
-    return this.instance.location
-  }
-
   get userNum() {
     return this.instance.userNum
   }

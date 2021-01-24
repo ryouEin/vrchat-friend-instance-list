@@ -66,14 +66,12 @@ export type Setting = {
 }
 
 export type Instance = {
+  id: string
   worldId: string
-  location: InstanceLocation
   permission: InstancePermission
   isWatching: boolean
-  notifyUserNum: number
   ownerId?: string
   userNum?: number
-  onFindVacancy?: () => void
 }
 
 export type Favorite = {

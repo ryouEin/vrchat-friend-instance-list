@@ -30,7 +30,7 @@ export default class InstanceModalContainer extends Vue {
 
   get friendLocation() {
     return this.friendLocations.find(
-      friendLocation => friendLocation.location === this.location
+      friendLocation => friendLocation.id === this.location
     )
   }
 

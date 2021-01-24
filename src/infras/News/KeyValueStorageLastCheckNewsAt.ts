@@ -1,11 +1,10 @@
-import { INewsLastCheckRepository } from '@/infras/News/INewsLastCheckRepository'
+import { ILastCheckNewsAt } from '@/infras/News/ILastCheckNewsAt'
 import LocalStorage from '@/libs/Storage/LocalStorage'
 
 const KEY = 'lastCheckNewsAt'
 const storage = new LocalStorage()
 
-export class KeyValueStorageNewsLastCheckRepository
-  implements INewsLastCheckRepository {
+export class KeyValueStorageLastCheckNewsAt implements ILastCheckNewsAt {
   setLastCheckNewsAt(unixtime: number): void {
     storage.setItem(KEY, String(unixtime))
   }

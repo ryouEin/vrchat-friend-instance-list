@@ -1,19 +1,17 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { KeyValueStorageNewsLastCheckRepository } from '@/infras/News/KeyValueStorageNewsLastCheckRepository'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
 import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
-import { fetchUnreadNews } from '@/domains/News/NewsService'
 import Toasts from '@/presentations/App/localComponents/Toasts/index.vue'
 import FullLoader from '@/presentations/App/localComponents/FullLoader/index.vue'
 import Alert from '@/presentations/App/localComponents/Alert/index.vue'
 import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 import { unhandledErrorHandler } from '@/libs/unhandledErrorHandler'
-import { newsRepository } from '@/singletonFactory'
+import { instancesRepository, newsRepository } from '@/singletonFactory'
 
 @Component({
   components: {
@@ -69,15 +67,52 @@ export default class App extends Vue {
   }
 
   async checkNews() {
-    const newsStorage = new KeyValueStorageNewsLastCheckRepository()
-    const newsArray = await fetchUnreadNews(newsRepository, newsStorage)
+    const newsArray = await newsRepository.fetchUnreadNews()
 
     this.showNewsDialogs(newsArray)
   }
 
   startCheckWatchingInstances() {
     setInterval(async () => {
-      await this.$store.instancesStore.checkWatchingInstancesAction()
+      const checkFreeSpace = async (
+        instanceId: string,
+        notifyFreeSpaceNum: number
+      ) => {
+        // TODO: ここらへん整理
+        const apiResponse = await instancesRepository.fetchInstance(instanceId)
+        await this.$store.instanceUserNumsStore.addAction({
+          instanceId,
+          userNum: apiResponse.n_users,
+        })
+        const hardCapacity =
+          apiResponse.capacity === 1 ? 1 : apiResponse.capacity * 2
+        const freeSpaceNum = hardCapacity - apiResponse.n_users
+        if (freeSpaceNum >= notifyFreeSpaceNum) {
+          await this.$store.notificationsStore.pushNotificationAction({
+            // TODO: ワールド名入れたい
+            text: 'インスタンスに空きが出来ました。',
+            date: Date.now(),
+            onClick: () => {
+              this.$router.push({
+                name: 'Instance',
+                params: { location: instanceId },
+              })
+            },
+          })
+          await this.$store.watchingInstancesStore.deleteAction(instanceId)
+        }
+      }
+
+      const watchingInstances = this.$store.watchingInstancesStore
+        .watchingInstances.value
+      await Promise.all(
+        watchingInstances.map(watchingInstance =>
+          checkFreeSpace(
+            watchingInstance.instanceId,
+            watchingInstance.notifyFreeSpaceNum
+          )
+        )
+      )
     }, INSTANCE_WATCH_INTERVAL)
   }
 
@@ -116,9 +151,8 @@ export default class App extends Vue {
 
     this.judgeDevice()
 
-    this.$store.fullLoaderStore.showAction()
-    await Promise.all([this.$store.settingStore.initAction()])
-    await this.$store.worldsStore.initAction().finally(() => {
+    await this.$store.fullLoaderStore.showAction()
+    await this.$store.settingStore.initAction().finally(() => {
       this.$store.fullLoaderStore.hideAction()
     })
 

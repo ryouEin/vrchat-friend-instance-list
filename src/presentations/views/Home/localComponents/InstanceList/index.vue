@@ -35,7 +35,7 @@
             :data-index="index"
           >
             <div class="item">
-              <InstanceListItem :friendLocation="item.friendLocation" />
+              <InstanceListItem :friendLocation="item" />
             </div>
           </DynamicScrollerItem>
         </template>

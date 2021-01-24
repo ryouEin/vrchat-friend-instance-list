@@ -29,10 +29,17 @@ export default class UserListItem extends Vue {
   @Prop({ required: true })
   readonly friend!: Friend
 
+  @Prop({ required: true })
+  readonly ownerId!: string | undefined
+
   private isLoadingFavorite = false
 
   get isFavorited() {
     return this.friend.favorite !== undefined
+  }
+
+  get isOwner() {
+    return this.friend.id === this.ownerId
   }
 
   async favoriteButtonHandler() {

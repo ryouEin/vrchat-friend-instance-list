@@ -2,7 +2,7 @@ import { MockFavoritesRepository } from '../../mock/MockFavoritesRepository'
 import { Favorite } from '@/types'
 import VueCompositionApi from '@vue/composition-api'
 import { createLocalVue } from '@vue/test-utils'
-import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
+import { FavoritesStore } from '@/store/Favorites/FavoritesStore'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)

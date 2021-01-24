@@ -2,20 +2,12 @@ import { BrowserNotifier } from '@/libs/Notifier/BrowserNotifier'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { ToastsStore } from '@/presentations/store/ToastsStore'
-import { FavoritesStore } from '@/domains/Favorites/FavoritesStore'
-import { FriendsStore } from '@/domains/Friends/FriendsStore'
-import { InstancesStore } from '@/domains/Instances/InstancesStore'
-import { NotificationsStore } from '@/domains/Notifications/NotificationsStore'
-import { SettingStore } from '@/domains/Setting/SettingStore'
-import { WorldsStore } from '@/domains/Worlds/WorldsStore'
-import {
-  cacheWorldsRepository,
-  favoritesRepository,
-  friendsRepository,
-  instancesRepository,
-  networkWorldsRepository,
-  settingRepository,
-} from '@/singletonFactory'
+import { FavoritesStore } from '@/store/Favorites/FavoritesStore'
+import { NotificationsStore } from '@/store/Notifications/NotificationsStore'
+import { SettingStore } from '@/store/Setting/SettingStore'
+import { favoritesRepository, settingRepository } from '@/singletonFactory'
+import { WatchingInstancesStore } from '@/store/WatchingInstances/WatchingInstancesStore'
+import { InstanceUserNumsStore } from '@/store/InstanceUserNums/InstanceUserNumsStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {
@@ -34,16 +26,12 @@ export const createGlobalStore = () => {
     return new FavoritesStore(favoritesRepository)
   })()
 
-  const friendsStore = (() => {
-    return new FriendsStore(friendsRepository, favoritesStore)
+  const instanceUserNumsStore = (() => {
+    return new InstanceUserNumsStore()
   })()
 
-  const worldsStore = (() => {
-    return new WorldsStore(networkWorldsRepository, cacheWorldsRepository)
-  })()
-
-  const instancesStore = (() => {
-    return new InstancesStore(instancesRepository, worldsStore)
+  const watchingInstancesStore = (() => {
+    return new WatchingInstancesStore()
   })()
 
   const settingStore = (() => {
@@ -56,12 +44,11 @@ export const createGlobalStore = () => {
   })()
 
   return {
-    friendsStore,
     favoritesStore,
-    instancesStore,
     settingStore,
+    instanceUserNumsStore,
+    watchingInstancesStore,
     notificationsStore,
-    worldsStore,
     fullLoaderStore,
     toastsStore,
     alertStore,

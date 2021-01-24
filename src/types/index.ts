@@ -1,21 +1,20 @@
-import { Color, Theme } from '@/presentations/Colors'
-
-export type UnixTime = number
+export type MSecUnixTime = number
 
 export type InstanceLocation = string
 
-export type FavoriteType = 'world' | 'friend' | 'avatar'
+export const FavoriteType = {
+  World: 'world',
+  Friend: 'friend',
+  Avatar: 'avatar',
+} as const
+export type FavoriteType = typeof FavoriteType[keyof typeof FavoriteType]
 
-export type FavoriteTag = 'group_0' | 'group_1' | 'group_2'
-
-export type World = {
-  id: string
-  name: string
-  imageUrl: string
-  thumbnailImageUrl: string
-  capacity: number
-  hardCapacity: number
-}
+export const FavoriteTag = {
+  Group0: 'group_0',
+  Group1: 'group_1',
+  Group2: 'group_2',
+} as const
+export type FavoriteTag = typeof FavoriteTag[keyof typeof FavoriteTag]
 
 export const InstancePermission = {
   Private: 'private',
@@ -27,37 +26,3 @@ export const InstancePermission = {
   Unknown: 'unknown',
 } as const
 export type InstancePermission = typeof InstancePermission[keyof typeof InstancePermission]
-
-export type News = {
-  title: string
-  content: string
-  publishedAt: UnixTime
-}
-
-export type Notification = {
-  text: string
-  date: UnixTime
-  onClick: () => void
-}
-
-export type Setting = {
-  enableNotificationSound: boolean
-  theme: Theme
-  mainColor: Color
-}
-
-export type Instance = {
-  id: string
-  worldId: string
-  permission: InstancePermission
-  isWatching: boolean
-  ownerId?: string
-  userNum?: number
-}
-
-export type Favorite = {
-  id: string
-  favoriteId: string
-  tags: FavoriteTag[]
-  type: FavoriteType
-}

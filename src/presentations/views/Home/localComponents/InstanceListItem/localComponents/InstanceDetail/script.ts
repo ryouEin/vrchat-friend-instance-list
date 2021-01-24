@@ -1,8 +1,8 @@
 import { Component, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Instance } from '@/types'
 import WorldInfo from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/index.vue'
 import CanJoinInstanceDetail from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/InstanceDetail/CanJoinInstanceDetail.vue'
+import { Instance } from '@/presentations/types'
 
 @Component({
   components: {

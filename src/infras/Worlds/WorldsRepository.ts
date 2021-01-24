@@ -1,8 +1,8 @@
 // TODO: WorldsRepository系の命名規則考え直す
 import { IWorldsRepository } from '@/infras/Worlds/IWorldsRepository'
-import { World } from '@/types'
 import { IWorldsCache } from '@/infras/Worlds/WorldsCache/IWorldsCache'
 import { IVRChatApi } from '@/libs/VRChatApi/IVRChatApi'
+import { World } from '@/presentations/types'
 
 const calcHardCapacity = (capacity: number) => {
   return capacity === 1 ? 1 : capacity * 2

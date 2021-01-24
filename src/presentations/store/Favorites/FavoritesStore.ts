@@ -1,10 +1,11 @@
 import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
 import { computed, reactive } from '@vue/composition-api'
-import { Favorite, FavoriteTag } from '@/types'
+import { FavoriteTag } from '@/types'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
+import { Favorite } from '@/presentations/types'
 
 type State = {
   favorites: Favorite[]

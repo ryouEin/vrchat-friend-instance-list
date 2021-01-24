@@ -1,18 +1,18 @@
 import MicroCmsApiNewsRepository from '@/infras/News/MicroCmsApiNewsRepository'
 import { ILastCheckNewsAt } from '@/infras/News/ILastCheckNewsAt'
-import { UnixTime } from '@/types'
+import { MSecUnixTime } from '@/types'
 import { IMicroCmsApi, ListNewsOptions } from '@/libs/MicroCmsApi/IMicroCmsApi'
 import { NewsApiResponse } from '@/types/ApiResponse'
 import { advanceTo } from 'jest-date-mock'
 
 class MockLastCheckNewsAt implements ILastCheckNewsAt {
-  public lastCheckNewsAt: UnixTime | undefined = undefined
+  public lastCheckNewsAt: MSecUnixTime | undefined = undefined
 
-  setLastCheckNewsAt(unixtime: UnixTime) {
+  setLastCheckNewsAt(unixtime: MSecUnixTime) {
     this.lastCheckNewsAt = unixtime
   }
 
-  getLastCheckNewsAt(): UnixTime | undefined {
+  getLastCheckNewsAt(): MSecUnixTime | undefined {
     return this.lastCheckNewsAt
   }
 }

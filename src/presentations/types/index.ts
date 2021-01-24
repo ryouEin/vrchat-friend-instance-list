@@ -1,4 +1,54 @@
-import { Favorite, FavoriteTag, Instance, InstanceLocation } from '@/types'
+import {
+  FavoriteTag,
+  FavoriteType,
+  InstanceLocation,
+  InstancePermission,
+  MSecUnixTime,
+} from '@/types'
+import { Color, Theme } from '@/presentations/Colors'
+
+export type World = {
+  id: string
+  name: string
+  imageUrl: string
+  thumbnailImageUrl: string
+  capacity: number
+  hardCapacity: number
+}
+
+export type News = {
+  title: string
+  content: string
+  publishedAt: MSecUnixTime
+}
+
+export type Notification = {
+  text: string
+  date: MSecUnixTime
+  onClick: () => void
+}
+
+export type Setting = {
+  enableNotificationSound: boolean
+  theme: Theme
+  mainColor: Color
+}
+
+export type Instance = {
+  id: string
+  worldId: string
+  permission: InstancePermission
+  isWatching: boolean
+  ownerId?: string
+  userNum?: number
+}
+
+export type Favorite = {
+  id: string
+  favoriteId: string
+  tags: FavoriteTag[]
+  type: FavoriteType
+}
 
 export type Friend = {
   id: string

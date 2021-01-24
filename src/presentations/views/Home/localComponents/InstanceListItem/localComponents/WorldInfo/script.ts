@@ -2,7 +2,7 @@ import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
 import Permission from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/Permission/index.vue'
 import InstanceButton from '@/presentations/views/Home/localComponents/InstanceListItem/localComponents/WorldInfo/localComponents/InstanceButton/index.vue'
-import { Instance, InstancePermission, World } from '@/types'
+import { InstancePermission } from '@/types'
 import {
   END_WATCH_INSTANCE,
   EndWatchInstance,
@@ -13,6 +13,7 @@ import {
   UPDATE_INSTANCE,
   UpdateInstance,
 } from '@/presentations/views/Home/injectInfo'
+import { Instance, World } from '@/presentations/types'
 
 @Component({
   components: {

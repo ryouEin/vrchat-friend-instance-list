@@ -1,7 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
 import NotificationButton from '@/presentations/App/localComponents/NotificationButton/index.vue'
-import { News } from '@/types'
 import { INSTANCE_WATCH_INTERVAL } from '@/config/settings'
 import Menu from '@/presentations/App/localComponents/Menu/index.vue'
 import { UAParser } from 'ua-parser-js'
@@ -12,6 +11,7 @@ import { VRChatApiUnauthorizedError } from '@/libs/VRChatApi/VRChatApi'
 import { showAuthorizationErrorDialog } from '@/presentations/ErrorDialogManager'
 import { unhandledErrorHandler } from '@/libs/unhandledErrorHandler'
 import { instancesRepository, newsRepository } from '@/singletonFactory'
+import { News } from '@/presentations/types'
 
 @Component({
   components: {

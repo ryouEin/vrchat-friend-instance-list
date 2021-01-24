@@ -1,10 +1,10 @@
 import { Component, Inject, Prop } from 'vue-property-decorator'
 import Vue from 'vue'
-import { Instance } from '@/types'
 import {
   START_WATCH_INSTANCE,
   StartWatchInstance,
 } from '@/presentations/views/Home/injectInfo'
+import { Instance } from '@/presentations/types'
 
 const generateSelectItems = (count: number) => {
   const tmp = []

@@ -36,8 +36,8 @@
 import Vue from 'vue'
 import { Component, Provide } from 'vue-property-decorator'
 import Home from '@/presentations/views/Home/index.vue'
-import { Friend, FriendLocation } from '@/presentations/types'
-import { FavoriteTag, Instance, InstanceLocation } from '@/types'
+import { Friend, FriendLocation, Instance } from '@/presentations/types'
+import { FavoriteTag, InstanceLocation } from '@/types'
 import {
   END_WATCH_INSTANCE,
   EndWatchInstance,

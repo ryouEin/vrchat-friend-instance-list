@@ -1,8 +1,9 @@
 import { INewsRepository } from '@/infras/News/INewsRepository'
-import { News, UnixTime } from '@/types'
+import { MSecUnixTime } from '@/types'
 import { IMicroCmsApi } from '@/libs/MicroCmsApi/IMicroCmsApi'
 import { convertUnixTimeToISO8601ExtendedUTC } from '@/libs/Utils'
 import { ILastCheckNewsAt } from '@/infras/News/ILastCheckNewsAt'
+import { News } from '@/presentations/types'
 
 const DEFAULT_NEWS_COUNT = 3
 
@@ -12,7 +13,7 @@ export default class MicroCmsApiNewsRepository implements INewsRepository {
     private readonly _newsApi: IMicroCmsApi
   ) {}
 
-  private async fetchNewsSince(unixTime: UnixTime): Promise<News[]> {
+  private async fetchNewsSince(unixTime: MSecUnixTime): Promise<News[]> {
     const sinceString = convertUnixTimeToISO8601ExtendedUTC(unixTime)
     const response = await this._newsApi.listNews({
       filters: {

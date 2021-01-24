@@ -1,10 +1,10 @@
-import { Notification } from '@/types'
 import { INotifier } from '@/libs/Notifier/INotifier'
 import { computed, reactive } from '@vue/composition-api'
 import {
   LogBeforeAfter,
   MakeReferenceToWindowObjectInDevelopment,
 } from '@/libs/Decorators'
+import { Notification } from '@/presentations/types'
 
 type State = {
   notifications: Notification[]

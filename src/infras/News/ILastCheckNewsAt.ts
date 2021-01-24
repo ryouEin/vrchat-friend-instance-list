@@ -1,6 +1,6 @@
-import { UnixTime } from '@/types'
+import { MSecUnixTime } from '@/types'
 
 export interface ILastCheckNewsAt {
-  setLastCheckNewsAt(unixtime: UnixTime): void
-  getLastCheckNewsAt(): UnixTime | undefined
+  setLastCheckNewsAt(unixtime: MSecUnixTime): void
+  getLastCheckNewsAt(): MSecUnixTime | undefined
 }

@@ -1,5 +1,4 @@
-import { Favorite } from '@/types'
-import { Friend } from '@/presentations/types'
+import { Favorite, Friend } from '@/presentations/types'
 import { sortUsers } from '@/shame/sortUsers'
 
 describe('sortUsers', () => {

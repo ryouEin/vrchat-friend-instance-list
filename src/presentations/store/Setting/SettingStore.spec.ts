@@ -3,7 +3,7 @@ import { DEFAULT_SETTING } from '@/config/settings'
 import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
 import VueCompositionApi from '@vue/composition-api'
 import { createLocalVue } from '@vue/test-utils'
-import { SettingStore } from '@/store/Setting/SettingStore'
+import { SettingStore } from '@/presentations/store/Setting/SettingStore'
 
 const localVue = createLocalVue()
 localVue.use(VueCompositionApi)

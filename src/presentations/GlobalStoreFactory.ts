@@ -2,12 +2,12 @@ import { BrowserNotifier } from '@/libs/Notifier/BrowserNotifier'
 import { AlertStore } from '@/presentations/store/AlertStore'
 import { FullLoaderStore } from '@/presentations/store/FullLoaderStore'
 import { ToastsStore } from '@/presentations/store/ToastsStore'
-import { FavoritesStore } from '@/store/Favorites/FavoritesStore'
-import { NotificationsStore } from '@/store/Notifications/NotificationsStore'
-import { SettingStore } from '@/store/Setting/SettingStore'
+import { FavoritesStore } from '@/presentations/store/Favorites/FavoritesStore'
+import { NotificationsStore } from '@/presentations/store/Notifications/NotificationsStore'
+import { SettingStore } from '@/presentations/store/Setting/SettingStore'
 import { favoritesRepository, settingRepository } from '@/singletonFactory'
-import { WatchingInstancesStore } from '@/store/WatchingInstances/WatchingInstancesStore'
-import { InstanceUserNumsStore } from '@/store/InstanceUserNums/InstanceUserNumsStore'
+import { WatchingInstancesStore } from '@/presentations/store/WatchingInstances/WatchingInstancesStore'
+import { InstanceUserNumsStore } from '@/presentations/store/InstanceUserNums/InstanceUserNumsStore'
 
 export const createGlobalStore = () => {
   const fullLoaderStore = (() => {

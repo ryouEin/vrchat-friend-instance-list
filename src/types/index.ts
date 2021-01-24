@@ -1,13 +1,5 @@
 import { Color, Theme } from '@/presentations/Colors'
 
-export const NetworkState = {
-  Idle: 'idle',
-  Loading: 'loading',
-  Error: 'error',
-  Success: 'success',
-} as const
-export type NetworkState = typeof NetworkState[keyof typeof NetworkState]
-
 export type UnixTime = number
 
 export type InstanceLocation = string

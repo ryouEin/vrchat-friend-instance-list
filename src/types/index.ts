@@ -16,17 +16,6 @@ export type FavoriteType = 'world' | 'friend' | 'avatar'
 
 export type FavoriteTag = 'group_0' | 'group_1' | 'group_2'
 
-export type Friend = {
-  id: string
-  username: string
-  displayName: string
-  currentAvatarImageUrl: string
-  currentAvatarThumbnailImageUrl: string
-  location: InstanceLocation
-  favorite?: Favorite
-  isNew: boolean
-}
-
 export type World = {
   id: string
   name: string

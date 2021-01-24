@@ -1,7 +1,15 @@
 import * as GeneralType from '@/types'
-import { FavoriteTag } from '@/types'
+import { Favorite, FavoriteTag, InstanceLocation } from '@/types'
 
-export type Friend = GeneralType.Friend & {
+export type Friend = {
+  id: string
+  username: string
+  displayName: string
+  currentAvatarImageUrl: string
+  currentAvatarThumbnailImageUrl: string
+  location: InstanceLocation
+  favorite?: Favorite
+  isNew: boolean
   canJoin: boolean
 }
 

@@ -1,5 +1,4 @@
-import * as GeneralType from '@/types'
-import { Favorite, FavoriteTag, InstanceLocation } from '@/types'
+import { Favorite, FavoriteTag, Instance, InstanceLocation } from '@/types'
 
 export type Friend = {
   id: string
@@ -16,7 +15,7 @@ export type Friend = {
 // ワールド情報は、必要になった時点で取得するようにしないと一気にリクエストが発行されてしまう
 export type FriendLocation = {
   id: string
-  instance?: GeneralType.Instance
+  instance?: Instance
   friends: Friend[]
 }
 

@@ -1,0 +1,52 @@
+@import '../../../stylesheets/init';
+
+.root {
+  $tmpHeight: 32px;
+  $tmpWidth: 55px;
+  $tmpBorderWidth: 2px;
+  $tmpInnerSize: $tmpHeight - $tmpBorderWidth * 2;
+
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+  .input {
+    display: none;
+  }
+
+  .body {
+    box-sizing: border-box;
+    display: block;
+    width: $tmpWidth;
+    height: $tmpHeight;
+    background-color: rgb(var(--backColor));
+    border: $tmpBorderWidth solid #e5e5e5;
+    border-radius: 9999px;
+    transition:
+      background-color $mainAnimationDuration,
+      border-color $mainAnimationDuration;
+
+    &::before {
+      position: absolute;
+      top: $tmpBorderWidth;
+      left: $tmpBorderWidth;
+      box-sizing: border-box;
+      width: $tmpInnerSize;
+      height: $tmpInnerSize;
+      content: '';
+      background: rgb(var(--whiteColor));
+      border-radius: 100%;
+      box-shadow: rgba(0, 0, 0, 0.25) 0 0 1px 0, rgba(0, 0, 0, 0.15) 0 3px 3px 0;
+      transition: left $mainAnimationDuration;
+    }
+  }
+
+  .input:checked + .body {
+    background-color: rgb(var(--mainColor));
+    border-color: rgb(var(--mainColor));
+
+    &::before {
+      left: $tmpWidth - $tmpInnerSize - $tmpBorderWidth;
+    }
+  }
+}

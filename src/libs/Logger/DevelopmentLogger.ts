@@ -1,4 +1,4 @@
-import { ILogger } from '@/libs/Logger/ILogger'
+import { ILogger } from './ILogger'
 
 export class DevelopmentLogger implements ILogger {
   error(message: string | Error) {

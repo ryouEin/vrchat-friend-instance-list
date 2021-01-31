@@ -8,6 +8,7 @@ const {
   getWorld,
   listWorlds,
   getInstanceInfo,
+  inviteMe,
   listNews,
   getDummyImage,
   mockError,
@@ -20,10 +21,10 @@ app.use(express.static('mock/public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const errorResponseMiddleware = controllerName => {
+const errorResponseMiddleware = (controllerName) => {
   return (req, res, next) => {
     const errorResponseDetail = dummyErrorResponseList.items.find(
-      item => item.controllerName === controllerName
+      (item) => item.controllerName === controllerName
     )
     if (errorResponseDetail !== undefined) {
       return res.sendStatus(errorResponseDetail.status)
@@ -33,8 +34,8 @@ const errorResponseMiddleware = controllerName => {
   }
 }
 
-const sleep = ms => {
-  return new Promise(resolve => {
+const sleep = (ms) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve()
     }, ms)
@@ -94,6 +95,11 @@ app.get(
   '/api/1/instances/:location',
   errorResponseMiddleware('getInstanceInfo'),
   getInstanceInfo
+)
+app.post(
+  '/api/1/instances/:location/invite',
+  errorResponseMiddleware('inviteMe'),
+  inviteMe
 )
 app.get('/news', errorResponseMiddleware('listNews'), listNews)
 app.get('/dummyImage/:uid', getDummyImage)

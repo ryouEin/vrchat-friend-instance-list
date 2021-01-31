@@ -1,4 +1,4 @@
-import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
+import { IKeyValueStorage } from './IKeyValueStorage'
 
 type VersionedData<T> = {
   version: string

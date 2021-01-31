@@ -1,0 +1,32 @@
+@import '../../../stylesheets/init';
+
+.root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $zIndexGlobalNav;
+  display: flex;
+  align-items: center;
+  height: $navHeight;
+  padding: 0 0 0 10px;
+  color: rgb(var(--whiteColor));
+  background-color: rgb(var(--mainColor));
+  box-shadow: $mainBoxShadow;
+
+  .appTitle {
+    flex: 0 0;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .spacer {
+    flex: 1 1 100%;
+  }
+
+  .iconButton {
+    padding: 10px;
+    cursor: pointer;
+  }
+}

@@ -11,7 +11,7 @@ class DummyErrorResponseList {
 
   addItem(targetItem) {
     this.items = this.items.filter(
-      item => item.controllerName !== targetItem.controllerName
+      (item) => item.controllerName !== targetItem.controllerName
     )
     this.items.push(targetItem)
   }

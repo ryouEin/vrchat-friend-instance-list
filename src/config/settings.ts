@@ -1,6 +1,6 @@
-// インスタンスの人数を監視する際、人数を取得する感覚（ミリ秒）
-import { Setting } from '@/presentations/types'
+import { Setting } from '../presentations/types'
 
+// インスタンスの人数を監視する際、人数を取得する感覚（ミリ秒）
 export const INSTANCE_WATCH_INTERVAL = 60 * 1000
 
 export const WORLD_CACHE = {

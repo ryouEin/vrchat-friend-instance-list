@@ -1,50 +1,41 @@
-import { computed, reactive } from '@vue/composition-api'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { InstanceUserNum } from '../../types'
+import { RootState } from '../index'
 
-type InstanceUserNum = {
-  instanceId: string
-  userNum: number
-}
-
-type State = {
+type InstanceUserNumsState = {
   instanceUserNums: InstanceUserNum[]
 }
-@MakeReferenceToWindowObjectInDevelopment('instanceUserNumsStore')
-export class InstanceUserNumsStore {
-  private readonly _state = reactive<State>({
-    instanceUserNums: [],
-  })
 
-  readonly instanceUserNums = computed<InstanceUserNum[]>(() => {
-    return this._state.instanceUserNums
-  })
-
-  @LogBeforeAfter('_state')
-  private addInstanceUserNumMutation(instanceUserNum: InstanceUserNum) {
-    const existsInState = this.instanceUserNums.value.find(
-      stateInstanceUserNum =>
-        stateInstanceUserNum.instanceId === instanceUserNum.instanceId
-    )
-    if (existsInState !== undefined) {
-      this.deleteInstanceUserNumMutation(instanceUserNum.instanceId)
-    }
-
-    this._state.instanceUserNums = this._state.instanceUserNums.concat([
-      instanceUserNum,
-    ])
-  }
-
-  @LogBeforeAfter('_state')
-  private deleteInstanceUserNumMutation(instanceId: string) {
-    this._state.instanceUserNums = this._state.instanceUserNums.filter(
-      instanceUserNum => instanceUserNum.instanceId !== instanceId
-    )
-  }
-
-  async addAction(instanceUserNum: InstanceUserNum) {
-    this.addInstanceUserNumMutation(instanceUserNum)
-  }
+const initialState: InstanceUserNumsState = {
+  instanceUserNums: [],
 }
+
+export const instanceUserNumsSlice = createSlice({
+  name: 'instanceUserNums',
+  initialState,
+  reducers: {
+    addInstanceUserNum: (state, action: PayloadAction<InstanceUserNum>) => {
+      const newInstanceUserNum: InstanceUserNum = action.payload
+      state.instanceUserNums = state.instanceUserNums.filter(
+        (item) => item.instanceId !== newInstanceUserNum.instanceId
+      )
+      state.instanceUserNums = state.instanceUserNums.concat([
+        newInstanceUserNum,
+      ])
+    },
+  },
+})
+
+export const { addInstanceUserNum } = instanceUserNumsSlice.actions
+
+export const selectInstanceUserNums = (state: RootState) =>
+  state.instanceUserNums.instanceUserNums
+
+export const selectInstanceUserNumByInstanceId = (state: RootState) => {
+  return (instanceId: string) =>
+    state.instanceUserNums.instanceUserNums.find(
+      (instanceUserNum) => instanceUserNum.instanceId === instanceId
+    )
+}
+
+export const instanceUserNumsReducer = instanceUserNumsSlice.reducer

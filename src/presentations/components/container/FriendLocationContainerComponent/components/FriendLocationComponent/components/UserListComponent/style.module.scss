@@ -1,0 +1,26 @@
+@import '../../../../../../../stylesheets/init';
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 5px;
+}
+
+.item {
+  box-sizing: border-box;
+  flex: 0 0 16.6666%;
+  padding: 5px;
+
+  @include mqPcMid {
+    flex-basis: 25%;
+  }
+
+  @include mqPcNarrow {
+    flex-basis: 25%;
+  }
+
+  @include mqSp {
+    flex-basis: 33.3333%;
+  }
+}

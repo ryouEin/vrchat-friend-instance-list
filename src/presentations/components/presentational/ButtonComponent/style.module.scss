@@ -1,0 +1,33 @@
+@import '../../../stylesheets/init';
+
+.root {
+  display: inline-block;
+  min-width: 80px;
+  padding: 15px 20px;
+  font-size: 16px;
+  line-height: 1;
+  color: rgb(var(--whiteColor));
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(var(--grayColor));
+  border-radius: 9999px;
+  transition: filter $mainAnimationDuration;
+
+  &:hover {
+    filter: $hoverFilter;
+  }
+
+  &.full {
+    display: block;
+  }
+
+  &.large {
+    padding: 20px 30px;
+    font-size: 18px;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}

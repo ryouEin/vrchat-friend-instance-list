@@ -1,0 +1,21 @@
+@import '../../../../../../../stylesheets/init';
+
+.root {
+  height: 100%;
+}
+
+.item {
+  box-sizing: border-box;
+  border-bottom: 1px solid rgb(var(--weakBackColor));
+}
+
+.toTop {
+  position: fixed;
+  top: $navHeight + 10px;
+  left: 125px;
+  transform: translateX(-50%);
+
+  @include mqSp {
+    top: 10px;
+  }
+}

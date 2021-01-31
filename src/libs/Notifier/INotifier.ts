@@ -1,3 +1,3 @@
 export interface INotifier {
-  notify(message: string): void
+  notify(message: string, sound: boolean): void
 }

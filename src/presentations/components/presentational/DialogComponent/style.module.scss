@@ -1,0 +1,67 @@
+// TODO: いちいちimportしないでいいようにしたい
+@import '../../../stylesheets/init';
+
+.root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zIndexDialog;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(var(--trueBlackColor), 0.8);
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+  background-color: rgb(var(--backColor));
+  border-radius: 5px;
+
+  @include mqPc {
+    width: 600px;
+  }
+
+  @include mqSp {
+    width: 90vw;
+  }
+}
+
+.header {
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: rgb(var(--whiteColor));
+  background-color: rgb(var(--mainColor));
+}
+
+.content {
+  padding: 20px 20px 0;
+  margin-bottom: 50px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: rgb(var(--frontColor));
+}
+
+.buttonArea {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 30px;
+
+  .button {
+    margin: 0 5px;
+  }
+}

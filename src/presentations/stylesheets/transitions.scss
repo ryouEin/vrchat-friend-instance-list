@@ -1,78 +1,57 @@
-.t-fade-enter-active,
-.t-fade-leave-active {
-  transition: opacity $mainAnimationDuration;
-}
-
 .t-fade-enter,
-.t-fade-leave-to {
+.t-fade-exit-active {
+  // TODO: react-transition-groupが、mountされたままt-fade-exit-activeの状態で消えないケースがあるので
+  //  pointer-events: noneをつけておいて操作の妨げにならないようにだけしておく
+  //  根本的な解決にはなってないので、良い解決法を探す必要あり
+  pointer-events: none;
   opacity: 0;
 }
 
-.t-up-enter-active,
-.t-up-leave-active {
-  transition: transform $mainAnimationDuration;
+.t-fade-enter-active {
+  opacity: 1;
 }
 
-.t-up-enter,
-.t-up-leave-to {
-  transform: translateY(100%);
-}
-
-.t-fadeDown-enter-active,
-.t-fadeDown-leave-active {
-  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
+.t-fade-enter,
+.t-fade-exit {
+  transition: opacity $mainAnimationDuration;
 }
 
 .t-fadeDown-enter,
-.t-fadeDown-leave-to {
+.t-fadeDown-exit-active {
+  // TODO: react-transition-groupが、mountされたままt-fade-exit-activeの状態で消えないケースがあるので
+  //  pointer-events: noneをつけておいて操作の妨げにならないようにだけしておく
+  //  根本的な解決にはなってないので、良い解決法を探す必要あり
+  pointer-events: none;
   opacity: 0;
   transform: translateY(-10px);
 }
 
-.t-scalingFromLeftTop-enter-active,
-.t-scalingFromLeftTop-leave-active {
-  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
-  transform-origin: left top;
+.t-fadeDown-enter-active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.t-scalingFromLeftTop-enter,
-.t-scalingFromLeftTop-leave-to {
+.t-fadeDown-enter,
+.t-fadeDown-exit {
+  transition: opacity $mainAnimationDuration, transform $mainAnimationDuration;
+}
+
+.t-fadeUp-enter,
+.t-fadeUp-exit-active {
+  // TODO: react-transition-groupが、mountされたままt-fade-exit-activeの状態で消えないケースがあるので
+  //  pointer-events: noneをつけておいて操作の妨げにならないようにだけしておく
+  //  根本的な解決にはなってないので、良い解決法を探す必要あり
+  pointer-events: none;
   opacity: 0;
-  transform: scale(0);
+  transform: translateY(10px);
 }
 
-.t-scalingFromLeftBottom-enter-active,
-.t-scalingFromLeftBottom-leave-active {
-  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
-  transform-origin: left bottom;
+.t-fadeUp-enter-active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.t-scalingFromLeftBottom-enter,
-.t-scalingFromLeftBottom-leave-to {
-  opacity: 0;
-  transform: scale(0);
-}
-
-.t-scalingFromRightTop-enter-active,
-.t-scalingFromRightTop-leave-active {
-  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
-  transform-origin: right top;
-}
-
-.t-scalingFromRightTop-enter,
-.t-scalingFromRightTop-leave-to {
-  opacity: 0;
-  transform: scale(0);
-}
-
-.t-scalingFromRightBottom-enter-active,
-.t-scalingFromRightBottom-leave-active {
-  transition: transform $mainAnimationDuration, opacity $mainAnimationDuration;
-  transform-origin: right bottom;
-}
-
-.t-scalingFromRightBottom-enter,
-.t-scalingFromRightBottom-leave-to {
-  opacity: 0;
-  transform: scale(0);
+.t-fadeUp-enter,
+.t-fadeUp-exit {
+  transition: opacity $mainAnimationDuration, transform $mainAnimationDuration;
 }

@@ -1,0 +1,39 @@
+@import '../../../../../stylesheets/init';
+
+.root {
+  background-color: rgb(var(--backColor));
+  box-shadow: $weakBoxShadow;
+
+  @include mqPc {
+    display: flex;
+    min-height: 220px;
+  }
+
+  @include mqPcNarrow {
+    display: block;
+  }
+}
+
+.instanceInfo {
+  @include mqPc {
+    flex: 0 0 25%;
+    overflow: hidden;
+
+    @include mqPcMid {
+      flex-basis: 35%;
+    }
+  }
+
+  @include mqPcNarrow {
+    height: 200px;
+  }
+
+  @include mqSp {
+    height: 200px;
+  }
+}
+
+.userInfo {
+  box-sizing: border-box;
+  flex: 1 1 100%;
+}

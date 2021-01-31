@@ -1,5 +1,5 @@
-import { VRC_API_URL } from '@/config/env'
-import { InstanceLocation } from '@/types'
+import { VRC_API_URL } from './env'
+import { InstanceLocation } from '../types'
 
 export const VrcApiUrl = {
   getFetchInstanceUrl: (location: InstanceLocation) =>

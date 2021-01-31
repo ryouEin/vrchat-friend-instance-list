@@ -1,4 +1,4 @@
-import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
+import { IKeyValueStorage } from './IKeyValueStorage'
 
 export class InMemoryKeyValueStorage implements IKeyValueStorage {
   private items: { [key: string]: string } = {}

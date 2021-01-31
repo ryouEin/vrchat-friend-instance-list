@@ -1,6 +1,6 @@
-import { Friend } from '@/presentations/types'
+import { Friend } from '../presentations/types'
 
-export const sortUsers: (users: Friend[]) => Friend[] = users => {
+export const sortUsers: (users: Friend[]) => Friend[] = (users) => {
   return [...users].sort((a, b) => {
     const aIsFavorited = a.favorite !== undefined
     const bIsFavorited = b.favorite !== undefined

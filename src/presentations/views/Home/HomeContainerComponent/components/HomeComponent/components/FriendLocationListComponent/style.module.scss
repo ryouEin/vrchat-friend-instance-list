@@ -1,0 +1,27 @@
+@import '../../../../../../../stylesheets/init';
+
+.root {
+  box-sizing: border-box;
+  height: 100%;
+  padding-top: 30px;
+}
+
+.item {
+  padding: 15px 30px 15px;
+}
+
+.toTop {
+  position: fixed;
+  top: $navHeight + 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.listItemPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  background-color: rgb(var(--backColor));
+}

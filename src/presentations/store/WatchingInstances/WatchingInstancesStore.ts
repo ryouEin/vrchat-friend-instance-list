@@ -1,46 +1,43 @@
-import { computed, reactive } from '@vue/composition-api'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../index'
+import { WatchingInstance } from '../../types'
 
-type WatchingInstance = {
-  instanceId: string
-  notifyFreeSpaceNum: number
-}
-
-type State = {
+interface WatchingInstancesState {
   watchingInstances: WatchingInstance[]
 }
-@MakeReferenceToWindowObjectInDevelopment('watchingInstancesStore')
-export class WatchingInstancesStore {
-  private readonly _state = reactive<State>({
-    watchingInstances: [],
-  })
 
-  readonly watchingInstances = computed<WatchingInstance[]>(() => {
-    return this._state.watchingInstances
-  })
-
-  @LogBeforeAfter('_state')
-  private addWatchingInstanceMutation(watchingInstance: WatchingInstance) {
-    this._state.watchingInstances = this._state.watchingInstances.concat([
-      watchingInstance,
-    ])
-  }
-
-  @LogBeforeAfter('_state')
-  private deleteWatchingInstanceMutation(instanceId: string) {
-    this._state.watchingInstances = this._state.watchingInstances.filter(
-      watchingInstance => watchingInstance.instanceId !== instanceId
-    )
-  }
-
-  async addAction(watchingInstance: WatchingInstance) {
-    this.addWatchingInstanceMutation(watchingInstance)
-  }
-
-  async deleteAction(instanceId: string) {
-    this.deleteWatchingInstanceMutation(instanceId)
-  }
+const initialState: WatchingInstancesState = {
+  watchingInstances: [],
 }
+
+export const watchingInstancesSlice = createSlice({
+  name: 'watchingInstances',
+  initialState,
+  reducers: {
+    addWatchingInstance: (state, action: PayloadAction<WatchingInstance>) => {
+      state.watchingInstances = state.watchingInstances.concat([action.payload])
+    },
+    deleteWatchingInstance: (state, action: PayloadAction<string>) => {
+      state.watchingInstances = state.watchingInstances.filter(
+        (item) => item.instanceId !== action.payload
+      )
+    },
+  },
+})
+
+export const {
+  addWatchingInstance,
+  deleteWatchingInstance,
+} = watchingInstancesSlice.actions
+
+export const selectWatchingInstances = (state: RootState) =>
+  state.watchingInstances.watchingInstances
+
+export const selectWatchingInstanceByInstanceId = (state: RootState) => {
+  return (instanceId: string) =>
+    state.watchingInstances.watchingInstances.find(
+      (watchingInstance) => watchingInstance.instanceId === instanceId
+    )
+}
+
+export const watchingInstancesReducer = watchingInstancesSlice.reducer

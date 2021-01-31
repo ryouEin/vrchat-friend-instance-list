@@ -1,4 +1,4 @@
-import { MSecUnixTime } from '@/types'
+import { MSecUnixTime } from '../types'
 
 const zeroPadding: (target: number, count?: number) => string = (
   target,
@@ -9,7 +9,7 @@ const zeroPadding: (target: number, count?: number) => string = (
 
 export const convertUnixTimeToISO8601ExtendedUTC: (
   unixTime: MSecUnixTime
-) => string = unixTime => {
+) => string = (unixTime) => {
   const dateObj = new Date(unixTime)
 
   const year = dateObj.getUTCFullYear()

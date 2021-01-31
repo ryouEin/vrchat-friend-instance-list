@@ -8,9 +8,8 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm run lint
-      - run: npm run test:unit
-      # TODO: vue-type-checkがまともに動作しないのでコメントアウト。解決法探りたい
-      # - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
       - run: npm run ff_addon_lint:checkVersion
       - run: npm run ff_addon_lint:checkUpdateLinkFormat
   build:

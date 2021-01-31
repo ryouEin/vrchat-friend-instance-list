@@ -9,15 +9,13 @@ const locations = (() => {
   return [
     'offline',
     'private',
-    'unknown',
-    ...worlds.map(world => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
-    ...worlds.map(world => `${world.id}:123~friends(usr_0)~nonce(hogehoge)`),
+    ...worlds.map((world) => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
+    ...worlds.map((world) => `${world.id}:123~friends(usr_0)~nonce(hogehoge)`),
     ...worlds.map(
-      world => `${world.id}:123~private(usr_678)~canRequestInvite~nonce(90)`
+      (world) => `${world.id}:123~private(usr_678)~canRequestInvite~nonce(90)`
     ),
-    ...worlds.map(world => `${world.id}:123~private(usr_678)~nonce(90)`),
-    ...worlds.map(world => `${world.id}:123`),
-    ...worlds.map(world => `${world.id}:unknown~unknown(unknown)`),
+    ...worlds.map((world) => `${world.id}:123~private(usr_678)~nonce(90)`),
+    ...worlds.map((world) => `${world.id}:123`),
   ]
 })()
 const getRandomLocation = () => {
@@ -30,13 +28,13 @@ module.exports = {
     const { n, offset } = req.query
 
     const onlineFriends = friends
-      .map(friend => {
+      .map((friend) => {
         return {
           ...friend,
           location: getRandomLocation(),
         }
       })
-      .filter(friend => friend.location !== 'offline')
+      .filter((friend) => friend.location !== 'offline')
 
     res.json(onlineFriends.slice(offset, offset + n))
   },
@@ -56,14 +54,14 @@ module.exports = {
     res.json(newFavorite)
   },
   deleteFavorite(req, res) {
-    const index = favorites.findIndex(favorite => favorite.id === req.body.id)
+    const index = favorites.findIndex((favorite) => favorite.id === req.body.id)
     favorites.splice(index, 1)
 
     res.json()
   },
   getWorld(req, res) {
     const id = req.params.id
-    const world = worlds.find(world => world.id === id)
+    const world = worlds.find((world) => world.id === id)
     if (world === undefined) {
       throw new Error(`world ${id} is not found.`)
     }
@@ -78,13 +76,16 @@ module.exports = {
   getInstanceInfo(req, res) {
     const location = req.params.location
     const worldId = location.split(':')[0]
-    const world = worlds.find(world => world.id === worldId)
+    const world = worlds.find((world) => world.id === worldId)
 
     res.json({
       location,
       n_users: Math.floor(Math.random() * 10) + 3,
       capacity: world.capacity,
     })
+  },
+  inviteMe(req, res) {
+    res.json({})
   },
   listNews(req, res) {
     res.json({

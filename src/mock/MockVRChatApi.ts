@@ -10,13 +10,13 @@ import {
   IVRChatApi,
   ListFavoritesParams,
   ListWorldsParams,
-} from '@/libs/VRChatApi/IVRChatApi'
+} from '../libs/VRChatApi/IVRChatApi'
 import {
   FavoriteApiResponse,
   InstanceApiResponse,
   UserApiResponse,
   WorldApiResponse,
-} from '@/types/ApiResponse'
+} from '../types/ApiResponse'
 
 export class MockVRChatApi implements IVRChatApi {
   public friends: UserApiResponse[] = []
@@ -52,12 +52,12 @@ export class MockVRChatApi implements IVRChatApi {
 
   async deleteFavorite(params: DeleteFavoriteParams): Promise<void> {
     this.favorites = this.favorites.filter(
-      favorite => favorite.id !== params.id
+      (favorite) => favorite.id !== params.id
     )
   }
 
   async getWorld(params: GetWorldParams): Promise<WorldApiResponse> {
-    const world = this.worlds.find(world => world.id === params.id)
+    const world = this.worlds.find((world) => world.id === params.id)
     if (world === undefined) {
       throw new Error('world is undefined')
     }
@@ -71,7 +71,7 @@ export class MockVRChatApi implements IVRChatApi {
 
   async getInstance(params: GetInstanceParams): Promise<InstanceApiResponse> {
     const instance = this.instances.find(
-      instance => instance.location === params.location
+      (instance) => instance.location === params.location
     )
     if (instance === undefined) {
       throw new Error('instance is undefined')

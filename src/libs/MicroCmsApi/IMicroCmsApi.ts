@@ -1,4 +1,4 @@
-import { NewsApiResponse } from '@/types/ApiResponse'
+import { NewsApiResponse } from '../../types/ApiResponse'
 
 export type ComparisonMethod =
   | 'equals'

@@ -1,0 +1,33 @@
+.author {
+  text-align: center;
+
+  .authorImage {
+    margin-bottom: 10px;
+
+    img {
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
+      border-radius: 9999px;
+    }
+  }
+
+  .authorName {
+    margin-bottom: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1;
+  }
+
+  .authorRole {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: rgb(var(--grayColor));
+  }
+
+  .authorSns {
+    img {
+      width: 40px;
+    }
+  }
+}

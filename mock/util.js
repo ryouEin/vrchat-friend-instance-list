@@ -11,7 +11,7 @@ const getRandomChar = () => {
   return charList[Math.floor(Math.random() * charList.length)]
 }
 
-const getRandomString = length => {
+const getRandomString = (length) => {
   return Array.from(Array(length))
     .map(() => getRandomChar())
     .join('')

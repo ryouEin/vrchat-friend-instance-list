@@ -1,0 +1,44 @@
+@import 'init';
+@import './destyle.css';
+
+body {
+  font-size: $mainFontSize;
+  line-height: $mainLineHeight;
+  word-break: break-word;
+}
+
+a {
+  color: rgb(var(--linkColor));
+  text-decoration: underline;
+  transition: filter $mainAnimationDuration;
+
+  &:hover {
+    filter: $hoverFilter;
+  }
+}
+
+#app {
+  --blackColor: 0, 0, 0;
+  --paleBlackColor: 0, 0, 0;
+  --trueBlackColor: 0, 0, 0;
+  --greenColor: 0, 0, 0;
+  --blueColor: 0, 0, 0;
+  --redColor: 0, 0, 0;
+  --yellowColor: 0, 0, 0;
+  --orangeColor: 0, 0, 0;
+  --grayColor: 0, 0, 0;
+  --paleGrayColor: 0, 0, 0;
+  --whiteColor: 0, 0, 0;
+  --mainColor: 0, 0, 0, 0;
+  --frontColor: 0, 0, 0, 0;
+  --weakFrontColor: 0, 0, 0, 0;
+  --backColor: 0, 0, 0, 0;
+  --weakBackColor: 0, 0, 0, 0;
+  --linkColor: var(--mainColor);
+
+  color: rgb(var(--frontColor));
+  background-color: rgb(var(--weakBackColor));
+}
+
+@import 'transitions';
+@import 'util';

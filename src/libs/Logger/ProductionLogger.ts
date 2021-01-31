@@ -1,4 +1,4 @@
-import { ILogger } from '@/libs/Logger/ILogger'
+import { ILogger } from './ILogger'
 import * as Sentry from '@sentry/browser'
 
 export class ProductionLogger implements ILogger {

@@ -1,0 +1,12 @@
+@import '../stylesheets/init.scss';
+
+.root {
+  font-family: $mainFontFamily;
+
+  .main {
+    position: relative;
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding-top: $navHeight;
+  }
+}

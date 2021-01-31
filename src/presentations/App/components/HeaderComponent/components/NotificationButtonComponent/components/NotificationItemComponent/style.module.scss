@@ -1,0 +1,26 @@
+@import "../../../../../../../stylesheets/init";
+
+.root {
+  padding: 10px;
+  font-size: 14px;
+  line-height: $mainLineHeight;
+
+  .content {
+    margin-bottom: 10px;
+  }
+
+  .time {
+    font-size: 12px;
+    line-height: 1;
+    color: rgb(var(--grayColor));
+    text-align: right;
+  }
+
+  &.interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(var(--weakBackColor));
+    }
+  }
+}

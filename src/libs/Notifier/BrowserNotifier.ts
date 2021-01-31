@@ -1,14 +1,11 @@
-import { INotifier } from '@/libs/Notifier/INotifier'
-import { playNotificationSound } from '@/libs/Sound'
-import { SettingStore } from '@/presentations/store/Setting/SettingStore'
+import { INotifier } from './INotifier'
+import { playNotificationSound } from '../Sound'
 
 export class BrowserNotifier implements INotifier {
-  constructor(private readonly _settingStore: SettingStore) {}
-
-  notify(message: string): void {
+  notify(message: string, sound: boolean): void {
     const notify = new window.Notification(message)
     notify.onshow = () => {
-      if (this._settingStore.setting.value.enableNotificationSound) {
+      if (sound) {
         playNotificationSound()
       }
     }

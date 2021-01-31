@@ -1,93 +1,51 @@
-import { ISettingRepository } from '@/infras/Setting/ISettingRepository'
-import { computed, reactive } from '@vue/composition-api'
-import { DEFAULT_SETTING } from '@/config/settings'
-import { Color, Theme } from '@/presentations/Colors'
-import {
-  LogBeforeAfter,
-  MakeReferenceToWindowObjectInDevelopment,
-} from '@/libs/Decorators'
-import { Setting } from '@/presentations/types'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Setting } from '../../types'
+import { DEFAULT_SETTING } from '../../../config/settings'
+import { RootState } from '../index'
+import { Color, Theme } from '../../Colors'
 
-type State = {
+interface SettingState {
   setting: Setting
 }
-@MakeReferenceToWindowObjectInDevelopment('settingStore')
-export class SettingStore {
-  constructor(private readonly _settingRepository: ISettingRepository) {}
 
-  private readonly _state = reactive<State>({
-    setting: DEFAULT_SETTING,
-  })
-
-  readonly setting = computed<Setting>(() => {
-    return this._state.setting
-  })
-
-  @LogBeforeAfter('_state')
-  private updateEnableNotificationSoundMutation(isEnabled: boolean) {
-    this._state.setting.enableNotificationSound = isEnabled
-  }
-
-  @LogBeforeAfter('_state')
-  private updateThemeMutation(theme: Theme) {
-    this._state.setting.theme = theme
-  }
-
-  @LogBeforeAfter('_state')
-  private updateMainColorMutation(color: Color) {
-    this._state.setting.mainColor = color
-  }
-
-  @LogBeforeAfter('_state')
-  private updateSettingMutation(setting: Setting) {
-    this._state.setting = setting
-  }
-
-  async enableNotificationSoundAction() {
-    this.updateEnableNotificationSoundMutation(true)
-
-    await this._settingRepository.updateSetting(this._state.setting)
-  }
-
-  async disableNotificationSoundAction() {
-    this.updateEnableNotificationSoundMutation(false)
-
-    await this._settingRepository.updateSetting(this._state.setting)
-  }
-
-  async enableDarkModeAction() {
-    this.updateThemeMutation('dark')
-
-    await this._settingRepository.updateSetting(this._state.setting)
-  }
-
-  async enableLightModeAction() {
-    this.updateThemeMutation('light')
-
-    await this._settingRepository.updateSetting(this._state.setting)
-  }
-
-  async updateMainColorAction(color: Color) {
-    this.updateMainColorMutation(color)
-
-    await this._settingRepository.updateSetting(this._state.setting)
-  }
-
-  async initAction() {
-    const repositorySetting = await this._settingRepository.getSetting()
-
-    if (repositorySetting !== undefined) {
-      /*
-          Settingの項目を追加した際に、ユーザーの古いストレージのデータを
-          そのまま反映してしまうと追加した項目の設定が消えてしまうので、
-          マージをする
-           */
-      const setting = {
-        ...this._state.setting,
-        ...repositorySetting,
-      }
-
-      this.updateSettingMutation(setting)
-    }
-  }
+const initialState: SettingState = {
+  setting: DEFAULT_SETTING,
 }
+
+export const settingSlice = createSlice({
+  name: 'setting',
+  initialState,
+  reducers: {
+    setSetting: (state, action: PayloadAction<Setting>) => {
+      state.setting = action.payload
+    },
+    setEnableNotificationSound: (state, action: PayloadAction<boolean>) => {
+      state.setting.enableNotificationSound = action.payload
+    },
+    setTheme: (state, action: PayloadAction<Theme>) => {
+      state.setting.theme = action.payload
+    },
+    setMainColor: (state, action: PayloadAction<Color>) => {
+      state.setting.mainColor = action.payload
+    },
+  },
+})
+
+export const {
+  setSetting,
+  setEnableNotificationSound,
+  setTheme,
+  setMainColor,
+} = settingSlice.actions
+
+export const selectSetting = (state: RootState) => state.setting.setting
+
+export const selectEnableNotificationSound = (state: RootState) =>
+  state.setting.setting.enableNotificationSound
+
+export const selectTheme = (state: RootState) => state.setting.setting.theme
+
+export const selectMainColor = (state: RootState) =>
+  state.setting.setting.mainColor
+
+export const settingReducer = settingSlice.reducer

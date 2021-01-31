@@ -1,11 +1,7 @@
-import {
-  Filter,
-  IMicroCmsApi,
-  ListNewsOptions,
-} from '@/libs/MicroCmsApi/IMicroCmsApi'
-import { NewsApiResponse } from '@/types/ApiResponse'
-import { INetwork, Params } from '@/libs/Network/INetwork'
-import { NEWS_API_KEY, NEWS_API_URL } from '@/config/env'
+import { Filter, IMicroCmsApi, ListNewsOptions } from './IMicroCmsApi'
+import { NewsApiResponse } from '../../types/ApiResponse'
+import { INetwork, Params } from '../Network/INetwork'
+import { NEWS_API_KEY, NEWS_API_URL } from '../../config/env'
 
 export class MicroCmsApi implements IMicroCmsApi {
   constructor(private readonly _network: INetwork) {}

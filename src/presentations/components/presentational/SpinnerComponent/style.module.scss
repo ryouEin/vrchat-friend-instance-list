@@ -1,0 +1,48 @@
+@import '../../../stylesheets/init';
+
+.root {
+  display: inline-block;
+  color: rgb(var(--mainColor));
+  vertical-align: middle;
+}
+
+.svg {
+  animation-name: spinnerSvg;
+  animation-duration: 1.4s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.circle {
+  stroke: currentColor;
+  stroke-dasharray: 80, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation-name: spinnerCircle;
+  animation-duration: 1.4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes spinnerSvg {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinnerCircle {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 100, 200;
+    stroke-dashoffset: -15px;
+  }
+
+  100% {
+    stroke-dasharray: 100, 200;
+    stroke-dashoffset: -125px;
+  }
+}

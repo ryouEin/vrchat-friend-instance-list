@@ -1,7 +1,7 @@
 const { BASE_URL } = require('../config')
 const { getRandomString, getRandomName } = require('../util')
 
-const makeUser = index => {
+const makeUser = (index) => {
   return {
     id: `usr_${index}`,
     username: `username${index}`,

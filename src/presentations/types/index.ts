@@ -4,8 +4,8 @@ import {
   InstanceLocation,
   InstancePermission,
   MSecUnixTime,
-} from '@/types'
-import { Color, Theme } from '@/presentations/Colors'
+} from '../../types'
+import { Color, Theme } from '../Colors'
 
 export type World = {
   id: string
@@ -38,7 +38,6 @@ export type Instance = {
   id: string
   worldId: string
   permission: InstancePermission
-  isWatching: boolean
   ownerId?: string
   userNum?: number
 }
@@ -73,4 +72,14 @@ export type FavoriteLimit = {
   name: FavoriteTag
   used: number
   capacity: number
+}
+
+export type InstanceUserNum = {
+  instanceId: string
+  userNum: number
+}
+
+export type WatchingInstance = {
+  instanceId: string
+  notifyFreeSpaceNum: number
 }

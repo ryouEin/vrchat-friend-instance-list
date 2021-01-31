@@ -1,0 +1,32 @@
+@import '../../../stylesheets/init';
+
+.root {
+  position: relative;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 1;
+  color: rgb(var(--frontColor));
+  vertical-align: middle;
+  background-color: rgb(var(--backColor));
+  border-radius: 3px;
+}
+
+.select {
+  padding: 10px 35px 10px 20px;
+  cursor: pointer;
+  border: 1px solid rgb(var(--grayColor));
+  border-radius: 3px;
+}
+
+.option {
+  color: initial;
+  background-color: initial;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+}

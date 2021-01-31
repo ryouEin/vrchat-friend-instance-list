@@ -1,6 +1,6 @@
-import { IFavoritesRepository } from '@/infras/Favorites/IFavoritesRepository'
-import { FavoriteApiResponse } from '@/types/ApiResponse'
-import { FavoriteLimit } from '@/presentations/types'
+import { IFavoritesRepository } from '../repositories/Favorites/IFavoritesRepository'
+import { FavoriteApiResponse } from '../types/ApiResponse'
+import { FavoriteLimit } from '../presentations/types'
 
 export class MockFavoritesRepository implements IFavoritesRepository {
   constructor(public favorites: FavoriteApiResponse[]) {}
@@ -27,7 +27,7 @@ export class MockFavoritesRepository implements IFavoritesRepository {
   }
 
   async deleteFavoritesAboutFriends(id: string): Promise<void> {
-    this.favorites = this.favorites.filter(favorite => favorite.id !== id)
+    this.favorites = this.favorites.filter((favorite) => favorite.id !== id)
   }
 
   async fetchFriendFavoriteLimits(): Promise<FavoriteLimit[]> {

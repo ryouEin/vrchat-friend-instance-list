@@ -1,0 +1,28 @@
+.settingList {
+  .settingListItem {
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.settingItem {
+  display: flex;
+
+  .settingItemLeft {
+    flex: 1 1;
+  }
+
+  .settingItemTitle {
+    font-size: 18px;
+  }
+
+  .settingItemNote {
+    font-size: 12px;
+    color: rgb(var(--grayColor));
+  }
+
+  .settingItemInput {
+    flex: 0 0;
+  }
+}

@@ -1,0 +1,32 @@
+@import "../../../../stylesheets/init";
+
+$toastWidth: 400px;
+
+.root {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: $zIndexToast;
+  width: $toastWidth;
+  margin-left: -1 * $toastWidth / 2;
+}
+
+.toasts {
+
+}
+
+.toast {
+  width: $toastWidth;
+  padding-bottom: 20px;
+  transition: all $mainAnimationDuration;
+}
+
+.toast-enter,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.toast-leave-active {
+  position: absolute;
+}

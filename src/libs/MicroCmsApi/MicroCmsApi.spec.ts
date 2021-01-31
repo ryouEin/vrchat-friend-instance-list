@@ -1,5 +1,5 @@
-import { INetwork, NetworkOptions, Params } from '@/libs/Network/INetwork'
-import { MicroCmsApi } from '@/libs/MicroCmsApi/MicroCmsApi'
+import { INetwork, NetworkOptions, Params } from '../Network/INetwork'
+import { MicroCmsApi } from './MicroCmsApi'
 
 class MockNetwork implements INetwork {
   public beforeOptions!: NetworkOptions

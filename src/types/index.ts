@@ -1,42 +1,22 @@
-import { Color, Theme } from '@/presentations/Colors'
-
-export const NetworkState = {
-  Idle: 'idle',
-  Loading: 'loading',
-  Error: 'error',
-  Success: 'success',
-} as const
-export type NetworkState = typeof NetworkState[keyof typeof NetworkState]
-
-export type UnixTime = number
+export type MSecUnixTime = number
 
 export type InstanceLocation = string
 
-export type FavoriteType = 'world' | 'friend' | 'avatar'
+export const FavoriteTypes = {
+  World: 'world',
+  Friend: 'friend',
+  Avatar: 'avatar',
+} as const
+export type FavoriteType = typeof FavoriteTypes[keyof typeof FavoriteTypes]
 
-export type FavoriteTag = 'group_0' | 'group_1' | 'group_2'
+export const FavoriteTags = {
+  Group0: 'group_0',
+  Group1: 'group_1',
+  Group2: 'group_2',
+} as const
+export type FavoriteTag = typeof FavoriteTags[keyof typeof FavoriteTags]
 
-export type Friend = {
-  id: string
-  username: string
-  displayName: string
-  currentAvatarImageUrl: string
-  currentAvatarThumbnailImageUrl: string
-  location: InstanceLocation
-  favorite?: Favorite
-  isNew: boolean
-}
-
-export type World = {
-  id: string
-  name: string
-  imageUrl: string
-  thumbnailImageUrl: string
-  capacity: number
-  hardCapacity: number
-}
-
-export const InstancePermission = {
+export const InstancePermissions = {
   Private: 'private',
   Public: 'public',
   Friends: 'friends',
@@ -45,40 +25,4 @@ export const InstancePermission = {
   InvitePlus: 'invite+',
   Unknown: 'unknown',
 } as const
-export type InstancePermission = typeof InstancePermission[keyof typeof InstancePermission]
-
-export type News = {
-  title: string
-  content: string
-  publishedAt: UnixTime
-}
-
-export type Notification = {
-  text: string
-  date: UnixTime
-  onClick: () => void
-}
-
-export type Setting = {
-  enableNotificationSound: boolean
-  theme: Theme
-  mainColor: Color
-}
-
-export type Instance = {
-  worldId: string
-  location: InstanceLocation
-  permission: InstancePermission
-  isWatching: boolean
-  notifyUserNum: number
-  ownerId?: string
-  userNum?: number
-  onFindVacancy?: () => void
-}
-
-export type Favorite = {
-  id: string
-  favoriteId: string
-  tags: FavoriteTag[]
-  type: FavoriteType
-}
+export type InstancePermission = typeof InstancePermissions[keyof typeof InstancePermissions]

@@ -20,21 +20,19 @@
 1. Releasesに作成したxpiファイルをアップロード
 1. `npm run ff_addon_lint:checkUpdateLinkValidity` で、update_linkが有効であることを確認する
 
-## Storeに関して
+## コンポーネントカテゴリ
 
-Storeは以下のメリットを考えCompositionAPIで作成している
+コンポーネントは以下の２カテゴリで分類する。
 
-+ DI可能
-+ 算出プロパティが機能する（キャッシュが効く
++ Presentational Component
++ Container Component
 
-アプリ全体で使用するStoreは `GlobalStoreFactory` にて実体を生成すること。  
-`this.$store.exampleStore` みたいな感じに使えるようになる。
+命名規則は、例えばトップページのコンポーネントの場合、
 
-特定画面でしか使用しないStoreはスコープを抑えるために、その画面で実体を生成し `provide` すること。  
-使用する際は必要なコンポーネントで `inject` して使用する。
++ Presentational Component => `TopPageComponent`
++ Container Component => `TopPageContainerComponent`
 
-あと特定画面でしか使用しないStoreは必ず各画面のルートコンポーネントで `provide` している
-（これはなんとなくでしかないが、スコープを縮めたいからと言って色々な箇所で `provide` しているとコードの予測が付きづらくなる気がしたので。好みのレベルな気もする。）
+とする。
 
 ## カスタムエラー型
 
@@ -89,4 +87,3 @@ export class NetworkError extends BaseError<{ status?: number }> {
 色はCSS Variablesでアプリルート（#app）に対して指定している。
 
 この変数を利用して色を指定する際は `rgb` または `rgba` を必ず使用すること。（`rgba(var(--mainColor), 0.8)` みたいに指定できるようにするために、色を16進数ではなく `--blackcolor: 0, 0, 0` みたいにrgbで設定しているのでそうしないと反映されない。）
-

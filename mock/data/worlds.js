@@ -1,7 +1,7 @@
 const { BASE_URL } = require('../config')
 const { getRandomString } = require('../util')
 
-const makeWorld = index => {
+const makeWorld = (index) => {
   return {
     id: `wrld_${index}`,
     name: `World ${index} long name long name long name`,

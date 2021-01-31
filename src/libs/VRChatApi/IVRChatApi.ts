@@ -3,8 +3,8 @@ import {
   InstanceApiResponse,
   UserApiResponse,
   WorldApiResponse,
-} from '@/types/ApiResponse'
-import { FavoriteTag, FavoriteType, InstanceLocation } from '@/types'
+} from '../../types/ApiResponse'
+import { FavoriteTag, FavoriteType, InstanceLocation } from '../../types'
 
 export type SortOptions =
   | 'popularity'

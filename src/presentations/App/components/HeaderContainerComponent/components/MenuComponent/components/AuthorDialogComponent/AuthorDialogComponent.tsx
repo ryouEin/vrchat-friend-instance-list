@@ -1,7 +1,7 @@
-import { DialogComponent } from '../../../../../components/presentational/DialogComponent/DialogComponent'
-import AuthorImage from '../../../../../assets/creditThumbnail.jpg'
-import TwitterLogoImage from '../../../../../assets/twitterLogo.png'
-import { ButtonComponent } from '../../../../../components/presentational/ButtonComponent/ButtonComponent'
+import { DialogComponent } from '../../../../../../../components/presentational/DialogComponent/DialogComponent'
+import AuthorImage from '../../../../../../../assets/creditThumbnail.jpg'
+import TwitterLogoImage from '../../../../../../../assets/twitterLogo.png'
+import { ButtonComponent } from '../../../../../../../components/presentational/ButtonComponent/ButtonComponent'
 import styles from './style.module.scss'
 
 type Props = {

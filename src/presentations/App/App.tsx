@@ -8,9 +8,6 @@ import {
 import { useSetting } from './hooks/useSetting'
 import { useRegularWatchingInstanceCheck } from './hooks/useRegularWatchingInstanceCheck'
 import { useRootCSSVariablesStyle } from './hooks/useRootCSSVariablesStyle'
-import { HeaderComponent } from './components/HeaderComponent/HeaderComponent'
-import { MenuComponent } from './components/MenuComponent/MenuComponent'
-import { useVisibilityManager } from '../hooks/useVisibilityManager'
 import { ErrorBoundary } from './ErrorBoundary'
 import { AlertsProvider } from '../providers/Alerts/AlertsProvider'
 import { AlertContainerComponent } from '../providers/Alerts/AlertContainerComponent'
@@ -22,13 +19,13 @@ import { AlertsContext } from '../providers/Alerts/AlertsContext'
 import { ToastsContext } from '../providers/Toasts/ToastsContext'
 import { useMount } from 'react-use'
 import { notifier } from '../../factory/notifier'
+import { HeaderContainerComponent } from './components/HeaderContainerComponent/HeaderContainerComponent'
 
 export const App = () => {
   const [initialized, setInitialized] = useState(false)
   const rootCSSVariablesStyle = useRootCSSVariablesStyle()
-  const menu = useVisibilityManager(false)
   const setting = useSetting(settingRepository)
-  const { notifications, notify } = useNotification(notifier)
+  const { notify } = useNotification(notifier)
   const fullLoader = useFullLoader()
   useRegularWatchingInstanceCheck(instancesRepository, notify)
 
@@ -53,16 +50,7 @@ export const App = () => {
                 >
                   {initialized && (
                     <>
-                      <HeaderComponent
-                        notifications={notifications}
-                        onClickMenu={menu.show}
-                      />
-                      <MenuComponent
-                        isVisible={menu.isVisible}
-                        hide={menu.hide}
-                        setting={setting.value}
-                        onChangeSetting={setting.changeSetting}
-                      />
+                      <HeaderContainerComponent />
                       <div className={styles.main}>
                         <HomeContainerComponent />
                       </div>

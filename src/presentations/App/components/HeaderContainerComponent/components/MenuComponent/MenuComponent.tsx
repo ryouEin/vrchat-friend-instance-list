@@ -1,11 +1,11 @@
 import styles from './style.module.scss'
-import { IconComponent } from '../../../components/presentational/IconComponent/IconComponent'
+import { IconComponent } from '../../../../../components/presentational/IconComponent/IconComponent'
 import { SettingDialogComponent } from './components/SettingDialogComponent/SettingDialogComponent'
 import { AboutCapacityDialogComponent } from './components/AboutCapacityDialogComponent/AboutCapacityDialogComponent'
 import { AuthorDialogComponent } from './components/AuthorDialogComponent/AuthorDialogComponent'
 import React from 'react'
-import { useVisibilityManager } from '../../../hooks/useVisibilityManager'
-import { Setting } from '../../../types'
+import { useVisibilityManager } from '../../../../../hooks/useVisibilityManager'
+import { Setting } from '../../../../../types'
 import { CSSTransition } from 'react-transition-group'
 
 type Props = {

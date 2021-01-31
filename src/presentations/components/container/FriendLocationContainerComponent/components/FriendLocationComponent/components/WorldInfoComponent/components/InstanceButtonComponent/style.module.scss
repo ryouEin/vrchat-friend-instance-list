@@ -1,0 +1,31 @@
+@import '../../../../../../../../../stylesheets/init';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: rgb(var(--frontColor));
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  background-color: rgb(var(--backColor));
+  transition: filter $mainAnimationDuration;
+
+  &:hover {
+    filter: $hoverFilter;
+  }
+
+  &.disabled {
+    color: rgb(var(--weakBackColor));
+    pointer-events: none;
+    cursor: auto;
+  }
+}

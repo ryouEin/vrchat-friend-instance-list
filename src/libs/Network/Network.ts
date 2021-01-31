@@ -1,7 +1,7 @@
 import axios, { AxiosAdapter, AxiosInstance, AxiosRequestConfig } from 'axios'
 import { throttleAdapterEnhancer } from 'axios-extensions'
-import { INetwork, NetworkOptions, Params } from '@/libs/Network/INetwork'
-import { BaseError } from '@/libs/BaseError'
+import { INetwork, NetworkOptions, Params } from './INetwork'
+import { BaseError } from '../BaseError'
 
 export class NetworkError extends BaseError<{ status?: number }> {
   constructor(private readonly _status?: number, e?: string) {
@@ -33,15 +33,15 @@ export class Network implements INetwork {
     })
 
     this._client.interceptors.request.use(
-      config => config,
-      error => {
+      (config) => config,
+      (error) => {
         return Promise.reject(error)
       }
     )
 
     this._client.interceptors.response.use(
-      response => response,
-      error => {
+      (response) => response,
+      (error) => {
         return Promise.reject(
           new NetworkError(error.response?.status, error.message)
         )

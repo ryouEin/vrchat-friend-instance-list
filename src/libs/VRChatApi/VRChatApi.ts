@@ -8,16 +8,16 @@ import {
   IVRChatApi,
   ListFavoritesParams,
   ListWorldsParams,
-} from '@/libs/VRChatApi/IVRChatApi'
+} from './IVRChatApi'
 import {
   FavoriteApiResponse,
   InstanceApiResponse,
   UserApiResponse,
   WorldApiResponse,
-} from '@/types/ApiResponse'
-import { INetwork } from '@/libs/Network/INetwork'
-import { VrcApiUrl } from '@/config/url'
-import { NetworkError } from '@/libs/Network/Network'
+} from '../../types/ApiResponse'
+import { INetwork } from '../Network/INetwork'
+import { VrcApiUrl } from '../../config/url'
+import { NetworkError } from '../Network/Network'
 
 export class VRChatApiError extends NetworkError {}
 
@@ -62,7 +62,7 @@ export class VRChatApi implements IVRChatApi {
       .get(VrcApiUrl.getFetchFriendsUrl(), {
         params,
       })
-      .catch(error => {
+      .catch((error) => {
         this.commonErrorHandle(error)
       })
 
@@ -77,8 +77,8 @@ export class VRChatApi implements IVRChatApi {
         favoriteId: params.favoriteId,
         tags: params.tags,
       })
-      .catch(error => this.commonErrorHandle(error))
-      .catch(error => {
+      .catch((error) => this.commonErrorHandle(error))
+      .catch((error) => {
         if (error instanceof VRChatApiError && error.details.status === 400) {
           throw new VRChatApiFavoriteLimitReachedError()
         } else {
@@ -96,7 +96,7 @@ export class VRChatApi implements IVRChatApi {
       .get(VrcApiUrl.getFetchFavoritesUrl(), {
         params,
       })
-      .catch(error => this.commonErrorHandle(error))
+      .catch((error) => this.commonErrorHandle(error))
 
     // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return response as FavoriteApiResponse[]
@@ -105,7 +105,7 @@ export class VRChatApi implements IVRChatApi {
   async deleteFavorite(params: DeleteFavoriteParams): Promise<void> {
     await this._network
       .delete(VrcApiUrl.getDeleteFavoriteUrl(params.id))
-      .catch(error => this.commonErrorHandle(error))
+      .catch((error) => this.commonErrorHandle(error))
   }
 
   async getWorld(params: GetWorldParams): Promise<WorldApiResponse> {
@@ -113,7 +113,7 @@ export class VRChatApi implements IVRChatApi {
       .get(VrcApiUrl.getFetchWorldUrl(params.id), {
         throttle: true,
       })
-      .catch(error => this.commonErrorHandle(error))
+      .catch((error) => this.commonErrorHandle(error))
 
     // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return response as WorldApiResponse
@@ -124,7 +124,7 @@ export class VRChatApi implements IVRChatApi {
       .get(VrcApiUrl.getFetchWorldsUrl(), {
         params,
       })
-      .catch(error => this.commonErrorHandle(error))
+      .catch((error) => this.commonErrorHandle(error))
 
     // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return response as WorldApiResponse[]
@@ -133,7 +133,7 @@ export class VRChatApi implements IVRChatApi {
   async getInstance(params: GetInstanceParams): Promise<InstanceApiResponse> {
     const response = await this._network
       .get(VrcApiUrl.getFetchInstanceUrl(params.location))
-      .catch(error => this.commonErrorHandle(error))
+      .catch((error) => this.commonErrorHandle(error))
 
     // TODO: Networkから取得したデータのバリデーションして型アサーション外す
     return response as InstanceApiResponse
@@ -142,6 +142,6 @@ export class VRChatApi implements IVRChatApi {
   async inviteMe(params: InviteMeParams): Promise<void> {
     await this._network
       .post(VrcApiUrl.getInviteMeUrl(params.location), {})
-      .catch(error => this.commonErrorHandle(error))
+      .catch((error) => this.commonErrorHandle(error))
   }
 }

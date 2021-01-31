@@ -1,4 +1,4 @@
-import IKeyValueStorage from '@/libs/Storage/IKeyValueStorage'
+import { IKeyValueStorage } from './IKeyValueStorage'
 
 export default class LocalStorage implements IKeyValueStorage {
   clear() {

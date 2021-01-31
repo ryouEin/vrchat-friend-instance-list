@@ -1,0 +1,20 @@
+.root {
+  height: 100%;
+}
+
+.inner {
+  height: 100%;
+  background-color: rgb(var(--grayColor));
+
+  &.private {
+    background-color: rgb(var(--blackColor));
+  }
+}
+
+.textOnlyTitle {
+  padding: 80px 0;
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(var(--whiteColor));
+  text-align: center;
+}

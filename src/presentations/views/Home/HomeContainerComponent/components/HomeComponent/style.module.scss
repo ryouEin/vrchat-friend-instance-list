@@ -1,0 +1,66 @@
+@import '../../../../../stylesheets/init';
+
+$tmpSideWidth: 250px;
+
+.root {
+  position: relative;
+}
+
+.side {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: $tmpSideWidth;
+
+  @include mqPc {
+    top: $navHeight;
+    z-index: $zIndexSideMenuPc;
+  }
+
+  @include mqSp {
+    top: 0;
+    z-index: $zIndexSideMenuSp;
+
+    &:not(.visible) {
+      pointer-events: none;
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(var(--trueBlackColor), 0.8);
+  transition: opacity $mainAnimationDuration;
+
+  .side:not(.visible) & {
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  @include mqPc {
+    display: none;
+  }
+}
+
+.content {
+  position: relative;
+  height: 100%;
+  background-color: rgb(var(--backColor));
+  transition: transform $mainAnimationDuration;
+
+  @include mqSp {
+    .side:not(.visible) & {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+.main {
+  @include mqPc {
+    margin-left: $tmpSideWidth;
+  }
+}

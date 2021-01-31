@@ -1,0 +1,18 @@
+.permission {
+  padding: 5px 15px;
+  font-size: 15px;
+  color: rgb(var(--whiteColor));
+  background-color: rgba(var(--blackColor), 0.8);
+
+  &.friends {
+    background-color: rgba(var(--orangeColor), 0.8);
+  }
+
+  &.friendPlus {
+    background-color: rgba(var(--blueColor), 0.8);
+  }
+
+  &.public {
+    background-color: rgba(var(--yellowColor), 0.8);
+  }
+}

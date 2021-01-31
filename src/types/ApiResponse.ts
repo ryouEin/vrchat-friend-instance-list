@@ -1,4 +1,4 @@
-import { FavoriteTag, FavoriteType, InstanceLocation } from '@/types/index'
+import { FavoriteTag, FavoriteType, InstanceLocation } from './'
 
 export type UserApiResponse = {
   id: string

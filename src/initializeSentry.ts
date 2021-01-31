@@ -6,8 +6,8 @@ const fixStackTraceFileName = () => {
     return url.replace(/(moz|chrome)-extension:\/\/[^/]+\//, '~/')
   }
 
-  Sentry.configureScope(scope => {
-    scope.addEventProcessor(async event => {
+  Sentry.configureScope((scope) => {
+    scope.addEventProcessor(async (event) => {
       if (
         event.exception !== undefined &&
         event.exception.values !== undefined &&
@@ -15,7 +15,7 @@ const fixStackTraceFileName = () => {
         event.exception.values[0].stacktrace.frames !== undefined
       ) {
         event.exception.values[0].stacktrace.frames = event.exception.values[0].stacktrace.frames.map(
-          frame => {
+          (frame) => {
             if (frame.filename !== undefined) {
               frame.filename = normalizeUrl(frame.filename)
             }
@@ -44,17 +44,13 @@ export const initializeSentry = async () => {
     Sentry.init({
       dsn:
         'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
-      integrations: function(integrations) {
+      integrations: function (integrations) {
         // Sentryへのエラー通知は自前でやるのでGlobalHandlersは邪魔
-        return integrations.filter(function(integration) {
+        return integrations.filter(function (integration) {
           return integration.name !== 'GlobalHandlers'
         })
       },
-      ignoreErrors: [
-        // このエラーは動作に支障がないものなので無視する
-        'ResizeObserver loop completed with undelivered notifications.',
-        'ResizeObserver loop limit exceeded',
-      ],
+      ignoreErrors: [],
       // 本番環境では必要ないが、デバッグする際に頻繁に使うので書いてる
       beforeSend(event) {
         return event

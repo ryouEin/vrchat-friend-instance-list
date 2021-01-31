@@ -1,0 +1,79 @@
+@import '../../../stylesheets/init.scss';
+
+.root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zIndexMenu;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(var(--trueBlackColor), 0.8);
+}
+
+.list {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  color: rgb(var(--frontColor));
+  background-color: rgb(var(--backColor));
+
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgb(var(--weakBackColor));
+
+    &:hover {
+      background-color: rgb(var(--weakBackColor));
+    }
+
+    .text {
+      margin-left: 10px;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+  }
+}
+
+.animationEnter,
+.animationExit {
+  .overlay {
+    transition: opacity $mainAnimationDuration;
+  }
+
+  .list {
+    transition: transform $mainAnimationDuration;
+  }
+}
+
+.animationEnter,
+.animationExitActive {
+  .overlay {
+    opacity: 0;
+  }
+
+  .list {
+    transform: translateX(100%);
+  }
+}
+
+.animationEnterActive {
+  .overlay {
+    opacity: 1;
+  }
+
+  .list {
+    transform: translateX(0);
+  }
+}

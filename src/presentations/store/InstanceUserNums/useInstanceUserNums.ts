@@ -6,6 +6,7 @@ import {
   selectInstanceUserNums,
 } from './InstanceUserNumsStore'
 import { Instance } from '../../types'
+import { useCallback, useMemo } from 'react'
 
 export const useInstanceUserNums = (
   instanceRepository: IInstancesRepository
@@ -16,10 +17,8 @@ export const useInstanceUserNums = (
     selectInstanceUserNumByInstanceId
   )
 
-  return {
-    instanceUserNums,
-    instanceUserNumByInstanceId,
-    updateInstanceUserNum: async (instance: Instance) => {
+  const updateInstanceUserNum = useCallback(
+    async (instance: Instance) => {
       const response = await instanceRepository.fetchInstance(instance.id)
       dispatch(
         addInstanceUserNum({
@@ -28,5 +27,15 @@ export const useInstanceUserNums = (
         })
       )
     },
-  }
+    [dispatch, instanceRepository]
+  )
+
+  return useMemo(
+    () => ({
+      instanceUserNums,
+      instanceUserNumByInstanceId,
+      updateInstanceUserNum,
+    }),
+    [instanceUserNums, instanceUserNumByInstanceId, updateInstanceUserNum]
+  )
 }

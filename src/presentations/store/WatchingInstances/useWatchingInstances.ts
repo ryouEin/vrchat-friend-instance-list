@@ -5,6 +5,7 @@ import {
   selectWatchingInstanceByInstanceId,
   selectWatchingInstances,
 } from './WatchingInstancesStore'
+import { useCallback, useMemo } from 'react'
 
 export const useWatchingInstances = () => {
   const dispatch = useDispatch()
@@ -13,14 +14,27 @@ export const useWatchingInstances = () => {
     selectWatchingInstanceByInstanceId
   )
 
-  return {
-    watchingInstances,
-    watchingInstanceByInstanceId,
-    startWatch: (instanceId: string, notifyFreeSpaceNum: number) => {
+  const startWatch = useCallback(
+    (instanceId: string, notifyFreeSpaceNum: number) => {
       dispatch(addWatchingInstance({ instanceId, notifyFreeSpaceNum }))
     },
-    endWatch: (instanceId: string) => {
+    [dispatch]
+  )
+
+  const endWatch = useCallback(
+    (instanceId: string) => {
       dispatch(deleteWatchingInstance(instanceId))
     },
-  }
+    [dispatch]
+  )
+
+  return useMemo(
+    () => ({
+      watchingInstances,
+      watchingInstanceByInstanceId,
+      startWatch,
+      endWatch,
+    }),
+    [watchingInstances, watchingInstanceByInstanceId, startWatch, endWatch]
+  )
 }

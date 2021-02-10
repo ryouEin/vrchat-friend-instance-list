@@ -1,8 +1,8 @@
 import styles from './style.module.scss'
 import { NotificationButtonComponent } from './components/NotificationButtonComponent/NotificationButtonComponent'
-import { IconComponent } from '../../../components/presentational/IconComponent/IconComponent'
+import { IconComponent } from '../../../../../components/presentational/IconComponent/IconComponent'
 import React from 'react'
-import { Notification } from '../../../types'
+import { Notification } from '../../../../../types'
 
 type Props = {
   notifications: Notification[]

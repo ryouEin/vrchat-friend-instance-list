@@ -2,12 +2,11 @@ import { Friend, FriendLocation } from '../../../../../types'
 import styles from './style.module.scss'
 import { FABComponent } from '../../../../../components/presentational/FABComponent/FABComponent'
 import { IconComponent } from '../../../../../components/presentational/IconComponent/IconComponent'
-import { useState } from 'react'
-import { SpinnerComponent } from '../../../../../components/presentational/SpinnerComponent/SpinnerComponent'
 import { useVisibilityManager } from '../../../../../hooks/useVisibilityManager'
 import classNames from 'classnames'
 import { OnlineFriendListComponent } from './components/OnlineFriendListComponent/OnlineFriendListComponent'
 import { FriendLocationAreaComponent } from './components/FriendLocationAreaComponent/FriendLocationAreaComponent'
+import { UpdateFABComponent } from './components/UpdateFABComponent'
 
 type Props = {
   friends: Friend[]
@@ -18,16 +17,6 @@ type Props = {
 }
 export const HomeComponent = (props: Props) => {
   const onlineFriends = useVisibilityManager(false)
-  const [isUpdating, setIsUpdating] = useState(false)
-
-  const update = async () => {
-    if (isUpdating) return
-
-    setIsUpdating(true)
-    await props.update().finally(() => {
-      setIsUpdating(false)
-    })
-  }
 
   const onlineFriendsClass = classNames([
     styles.side,
@@ -57,13 +46,7 @@ export const HomeComponent = (props: Props) => {
             <IconComponent size={50} color="black" icon="people" />
           </FABComponent>
         </div>
-        <FABComponent color="main" onClick={update}>
-          {isUpdating ? (
-            <SpinnerComponent color="white" />
-          ) : (
-            <IconComponent size={50} color="white" icon="refresh" />
-          )}
-        </FABComponent>
+        <UpdateFABComponent onClick={props.update} />
       </div>
     </div>
   )

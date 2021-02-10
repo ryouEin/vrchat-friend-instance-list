@@ -7,7 +7,8 @@ export const useFriendLocationFilter = (friendLocations: FriendLocation[]) => {
   const [order, setOrder] = useState<Order>(Orders.Default)
 
   const filteredFriendLocations = useMemo(() => {
-    return friendLocations
+    const startTime = performance.now()
+    const result = friendLocations
       .filter((item) => {
         if (!showOnlyFavoriteFriends) return true
 
@@ -28,6 +29,9 @@ export const useFriendLocationFilter = (friendLocations: FriendLocation[]) => {
 
         return a.friends.length - b.friends.length
       })
+    const endTime = performance.now()
+    console.log(endTime - startTime)
+    return result
   }, [friendLocations, showOnlyFavoriteFriends, order])
 
   return {

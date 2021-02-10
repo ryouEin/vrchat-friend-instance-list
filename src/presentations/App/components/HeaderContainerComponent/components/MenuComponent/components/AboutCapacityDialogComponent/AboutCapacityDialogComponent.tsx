@@ -1,6 +1,6 @@
-import { DialogComponent } from '../../../../../components/presentational/DialogComponent/DialogComponent'
-import { ButtonComponent } from '../../../../../components/presentational/ButtonComponent/ButtonComponent'
-import { MarkdownTextComponent } from '../../../../../components/presentational/MarkdownTextComponent/MarkdownTextComponent'
+import { DialogComponent } from '../../../../../../../components/presentational/DialogComponent/DialogComponent'
+import { ButtonComponent } from '../../../../../../../components/presentational/ButtonComponent/ButtonComponent'
+import { MarkdownTextComponent } from '../../../../../../../components/presentational/MarkdownTextComponent/MarkdownTextComponent'
 
 type Props = {
   isVisible: boolean

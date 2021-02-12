@@ -4,7 +4,7 @@ import { instancesRepository } from '../../../../factory/repository'
 import { useWatchingInstances } from '../../../store/WatchingInstances/useWatchingInstances'
 import { FriendLocationComponent } from './components/FriendLocationComponent/FriendLocationComponent'
 import { FavoriteTag } from '../../../../types'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { vrchatApi } from '../../../../factory/vrchatApi'
 
 export type InstanceForFriendLocationComponent = Instance & {
@@ -29,39 +29,66 @@ export const FriendLocationContainerComponent = (props: Props) => {
     endWatch,
   } = useWatchingInstances()
 
+  const instanceId = useMemo(() => {
+    const tmpInstance = props.friendLocation.instance
+    if (tmpInstance === undefined) return undefined
+
+    return tmpInstance.id
+  }, [props.friendLocation.instance])
+
+  const instanceUserNum = useMemo(() => {
+    if (instanceId === undefined) return undefined
+
+    return instanceUserNumByInstanceId(instanceId)
+  }, [instanceId, instanceUserNumByInstanceId])
+
+  const isWatching = useMemo(() => {
+    if (instanceId === undefined) return false
+
+    return watchingInstanceByInstanceId(instanceId) !== undefined
+  }, [instanceId, watchingInstanceByInstanceId])
+
   const instance:
     | InstanceForFriendLocationComponent
     | undefined = useMemo(() => {
     const tmpInstance = props.friendLocation.instance
     if (tmpInstance === undefined) return undefined
 
-    const instanceUserNum = instanceUserNumByInstanceId(tmpInstance.id)
     return {
       ...tmpInstance,
       userNum: instanceUserNum?.userNum,
-      isWatching: watchingInstanceByInstanceId(tmpInstance.id) !== undefined,
+      isWatching,
     }
-  }, [
-    props.friendLocation.instance,
-    watchingInstanceByInstanceId,
-    instanceUserNumByInstanceId,
-  ])
+  }, [props.friendLocation.instance, isWatching, instanceUserNum])
 
-  const inviteMe = async (instance: Instance) => {
+  const inviteMe = useCallback(async (instance: Instance) => {
     await vrchatApi.inviteMe({ location: instance.id })
-  }
+  }, [])
 
-  return (
-    <FriendLocationComponent
-      instance={instance}
-      friends={props.friendLocation.friends}
-      updateInstanceUserNum={updateInstanceUserNum}
-      startWatch={startWatch}
-      endWatch={endWatch}
-      inviteMe={inviteMe}
-      fetchFavoriteLimits={props.fetchFavoriteLimits}
-      favoriteFriend={props.favoriteFriend}
-      unfavoriteFriend={props.unfavoriteFriend}
-    />
+  return useMemo(
+    () => (
+      <FriendLocationComponent
+        instance={instance}
+        friends={props.friendLocation.friends}
+        updateInstanceUserNum={updateInstanceUserNum}
+        startWatch={startWatch}
+        endWatch={endWatch}
+        inviteMe={inviteMe}
+        fetchFavoriteLimits={props.fetchFavoriteLimits}
+        favoriteFriend={props.favoriteFriend}
+        unfavoriteFriend={props.unfavoriteFriend}
+      />
+    ),
+    [
+      instance,
+      props.friendLocation.friends,
+      updateInstanceUserNum,
+      startWatch,
+      endWatch,
+      inviteMe,
+      props.fetchFavoriteLimits,
+      props.favoriteFriend,
+      props.unfavoriteFriend,
+    ]
   )
 }

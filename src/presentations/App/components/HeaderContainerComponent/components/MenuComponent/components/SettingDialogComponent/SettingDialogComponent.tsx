@@ -1,10 +1,10 @@
-import { DialogComponent } from '../../../../../components/presentational/DialogComponent/DialogComponent'
-import { ButtonComponent } from '../../../../../components/presentational/ButtonComponent/ButtonComponent'
+import { DialogComponent } from '../../../../../../../components/presentational/DialogComponent/DialogComponent'
+import { ButtonComponent } from '../../../../../../../components/presentational/ButtonComponent/ButtonComponent'
 import styles from './style.module.scss'
-import { ToggleComponent } from '../../../../../components/presentational/ToggleComponent/ToggleComponent'
-import { Color, Colors, Themes } from '../../../../../Colors'
-import { SelectComponent } from '../../../../../components/presentational/SelectComponent/SelectComponent'
-import { Setting } from '../../../../../types'
+import { ToggleComponent } from '../../../../../../../components/presentational/ToggleComponent/ToggleComponent'
+import { Color, Colors, Themes } from '../../../../../../../Colors'
+import { SelectComponent } from '../../../../../../../components/presentational/SelectComponent/SelectComponent'
+import { Setting } from '../../../../../../../types'
 
 const selectItems = [
   {

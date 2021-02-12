@@ -1,11 +1,11 @@
-import { Notification } from '../../../../../types'
+import { Notification } from '../../../../../../../types'
 import styles from './style.module.scss'
 import classNames from 'classnames'
 import { useRef, useState } from 'react'
-import { useVisibilityManager } from '../../../../../hooks/useVisibilityManager'
-import { IconComponent } from '../../../../../components/presentational/IconComponent/IconComponent'
+import { useVisibilityManager } from '../../../../../../../hooks/useVisibilityManager'
+import { IconComponent } from '../../../../../../../components/presentational/IconComponent/IconComponent'
 import { NotificationItemComponent } from './components/NotificationItemComponent/NotificationItemComponent'
-import { useWatchValue } from '../../../../../hooks/useWatchValue'
+import { useWatchValue } from '../../../../../../../hooks/useWatchValue'
 import { useClickAway } from 'react-use'
 
 type Props = {

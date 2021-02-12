@@ -1,5 +1,5 @@
 import styles from './style.module.scss'
-import { Notification } from '../../../../../../../types'
+import { Notification } from '../../../../../../../../../types'
 import { useMemo } from 'react'
 import classNames from 'classnames'
 

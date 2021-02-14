@@ -10,7 +10,7 @@ export const useNotification = (notifier: INotifier) => {
 
   const notify = (notification: Notification) => {
     notifier.notify(notification.text, enableNotificationSound)
-    setNotifications(notifications.concat([notification]))
+    setNotifications((notifications) => notifications.concat([notification]))
   }
 
   return {

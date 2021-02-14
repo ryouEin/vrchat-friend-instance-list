@@ -14,7 +14,7 @@
 1. `npm run build` でビルド
 1. Sentryへのrelease登録
     1. `npx sentry-cli releases new "vrchat-friend-instance-list@[バージョン]"`
-    1. `npx sentry-cli releases files "vrchat-friend-instance-list@[バージョン]" upload-sourcemaps "./dist"`
+    1. `npx sentry-cli releases files "vrchat-friend-instance-list@[バージョン]" upload-sourcemaps "./build"`
     1. `npx sentry-cli releases finalize "vrchat-friend-instance-list@[バージョン]"`
 1. Mozillaのアドオン開発者センターにて、xpiファイルを作成
 1. Releasesに作成したxpiファイルをアップロード
@@ -63,9 +63,7 @@ export class NetworkError extends BaseError<{ status?: number }> {
 
 ### コンポーネント
 
-+ コンポーネントのスタイルは、Scoped CSSで記述
-+ コンポーネントのルートDOMは、接頭語として `c-` を記述。接頭語以降はコンポーネント名とする（ex: Dialogコンポーネントの場合 `c-dialog` ）
-    + ルートDOMはScoped CSSでも親コンポーネントと名前がバッティングするのでそれを防ぐため
++ コンポーネントのスタイルは、CSSModuleで記述
 
 ### グローバルCSS
 
@@ -80,7 +78,7 @@ export class NetworkError extends BaseError<{ status?: number }> {
 #### transitions
 
 + 接頭語として `t-` を記述
-+ vueのtransitionに使用するスタイル
++ CSSTransitionに使用するスタイル
 
 ### 色の指定
 

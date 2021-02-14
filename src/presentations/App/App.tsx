@@ -5,7 +5,7 @@ import {
   instancesRepository,
   settingRepository,
 } from '../../factory/repository'
-import { useSetting } from './hooks/useSetting'
+import { useSetting } from '../store/Setting/useSetting'
 import { useRegularWatchingInstanceCheck } from './hooks/useRegularWatchingInstanceCheck'
 import { useRootCSSVariablesStyle } from './hooks/useRootCSSVariablesStyle'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -25,7 +25,7 @@ export const App = () => {
   const [initialized, setInitialized] = useState(false)
   const rootCSSVariablesStyle = useRootCSSVariablesStyle()
   const setting = useSetting(settingRepository)
-  const { notify } = useNotification(notifier)
+  const { notify, notifications } = useNotification(notifier)
   const fullLoader = useFullLoader()
   useRegularWatchingInstanceCheck(instancesRepository, notify)
 
@@ -50,7 +50,7 @@ export const App = () => {
                 >
                   {initialized && (
                     <>
-                      <HeaderContainerComponent />
+                      <HeaderContainerComponent notifications={notifications} />
                       <div className={styles.main}>
                         <HomeContainerComponent />
                       </div>

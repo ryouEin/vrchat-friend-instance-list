@@ -16,7 +16,9 @@ import { FriendLocationContainerComponent } from '../../../components/container/
 export const HomeContainerComponent = () => {
   const { toInstanceModal } = useAppRouting()
   const [isInitialized, setIsInitialized] = useState(false)
-  const { favorites, init, addFavorite, deleteFavorite } = useFavorites()
+  const { favorites, init, addFavorite, deleteFavorite } = useFavorites(
+    favoritesRepository
+  )
   const { friends, friendLocations, update } = useFriendLocations(favorites)
 
   useMount(async () => {

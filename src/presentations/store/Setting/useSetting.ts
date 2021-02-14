@@ -1,5 +1,5 @@
 import { ISettingRepository } from '../../../repositories/Setting/ISettingRepository'
-import { selectSetting, setSetting } from '../../store/Setting/SettingStore'
+import { selectSetting, setSetting } from './SettingStore'
 import { useDispatch, useSelector } from 'react-redux'
 import { Setting } from '../../types'
 

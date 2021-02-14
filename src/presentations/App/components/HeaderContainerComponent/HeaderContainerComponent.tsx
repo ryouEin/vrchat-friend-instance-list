@@ -2,7 +2,7 @@ import { HeaderComponent } from './components/HeaderComponent/HeaderComponent'
 import { MenuComponent } from './components/MenuComponent/MenuComponent'
 import React from 'react'
 import { useVisibilityManager } from '../../../hooks/useVisibilityManager'
-import { useSetting } from '../../hooks/useSetting'
+import { useSetting } from '../../../store/Setting/useSetting'
 import { settingRepository } from '../../../../factory/repository'
 import { Notification } from '../../../types'
 

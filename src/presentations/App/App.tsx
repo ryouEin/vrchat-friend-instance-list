@@ -5,7 +5,7 @@ import {
   instancesRepository,
   settingRepository,
 } from '../../factory/repository'
-import { useSetting } from './hooks/useSetting'
+import { useSetting } from '../store/Setting/useSetting'
 import { useRegularWatchingInstanceCheck } from './hooks/useRegularWatchingInstanceCheck'
 import { useRootCSSVariablesStyle } from './hooks/useRootCSSVariablesStyle'
 import { ErrorBoundary } from './ErrorBoundary'

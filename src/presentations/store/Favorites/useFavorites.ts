@@ -1,4 +1,3 @@
-import { favoritesRepository } from '../../../factory/repository'
 import { Favorite } from '../../types'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -8,8 +7,9 @@ import {
   setFavorites,
 } from './FavoritesStore'
 import { FavoriteTag } from '../../../types'
+import { IFavoritesRepository } from '../../../repositories/Favorites/IFavoritesRepository'
 
-export const useFavorites = () => {
+export const useFavorites = (favoritesRepository: IFavoritesRepository) => {
   const dispatch = useDispatch()
 
   const favorites = useSelector(selectFavorites)

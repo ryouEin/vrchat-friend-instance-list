@@ -1,6 +1,9 @@
 import { IFriendsRepository } from '../Friends/IFriendsRepository'
 import { UserApiResponse } from '../../types/ApiResponse'
-import { VRChatApiFriendLocationsRepository } from './VRChatApiFriendLocationsRepository'
+import {
+  locationsToLocationAndPermission,
+  VRChatApiFriendLocationsRepository,
+} from './VRChatApiFriendLocationsRepository'
 import { FriendLocation } from './IFriendLocationsRepository'
 import { InstancePermissions } from '../../types'
 
@@ -20,6 +23,51 @@ const friendDummyData: UserApiResponse = {
   currentAvatarImageUrl: 'https://example.com/sample.jpg',
   location: 'wrld_01:1',
 }
+
+describe('locationsToLocationAndPermission', () => {
+  const publicLocation01 = 'public:1'
+  const publicLocation02 = 'public:2'
+  const offlineLocation = 'offline'
+  const unknownLocation = 'wrld_010:unknown~unknown'
+
+  it('locationの配列が、locationとpermissionのオブジェクトの配列として返却される', () => {
+    const result = locationsToLocationAndPermission([
+      publicLocation01,
+      publicLocation02,
+    ])
+
+    expect(result).toEqual([
+      {
+        location: publicLocation01,
+        permission: InstancePermissions.Public,
+      },
+      {
+        location: publicLocation02,
+        permission: InstancePermissions.Public,
+      },
+    ])
+  })
+
+  it('offlineなどの例外的なlocationが来た場合、それは無視される', () => {
+    const result = locationsToLocationAndPermission([
+      publicLocation01,
+      offlineLocation,
+      publicLocation02,
+      unknownLocation,
+    ])
+
+    expect(result).toEqual([
+      {
+        location: publicLocation01,
+        permission: InstancePermissions.Public,
+      },
+      {
+        location: publicLocation02,
+        permission: InstancePermissions.Public,
+      },
+    ])
+  })
+})
 
 describe('fetchFriendLocations', () => {
   it('通常パターン', async () => {

@@ -19,6 +19,7 @@ export type OrderOptions = 'ascending' | 'descending'
 export type GetFriendsParams = {
   n: number
   offset: number
+  offline: boolean
 }
 
 export type AddFavoriteParams = {

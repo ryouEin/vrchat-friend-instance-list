@@ -4,7 +4,6 @@ import {
   InstancePermissions,
 } from '../types'
 import { parseLocation } from './parseLocation'
-import { logger } from '../factory/logger'
 
 export const getInstancePermissionFromLocation: (
   location: InstanceLocation
@@ -16,8 +15,7 @@ export const getInstancePermissionFromLocation: (
   }
 
   if (instanceId === undefined) {
-    logger.error(new Error(`unknown location: ${location}`))
-    return InstancePermissions.Private
+    throw new Error(`unknown location: ${location}`)
   }
 
   if (instanceId.includes('hidden')) {
@@ -38,6 +36,5 @@ export const getInstancePermissionFromLocation: (
     return InstancePermissions.Public
   }
 
-  logger.error(new Error(`unknown location: ${location}`))
-  return InstancePermissions.Unknown
+  throw new Error(`unknown location: ${location}`)
 }

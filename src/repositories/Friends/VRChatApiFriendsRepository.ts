@@ -12,6 +12,7 @@ export class VRChatApiFriendsRepository implements IFriendsRepository {
     return await this._vrchatApi.getFriends({
       n: COUNT_PER_PAGE,
       offset: COUNT_PER_PAGE * page,
+      offline: false,
     })
   }
 
@@ -30,7 +31,15 @@ export class VRChatApiFriendsRepository implements IFriendsRepository {
       friends = friends.concat(tmp01)
       friends = friends.concat(tmp02)
       friends = friends.concat(tmp03)
-      if (tmp01.length <= 0 || tmp02.length <= 0 || tmp03.length <= 0) {
+
+      // なんでかしらんが、VRChatAPIの `/api/1/auth/user/friends` がoffsetいくらでかくしても
+      // なんかしら（観測範囲一人）ユーザーを返すので、返却人数が0人だったら終了とみなす判定法が使えない
+      // なので、後ろふたつが一定人数以下ならもう終わりだろうという判定法を採用する
+      const MINIMUM_USER_LENGTH = 5
+      if (
+        tmp02.length <= MINIMUM_USER_LENGTH &&
+        tmp03.length <= MINIMUM_USER_LENGTH
+      ) {
         break
       }
 

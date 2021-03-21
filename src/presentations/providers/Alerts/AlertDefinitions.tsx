@@ -12,7 +12,7 @@ export const UNAUTHORIZED_FROM_VRCHAT_ERROR: NewAlert = {
       </p>
       <p>
         <a
-          href="https://www.vrchat.com/login"
+          href="https://vrchat.com/login"
           target="_blank"
           rel="noopener noreferrer"
         >

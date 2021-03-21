@@ -6,7 +6,11 @@ import {
 import { IFriendsRepository } from '../Friends/IFriendsRepository'
 import uniqBy from 'lodash/uniqBy'
 import { UserApiResponse } from '../../types/ApiResponse'
-import { InstancePermissions } from '../../types'
+import {
+  InstanceLocation,
+  InstancePermission,
+  InstancePermissions,
+} from '../../types'
 import { Instance } from '../../presentations/types'
 import { parseLocation } from '../../shame/parseLocation'
 import { getInstancePermissionFromLocation } from '../../shame/getInstancePermissionFromLocation'
@@ -25,6 +29,28 @@ const getLocationsFromFriends: (friends: UserApiResponse[]) => string[] = (
   return instancesWithoutPrivate.concat(privateInstance)
 }
 
+export const locationsToLocationAndPermission = (
+  locations: InstanceLocation[]
+) => {
+  return locations.reduce<
+    { location: InstanceLocation; permission: InstancePermission }[]
+  >((acc, location) => {
+    let permission: InstancePermission | undefined = undefined
+    try {
+      permission = getInstancePermissionFromLocation(location)
+      return acc.concat({
+        location,
+        permission,
+      })
+    } catch {
+      // TODO: 未知のlocationが来た際に、Sentryに通知を送りたい
+      //  ただ、'offline' は無視したい
+      //  「permission !== 'offline'」みたいなコードは書きたくないので、どうすればいいか考える
+      return acc
+    }
+  }, [])
+}
+
 export class VRChatApiFriendLocationsRepository
   implements IFriendLocationsRepository {
   constructor(private friendsRepository: IFriendsRepository) {}
@@ -32,9 +58,12 @@ export class VRChatApiFriendLocationsRepository
   async fetchFriendLocations(): Promise<FriendLocation[]> {
     const friends = await this.friendsRepository.fetchAllFriends()
     const locations = getLocationsFromFriends(friends)
+    const locationAndPermissionArray = locationsToLocationAndPermission(
+      locations
+    )
 
-    return locations.map((location) => {
-      const permission = getInstancePermissionFromLocation(location)
+    return locationAndPermissionArray.map((locationAndPermission) => {
+      const { location, permission } = locationAndPermission
       const isPrivate = permission === InstancePermissions.Private
       const friendsInLocation: Friend[] = friends
         .filter((friend) => friend.location === location)

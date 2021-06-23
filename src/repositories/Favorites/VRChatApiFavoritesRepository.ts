@@ -3,7 +3,6 @@ import { FavoriteApiResponse } from '../../types/ApiResponse'
 import { IVRChatApi } from '../../libs/VRChatApi/IVRChatApi'
 import { FavoriteTag } from '../../types'
 import { FavoriteLimit } from '../../presentations/types'
-import { MAX_FAVORITE_PER_GROUP } from '../../config/settings'
 import { logger } from '../../factory/logger'
 
 const IRREGULAR_FAVORITE_OFFSET = 1000
@@ -70,17 +69,14 @@ export class VRChatApiFavoritesRepository implements IFavoritesRepository {
       {
         name: 'group_0',
         used: 0,
-        capacity: MAX_FAVORITE_PER_GROUP,
       },
       {
         name: 'group_1',
         used: 0,
-        capacity: MAX_FAVORITE_PER_GROUP,
       },
       {
         name: 'group_2',
         used: 0,
-        capacity: MAX_FAVORITE_PER_GROUP,
       },
     ]
 

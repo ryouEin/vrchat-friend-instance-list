@@ -71,7 +71,6 @@ export type FriendLocation = {
 export type FavoriteLimit = {
   name: FavoriteTag
   used: number
-  capacity: number
 }
 
 export type InstanceUserNum = {

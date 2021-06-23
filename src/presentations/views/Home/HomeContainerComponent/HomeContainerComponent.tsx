@@ -12,6 +12,9 @@ import { FavoriteTag, FavoriteTags } from '../../../../types'
 import { useAppRouting } from '../../../hooks/useAppRouting'
 import { useMount } from 'react-use'
 import { FriendLocationContainerComponent } from '../../../components/container/FriendLocationContainerComponent/FriendLocationContainerComponent'
+import { VRChatApiFavoriteLimitReachedError } from '../../../../libs/VRChatApi/VRChatApi'
+import { useToast } from '../../../providers/Toasts/useToast'
+import { ToastTypes } from '../../../providers/Toasts/types'
 
 export const HomeContainerComponent = () => {
   const { toInstanceModal } = useAppRouting()
@@ -20,6 +23,7 @@ export const HomeContainerComponent = () => {
     favoritesRepository
   )
   const { friends, friendLocations, update } = useFriendLocations(favorites)
+  const { toast } = useToast()
 
   useMount(async () => {
     await Promise.all([update(), init()])
@@ -45,7 +49,18 @@ export const HomeContainerComponent = () => {
   }
 
   const favoriteFriend = async (friend: Friend, tag: FavoriteTag) => {
-    await addFavorite(friend.id, tag)
+    try {
+      await addFavorite(friend.id, tag)
+    } catch (error) {
+      if (error instanceof VRChatApiFavoriteLimitReachedError) {
+        toast({
+          type: ToastTypes.Error,
+          content: 'グループのFavorite数上限によりFavoriteが失敗しました。',
+        })
+      } else {
+        throw error
+      }
+    }
   }
   const unfavoriteFriend = async (friend: Friend) => {
     if (friend.favorite === undefined) {

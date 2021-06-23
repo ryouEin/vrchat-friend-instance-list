@@ -2,7 +2,6 @@ import { IFavoritesRepository } from './IFavoritesRepository'
 import { FavoriteApiResponse } from '../../types/ApiResponse'
 import { IVRChatApi } from '../../libs/VRChatApi/IVRChatApi'
 import { FavoriteTag } from '../../types'
-import { FavoriteLimit } from '../../presentations/types'
 import { logger } from '../../factory/logger'
 
 const IRREGULAR_FAVORITE_OFFSET = 1000
@@ -62,36 +61,5 @@ export class VRChatApiFavoritesRepository implements IFavoritesRepository {
     return await this._vrchatApi.deleteFavorite({
       id,
     })
-  }
-
-  async fetchFriendFavoriteLimits(): Promise<FavoriteLimit[]> {
-    const limits: FavoriteLimit[] = [
-      {
-        name: 'group_0',
-        used: 0,
-      },
-      {
-        name: 'group_1',
-        used: 0,
-      },
-      {
-        name: 'group_2',
-        used: 0,
-      },
-    ]
-
-    const favoriteApiResponses = await this.fetchFavoritesAboutFriends()
-
-    favoriteApiResponses.forEach((favoriteApiResponse) => {
-      const tag = favoriteApiResponse.tags[0]
-      const limit = limits.find((limit) => limit.name === tag)
-      if (limit !== undefined) {
-        limit.used++
-      } else {
-        logger.error(new Error(`unknown favorite tag ${tag} was found.`))
-      }
-    })
-
-    return limits
   }
 }

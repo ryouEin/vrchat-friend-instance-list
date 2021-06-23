@@ -39,7 +39,8 @@ module.exports = {
     res.json(onlineFriends.slice(offset, offset + n))
   },
   listFavorites(req, res) {
-    res.json(favorites)
+    const { n, offset } = req.query
+    res.json(favorites.slice(offset, offset + n))
   },
   addFavorite(req, res) {
     const timeString = String(new Date().getTime())

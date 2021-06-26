@@ -29,7 +29,7 @@ export const FavoriteDialogComponent = (props: Props) => {
     return [
       ...limits.map((limit) => {
         return {
-          label: `${limit.name}(${limit.used}/${limit.capacity})`,
+          label: `${limit.name}(${limit.used})`,
           value: limit.name,
         }
       }),
@@ -40,8 +40,6 @@ export const FavoriteDialogComponent = (props: Props) => {
     if (limits === null) return true
     const limit = limits.find((limit) => limit.name === selectTag)
     if (limit === undefined) return true
-
-    if (limit.used >= limit.capacity) return true
 
     return false
   }, [limits, selectTag])

@@ -1,6 +1,6 @@
 import { Instance, World } from '../../../../../../../types'
 import styles from './style.module.scss'
-import { InstancePermissionComponent } from './components/InstancePermissionComponent/InstancePermissionComponent'
+import { InstancePermissionAndRegionComponent } from './components/InstancePermissionAndRegionComponent/InstancePermissionAndRegionComponent'
 import classNames from 'classnames'
 import { InstanceButtonComponent } from './components/InstanceButtonComponent/InstanceButtonComponent'
 import { IconComponent } from '../../../../../../presentational/IconComponent/IconComponent'
@@ -65,7 +65,10 @@ export const WorldInfoComponent = ({
         key={world.thumbnailImageUrl}
       />
       <div className={styles.tag}>
-        <InstancePermissionComponent permission={instance.permission} />
+        <InstancePermissionAndRegionComponent
+          permission={instance.permission}
+          region={instance.region}
+        />
       </div>
       <div className={userNumClass}>
         <span className={styles.current}>{currentUserNumString}/</span>

@@ -15,6 +15,7 @@ import { Instance } from '../../presentations/types'
 import { parseLocation } from '../../shame/parseLocation'
 import { getInstancePermissionFromLocation } from '../../shame/getInstancePermissionFromLocation'
 import { getOwnerIdFromLocation } from '../../shame/getOwnerIdFromLocation'
+import { getRegionFromLocation } from '../../shame/getRegionFromLocation'
 
 const getLocationsFromFriends: (friends: UserApiResponse[]) => string[] = (
   friends
@@ -88,6 +89,7 @@ export class VRChatApiFriendLocationsRepository
           permission,
           worldId,
           ownerId,
+          region: getRegionFromLocation(location),
         }
         return {
           id: location,

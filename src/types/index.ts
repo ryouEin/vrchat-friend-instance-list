@@ -2,6 +2,13 @@ export type MSecUnixTime = number
 
 export type InstanceLocation = string
 
+export const Regions = {
+  JP: 'jp',
+  US: 'us',
+  EU: 'eu',
+} as const
+export type Region = typeof Regions[keyof typeof Regions]
+
 export const FavoriteTypes = {
   World: 'world',
   Friend: 'friend',

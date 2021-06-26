@@ -10,8 +10,6 @@ export const WORLD_CACHE = {
   MAX_NUM: 1000,
 }
 
-export const MAX_FAVORITE_PER_GROUP = 32
-
 export const DEFAULT_SETTING: Setting = {
   enableNotificationSound: true,
   theme: 'light',

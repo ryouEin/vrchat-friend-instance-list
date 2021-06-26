@@ -7,6 +7,8 @@ import React from 'react'
 import { useVisibilityManager } from '../../../../../hooks/useVisibilityManager'
 import { Setting } from '../../../../../types'
 import { CSSTransition } from 'react-transition-group'
+import { ExternalLinkComponent } from '../../../../../components/presentational/ExternalLinkComponent'
+import { VRCHAT_WEBSITE_URL } from '../../../../../../config/url'
 
 type Props = {
   isVisible: boolean
@@ -53,6 +55,15 @@ export const MenuComponent = (props: Props) => {
             <IconComponent color="front" size={24} icon="account_circle" />
             <div className={styles.text}>製作者</div>
           </div>
+          <ExternalLinkComponent
+            href={VRCHAT_WEBSITE_URL}
+            className={styles.item}
+          >
+            <>
+              <IconComponent color="front" size={24} icon="open_in_new" />
+              <div className={styles.text}>VRChat公式サイト</div>
+            </>
+          </ExternalLinkComponent>
         </div>
         <div>
           <SettingDialogComponent

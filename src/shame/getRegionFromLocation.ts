@@ -4,7 +4,7 @@ import { logger } from '../factory/logger'
 export const getRegionFromLocation: (
   location: InstanceLocation
 ) => Region | undefined = (location) => {
-  const regexResult = location.match(/\~region\((.*?)\)/)
+  const regexResult = location.match(/~region\((.*?)\)/)
   if (regexResult === null) return undefined
   if (regexResult.length <= 1) return undefined
 

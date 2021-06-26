@@ -14,3 +14,5 @@ export const VrcApiUrl = {
   getInviteMeUrl: (location: InstanceLocation) =>
     VRC_API_URL + `/api/1/instances/${location}/invite`,
 }
+
+export const VRCHAT_WEBSITE_URL = 'https://vrchat.com/login'

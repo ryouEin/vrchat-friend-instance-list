@@ -4,6 +4,7 @@ import {
   InstanceLocation,
   InstancePermission,
   MSecUnixTime,
+  Region,
 } from '../../types'
 import { Color, Theme } from '../Colors'
 
@@ -38,6 +39,7 @@ export type Instance = {
   id: string
   worldId: string
   permission: InstancePermission
+  region?: Region
   ownerId?: string
   userNum?: number
 }
@@ -71,7 +73,6 @@ export type FriendLocation = {
 export type FavoriteLimit = {
   name: FavoriteTag
   used: number
-  capacity: number
 }
 
 export type InstanceUserNum = {

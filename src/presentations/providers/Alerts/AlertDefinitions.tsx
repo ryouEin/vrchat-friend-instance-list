@@ -1,6 +1,8 @@
 import { NewAlert } from './types'
 import { ButtonComponent } from '../../components/presentational/ButtonComponent/ButtonComponent'
 import React from 'react'
+import { VRCHAT_WEBSITE_URL } from '../../../config/url'
+import { ExternalLinkComponent } from '../../components/presentational/ExternalLinkComponent'
 
 export const UNAUTHORIZED_FROM_VRCHAT_ERROR: NewAlert = {
   title: '認証エラー',
@@ -11,13 +13,9 @@ export const UNAUTHORIZED_FROM_VRCHAT_ERROR: NewAlert = {
         公式サイトでログインし直したあと、再読込して下さい。
       </p>
       <p>
-        <a
-          href="https://vrchat.com/login"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          公式サイトログインページ
-        </a>
+        <ExternalLinkComponent href={VRCHAT_WEBSITE_URL}>
+          <span>公式サイトログインページ</span>
+        </ExternalLinkComponent>
       </p>
     </>
   ),

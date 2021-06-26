@@ -31,6 +31,7 @@ export type AddFavoriteParams = {
 export type ListFavoritesParams = {
   type: FavoriteType
   n: number
+  offset: number
 }
 
 export type DeleteFavoriteParams = {

@@ -8,9 +8,21 @@ const { dummyErrorResponseList } = require('./dummyErrorResponseList')
 const locations = (() => {
   return [
     'offline',
+    'offline',
+    'offline',
+    'offline',
     'private',
     ...worlds.map((world) => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
+    ...worlds.map(
+      (world) => `${world.id}:123~hidden(usr_0)~region(jp)~nonce(hogehoge)`
+    ),
+    ...worlds.map(
+      (world) => `${world.id}:123~hidden(usr_0)~region(eu)~nonce(hogehoge)`
+    ),
     ...worlds.map((world) => `${world.id}:123~friends(usr_0)~nonce(hogehoge)`),
+    ...worlds.map(
+      (world) => `${world.id}:123~friends(usr_0)~region(us)~nonce(hogehoge)`
+    ),
     ...worlds.map(
       (world) => `${world.id}:123~private(usr_678)~canRequestInvite~nonce(90)`
     ),
@@ -39,7 +51,8 @@ module.exports = {
     res.json(onlineFriends.slice(offset, offset + n))
   },
   listFavorites(req, res) {
-    res.json(favorites)
+    const { n, offset } = req.query
+    res.json(favorites.slice(offset, offset + n))
   },
   addFavorite(req, res) {
     const timeString = String(new Date().getTime())

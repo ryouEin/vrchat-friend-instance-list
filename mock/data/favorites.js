@@ -1,6 +1,6 @@
 const friends = require('./friends')
 
-module.exports = friends.slice(0, 5).map((friend, index) => {
+module.exports = friends.slice(0, 110).map((friend, index) => {
   const timeString = String(new Date().getTime())
 
   return {

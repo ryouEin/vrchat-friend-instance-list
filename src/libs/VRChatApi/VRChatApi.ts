@@ -27,6 +27,12 @@ export class VRChatApiUnauthorizedError extends VRChatApiError {
   }
 }
 
+export class VRChatApiServiceUnavailableError extends VRChatApiError {
+  constructor() {
+    super(503, 'service unavailable in vrchat api')
+  }
+}
+
 export class VRChatApiFavoriteLimitReachedError extends VRChatApiError {
   constructor() {
     super(400, 'favorite limit per group reached')
@@ -45,6 +51,8 @@ export class VRChatApi implements IVRChatApi {
     if (error instanceof NetworkError) {
       if (error.details.status === 401) {
         throwError = new VRChatApiUnauthorizedError()
+      } else if (error.details.status === 503) {
+        throwError = new VRChatApiServiceUnavailableError()
       } else {
         throwError = new VRChatApiError(error.details.status, error.message)
       }

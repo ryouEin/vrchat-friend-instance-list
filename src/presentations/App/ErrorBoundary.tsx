@@ -1,7 +1,13 @@
 import React, { ErrorInfo } from 'react'
 import { AlertsContext } from '../providers/Alerts/AlertsContext'
-import { VRChatApiUnauthorizedError } from '../../libs/VRChatApi/VRChatApi'
-import { UNAUTHORIZED_FROM_VRCHAT_ERROR } from '../providers/Alerts/AlertDefinitions'
+import {
+  VRChatApiServiceUnavailableError,
+  VRChatApiUnauthorizedError,
+} from '../../libs/VRChatApi/VRChatApi'
+import {
+  SERVICE_UNAVAILABLE_IN_VRCHAT_ERROR,
+  UNAUTHORIZED_FROM_VRCHAT_ERROR,
+} from '../providers/Alerts/AlertDefinitions'
 import { ToastsContext } from '../providers/Toasts/ToastsContext'
 import { NetworkError } from '../../libs/Network/Network'
 import { ToastTypes } from '../providers/Toasts/types'
@@ -39,6 +45,10 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
     if (error instanceof VRChatApiUnauthorizedError) {
       this.props.alerts.alert(UNAUTHORIZED_FROM_VRCHAT_ERROR)
+      return
+    }
+    if (error instanceof VRChatApiServiceUnavailableError) {
+      this.props.alerts.alert(SERVICE_UNAVAILABLE_IN_VRCHAT_ERROR)
       return
     }
     if (error instanceof NetworkError) {

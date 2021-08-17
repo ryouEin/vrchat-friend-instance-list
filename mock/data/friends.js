@@ -2,6 +2,8 @@ const { BASE_URL } = require('../config')
 const { getRandomString, getRandomName } = require('../util')
 
 const makeUser = (index) => {
+  const hasProfilePicOverride = Math.random() > 0.5
+
   return {
     id: `usr_${index}`,
     username: `username${index}`,
@@ -10,6 +12,9 @@ const makeUser = (index) => {
     currentAvatarThumbnailImageUrl: `${BASE_URL}/dummyImage/${getRandomString(
       20
     )}`,
+    profilePicOverride: hasProfilePicOverride
+      ? `${BASE_URL}/dummyOverrideImage/${getRandomString(20)}`
+      : '',
   }
 }
 

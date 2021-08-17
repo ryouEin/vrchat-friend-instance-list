@@ -6,6 +6,7 @@ export type UserApiResponse = {
   displayName: string
   currentAvatarImageUrl: string
   currentAvatarThumbnailImageUrl: string
+  profilePicOverride: string
   location: InstanceLocation
 }
 

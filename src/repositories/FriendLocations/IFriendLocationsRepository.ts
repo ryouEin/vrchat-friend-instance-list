@@ -13,6 +13,7 @@ export type Friend = {
   displayName: string
   currentAvatarImageUrl: string
   currentAvatarThumbnailImageUrl: string
+  profilePicOverride: string
   location: InstanceLocation
   canJoin: boolean
 }

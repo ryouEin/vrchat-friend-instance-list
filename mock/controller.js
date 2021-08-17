@@ -145,6 +145,9 @@ module.exports = {
   getDummyImage(req, res) {
     res.sendFile(path.resolve(__dirname, './data/dummy.png'))
   },
+  getDummyOverrideImage(req, res) {
+    res.sendFile(path.resolve(__dirname, './data/dummy_override.png'))
+  },
   mockError(req, res) {
     dummyErrorResponseList.addItem({
       controllerName: req.body.controllerName,

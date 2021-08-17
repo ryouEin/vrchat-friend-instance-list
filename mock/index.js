@@ -11,6 +11,7 @@ const {
   inviteMe,
   listNews,
   getDummyImage,
+  getDummyOverrideImage,
   mockError,
   unmockError,
 } = require('./controller')
@@ -103,6 +104,7 @@ app.post(
 )
 app.get('/news', errorResponseMiddleware('listNews'), listNews)
 app.get('/dummyImage/:uid', getDummyImage)
+app.get('/dummyOverrideImage/:uid', getDummyOverrideImage)
 app.post('/mockError', mockError)
 app.post('/unmockError', unmockError)
 

@@ -105,6 +105,10 @@
         {
           "version": "4.0.5",
           "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/4.0.5/vrchat_friend_instance_list.xpi"
+        },
+        {
+          "version": "4.0.6",
+          "update_link": "https://github.com/ryouEin/vrchat-friend-instance-list/releases/download/4.0.6/vrchat_friend_instance_list.xpi"
         }
       ]
     }

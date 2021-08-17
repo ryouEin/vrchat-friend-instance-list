@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { SpinnerComponent } from '../../../../../../presentational/SpinnerComponent/SpinnerComponent'
 import { UnfavoriteDialogComponent } from './components/UnfavoriteDialogComponent/UnfavoriteDialogComponent'
 import { UserListItemFriend } from '../../types'
+import { FriendImageComponent } from '../../../../../../presentational/FriendImageComponent'
 
 type Props = {
   friend: UserListItemFriend
@@ -45,11 +46,10 @@ export const UserListItemComponent = (props: Props) => {
 
   return (
     <div className={styles.root}>
-      {/* eslint-disable-next-line jsx-a11y/alt-text */}
-      <img
+      <FriendImageComponent
         className={styles.userImage}
-        src={props.friend.currentAvatarThumbnailImageUrl}
-        key={props.friend.currentAvatarThumbnailImageUrl}
+        friend={props.friend}
+        key={props.friend.id}
       />
       {props.friend.isOwner ? <div className={styles.owner}>Owner</div> : null}
 

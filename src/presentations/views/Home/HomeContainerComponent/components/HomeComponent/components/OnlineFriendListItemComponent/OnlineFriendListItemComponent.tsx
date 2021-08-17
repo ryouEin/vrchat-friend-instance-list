@@ -2,6 +2,7 @@ import styles from './style.module.scss'
 import { Friend } from '../../../../../../../types'
 import { FavoriteMarkComponent } from '../../../../../../../components/presentational/FavoriteMarkComponent/FavoriteMarkComponent'
 import classNames from 'classnames'
+import { FriendImageComponent } from '../../../../../../../components/presentational/FriendImageComponent'
 
 type Props = {
   friend: Friend
@@ -25,11 +26,10 @@ export const OnlineFriendListItemComponent = (props: Props) => {
   return (
     <div className={styles.root} onClick={onClick}>
       <div className={styles.figure}>
-        {/* eslint-disable-next-line jsx-a11y/alt-text */}
-        <img
+        <FriendImageComponent
           className={styles.userImage}
-          src={props.friend.currentAvatarThumbnailImageUrl}
-          key={props.friend.currentAvatarThumbnailImageUrl}
+          friend={props.friend}
+          key={props.friend.id}
         />
         {isFavorited ? (
           <div className={styles.favorite}>

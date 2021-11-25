@@ -46,15 +46,23 @@ describe('getInstancePermissionFromLocation', () => {
     expect(result).toBe(InstancePermissions.Public)
   })
 
-  it('"offline"の時は例外を投げる', () => {
+  it('offlineの時はOffline', () => {
+    const result = getInstancePermissionFromLocation('offline')
+
+    expect(result).toBe(InstancePermissions.Offline)
+  })
+
+  it('InstanceIDがなく、privateでもofflineでもなかった際は例外', () => {
     expect(() => {
-      getInstancePermissionFromLocation('offline')
+      getInstancePermissionFromLocation('unknown_permission')
     }).toThrow()
   })
 
-  it('なんかよくわからない想定外の文字列の時は例外を投げる', () => {
-    expect(() => {
-      getInstancePermissionFromLocation('wrld_011:rheaitja~etijaerhet')
-    }).toThrow()
+  it('なんかよくわからない想定外の文字列の時はunknown', () => {
+    const result = getInstancePermissionFromLocation(
+      'wrld_011:rheaitja~etijaerhet'
+    )
+
+    expect(result).toBe(InstancePermissions.Unknown)
   })
 })

@@ -22,13 +22,14 @@ const friendDummyData: UserApiResponse = {
   currentAvatarThumbnailImageUrl: 'https://example.com/sample.jpg',
   currentAvatarImageUrl: 'https://example.com/sample.jpg',
   location: 'wrld_01:1',
+  profilePicOverride: '',
 }
 
 describe('locationsToLocationAndPermission', () => {
   const publicLocation01 = 'public:1'
   const publicLocation02 = 'public:2'
   const offlineLocation = 'offline'
-  const unknownLocation = 'wrld_010:unknown~unknown'
+  const unknownLocation = 'unknown_permission'
 
   it('locationの配列が、locationとpermissionのオブジェクトの配列として返却される', () => {
     const result = locationsToLocationAndPermission([
@@ -48,7 +49,7 @@ describe('locationsToLocationAndPermission', () => {
     ])
   })
 
-  it('offlineなどの例外的なlocationが来た場合、それは無視される', () => {
+  it('offlineと例外的なlocationが来た場合、それは無視される', () => {
     const result = locationsToLocationAndPermission([
       publicLocation01,
       offlineLocation,

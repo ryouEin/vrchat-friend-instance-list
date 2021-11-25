@@ -30,5 +30,7 @@ export const InstancePermissions = {
   FriendPlus: 'friend+',
   Invite: 'invite',
   InvitePlus: 'invite+',
+  Offline: 'offline',
+  Unknown: 'unknown',
 } as const
 export type InstancePermission = typeof InstancePermissions[keyof typeof InstancePermissions]

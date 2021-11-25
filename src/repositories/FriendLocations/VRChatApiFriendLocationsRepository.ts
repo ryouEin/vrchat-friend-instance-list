@@ -16,6 +16,7 @@ import { parseLocation } from '../../shame/parseLocation'
 import { getInstancePermissionFromLocation } from '../../shame/getInstancePermissionFromLocation'
 import { getOwnerIdFromLocation } from '../../shame/getOwnerIdFromLocation'
 import { getRegionFromLocation } from '../../shame/getRegionFromLocation'
+import { logger } from '../../factory/logger'
 
 const getLocationsFromFriends: (friends: UserApiResponse[]) => string[] = (
   friends
@@ -36,14 +37,24 @@ export const locationsToLocationAndPermission = (
   return locations.reduce<
     { location: InstanceLocation; permission: InstancePermission }[]
   >((acc, location) => {
-    const permission: InstancePermission = getInstancePermissionFromLocation(
-      location
-    )
+    try {
+      const permission: InstancePermission = getInstancePermissionFromLocation(
+        location
+      )
 
-    return acc.concat({
-      location,
-      permission,
-    })
+      if (permission === InstancePermissions.Offline) return acc
+
+      return acc.concat({
+        location,
+        permission,
+      })
+    } catch (e) {
+      if (e instanceof Error) {
+        logger.error(`unknown location: ${location}`)
+      }
+
+      return acc
+    }
   }, [])
 }
 

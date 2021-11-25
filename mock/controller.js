@@ -11,6 +11,7 @@ const locations = (() => {
     'offline',
     'offline',
     'offline',
+    'unknown_permission',
     'private',
     ...worlds.map((world) => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
     ...worlds.map(

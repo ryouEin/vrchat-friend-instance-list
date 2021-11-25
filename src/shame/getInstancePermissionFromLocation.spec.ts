@@ -46,10 +46,16 @@ describe('getInstancePermissionFromLocation', () => {
     expect(result).toBe(InstancePermissions.Public)
   })
 
-  it('offlineの時はprivate', () => {
+  it('offlineの時はOffline', () => {
     const result = getInstancePermissionFromLocation('offline')
 
-    expect(result).toBe(InstancePermissions.Private)
+    expect(result).toBe(InstancePermissions.Offline)
+  })
+
+  it('InstanceIDがなく、privateでもofflineでもなかった際は例外', () => {
+    expect(() => {
+      getInstancePermissionFromLocation('unknown_permission')
+    }).toThrow()
   })
 
   it('なんかよくわからない想定外の文字列の時はunknown', () => {

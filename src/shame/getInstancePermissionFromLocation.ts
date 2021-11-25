@@ -10,12 +10,8 @@ export const getInstancePermissionFromLocation: (
 ) => InstancePermission = (location) => {
   const { worldId, instanceId } = parseLocation(location)
 
-  if (worldId === 'private') {
-    return InstancePermissions.Private
-  }
-
   if (instanceId === undefined) {
-    throw new Error(`unknown location: ${location}`)
+    return InstancePermissions.Private
   }
 
   if (instanceId.includes('hidden')) {

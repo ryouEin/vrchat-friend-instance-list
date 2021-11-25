@@ -46,6 +46,12 @@ describe('getInstancePermissionFromLocation', () => {
     expect(result).toBe(InstancePermissions.Public)
   })
 
+  it('publicパターン(regionあり)', () => {
+    const result = getInstancePermissionFromLocation('wrld_1:123~region(jp)')
+
+    expect(result).toBe(InstancePermissions.Public)
+  })
+
   it('offlineの時はOffline', () => {
     const result = getInstancePermissionFromLocation('offline')
 

@@ -22,6 +22,7 @@ const friendDummyData: UserApiResponse = {
   currentAvatarThumbnailImageUrl: 'https://example.com/sample.jpg',
   currentAvatarImageUrl: 'https://example.com/sample.jpg',
   location: 'wrld_01:1',
+  profilePicOverride: '',
 }
 
 describe('locationsToLocationAndPermission', () => {
@@ -34,26 +35,6 @@ describe('locationsToLocationAndPermission', () => {
     const result = locationsToLocationAndPermission([
       publicLocation01,
       publicLocation02,
-    ])
-
-    expect(result).toEqual([
-      {
-        location: publicLocation01,
-        permission: InstancePermissions.Public,
-      },
-      {
-        location: publicLocation02,
-        permission: InstancePermissions.Public,
-      },
-    ])
-  })
-
-  it('offlineなどの例外的なlocationが来た場合、それは無視される', () => {
-    const result = locationsToLocationAndPermission([
-      publicLocation01,
-      offlineLocation,
-      publicLocation02,
-      unknownLocation,
     ])
 
     expect(result).toEqual([

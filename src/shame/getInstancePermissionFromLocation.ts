@@ -1,3 +1,4 @@
+import { logger } from '../factory/logger'
 import {
   InstanceLocation,
   InstancePermission,
@@ -32,5 +33,7 @@ export const getInstancePermissionFromLocation: (
     return InstancePermissions.Public
   }
 
-  throw new Error(`unknown location: ${location}`)
+  logger.error(`unknown location: ${location}`)
+
+  return InstancePermissions.Unknown
 }

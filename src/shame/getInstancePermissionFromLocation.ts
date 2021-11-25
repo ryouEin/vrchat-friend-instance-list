@@ -37,7 +37,16 @@ export const getInstancePermissionFromLocation: (
       : InstancePermissions.Invite
   }
 
-  if (instanceId.includes('public') || !instanceId.includes('~')) {
+  const instanceIdIsPublie = instanceId.includes('public')
+  const instanceIdNotIncludeChilda = !instanceId.includes('~')
+  const instanceIdHasJustIdAndRegion =
+    instanceId.split('~').length === 2 &&
+    instanceId.split('~')[1].includes('region')
+  if (
+    instanceIdIsPublie ||
+    instanceIdNotIncludeChilda ||
+    instanceIdHasJustIdAndRegion
+  ) {
     return InstancePermissions.Public
   }
 

@@ -58,6 +58,12 @@ describe('getInstancePermissionFromLocation', () => {
     expect(result).toBe(InstancePermissions.Offline)
   })
 
+  it('空文字の時はOffline', () => {
+    const result = getInstancePermissionFromLocation('')
+
+    expect(result).toBe(InstancePermissions.Offline)
+  })
+
   it('InstanceIDがなく、privateでもofflineでもなかった際は例外', () => {
     expect(() => {
       getInstancePermissionFromLocation('unknown_permission')

@@ -19,6 +19,10 @@ export const getInstancePermissionFromLocation: (
     return InstancePermissions.Offline
   }
 
+  if (location === '') {
+    return InstancePermissions.Offline
+  }
+
   if (instanceId === undefined) {
     throw new Error(`unknown location: ${location}`)
   }

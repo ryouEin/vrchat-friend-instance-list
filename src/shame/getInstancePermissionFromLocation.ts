@@ -1,3 +1,4 @@
+import { logger } from '../factory/logger'
 import {
   InstanceLocation,
   InstancePermission,
@@ -12,6 +13,14 @@ export const getInstancePermissionFromLocation: (
 
   if (worldId === 'private') {
     return InstancePermissions.Private
+  }
+
+  if (worldId === 'offline') {
+    return InstancePermissions.Offline
+  }
+
+  if (location === '') {
+    return InstancePermissions.Offline
   }
 
   if (instanceId === undefined) {
@@ -32,9 +41,20 @@ export const getInstancePermissionFromLocation: (
       : InstancePermissions.Invite
   }
 
-  if (instanceId.includes('public') || !instanceId.includes('~')) {
+  const instanceIdIsPublie = instanceId.includes('public')
+  const instanceIdNotIncludeChilda = !instanceId.includes('~')
+  const instanceIdHasJustIdAndRegion =
+    instanceId.split('~').length === 2 &&
+    instanceId.split('~')[1].includes('region')
+  if (
+    instanceIdIsPublie ||
+    instanceIdNotIncludeChilda ||
+    instanceIdHasJustIdAndRegion
+  ) {
     return InstancePermissions.Public
   }
 
-  throw new Error(`unknown location: ${location}`)
+  logger.error(`unknown location: ${location}`)
+
+  return InstancePermissions.Unknown
 }

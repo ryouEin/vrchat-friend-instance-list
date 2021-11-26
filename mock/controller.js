@@ -11,6 +11,7 @@ const locations = (() => {
     'offline',
     'offline',
     'offline',
+    'unknown_permission',
     'private',
     ...worlds.map((world) => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
     ...worlds.map(
@@ -28,6 +29,8 @@ const locations = (() => {
     ),
     ...worlds.map((world) => `${world.id}:123~private(usr_678)~nonce(90)`),
     ...worlds.map((world) => `${world.id}:123`),
+    ...worlds.map((world) => `${world.id}:123~region(jp)`),
+    ...worlds.map((world) => `${world.id}:hogehoge~fugafuga`),
   ]
 })()
 const getRandomLocation = () => {

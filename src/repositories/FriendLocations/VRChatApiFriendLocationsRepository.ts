@@ -16,6 +16,7 @@ import { parseLocation } from '../../shame/parseLocation'
 import { getInstancePermissionFromLocation } from '../../shame/getInstancePermissionFromLocation'
 import { getOwnerIdFromLocation } from '../../shame/getOwnerIdFromLocation'
 import { getRegionFromLocation } from '../../shame/getRegionFromLocation'
+import { logger } from '../../factory/logger'
 
 const getLocationsFromFriends: (friends: UserApiResponse[]) => string[] = (
   friends
@@ -36,17 +37,22 @@ export const locationsToLocationAndPermission = (
   return locations.reduce<
     { location: InstanceLocation; permission: InstancePermission }[]
   >((acc, location) => {
-    let permission: InstancePermission | undefined = undefined
     try {
-      permission = getInstancePermissionFromLocation(location)
+      const permission: InstancePermission = getInstancePermissionFromLocation(
+        location
+      )
+
+      if (permission === InstancePermissions.Offline) return acc
+
       return acc.concat({
         location,
         permission,
       })
-    } catch {
-      // TODO: 未知のlocationが来た際に、Sentryに通知を送りたい
-      //  ただ、'offline' は無視したい
-      //  「permission !== 'offline'」みたいなコードは書きたくないので、どうすればいいか考える
+    } catch (e) {
+      if (e instanceof Error) {
+        logger.error(`unknown location: ${location}`)
+      }
+
       return acc
     }
   }, [])

@@ -1,5 +1,5 @@
 import { useFriendLocations } from './hooks/useFriendLocations'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { SpinnerComponent } from '../../../components/presentational/SpinnerComponent/SpinnerComponent'
 import styles from './style.module.scss'
 import { HomeComponent } from './components/HomeComponent/HomeComponent'
@@ -10,25 +10,33 @@ import { Route, Switch } from 'react-router-dom'
 import { InstanceModalContainerComponent } from './components/InstanceModalContainerComponent/InstanceModalContainerComponent'
 import { FavoriteTag, FavoriteTags } from '../../../../types'
 import { useAppRouting } from '../../../hooks/useAppRouting'
-import { useMount } from 'react-use'
 import { FriendLocationContainerComponent } from '../../../components/container/FriendLocationContainerComponent/FriendLocationContainerComponent'
 import { VRChatApiFavoriteLimitReachedError } from '../../../../libs/VRChatApi/VRChatApi'
 import { useToast } from '../../../providers/Toasts/useToast'
 import { ToastTypes } from '../../../providers/Toasts/types'
 
+type InitializeStatus = 'wait' | 'initializing' | 'initialized'
+
 export const HomeContainerComponent = () => {
   const { toInstanceModal } = useAppRouting()
-  const [isInitialized, setIsInitialized] = useState(false)
+  const [status, setStatus] = useState<InitializeStatus>('wait')
   const { favorites, init, addFavorite, deleteFavorite } = useFavorites(
     favoritesRepository
   )
   const { friends, friendLocations, update } = useFriendLocations(favorites)
   const { toast } = useToast()
 
-  useMount(async () => {
-    await Promise.all([update(), init()])
-    setIsInitialized(true)
-  })
+  useEffect(() => {
+    ;(async () => {
+      if (status !== 'wait') return
+
+      setStatus('initializing')
+
+      await Promise.all([update(), init()])
+
+      setStatus('initialized')
+    })()
+  }, [init, status, update])
 
   const showInstanceModal = (friend: Friend) => {
     toInstanceModal(friend.location)
@@ -71,7 +79,7 @@ export const HomeContainerComponent = () => {
 
   return (
     <>
-      {isInitialized ? (
+      {status === 'initialized' ? (
         <>
           <HomeComponent
             friends={friends}

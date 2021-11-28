@@ -1,5 +1,6 @@
 import { News } from '../../presentations/types'
+import { MSecUnixTime } from '../../types'
 
 export interface INewsRepository {
-  fetchUnreadNews(count: number): Promise<News[]>
+  fetchNewsSince(unixTime: MSecUnixTime): Promise<News[]>
 }

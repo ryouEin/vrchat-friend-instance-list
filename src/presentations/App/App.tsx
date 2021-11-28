@@ -3,7 +3,9 @@ import styles from './style.module.scss'
 import { HomeContainerComponent } from '../views/Home/HomeContainerComponent/HomeContainerComponent'
 import {
   instancesRepository,
+  lastCheckNewsAtRepository,
   settingRepository,
+  newsRepository,
 } from '../../factory/repository'
 import { useSetting } from '../store/Setting/useSetting'
 import { useRegularWatchingInstanceCheck } from './hooks/useRegularWatchingInstanceCheck'
@@ -17,18 +19,51 @@ import { FullLoaderContainerComponent } from '../providers/FullLoader/FullLoader
 import { ToastsContainerComponent } from '../providers/Toasts/ToastsContainerComponent'
 import { AlertsContext } from '../providers/Alerts/AlertsContext'
 import { ToastsContext } from '../providers/Toasts/ToastsContext'
-import { useMount } from 'react-use'
 import { notifier } from '../../factory/notifier'
 import { HeaderContainerComponent } from './components/HeaderContainerComponent/HeaderContainerComponent'
-import { useNews } from './hooks/useNews'
+import { fetchUnreadNews } from '../../shame/fetchUnreadNews'
+import { MarkdownTextComponent } from '../components/presentational/MarkdownTextComponent/MarkdownTextComponent'
+import { useAlert } from '../providers/Alerts/useAlert'
+
+type ContentInitializeStatus = 'wait' | 'initializing' | 'initialized'
 
 const Content = () => {
+  const [status, setStatus] = useState<ContentInitializeStatus>('wait')
   const { notifications } = useNotification(notifier)
-  const { alertUnreadNews } = useNews()
+  const { alert } = useAlert()
 
   useEffect(() => {
-    alertUnreadNews()
-  }, [alertUnreadNews])
+    ;(async () => {
+      if (status !== 'wait') return
+
+      setStatus('initializing')
+
+      let lastCheckAt = lastCheckNewsAtRepository.getLastCheckNewsAt()
+      if (lastCheckAt === undefined) {
+        const currentMSecUnixTime = Date.now()
+        lastCheckAt = currentMSecUnixTime
+        lastCheckNewsAtRepository.setLastCheckNewsAt(currentMSecUnixTime)
+      }
+
+      const newsList = await fetchUnreadNews(lastCheckAt, newsRepository)
+
+      newsList.forEach((news) =>
+        alert({
+          title: news.title,
+          contentSlot: <MarkdownTextComponent markdownText={news.content} />,
+          onClose() {
+            const lastCheckNewsAt =
+              lastCheckNewsAtRepository.getLastCheckNewsAt() ?? 0
+            if (news.publishedAt > lastCheckNewsAt) {
+              lastCheckNewsAtRepository.setLastCheckNewsAt(news.publishedAt)
+            }
+          },
+        })
+      )
+
+      setStatus('initialized')
+    })()
+  }, [alert, status])
 
   return (
     <>
@@ -40,20 +75,29 @@ const Content = () => {
   )
 }
 
+type AppInitializeStatus = 'wait' | 'initializing' | 'initialized'
+
 export const App = () => {
-  const [initialized, setInitialized] = useState(false)
+  const [status, setStatus] = useState<AppInitializeStatus>('wait')
   const rootCSSVariablesStyle = useRootCSSVariablesStyle()
   const setting = useSetting(settingRepository)
   const { notify } = useNotification(notifier)
   const fullLoader = useFullLoader()
   useRegularWatchingInstanceCheck(instancesRepository, notify)
 
-  useMount(async () => {
-    fullLoader.show()
-    await setting.init()
-    setInitialized(true)
-    fullLoader.hide()
-  })
+  useEffect(() => {
+    ;(async () => {
+      if (status !== 'wait') return
+
+      setStatus('initializing')
+
+      fullLoader.show()
+      await setting.init()
+      fullLoader.hide()
+
+      setStatus('initialized')
+    })()
+  }, [status, fullLoader, setting])
 
   return (
     <AlertsProvider>
@@ -67,7 +111,7 @@ export const App = () => {
                   className={styles.root}
                   style={rootCSSVariablesStyle}
                 >
-                  {initialized && <Content />}
+                  {status === 'initialized' && <Content />}
                   <AlertContainerComponent />
                   <FullLoaderContainerComponent />
                   <ToastsContainerComponent />

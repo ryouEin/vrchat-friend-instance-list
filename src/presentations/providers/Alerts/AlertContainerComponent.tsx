@@ -9,6 +9,7 @@ export const AlertContainerComponent = () => {
 
   const alert = alerts[0]
   const close = () => {
+    if (alert.onClose !== undefined) alert.onClose()
     dismissAlert(alert.id)
   }
 

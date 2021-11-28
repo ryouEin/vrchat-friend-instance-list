@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styles from './style.module.scss'
 import { HomeContainerComponent } from '../views/Home/HomeContainerComponent/HomeContainerComponent'
 import {
   instancesRepository,
+  newsRepository,
   settingRepository,
 } from '../../factory/repository'
 import { useSetting } from '../store/Setting/useSetting'
@@ -20,12 +21,33 @@ import { ToastsContext } from '../providers/Toasts/ToastsContext'
 import { useMount } from 'react-use'
 import { notifier } from '../../factory/notifier'
 import { HeaderContainerComponent } from './components/HeaderContainerComponent/HeaderContainerComponent'
+import { useAlert } from '../providers/Alerts/useAlert'
+import { MarkdownTextComponent } from '../components/presentational/MarkdownTextComponent/MarkdownTextComponent'
+import { useNews } from './hooks/useNews'
+
+const Content = () => {
+  const { notifications } = useNotification(notifier)
+  const { alertUnreadNews } = useNews()
+
+  useEffect(() => {
+    alertUnreadNews()
+  }, [alertUnreadNews])
+
+  return (
+    <>
+      <HeaderContainerComponent notifications={notifications} />
+      <div className={styles.main}>
+        <HomeContainerComponent />
+      </div>
+    </>
+  )
+}
 
 export const App = () => {
   const [initialized, setInitialized] = useState(false)
   const rootCSSVariablesStyle = useRootCSSVariablesStyle()
   const setting = useSetting(settingRepository)
-  const { notify, notifications } = useNotification(notifier)
+  const { notify } = useNotification(notifier)
   const fullLoader = useFullLoader()
   useRegularWatchingInstanceCheck(instancesRepository, notify)
 
@@ -48,14 +70,7 @@ export const App = () => {
                   className={styles.root}
                   style={rootCSSVariablesStyle}
                 >
-                  {initialized && (
-                    <>
-                      <HeaderContainerComponent notifications={notifications} />
-                      <div className={styles.main}>
-                        <HomeContainerComponent />
-                      </div>
-                    </>
-                  )}
+                  {initialized && <Content />}
                   <AlertContainerComponent />
                   <FullLoaderContainerComponent />
                   <ToastsContainerComponent />

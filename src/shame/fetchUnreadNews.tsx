@@ -1,4 +1,3 @@
-import { ILastCheckNewsAt } from '../repositories/News/ILastCheckNewsAt'
 import { INewsRepository } from '../repositories/News/INewsRepository'
 import { MSecUnixTime } from '../types'
 

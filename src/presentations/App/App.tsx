@@ -3,7 +3,9 @@ import styles from './style.module.scss'
 import { HomeContainerComponent } from '../views/Home/HomeContainerComponent/HomeContainerComponent'
 import {
   instancesRepository,
+  lastCheckNewsAtRepository,
   settingRepository,
+  newsRepository,
 } from '../../factory/repository'
 import { useSetting } from '../store/Setting/useSetting'
 import { useRegularWatchingInstanceCheck } from './hooks/useRegularWatchingInstanceCheck'
@@ -20,15 +22,36 @@ import { ToastsContext } from '../providers/Toasts/ToastsContext'
 import { useMount } from 'react-use'
 import { notifier } from '../../factory/notifier'
 import { HeaderContainerComponent } from './components/HeaderContainerComponent/HeaderContainerComponent'
-import { useNews } from './hooks/useNews'
+import { fetchUnreadNews } from '../../shame/fetchUnreadNews'
+import { MarkdownTextComponent } from '../components/presentational/MarkdownTextComponent/MarkdownTextComponent'
+import { useAlert } from '../providers/Alerts/useAlert'
 
 const Content = () => {
   const { notifications } = useNotification(notifier)
-  const { alertUnreadNews } = useNews()
+  const { alert } = useAlert()
 
   useEffect(() => {
-    alertUnreadNews()
-  }, [alertUnreadNews])
+    ;(async () => {
+      const newsList = await fetchUnreadNews(
+        lastCheckNewsAtRepository,
+        newsRepository
+      )
+
+      newsList.forEach((news) =>
+        alert({
+          title: news.title,
+          contentSlot: <MarkdownTextComponent markdownText={news.content} />,
+          onClose() {
+            const lastCheckNewsAt =
+              lastCheckNewsAtRepository.getLastCheckNewsAt() ?? 0
+            if (news.publishedAt > lastCheckNewsAt) {
+              lastCheckNewsAtRepository.setLastCheckNewsAt(news.publishedAt)
+            }
+          },
+        })
+      )
+    })()
+  }, [alert])
 
   return (
     <>

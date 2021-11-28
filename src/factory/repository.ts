@@ -27,8 +27,9 @@ export const settingRepository = new KeyValueStorageSettingRepository(
   new LocalStorage()
 )
 
+export const lastCheckNewsAtRepository = new KeyValueStorageLastCheckNewsAt()
+
 export const newsRepository = new MicroCmsApiNewsRepository(
-  new KeyValueStorageLastCheckNewsAt(),
   new MicroCmsApi(network)
 )
 

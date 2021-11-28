@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './style.module.scss'
 import { HomeContainerComponent } from '../views/Home/HomeContainerComponent/HomeContainerComponent'
 import {
@@ -20,12 +20,31 @@ import { ToastsContext } from '../providers/Toasts/ToastsContext'
 import { useMount } from 'react-use'
 import { notifier } from '../../factory/notifier'
 import { HeaderContainerComponent } from './components/HeaderContainerComponent/HeaderContainerComponent'
+import { useNews } from './hooks/useNews'
+
+const Content = () => {
+  const { notifications } = useNotification(notifier)
+  const { alertUnreadNews } = useNews()
+
+  useEffect(() => {
+    alertUnreadNews()
+  }, [alertUnreadNews])
+
+  return (
+    <>
+      <HeaderContainerComponent notifications={notifications} />
+      <div className={styles.main}>
+        <HomeContainerComponent />
+      </div>
+    </>
+  )
+}
 
 export const App = () => {
   const [initialized, setInitialized] = useState(false)
   const rootCSSVariablesStyle = useRootCSSVariablesStyle()
   const setting = useSetting(settingRepository)
-  const { notify, notifications } = useNotification(notifier)
+  const { notify } = useNotification(notifier)
   const fullLoader = useFullLoader()
   useRegularWatchingInstanceCheck(instancesRepository, notify)
 
@@ -48,14 +67,7 @@ export const App = () => {
                   className={styles.root}
                   style={rootCSSVariablesStyle}
                 >
-                  {initialized && (
-                    <>
-                      <HeaderContainerComponent notifications={notifications} />
-                      <div className={styles.main}>
-                        <HomeContainerComponent />
-                      </div>
-                    </>
-                  )}
+                  {initialized && <Content />}
                   <AlertContainerComponent />
                   <FullLoaderContainerComponent />
                   <ToastsContainerComponent />

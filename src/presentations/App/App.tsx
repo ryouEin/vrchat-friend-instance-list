@@ -38,10 +38,14 @@ const Content = () => {
 
       setStatus('initializing')
 
-      const newsList = await fetchUnreadNews(
-        lastCheckNewsAtRepository,
-        newsRepository
-      )
+      let lastCheckAt = lastCheckNewsAtRepository.getLastCheckNewsAt()
+      if (lastCheckAt === undefined) {
+        const currentMSecUnixTime = Date.now()
+        lastCheckAt = currentMSecUnixTime
+        lastCheckNewsAtRepository.setLastCheckNewsAt(currentMSecUnixTime)
+      }
+
+      const newsList = await fetchUnreadNews(lastCheckAt, newsRepository)
 
       newsList.forEach((news) =>
         alert({

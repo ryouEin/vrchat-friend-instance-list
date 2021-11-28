@@ -19,19 +19,25 @@ import { FullLoaderContainerComponent } from '../providers/FullLoader/FullLoader
 import { ToastsContainerComponent } from '../providers/Toasts/ToastsContainerComponent'
 import { AlertsContext } from '../providers/Alerts/AlertsContext'
 import { ToastsContext } from '../providers/Toasts/ToastsContext'
-import { useMount } from 'react-use'
 import { notifier } from '../../factory/notifier'
 import { HeaderContainerComponent } from './components/HeaderContainerComponent/HeaderContainerComponent'
 import { fetchUnreadNews } from '../../shame/fetchUnreadNews'
 import { MarkdownTextComponent } from '../components/presentational/MarkdownTextComponent/MarkdownTextComponent'
 import { useAlert } from '../providers/Alerts/useAlert'
 
+type ContentInitializeStatus = 'wait' | 'initializing' | 'initialized'
+
 const Content = () => {
+  const [status, setStatus] = useState<ContentInitializeStatus>('wait')
   const { notifications } = useNotification(notifier)
   const { alert } = useAlert()
 
   useEffect(() => {
     ;(async () => {
+      if (status !== 'wait') return
+
+      setStatus('initializing')
+
       const newsList = await fetchUnreadNews(
         lastCheckNewsAtRepository,
         newsRepository
@@ -50,8 +56,10 @@ const Content = () => {
           },
         })
       )
+
+      setStatus('initialized')
     })()
-  }, [alert])
+  }, [alert, status])
 
   return (
     <>
@@ -63,20 +71,29 @@ const Content = () => {
   )
 }
 
+type AppInitializeStatus = 'wait' | 'initializing' | 'initialized'
+
 export const App = () => {
-  const [initialized, setInitialized] = useState(false)
+  const [status, setStatus] = useState<AppInitializeStatus>('wait')
   const rootCSSVariablesStyle = useRootCSSVariablesStyle()
   const setting = useSetting(settingRepository)
   const { notify } = useNotification(notifier)
   const fullLoader = useFullLoader()
   useRegularWatchingInstanceCheck(instancesRepository, notify)
 
-  useMount(async () => {
-    fullLoader.show()
-    await setting.init()
-    setInitialized(true)
-    fullLoader.hide()
-  })
+  useEffect(() => {
+    ;(async () => {
+      if (status !== 'wait') return
+
+      setStatus('initializing')
+
+      fullLoader.show()
+      await setting.init()
+      fullLoader.hide()
+
+      setStatus('initialized')
+    })()
+  }, [status, fullLoader, setting])
 
   return (
     <AlertsProvider>
@@ -90,7 +107,7 @@ export const App = () => {
                   className={styles.root}
                   style={rootCSSVariablesStyle}
                 >
-                  {initialized && <Content />}
+                  {status === 'initialized' && <Content />}
                   <AlertContainerComponent />
                   <FullLoaderContainerComponent />
                   <ToastsContainerComponent />

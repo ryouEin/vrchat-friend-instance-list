@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './style.module.scss'
 import { HomeContainerComponent } from '../views/Home/HomeContainerComponent/HomeContainerComponent'
 import {
   instancesRepository,
-  newsRepository,
   settingRepository,
 } from '../../factory/repository'
 import { useSetting } from '../store/Setting/useSetting'
@@ -21,8 +20,6 @@ import { ToastsContext } from '../providers/Toasts/ToastsContext'
 import { useMount } from 'react-use'
 import { notifier } from '../../factory/notifier'
 import { HeaderContainerComponent } from './components/HeaderContainerComponent/HeaderContainerComponent'
-import { useAlert } from '../providers/Alerts/useAlert'
-import { MarkdownTextComponent } from '../components/presentational/MarkdownTextComponent/MarkdownTextComponent'
 import { useNews } from './hooks/useNews'
 
 const Content = () => {

@@ -33,7 +33,7 @@ export default class MicroCmsApiNewsRepository implements INewsRepository {
   }
 
   async fetchUnreadNews(count: number = DEFAULT_NEWS_COUNT) {
-    const lastCheckAt = this._lastCheckNewsAt.getLastCheckNewsAt() ?? 0
+    const lastCheckAt = this._lastCheckNewsAt.getLastCheckNewsAt() ?? Date.now()
     const newsJsonArray = await this.fetchNewsSince(lastCheckAt)
 
     this._lastCheckNewsAt.setLastCheckNewsAt(Date.now())

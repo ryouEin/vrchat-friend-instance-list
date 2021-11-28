@@ -35,6 +35,9 @@ describe('fetchUnreadNews', () => {
     advanceTo(currentDateUnixTime)
 
     const lastCheckNewsAt = new MockLastCheckNewsAt()
+    lastCheckNewsAt.lastCheckNewsAt = new Date(
+      '2020-08-05T15:19:23.400Z'
+    ).getTime()
     const microCmsApi = new MockMicroCmsApi()
 
     const news01 = {

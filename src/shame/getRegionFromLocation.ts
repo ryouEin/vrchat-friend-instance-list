@@ -14,6 +14,10 @@ export const getRegionFromLocation: (
       return Regions.JP
     case 'us':
       return Regions.US
+    case 'use':
+      return Regions.USE
+    case 'usw':
+      return Regions.USW
     case 'eu':
       return Regions.EU
   }

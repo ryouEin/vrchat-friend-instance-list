@@ -5,6 +5,8 @@ export type InstanceLocation = string
 export const Regions = {
   JP: 'jp',
   US: 'us',
+  USE: 'use',
+  USW: 'usw',
   EU: 'eu',
 } as const
 export type Region = typeof Regions[keyof typeof Regions]

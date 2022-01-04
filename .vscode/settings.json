@@ -1,0 +1,4 @@
+{
+  // 拡張機能「JestRunner」をCRA環境でも有効にするための記述
+  "jestrunner.jestCommand": "npx react-scripts test --watchAll=false"
+}

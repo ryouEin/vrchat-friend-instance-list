@@ -19,13 +19,20 @@ class MockLastCheckNewsAt implements ILastCheckNewsAt {
 class MockNewsRepository implements INewsRepository {
   public news: News[] = []
 
+  public fetchNewsSinceMock
+
+  constructor() {
+    this.fetchNewsSinceMock = jest.fn()
+  }
+
   async fetchNewsSince(since: MSecUnixTime): Promise<News[]> {
+    this.fetchNewsSinceMock(since)
+
     return this.news
   }
 }
 
 describe('fetchUnreadNews', () => {
-  // TODO: fetchNewsSinceを正しい引数で読んでいることをテスト
   it('ニュースを新しいものから3件取得する', async () => {
     const lastCheckNewsAt = new MockLastCheckNewsAt()
     lastCheckNewsAt.lastCheckNewsAt = new Date(
@@ -55,8 +62,11 @@ describe('fetchUnreadNews', () => {
     }
     newsRepository.news = [news01, news02, news03, news04]
 
-    const result = await fetchUnreadNews(0, newsRepository)
+    const lastCheckAt = new Date('2020-08-01T00:00:00.400Z').getTime()
+    const result = await fetchUnreadNews(lastCheckAt, newsRepository)
 
     expect(result).toEqual([news01, news02, news03])
+
+    expect(newsRepository.fetchNewsSinceMock.mock.calls[0][0]).toBe(lastCheckAt)
   })
 })

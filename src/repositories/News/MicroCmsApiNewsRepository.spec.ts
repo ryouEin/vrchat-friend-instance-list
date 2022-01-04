@@ -8,13 +8,21 @@ import MicroCmsApiNewsRepository from './MicroCmsApiNewsRepository'
 class MockMicroCmsApi implements IMicroCmsApi {
   public news: NewsApiResponse = { contents: [] }
 
+  // listNewsが意図通りの引数で呼ばれていることをチェックするためのもの
+  public listNewsMock
+
+  constructor() {
+    this.listNewsMock = jest.fn()
+  }
+
   async listNews(options: ListNewsOptions): Promise<NewsApiResponse> {
+    this.listNewsMock(options)
+
     return this.news
   }
 }
 
 describe('fetchNewsSince', () => {
-  // TODO: listNewsが正当な引数で呼ばれている事を確認
   it('記事のpublished_atがUnixTime(ミリ秒)に変換されて返却される', async () => {
     const microCmsApi = new MockMicroCmsApi()
 
@@ -41,7 +49,11 @@ describe('fetchNewsSince', () => {
     }
 
     const repository = new MicroCmsApiNewsRepository(microCmsApi)
-    const result = await repository.fetchNewsSince(0)
+
+    const sinceString = '2020-08-01T00:00:00.400Z'
+    const result = await repository.fetchNewsSince(
+      new Date(sinceString).getTime()
+    )
 
     expect(result).toEqual([
       {
@@ -57,5 +69,13 @@ describe('fetchNewsSince', () => {
         publishedAt: news03UnixTime,
       },
     ])
+
+    expect(microCmsApi.listNewsMock.mock.calls[0][0]).toEqual({
+      filters: {
+        key: 'publishedAt',
+        comparisonMethod: 'greater_than',
+        value: sinceString,
+      },
+    })
   })
 })

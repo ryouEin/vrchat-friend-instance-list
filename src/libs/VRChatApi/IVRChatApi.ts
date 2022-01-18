@@ -38,6 +38,10 @@ export type DeleteFavoriteParams = {
   id: string
 }
 
+export type GetUserParams = {
+  id: string
+}
+
 export type GetWorldParams = {
   id: string
 }
@@ -64,6 +68,8 @@ export interface IVRChatApi {
   listFavorites(params: ListFavoritesParams): Promise<FavoriteApiResponse[]>
 
   deleteFavorite(params: DeleteFavoriteParams): Promise<void>
+
+  getUser(params: GetUserParams): Promise<UserApiResponse>
 
   getWorld(params: GetWorldParams): Promise<WorldApiResponse>
 

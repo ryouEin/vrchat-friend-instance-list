@@ -8,6 +8,7 @@ export const VrcApiUrl = {
   getAddFavoriteUrl: () => VRC_API_URL + '/api/1/favorites',
   getFetchFavoritesUrl: () => VRC_API_URL + '/api/1/favorites',
   getDeleteFavoriteUrl: (id: string) => VRC_API_URL + `/api/1/favorites/${id}`,
+  getFetchUserUrl: (userId: string) => VRC_API_URL + `/api/1/users/${userId}`,
   getFetchWorldUrl: (worldId: string) =>
     VRC_API_URL + `/api/1/worlds/${worldId}`,
   getFetchWorldsUrl: () => VRC_API_URL + `/api/1/worlds`,

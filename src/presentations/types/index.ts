@@ -51,13 +51,16 @@ export type Favorite = {
   type: FavoriteType
 }
 
-export type Friend = {
+export type User = {
   id: string
   username: string
   displayName: string
   currentAvatarImageUrl: string
   currentAvatarThumbnailImageUrl: string
   profilePicOverride: string
+}
+
+export type Friend = User & {
   location: InstanceLocation
   favorite?: Favorite
   isNew: boolean

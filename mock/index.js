@@ -5,6 +5,7 @@ const {
   listFavorites,
   addFavorite,
   deleteFavorite,
+  getUser,
   getWorld,
   listWorlds,
   getInstanceInfo,
@@ -90,6 +91,7 @@ app.delete(
   errorResponseMiddleware('deleteFavorite'),
   deleteFavorite
 )
+app.get('/api/1/users/:id', errorResponseMiddleware('getUser'), getUser)
 app.get('/api/1/worlds/:id', errorResponseMiddleware('getWorld'), getWorld)
 app.get('/api/1/worlds', errorResponseMiddleware('listWorlds'), listWorlds)
 app.get(

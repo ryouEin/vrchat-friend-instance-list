@@ -12,6 +12,7 @@ import { WorldsRepository } from '../repositories/Worlds/WorldsRepository'
 import { KeyValueStorageLastCheckNewsAt } from '../repositories/News/KeyValueStorageLastCheckNewsAt'
 import { vrchatApi } from './vrchatApi'
 import { network } from './network'
+import { VRChatApiUsersRepository } from '../repositories/Users/VRChatApiUsersRepository'
 
 export const favoritesRepository = new VRChatApiFavoritesRepository(vrchatApi)
 
@@ -44,3 +45,5 @@ export const worldsRepository = new WorldsRepository(
   cacheWorldsRepository,
   vrchatApi
 )
+
+export const usersRepository = new VRChatApiUsersRepository(vrchatApi)

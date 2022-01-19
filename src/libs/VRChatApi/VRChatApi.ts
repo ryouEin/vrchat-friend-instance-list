@@ -3,6 +3,7 @@ import {
   DeleteFavoriteParams,
   GetFriendsParams,
   GetInstanceParams,
+  GetUserParams,
   GetWorldParams,
   InviteMeParams,
   IVRChatApi,
@@ -114,6 +115,15 @@ export class VRChatApi implements IVRChatApi {
     await this._network
       .delete(VrcApiUrl.getDeleteFavoriteUrl(params.id))
       .catch((error) => this.commonErrorHandle(error))
+  }
+
+  async getUser(params: GetUserParams): Promise<UserApiResponse> {
+    const response = await this._network
+      .get(VrcApiUrl.getFetchUserUrl(params.id))
+      .catch((error) => this.commonErrorHandle(error))
+
+    // TODO: Networkから取得したデータのバリデーションして型アサーション外す
+    return response as UserApiResponse
   }
 
   async getWorld(params: GetWorldParams): Promise<WorldApiResponse> {

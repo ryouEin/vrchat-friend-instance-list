@@ -5,6 +5,7 @@ import {
   DeleteFavoriteParams,
   GetFriendsParams,
   GetInstanceParams,
+  GetUserParams,
   GetWorldParams,
   InviteMeParams,
   IVRChatApi,
@@ -54,6 +55,10 @@ export class MockVRChatApi implements IVRChatApi {
     this.favorites = this.favorites.filter(
       (favorite) => favorite.id !== params.id
     )
+  }
+
+  async getUser(params: GetUserParams): Promise<UserApiResponse> {
+    throw new Error('not implemented')
   }
 
   async getWorld(params: GetWorldParams): Promise<WorldApiResponse> {

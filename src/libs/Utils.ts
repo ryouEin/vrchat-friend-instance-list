@@ -23,7 +23,7 @@ export const convertUnixTimeToISO8601ExtendedUTC: (
   return `${year}-${month}-${date}T${hours}:${minutes}:${seconds}.${mSec}Z`
 }
 
-export const unionBy = <T>(
+export const unionWith = <T>(
   newItems: T[],
   oldItems: T[],
   comparator: (a: T, b: T) => boolean

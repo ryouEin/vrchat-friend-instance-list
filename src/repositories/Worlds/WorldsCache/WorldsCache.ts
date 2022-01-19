@@ -2,7 +2,7 @@ import { WorldApiResponse } from '../../../types/ApiResponse'
 import { IKeyValueStorage } from '../../../libs/Storage/IKeyValueStorage'
 import { IWorldsCache } from './IWorldsCache'
 import { VersionedKVS } from '../../../libs/Storage/VersionedKVS'
-import { unionBy } from '../../../libs/Utils'
+import { unionWith } from '../../../libs/Utils'
 
 type WorldCache = {
   updatedAt: number
@@ -55,7 +55,7 @@ export class WorldsCache implements IWorldsCache {
       }
     })
     const cacheWorlds = this.versionedKVS.get()
-    const unionWorlds = unionBy<WorldCache>(
+    const unionWorlds = unionWith<WorldCache>(
       addCacheWorlds,
       cacheWorlds,
       (a, b) => a.data.id === b.data.id

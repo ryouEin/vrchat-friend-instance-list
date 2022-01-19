@@ -1,4 +1,8 @@
-import { convertUnixTimeToISO8601ExtendedUTC, unionBy, uniqWith } from './Utils'
+import {
+  convertUnixTimeToISO8601ExtendedUTC,
+  unionWith,
+  uniqWith,
+} from './Utils'
 
 describe('convertUnixTimeToISO8601ExtendedUTC', () => {
   it('UnixTimeをISO8601拡張形式（UTC）に変換する', () => {
@@ -8,7 +12,7 @@ describe('convertUnixTimeToISO8601ExtendedUTC', () => {
   })
 })
 
-describe('unionBy', () => {
+describe('unionWith', () => {
   it('comparatorから重複要素と判断された要素は重複しない。第２引数側の要素が無視される。', () => {
     type Item = {
       id: string
@@ -35,7 +39,7 @@ describe('unionBy', () => {
       },
     ]
 
-    const result = unionBy<Item>(newItems, oldItems, (a, b) => a.id === b.id)
+    const result = unionWith<Item>(newItems, oldItems, (a, b) => a.id === b.id)
 
     expect(result).toEqual([
       {
@@ -61,7 +65,7 @@ describe('unionBy', () => {
     const newItems: Item[] = []
     const oldItems: Item[] = []
 
-    const result = unionBy<Item>(newItems, oldItems, (a, b) => a.id === b.id)
+    const result = unionWith<Item>(newItems, oldItems, (a, b) => a.id === b.id)
 
     expect(result).toEqual([])
   })

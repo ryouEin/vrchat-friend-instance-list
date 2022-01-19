@@ -1,8 +1,8 @@
-import unionBy from 'lodash/unionBy'
 import { WorldApiResponse } from '../../../types/ApiResponse'
 import { IKeyValueStorage } from '../../../libs/Storage/IKeyValueStorage'
 import { IWorldsCache } from './IWorldsCache'
 import { VersionedKVS } from '../../../libs/Storage/VersionedKVS'
+import { unionBy } from '../../../libs/Utils'
 
 type WorldCache = {
   updatedAt: number
@@ -55,7 +55,11 @@ export class WorldsCache implements IWorldsCache {
       }
     })
     const cacheWorlds = this.versionedKVS.get()
-    const unionWorlds = unionBy(addCacheWorlds, cacheWorlds, 'data.id')
+    const unionWorlds = unionBy<WorldCache>(
+      addCacheWorlds,
+      cacheWorlds,
+      (a, b) => a.data.id === b.data.id
+    )
     unionWorlds.sort((a, b) => {
       return a.updatedAt > b.updatedAt ? -1 : 1
     })

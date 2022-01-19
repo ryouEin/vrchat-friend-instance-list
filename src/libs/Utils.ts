@@ -37,3 +37,14 @@ export const unionBy = <T>(
 
   return newItems.concat(duplicateRemovedOldItems)
 }
+
+// 参考：https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_uniqwith
+export const uniqWith = <T>(
+  targetArray: T[],
+  comparator: (a: T, b: T) => boolean
+) => {
+  return targetArray.filter(
+    (element, index) =>
+      targetArray.findIndex((step) => comparator(element, step)) === index
+  )
+}

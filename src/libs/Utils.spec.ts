@@ -1,4 +1,4 @@
-import { convertUnixTimeToISO8601ExtendedUTC, unionBy } from './Utils'
+import { convertUnixTimeToISO8601ExtendedUTC, unionBy, uniqWith } from './Utils'
 
 describe('convertUnixTimeToISO8601ExtendedUTC', () => {
   it('UnixTimeをISO8601拡張形式（UTC）に変換する', () => {
@@ -64,5 +64,38 @@ describe('unionBy', () => {
     const result = unionBy<Item>(newItems, oldItems, (a, b) => a.id === b.id)
 
     expect(result).toEqual([])
+  })
+})
+
+describe('uniqWith', () => {
+  it('重複要素が取り除かれる。取り除かれるのは後から出現する要素である。', () => {
+    const result = uniqWith(
+      [
+        {
+          id: '1',
+          content: 'hoge',
+        },
+        {
+          id: '2',
+          content: 'fuga',
+        },
+        {
+          id: '1',
+          content: 'foo',
+        },
+      ],
+      (a, b) => a.id === b.id
+    )
+
+    expect(result).toEqual([
+      {
+        id: '1',
+        content: 'hoge',
+      },
+      {
+        id: '2',
+        content: 'fuga',
+      },
+    ])
   })
 })

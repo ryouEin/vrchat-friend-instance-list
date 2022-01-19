@@ -1,0 +1,21 @@
+name: Check On Pull Request
+on:
+  pull_request:
+    types: [opened, reopened]
+jobs:
+  lint_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install
+        run: npm ci
+      - name: lint
+        run: npm run lint
+      - name: test
+        run: npm run test
+      - name: build
+        run: npm run build
+      - name: version-check
+        run: npm run ff_addon_lint:checkVersion
+      - name: update-link-format-check
+        run: npm run ff_addon_lint:checkUpdateLinkFormat

@@ -1,7 +1,7 @@
 import { IFriendsRepository } from './IFriendsRepository'
 import { UserApiResponse } from '../../types/ApiResponse'
-import uniqBy from 'lodash/uniqBy'
 import { IVRChatApi } from '../../libs/VRChatApi/IVRChatApi'
+import { uniqWith } from '../../libs/Utils'
 
 export class VRChatApiFriendsRepository implements IFriendsRepository {
   constructor(private readonly _vrchatApi: IVRChatApi) {}
@@ -46,7 +46,7 @@ export class VRChatApiFriendsRepository implements IFriendsRepository {
       currentPage += 3
     }
 
-    friends = uniqBy(friends, 'id')
+    friends = uniqWith(friends, (a, b) => a.id === b.id)
 
     return friends
   }

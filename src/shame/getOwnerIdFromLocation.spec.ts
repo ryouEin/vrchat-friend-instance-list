@@ -9,6 +9,12 @@ describe('getOwnerIdFromLocation', () => {
     expect(result).toBe('usr_0')
   })
 
+  it('wrld_1:123~region(jp)に対してundefinedを返す', () => {
+    const result = getOwnerIdFromLocation('wrld_1:123~region(jp)')
+
+    expect(result).toBe(undefined)
+  })
+
   it('privateに対してundefinedを返す', () => {
     const result = getOwnerIdFromLocation('private')
 

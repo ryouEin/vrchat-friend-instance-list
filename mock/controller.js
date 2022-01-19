@@ -5,6 +5,11 @@ const friends = require('./data/friends')
 const favorites = require('./data/favorites')
 const { dummyErrorResponseList } = require('./dummyErrorResponseList')
 
+const getRandomUserId = () => {
+  const index = getRandomInteger(0, friends.length - 1)
+  return friends[index].id
+}
+
 const locations = (() => {
   return [
     'offline',
@@ -13,21 +18,39 @@ const locations = (() => {
     'offline',
     'unknown_permission',
     'private',
-    ...worlds.map((world) => `${world.id}:123~hidden(usr_0)~nonce(hogehoge)`),
     ...worlds.map(
-      (world) => `${world.id}:123~hidden(usr_0)~region(jp)~nonce(hogehoge)`
+      (world) => `${world.id}:123~hidden(${getRandomUserId()})~nonce(hogehoge)`
     ),
     ...worlds.map(
-      (world) => `${world.id}:123~hidden(usr_0)~region(eu)~nonce(hogehoge)`
+      (world) =>
+        `${
+          world.id
+        }:123~hidden(${getRandomUserId()})~region(jp)~nonce(hogehoge)`
     ),
-    ...worlds.map((world) => `${world.id}:123~friends(usr_0)~nonce(hogehoge)`),
     ...worlds.map(
-      (world) => `${world.id}:123~friends(usr_0)~region(us)~nonce(hogehoge)`
+      (world) =>
+        `${
+          world.id
+        }:123~hidden(${getRandomUserId()})~region(eu)~nonce(hogehoge)`
     ),
     ...worlds.map(
-      (world) => `${world.id}:123~private(usr_678)~canRequestInvite~nonce(90)`
+      (world) => `${world.id}:123~friends(${getRandomUserId()})~nonce(hogehoge)`
     ),
-    ...worlds.map((world) => `${world.id}:123~private(usr_678)~nonce(90)`),
+    ...worlds.map(
+      (world) =>
+        `${
+          world.id
+        }:123~friends(${getRandomUserId()})~region(us)~nonce(hogehoge)`
+    ),
+    ...worlds.map(
+      (world) =>
+        `${
+          world.id
+        }:123~private(${getRandomUserId()})~canRequestInvite~nonce(90)`
+    ),
+    ...worlds.map(
+      (world) => `${world.id}:123~private(${getRandomUserId()})~nonce(90)`
+    ),
     ...worlds.map((world) => `${world.id}:123`),
     ...worlds.map((world) => `${world.id}:123~region(jp)`),
     ...worlds.map((world) => `${world.id}:123~region(use)`),
@@ -75,6 +98,15 @@ module.exports = {
     favorites.splice(index, 1)
 
     res.json()
+  },
+  getUser(req, res) {
+    const id = req.params.id
+    const user = friends.find((user) => user.id === id)
+    if (user === undefined) {
+      throw new Error(`user ${id} is not found.`)
+    }
+
+    res.json(user)
   },
   getWorld(req, res) {
     const id = req.params.id

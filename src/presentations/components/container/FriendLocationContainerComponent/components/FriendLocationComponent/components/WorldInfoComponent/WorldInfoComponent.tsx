@@ -10,6 +10,7 @@ import { WatchDialogComponent } from './components/WatchDialogComponent/WatchDia
 import { useState } from 'react'
 import { SpinnerComponent } from '../../../../../../presentational/SpinnerComponent/SpinnerComponent'
 import { InstanceForFriendLocationComponent } from '../../../../FriendLocationContainerComponent'
+import { InstanceOwnerDialogComponent } from './components/InstanceOwnerDialogComponent/InstanceOwnerDialogComponent'
 
 type Props = {
   instance: InstanceForFriendLocationComponent
@@ -29,6 +30,7 @@ export const WorldInfoComponent = ({
 }: Props) => {
   const joinDialog = useVisibilityManager(false)
   const watchDialog = useVisibilityManager(false)
+  const ownerDialog = useVisibilityManager(false)
 
   const [isUpdatingInstanceUserNum, setIsUpdatingInstanceUserNum] = useState(
     false
@@ -74,7 +76,13 @@ export const WorldInfoComponent = ({
         <span className={styles.current}>{currentUserNumString}/</span>
         <span className={styles.capacity}>{world.hardCapacity}</span>
       </div>
-      <div className={styles.worldName}>{world.name}</div>
+      {instance.ownerId === undefined ? (
+        <div className={styles.worldName}>{world.name}</div>
+      ) : (
+        <button onClick={ownerDialog.show} className={styles.worldName}>
+          {world.name}
+        </button>
+      )}
       <div className={styles.instanceButtonArea}>
         <div className={styles.instanceButtonGroup}>
           <div className={styles.instanceButtonGroupItem}>
@@ -131,6 +139,13 @@ export const WorldInfoComponent = ({
         onClickWatchStart={watchStart}
         hide={watchDialog.hide}
       />
+      {instance.ownerId !== undefined && (
+        <InstanceOwnerDialogComponent
+          userId={instance.ownerId}
+          isVisible={ownerDialog.isVisible}
+          hide={ownerDialog.hide}
+        />
+      )}
     </div>
   )
 }

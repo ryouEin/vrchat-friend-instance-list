@@ -22,6 +22,6 @@ export const getRegionFromLocation: (
       return Regions.EU
   }
 
-  logger.error(`unexpected region ${region}`)
+  logger.error(`unexpected region: ${region}, of location: ${location}`)
   return undefined
 }

@@ -4,7 +4,6 @@ import {
   IFriendLocationsRepository,
 } from './IFriendLocationsRepository'
 import { IFriendsRepository } from '../Friends/IFriendsRepository'
-import uniqBy from 'lodash/uniqBy'
 import { UserApiResponse } from '../../types/ApiResponse'
 import {
   InstanceLocation,
@@ -17,11 +16,14 @@ import { getInstancePermissionFromLocation } from '../../shame/getInstancePermis
 import { getOwnerIdFromLocation } from '../../shame/getOwnerIdFromLocation'
 import { getRegionFromLocation } from '../../shame/getRegionFromLocation'
 import { logger } from '../../factory/logger'
+import { uniqWith } from '../../libs/Utils'
 
 const getLocationsFromFriends: (friends: UserApiResponse[]) => string[] = (
   friends
 ) => {
-  const locations = uniqBy(friends, 'location').map((friend) => friend.location)
+  const locations = uniqWith(friends, (a, b) => a.location === b.location).map(
+    (friend) => friend.location
+  )
 
   const instancesWithoutPrivate = locations
     .filter((location) => location !== 'private')

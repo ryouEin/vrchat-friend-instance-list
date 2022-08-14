@@ -6,6 +6,10 @@ import { useFullLoader } from '../../../../../../../../../providers/FullLoader/u
 import { useToast } from '../../../../../../../../../providers/Toasts/useToast'
 import { ToastTypes } from '../../../../../../../../../providers/Toasts/types'
 
+const joinToInstance = (instanceId: string) => {
+  window.location.href = `vrchat://launch?id=${instanceId}`
+}
+
 type Props = {
   instance: Instance
   isVisible: boolean
@@ -16,8 +20,9 @@ export const JoinDialogComponent = (props: Props) => {
   const fullLoader = useFullLoader()
   const { toast } = useToast()
 
-  const join = () => {
-    window.location.href = `vrchat://launch?id=${props.instance.id}`
+  const onClickJoin = () => {
+    joinToInstance(props.instance.id)
+    props.hide()
   }
 
   const onClickInviteMe = async () => {
@@ -40,7 +45,7 @@ export const JoinDialogComponent = (props: Props) => {
       contentSlot={
         <>
           <div className="u-mb20">
-            <ButtonComponent size="large" isFull onClick={join}>
+            <ButtonComponent size="large" isFull onClick={onClickJoin}>
               <span>JOIN</span>
             </ButtonComponent>
             <p className={styles.note}>

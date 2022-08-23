@@ -60,12 +60,31 @@ export const locationsToLocationAndPermission = (
   }, [])
 }
 
+// TODO: 要リファクタ。friendsをfetchしているだけじゃなく結構重要な他の処理も入っているのにfetchFriendsという名前は微妙
+const fetchFriends = async (
+  friendsRepository: IFriendsRepository
+): Promise<UserApiResponse[]> => {
+  const friends = await friendsRepository.fetchAllFriends()
+
+  return friends.map((friend) => {
+    if (friend.location !== 'traveling') return friend
+
+    if (friend.travelingToLocation === undefined) {
+      logger.error('travelingToLocationがundefinedなケースが存在します。')
+    }
+    return {
+      ...friend,
+      location: friend.travelingToLocation ?? '',
+    }
+  })
+}
+
 export class VRChatApiFriendLocationsRepository
   implements IFriendLocationsRepository {
   constructor(private friendsRepository: IFriendsRepository) {}
 
   async fetchFriendLocations(): Promise<FriendLocation[]> {
-    const friends = await this.friendsRepository.fetchAllFriends()
+    const friends = await fetchFriends(this.friendsRepository)
     const locations = getLocationsFromFriends(friends)
     const locationAndPermissionArray = locationsToLocationAndPermission(
       locations

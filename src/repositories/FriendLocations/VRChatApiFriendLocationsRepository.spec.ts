@@ -96,7 +96,13 @@ describe('fetchFriendLocations', () => {
       id: 'usr_04',
       location: friendsLocation,
     }
-    friendsRepository.friends = [user01, user02, user03, user04]
+    const user05 = {
+      ...friendDummyData,
+      id: 'usr_04',
+      location: 'traveling',
+      travelingToLocation: friendsLocation,
+    }
+    friendsRepository.friends = [user01, user02, user03, user04, user05]
 
     const friendLocationsRepository = new VRChatApiFriendLocationsRepository(
       friendsRepository
@@ -135,6 +141,11 @@ describe('fetchFriendLocations', () => {
             ...user04,
             canJoin: true,
           },
+          {
+            ...user05,
+            location: friendsLocation,
+            canJoin: true,
+          },
         ],
       },
       {
@@ -143,6 +154,47 @@ describe('fetchFriendLocations', () => {
           {
             ...user03,
             canJoin: false,
+          },
+        ],
+      },
+    ]
+
+    expect(result).toEqual(expectedValue)
+  })
+
+  it('不正なlocationのユーザーは無視される', async () => {
+    const friendsRepository = new MockFriendsRepository()
+    const publicLocation = 'wrld_01:1'
+    const invalidLocation = 'invalid_location'
+    const user01 = {
+      ...friendDummyData,
+      id: 'usr_01',
+      location: publicLocation,
+    }
+    const user02 = {
+      ...friendDummyData,
+      id: 'usr_02',
+      location: invalidLocation,
+    }
+    friendsRepository.friends = [user01, user02]
+
+    const friendLocationsRepository = new VRChatApiFriendLocationsRepository(
+      friendsRepository
+    )
+    const result = await friendLocationsRepository.fetchFriendLocations()
+    const expectedValue: FriendLocation[] = [
+      {
+        id: publicLocation,
+        instance: {
+          id: publicLocation,
+          permission: InstancePermissions.Public,
+          worldId: 'wrld_01',
+          ownerId: undefined,
+        },
+        friends: [
+          {
+            ...user01,
+            canJoin: true,
           },
         ],
       },

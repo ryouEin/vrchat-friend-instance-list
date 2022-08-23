@@ -8,6 +8,7 @@ export type UserApiResponse = {
   currentAvatarThumbnailImageUrl: string
   profilePicOverride: string
   location: InstanceLocation
+  travelingToLocation?: InstanceLocation
 }
 
 export type WorldApiResponse = {

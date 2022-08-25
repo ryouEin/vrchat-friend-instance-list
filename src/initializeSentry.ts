@@ -43,7 +43,7 @@ export const initializeSentry = async () => {
   } finally {
     Sentry.init({
       dsn:
-        'https://828ea2de6f3b4ba08ea3606d69d97b9a@o476585.ingest.sentry.io/5516530',
+        'https://159af2ee882e4d1aa62f1c79c7b84d05@o476585.ingest.sentry.io/5516530',
       integrations: function (integrations) {
         // Sentryへのエラー通知は自前でやるのでGlobalHandlersは邪魔
         return integrations.filter(function (integration) {
